@@ -4,16 +4,18 @@ import { Link } from "react-router-dom";
 export default function Footer(){
     
     return(
-        <footer>
-            
-            <h4>
-               Kick.it 2023
-            </h4>
-           
-            <h4>
-                <Link to="/devs"> About the Creaters</Link>
-            </h4>
+        <footer className="fixed bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
 
+            <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+                <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" className="hover:underline">Kick.it</a>. All Rights Reserved.
+                </span>
+                <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+                 <li>
+                     <Link to="/devs" className="mr-4 hover:underline md:mr-6 ">About The Devs</Link>
+                </li>
+                </ul>
+            </div>
         </footer>
+        
     )
 }
