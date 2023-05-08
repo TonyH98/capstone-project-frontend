@@ -4,35 +4,28 @@ import axios from "axios";
 import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import './App.css';
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 
-const API = process.env.REACT_APP_BASE_URL;
 
-function App() {
-  const [ message, setMessage ] = useState()
-
-  useEffect(() => {
-    axios
-      .get(`${API}`)
-      .then((res) => {
-        setMessage(res.data.message)
-        console.log(message)
-      })
-      .catch((c) => console.warn("catch, c"));
-  }, []);
 
   return (
     
     <div className="App">
       <Router>
-        <Routes>
-          {/* <Route path='/' element={} /> */}
-          <Route path='/login' element={<Login />}/>
-          <Route path='/signup' element={<SignUp />}/>
+         <NavBar/>
+         <main>
+            <Routes>
+              {/* <Route path='/' element={} /> */}
+              <Route path='/login' element={<Login />}/>
+              <Route path='/signup' element={<SignUp />}/>
 
-        </Routes>
+            </Routes>
+          </main>
+        <Footer/>
       </Router>
     </div>
-  );
+  )
 }
 
 export default App;
