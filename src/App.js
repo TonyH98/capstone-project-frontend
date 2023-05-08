@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import 'flowbite'
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
@@ -10,10 +11,11 @@ import Landing from "./components/Landing";
 
 import './App.css';
 
-function App(){
+function App() {
   return (
     <div className="App">
       <Router>
+
          <NavBar/>
          <main>
             <Routes>
@@ -24,9 +26,10 @@ function App(){
             </Routes>
           </main>
         <Footer/>
+
       </Router>
     </div>
-  )
+  );
 }
 
 export default App;
