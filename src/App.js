@@ -1,29 +1,24 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-const API = process.env.REACT_APP_BASE_URL;
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 
-function App() {
-  const [ message, setMessage ] = useState()
 
-  useEffect(() => {
-    axios
-      .get(`${API}`)
-      .then((res) => {
-        setMessage(res.data.message)
-        console.log(message)
-      })
-      .catch((c) => console.warn("catch, c"));
-  }, []);
 
-  return (
+function App(){
+  return(
     <div className="App">
-      <header className="App-header">
-        <h1>{message}</h1>
-      </header>
+      <Router>
+        <NavBar/>
+        <main>
+          <Routes>
+          
+          </Routes>
+        </main>
+        <Footer/>
+      </Router>
     </div>
-  );
+  )
 }
 
 export default App;
