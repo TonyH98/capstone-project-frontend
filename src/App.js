@@ -4,8 +4,9 @@ import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 import './App.css';
-
 
 function App(){
   return (
