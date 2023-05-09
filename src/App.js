@@ -7,7 +7,6 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./components/Landing";
-
 import './App.css';
 
 function App() {
