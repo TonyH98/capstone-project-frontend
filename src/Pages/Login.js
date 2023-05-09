@@ -20,7 +20,7 @@ function Login() {
 
                 <label htmlFor="password">
                     <input 
-                        type='text' 
+                        type='password' 
                         name='password' 
                         placeholder="Password"
                         required 
