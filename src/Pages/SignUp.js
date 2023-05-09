@@ -2,14 +2,14 @@
 // NEED TO FIX CANCEL BUTTON, UPDATE PARAMS/NAVIGATES/ROUTES IF NEEDED
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 
 const API = process.env.REACT_APP_BASE_URL;
 
 function SignUp() {
 
     // useNavigate and useParams hooks to navigate to user profile page
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const {id} = useParams();
 
     // useState hook to toggle between show/hide password
@@ -143,7 +143,7 @@ function SignUp() {
                     Submit
                 </button>
                 <button 
-                    onClick={navigate('/')}
+                    onClick={() => navigate('/')}
                     className="bg-red-400 px-3 text-white mt-5 rounded hover:bg-red-300"
                 >
                     Cancel

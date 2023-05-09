@@ -1,6 +1,21 @@
+// Login page for returning users
+import { useState } from 'react';
 import { Link } from 'react-router-dom'
 
 function Login() {
+
+    // useState hooks to toggle between show/hide password and store login information
+    const [ showPassword, setShowPassword ] = useState(false)
+    const [ login, setLogin ] = useState({
+        username: '',
+        password: ''
+    })
+
+    // function to update login info object on change
+    const handleTextChange = (e) => {
+        setLogin({...login, [e.target.id]: e.target.value})
+    }
+
     return (
         <div>
             <form className="w-96 py-10 bg-indigo-200 m-auto relative">
@@ -11,26 +26,45 @@ function Login() {
                 <label htmlFor="username">
                     <input 
                         type='text' 
+                        id='username'
                         name='usernname' 
                         placeholder="Username" 
                         required 
+                        onChange={handleTextChange}
                         className="mb-5 rounded pl-3 block m-auto"
                     />
                 </label>
 
                 <label htmlFor="password">
                     <input 
-                        type='password' 
+                        type={ showPassword ? 'text' : 'password' } 
+                        id='password'
                         name='password' 
                         placeholder="Password"
                         required 
-                        className="rounded pl-3 block m-auto"
+                        onChange={handleTextChange}
+                        className="rounded pl-3 m-auto ml-12"
                     />
+                    { 
+                    showPassword ? 
+                        <p 
+                            onClick={() => setShowPassword(!showPassword)}    
+                            className="text-sm underline hover:text-blue-400 inline pl-3"
+                        >
+                            Hide
+                        </p> : 
+                            <p 
+                                onClick={() => setShowPassword(!showPassword)} 
+                                className="text-sm underline hover:text-blue-400 inline pl-3"
+                            >
+                                Show
+                            </p> 
+                }
                 </label>
 
                 <button 
                     type='submit' 
-                    className="bg-indigo-500 px-3 text-white mt-5 rounded hover:bg-indigo-400"
+                    className="bg-indigo-500 px-3 text-white mt-5 block m-auto rounded hover:bg-indigo-400"
                 >
                     Login
                 </button>
