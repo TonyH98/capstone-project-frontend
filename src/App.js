@@ -8,7 +8,7 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./components/Landing";
-import UserProfile from "./pages/ UserProfile";
+import UserProfile from "./pages/UserProfile";
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
@@ -39,6 +39,7 @@ function App() {
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
               */}
+              <Route path='/events' element={<EventDetails />} /> 
               <Route path='/map' element={<Map />} />
             </Routes>
           </main>
