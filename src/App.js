@@ -1,7 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import app from "./firebase";
 
-import 'flowbite'
-import './App.css';
+import "flowbite";
+import "./App.css";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import NavBar from "./components/NavBar";
@@ -14,36 +17,70 @@ import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
 
+
 function App() {
+  const [loggedin, setLoggedin] = useState(false);
+  const [user, setUser] = useState({});
+  const [firebaseId, setFirebaseId] = useState("");
+  const auth = getAuth(app);
+
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     setLoggedin(true);
+  //     setFirebaseId(user.uid);
+  //   } else {
+  //     setLoggedin(false);
+  //   }
+  // });
+
+  // useEffect(() => {
+  //   if (loggedin) {
+  //     axios
+  //       .get(`${API}/users/firebase/${firebaseId}`)
+  //       .then((response) => {
+  //         setUser(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   } else {
+  //     setUser({});
+  //   }
+  // }, [loggedin, firebaseId]);
+
   return (
     <div className="App">
       {/* useContext files can be pass here to allow all components to have access to global data */}
       {/* let's say we have a FriendsProvider file in our contexts folder, we can pass it here and the MESSAGES, USER_PROFILE, and EVENTS components will all have access to it from here, no need to pass props or creating multiple state. */}
       {/* <FriendsProvider> */}
       <Router>
-         <NavBar/>
-         <main>
-            <Routes>
-              <Route path='/' element={<Landing/>} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/signup' element={<SignUp />} />
-              {/* 
+
+        
+
+        <NavBar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            {/* 
               Comment in when useParams is set up and remove UserProfile below
               <Route path='/profile/:id' element={<UserProfile />} /> 
               */}
-              <Route path='/profile' element={<UserProfile />} />
-              <Route path='/devs' element={<Devs/>} />
-              <Route path='/events' element={<ShowEvents />} />
-              <Route path='/events/new' element={<NewEvent />} />
-              {/* 
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/devs" element={<Devs />} />
+            <Route path="/events" element={<ShowEvents />} />
+            <Route path="/events/new" element={<NewEvent />} />
+            {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
               */}
-              <Route path='/events' element={<EventDetails />} /> 
-              <Route path='/map' element={<Map />} />
-            </Routes>
-          </main>
-        <Footer/>
+            <Route path="/events" element={<EventDetails />} />
+            <Route path="/map" element={<Map />} />
+          </Routes>
+        </main>
+        {/* <Footer/> */}
+
       </Router>
 
       {/* </FriendsProvider> */}
