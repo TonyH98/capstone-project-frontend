@@ -1,9 +1,11 @@
+import profilePic from '../assets/profile-pic-1.png'
+
 function UserProfile() {
 
   return (
     <div>
-        <div className="flex flex-row ml-36">
-            <img src='../assets/profile-pic-1.png' alt='profile-pic' className="w-96" />
+        <div className="flex flex-row ml-48 my-10" >
+            <img src={profilePic} alt='profile-pic' className="w-72 h-72 mr-10" />
             <div className="text-left">
                 <h1><b>Name (Pronouns)</b></h1>
                 <h2>Username</h2>
