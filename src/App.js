@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useState } from "react";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import app from "./firebase";
 
@@ -10,7 +11,6 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./components/Landing";
-
 import UserProfile from "./pages/UserProfile";
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
