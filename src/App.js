@@ -8,6 +8,8 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./components/Landing";
+import NewEvent from "./pages/NewEvent";
+import EventDetails from "./pages/EventDetails";
 
 import './App.css';
 
@@ -23,9 +25,12 @@ function App() {
               <Route path='/login' element={<Login />}/>
               <Route path='/signup' element={<SignUp />}/>
               <Route path='/devs' element={<Devs/>} />
+              <Route path='/newevent' element={<NewEvent/>} />
+              <Route path='/events' element={<EventDetails/>} />
+              
             </Routes>
           </main>
-        <Footer/>
+        {/* <Footer/> */}
 
       </Router>
     </div>
