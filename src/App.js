@@ -10,11 +10,13 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./components/Landing";
+
 import UserProfile from "./pages/UserProfile";
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
+
 
 function App() {
   const [loggedin, setLoggedin] = useState(false);
@@ -52,6 +54,9 @@ function App() {
       {/* let's say we have a FriendsProvider file in our contexts folder, we can pass it here and the MESSAGES, USER_PROFILE, and EVENTS components will all have access to it from here, no need to pass props or creating multiple state. */}
       {/* <FriendsProvider> */}
       <Router>
+
+        
+
         <NavBar />
         <main>
           <Routes>
@@ -74,7 +79,8 @@ function App() {
             <Route path="/map" element={<Map />} />
           </Routes>
         </main>
-        <Footer />
+        {/* <Footer/> */}
+
       </Router>
 
       {/* </FriendsProvider> */}
