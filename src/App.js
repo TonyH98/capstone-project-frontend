@@ -17,8 +17,10 @@ import Map from "./components/Map";
 function App() {
   return (
     <div className="App">
+      {/* useContext files can be pass here to allow all components to have access to global data */}
+      {/* let's say we have a FriendsProvider file in our contexts folder, we can pass it here and the MESSAGES, USER_PROFILE, and EVENTS components will all have access to it from here, no need to pass props or creating multiple state. */}
+      {/* <FriendsProvider> */}
       <Router>
-
          <NavBar/>
          <main>
             <Routes>
@@ -41,8 +43,9 @@ function App() {
             </Routes>
           </main>
         <Footer/>
-
       </Router>
+
+      {/* </FriendsProvider> */}
     </div>
   );
 }
