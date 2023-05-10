@@ -24,7 +24,7 @@ function UserProfile() {
             <h2 className="text-left">Events</h2>
             <div className="w-3/4 h-20 border relative shadow-sm">
                 <button className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md">
-                    Edit
+                    Add
                 </button>
             </div>
         </div>
