@@ -1,5 +1,6 @@
 // Sign up page for new users
 // NEED TO FIX CANCEL BUTTON, UPDATE PARAMS/NAVIGATES/ROUTES IF NEEDED
+// Need to add Validations for age/alert
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
