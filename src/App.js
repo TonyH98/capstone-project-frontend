@@ -17,13 +17,13 @@ import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
 
-
 function App() {
   const [loggedin, setLoggedin] = useState(false);
   const [user, setUser] = useState({});
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
+  // Can Comment back in 28-50 once login page has firebase working
   // onAuthStateChanged(auth, (user) => {
   //   if (user) {
   //     setLoggedin(true);
@@ -54,9 +54,6 @@ function App() {
       {/* let's say we have a FriendsProvider file in our contexts folder, we can pass it here and the MESSAGES, USER_PROFILE, and EVENTS components will all have access to it from here, no need to pass props or creating multiple state. */}
       {/* <FriendsProvider> */}
       <Router>
-
-        
-
         <NavBar />
         <main>
           <Routes>
@@ -80,7 +77,6 @@ function App() {
           </Routes>
         </main>
         {/* <Footer/> */}
-
       </Router>
 
       {/* </FriendsProvider> */}
