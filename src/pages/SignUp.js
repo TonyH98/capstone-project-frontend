@@ -17,7 +17,6 @@ function SignUp() {
   // useState hook to toggle between show/hide password
   const [showPassword, setShowPassword] = useState(false);
 
-  const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
   // useState hook to store user information
@@ -28,6 +27,7 @@ function SignUp() {
     email: "",
     password: "",
     dob: "",
+    firebaseId: "",
   });
 
   // function to update newUser object on text change
@@ -36,13 +36,13 @@ function SignUp() {
     console.log(newUser);
   };
 
-  // function to signup a new account with firebase
+  // function to create a new account with firebase
   const signUp = async () => {
     createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
       .then(async (userCredential) => {
         const newUser = userCredential.user;
         if (newUser) {
-          navigate("/usersetup");
+          navigate("/profile");
         }
       })
       .catch((error) => {

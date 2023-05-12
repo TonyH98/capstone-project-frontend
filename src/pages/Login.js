@@ -9,7 +9,7 @@ function Login() {
   // useState hooks to toggle between show/hide password and store login information
   const [showPassword, setShowPassword] = useState(false);
   const [login, setLogin] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const auth = getAuth(app);
@@ -41,17 +41,20 @@ function Login() {
 
   return (
     <div>
-      <form className="w-96 py-10 bg-indigo-200 m-auto relative">
+      <form
+        onSubmit={handleSubmit}
+        className="w-96 py-10 bg-indigo-200 m-auto relative"
+      >
         <button className="absolute right-3 top-2 text-xl text-red-800">
           X
         </button>
         <p className="pb-5 text-md">Welcome back! Input login info below</p>
-        <label htmlFor="username">
+        <label htmlFor="email">
           <input
             type="text"
-            id="username"
-            name="usernname"
-            placeholder="Username"
+            id="email"
+            name="email"
+            placeholder="email"
             required
             onChange={handleTextChange}
             className="mb-5 rounded pl-3 block m-auto"
