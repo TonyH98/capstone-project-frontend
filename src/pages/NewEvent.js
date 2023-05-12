@@ -51,10 +51,12 @@ const handleTextChange = (event) => {
   if (event.target.id === "categoryIds") {
     const { value } = event.target;
 
+   if(!events.categoryIds.includes(value)){
     setEvent((prevEvent) => ({
       ...prevEvent,
       categoryIds: [...prevEvent.categoryIds, value],
     }));
+   }
   } else {
     setEvent({ ...events, [event.target.id]: event.target.value });
   }
@@ -64,6 +66,17 @@ const handleTextChange = (event) => {
   const handleAgeChange = (event) => {
     setEvent({ ...event, age: parseInt(event.target.value) });
   };
+
+
+const filterCategory = (category) => {
+
+const filter = events.categoryIds.filter((ele) => {
+  return ele !== category
+})
+
+setEvent({...events, categoryIds: filter})
+
+}
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -90,6 +103,18 @@ console.log(events)
           ))}
         </select>
         <br />
+        
+        {events.categoryIds.length > 0 ? (
+          <div className="category-container">
+            {events.categoryIds.map((category) => {
+              return(
+                <div className="category-pills">
+                  {category} <button onClick={() =>filterCategory(category)}>X</button>
+                </div>
+              )
+            })}
+          </div>
+        ) : null}
 
         <label htmlFor="age">Age</label>
         <input type="number" id="age" onChange={handleAgeChange} />
