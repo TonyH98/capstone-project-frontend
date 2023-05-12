@@ -1,12 +1,27 @@
 import profilePic from '../assets/profile-pic-1.png'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import InterestsModal from '../components/InterestsModal'
+import axios from 'axios'
 
+const API = process.env.REACT_APP_BASE_URL
 function UserProfile() {
     const navigate = useNavigate()
     const [ openModal, setOpenModal ] = useState(false)
 
+    const [ categories, setCategories ] = useState([])
+    console.log(`${API}/category`)
+
+    useEffect(() => {
+        axios
+          .get(`${API}/category`)
+          .then((res) => {
+            setCategories(res.data);
+        })
+        .catch((c) => console.warn("catch, c"));
+    }, []);
+    
+    console.log(categories)
   return (
     <div>
         <div className="w-1/2 mb-10 m-auto">
@@ -25,16 +40,20 @@ function UserProfile() {
         </div>
         <form className="w-3/4 m-auto pb-10">
             <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
-            <legend className="px-3 text-left ml-8">Interests</legend>
+                <legend className="px-3 text-left ml-8">Interests</legend>
                 <button 
-                    onClick={() => setOpenModal(true)}
+                    type='button'
+                    onClick={() => setOpenModal(!openModal)}
                     className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
                 >
                     Edit
                 </button>
             </fieldset>
+                {
+                    openModal ? <InterestsModal setOpenModal={setOpenModal} /> : null
+                }
             <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
-            <legend className="px-3 text-left ml-8">Events</legend>
+                <legend className="px-3 text-left ml-8">Events</legend>
                 <button 
                     onClick={() => navigate('/events')}
                     className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
@@ -43,7 +62,7 @@ function UserProfile() {
                 </button>
             </fieldset>
             <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
-            <legend className="px-3 text-left ml-8">Hosted Events</legend>
+                <legend className="px-3 text-left ml-8">Hosted Events</legend>
                 <button 
                     onClick={() => navigate('/events/new')}
                     className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
@@ -52,9 +71,6 @@ function UserProfile() {
                 </button>
             </fieldset>
         </form>
-        {
-            openModal ? <InterestsModal setOpenModal={setOpenModal} /> : null
-        }
         {/* <div className="w-3/4 m-auto">
             <h2 className="text-left">Events</h2>
             <div className="w-3/4 h-20 border relative shadow-sm">
