@@ -18,10 +18,11 @@ function Login() {
     }
 
     return (
-        <div>
-            <form className="w-96 py-10 bg-indigo-200 m-auto relative">
-                <button className="absolute right-3 top-2 text-xl text-red-800">X</button>
-                <p className='pb-5 text-md'>
+        <div className='flex flex-col justify-center items-center p-6'>
+            <form className="sm:w-96 bg-white shadow-md p-4 rounded-lg flex flex-col items-center justify-center">
+                <button className="relative left-[50%] font-bold text-lg">X</button>
+                <div>
+                <p className='text-lg font-bold py-4'>
                     Welcome back! Input login info below
                 </p>
                 <label htmlFor="username">
@@ -32,7 +33,7 @@ function Login() {
                         placeholder="Username" 
                         required 
                         onChange={handleTextChange}
-                        className="mb-5 rounded pl-3 block m-auto"
+                        className="rounded w-[85%] bg-transparent appearance-none focus:outline-none"
                     />
                 </label>
 
@@ -44,35 +45,35 @@ function Login() {
                         placeholder="Password"
                         required 
                         onChange={handleTextChange}
-                        className="rounded pl-3 m-auto ml-12"
+                        className="my-3 rounded w-[85%]"
                     />
                     { 
                     showPassword ? 
-                        <p 
+                        <button 
                             onClick={() => setShowPassword(!showPassword)}    
-                            className="text-sm underline hover:text-blue-400 inline pl-3"
+                            className="px-1 font-semibold"
                         >
                             Hide
-                        </p> : 
-                            <p 
+                        </button> : 
+                        <button 
                                 onClick={() => setShowPassword(!showPassword)} 
-                                className="text-sm underline hover:text-blue-400 inline pl-3"
+                                className="px-1 font-semibold"
                             >
                                 Show
-                            </p> 
+                        </button> 
                 }
                 </label>
-
+                </div>
                 <button 
                     type='submit' 
-                    className="bg-indigo-500 px-3 text-white mt-5 block m-auto rounded hover:bg-indigo-400"
+                    className="bg-cyan-400 border border-cyan-400 text-white hover:text-cyan-400 rounded-md hover:bg-transparent hover:border px-2 py-1 font-bold"
                 >
                     Login
                 </button>
                 <p className='text-sm mt-5'>
                     Don't have an account yet?
                 </p>
-                <Link to='/signup' className='block mt-1 underline text-blue-500 hover:text-white'>
+                <Link to='/signup' className='block mt-1 underline underline-offset-2 font-semibold text-blue-500 hover:text-cyan-400'>
                     Sign Up
                 </Link>
             </form>
