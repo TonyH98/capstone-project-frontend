@@ -51,7 +51,7 @@ const handleTextChange = (event) => {
   if (event.target.id === "categoryIds") {
     const { value } = event.target;
 
-   if(!events.categoryIds.includes(value) && events.categoryIds.length < 3){
+   if(!events.categoryIds.includes(value) && events.categoryIds.length < 3 && value){
     setEvent((prevEvent) => ({
       ...prevEvent,
       categoryIds: [...prevEvent.categoryIds, value],
