@@ -17,9 +17,6 @@ export default function ShowEvents() {
       </Link>
       <button>Sort by</button>
       <EventCard />
-      <EventCard />
-      <EventCard />
-      <EventCard />
     </div>
   );
 }

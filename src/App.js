@@ -51,13 +51,13 @@ function App() {
   }, [loggedin, firebaseId]);
 
   return (
-    <div className="App">
+    <div className="App bg-[#f5fefd] min-h-[100%]">
       {/* useContext files can be pass here to allow all components to have access to global data */}
       {/* let's say we have a FriendsProvider file in our contexts folder, we can pass it here and the MESSAGES, USER_PROFILE, and EVENTS components will all have access to it from here, no need to pass props or creating multiple state. */}
       {/* <FriendsProvider> */}
       <Router>
         <NavBar />
-        <main>
+        <main className="h-[100%]">
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />

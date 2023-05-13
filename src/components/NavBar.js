@@ -1,74 +1,88 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import logo from "../Kick.it Logo.png"
+import { RiHomeLine } from "react-icons/ri";
+import { HiOutlineUsers } from "react-icons/hi";
+import { FiMessageCircle } from "react-icons/fi";
+import { GrNotification } from "react-icons/gr";
+import { BiUser } from "react-icons/bi"
 
 
 export default function NavBar(){
+  const [matches, setMatches] = useState(
+    window.matchMedia("(min-width: 450px)").matches
+  );
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    window.matchMedia("(min-width: 450px)").addEventListener('change', e => setMatches(e.matches));
+  }, []);
     
     return(
-        // <nav className= "inline">
-            
-        //     <img src={logo} alt="logo" height="100px" >
-        //     </img>
-            
-        //     <h1>
-        //         <Link to="/users"> Users</Link>
-        //     </h1>
-           
-        //     <h1>
-        //         <Link to="/events"> Events</Link>
-        //     </h1>
-
-        //     <h1>
-        //         <Link to="/login"> Login/Settings</Link>
-        //     </h1>
-        // </nav>
-        
-
-<nav className="bg-orange-300 border-gray-200 dark:bg-gray-900 dark:border-gray-700 h-20 sticky top-0 mb-10">
-  <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <Link to='/'><img src={logo} alt="logo" className="h-20 -mt-4" > 
-        </img>
-        </Link>
-    
-        {/* <li>
-
-        <Link to="/users" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" > Users</Link>
-        </li> */}
-       
-   
-    <div className="hidden w-full md:block md:w-auto" id="navbar-dropdown">
-      <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-orange-300 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <li>
-            <Link to="/users" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 -mt-2 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Users</Link>
+      <nav className="flex items-center justify-between h-20 sticky blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-100 to-cyan-400 z-50">
+          <Link to='/'><img src={logo} alt="logo" className="h-20" > 
+            </img>
+          </Link>
+      {matches && (
+        <div className="flex items-center justify-between h-20 sticky z-50">
+    <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
+      <li onClick={() => setActive(0)} className={`${active === 0 ? "active" : ""}hover:text-cyan-400`}>
+            <Link to="/events" className="" aria-current="page"><RiHomeLine size={25}/><span className="text-gray-600">Events</span></Link>
         </li>
-        <li>
-            <Link to="/events" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 -mt-2 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Events</Link>
+        <li onClick={() => setActive(1)} className="hover:text-cyan-400">
+            <Link to="/users" className="" aria-current="page"><HiOutlineUsers size={25}/><span className="text-gray-600">Users</span></Link>
         </li>
-        <li>
-            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" className="flex items-center justify-between -mt-2 w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Login/Settings<svg className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" ><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg></button>
+        <li onClick={() => setActive(2)} className="hover:text-cyan-400">
+            <Link to="/chats" className="" aria-current="page"><FiMessageCircle size={25}/><span className="text-gray-600">Chats</span></Link>
+        </li>
+        <li onClick={() => setActive(3)} className="hover:text-cyan-400">
+            <Link to="/profile" className="" aria-current="page"><BiUser size={25}/><span className="text-gray-600">Profile</span></Link>
+        </li>
+      </ul> 
+  </div>
+    )}
+     {!matches && (
+      <div className="navbar blob rounded-[999px]bg-opacity-60 bg-gradient-to-r from-slate-100 via-teal-100 to-blue-100">
+    <ul className="flex justify-center items-center gap-8 font-semibold text-[15px]">
+      <li onClick={() => setActive(0)} className={`${active === 0 ? "bg-cyan-400" : "bg-white"} rounded-full p-2 shadow-md`}>
+            <Link to="/events" className="hover:text-white" aria-current="page"><RiHomeLine size={20}/><span className="text-gray-900 hover:text-white">Events</span></Link>
+        </li>
+        <li onClick={() => setActive(1)} className={`${active === 1 ? "bg-cyan-400" : "bg-white"} rounded-full p-2 shadow-md`}>
+            <Link to="/users" className="hover:text-white" aria-current="page"><HiOutlineUsers size={20}/><span className="text-gray-900 hover:text-white">Users</span></Link>
+        </li>
+        <li onClick={() => setActive(2)} className={`${active === 2 ? "bg-cyan-400" : "bg-white"} rounded-full p-2 shadow-md`}>
+            <Link to="/chats" className="" aria-current="page"><FiMessageCircle size={20}/><span className="text-gray-900">Chats</span></Link>
+        </li>
+        <li onClick={() => setActive(3)} className={`${active === 3 ? "bg-cyan-400" : "bg-white"} rounded-full p-2 shadow-md`}>
+            <Link to="/profile" className="hover:text-white" aria-current="page"><BiUser size={20}/><span className="text-gray-900 hover:text-white">Profile</span></Link>
+        </li>
+      </ul>
+  </div>
+    )}
+    <div className="flex" id="navbar-dropdown">
+      <button className="p-2"><GrNotification/></button>
+      <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
+        <li className="">
+            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" className="flex items-center justify-between text-base font-bold ">Login<svg className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" ><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg></button>
             {/* <!-- Dropdown menu --> */}
-            <div id="dropdownNavbar" className="z-10 hidden font-normal bg-orange-300 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                <ul className="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+            <div id="dropdownNavbar" className="hidden bg-[#3bd4ee] -z-50 divide-y divide-gray-100 rounded-b-lg w-32">
+                <ul className="py-4 mt-1" aria-labelledby="dropdownLargeButton">
                   <li
-                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><Link to='/login'>Login/Sign-Up</Link>
+                     className="block px-4 py-2 hover:bg-[#f5fefd]"><Link to='/login'>Login</Link>
                   </li>
-                  <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings
+                  <li className="block px-4 py-2 hover:bg-[#f5fefd]">Settings
                   </li>
-                  <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                  <Link to="/devs" className="mr-4 hover:underline md:mr-6 ">About The Devs</Link>
+                  <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                  <Link to="/devs" className="">About Devs</Link>
                   </li>
                 </ul>
-                <div className="py-1">
-                  <Link to="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Sign out</Link>
+                <div className="hover:bg-[#f6854b] rounded-b-lg">
+                  <Link to="/" className="block px-4 py-2">Sign out</Link>
                 </div>
             </div>
         </li>
-        
       </ul>
     </div>
-  </div>
 </nav>
-
-
     )
 }
