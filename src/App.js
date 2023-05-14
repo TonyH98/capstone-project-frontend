@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import app from "./firebase";
+import axios from "axios";
 
 import "flowbite";
 import "./App.css";
@@ -16,7 +17,7 @@ import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
-
+const API = process.env.REACT_APP_API_URL;
 
 function App() {
   const [loggedin, setLoggedin] = useState(false);
@@ -24,29 +25,30 @@ function App() {
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     setLoggedin(true);
-  //     setFirebaseId(user.uid);
-  //   } else {
-  //     setLoggedin(false);
-  //   }
-  // });
+  // Can Comment back in 28-50 once login page has firebase working
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setLoggedin(true);
+      setFirebaseId(user.uid);
+    } else {
+      setLoggedin(false);
+    }
+  });
 
-  // useEffect(() => {
-  //   if (loggedin) {
-  //     axios
-  //       .get(`${API}/users/firebase/${firebaseId}`)
-  //       .then((response) => {
-  //         setUser(response.data);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   } else {
-  //     setUser({});
-  //   }
-  // }, [loggedin, firebaseId]);
+  useEffect(() => {
+    if (loggedin) {
+      axios
+        .get(`${API}/users/firebase/${firebaseId}`)
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setUser({});
+    }
+  }, [loggedin, firebaseId]);
 
   return (
     <div className="App">
@@ -54,9 +56,6 @@ function App() {
       {/* let's say we have a FriendsProvider file in our contexts folder, we can pass it here and the MESSAGES, USER_PROFILE, and EVENTS components will all have access to it from here, no need to pass props or creating multiple state. */}
       {/* <FriendsProvider> */}
       <Router>
-
-        
-
         <NavBar />
         <main>
           <Routes>
@@ -80,7 +79,6 @@ function App() {
           </Routes>
         </main>
         {/* <Footer/> */}
-
       </Router>
 
       {/* </FriendsProvider> */}

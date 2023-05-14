@@ -1,45 +1,56 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import CategoryPill from "./CategoryPill";
+import styles from "./modal.module.css"
 
-const API = process.env.REACT_APP_BASE_URL
+function InterestsModal({ categories, setOpenModal}) {
 
-function InterestsModal({setOpenModal}) {
-    const [ categories, setCategories ] = useState([])
+    // useState hook to store selected interests
+    const [ isSelected, setIsSelected ] = useState([])
 
-    useEffect = (() => {
-        axios
-            .get(`${API}/category`)
-            .then(res =>{
-                setCategories(res.data)
-                console.log(categories)
-            })
-            .catch(c => console.warn('catch, c'))
-    }, [])
+    const sortedCategories = categories.sort((a, b) => a.name.localeCompare(b.name));
+
+
 
     return (
-        <div>
-            <div className="w-64 border absolute right-0 bg-gray-200 rounded-xl shadow-md">
-                <p>Select all that apply</p>
-                <input 
-                    type='text' 
-                    id='search' 
-                    name='search'
-                    placeholder="search category"
-                    className="h-7 rounded-xl w-48"
-                />
-                <div>
-                    {
-                        categories.map((category) => {                   
-                            return (
-                                <button id={category.id} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    {category.name}
-                                </button>
-                            )
-                        })
+        <>
+            {/* <div className="w-96 z-10 border m-auto fixed top-[50%] left-[50%] origin-[-50%_-50%] bg-gray-200 rounded-xl shadow-md p-3"> */}
+            <div 
+                className={styles.cardBg}
+                onClick={() => setOpenModal(false)} 
+            />
+            <div className={`${styles.card} relative`}>
+                <div 
+                    onClick={() => setOpenModal(false)}
+                    className="absolute right-4 top-3"
+                >
+                    X
+                </div>
+                <p className="pb-6 pt-4">Select all that apply</p>
+                <div className="flex flex-wrap justify-center">
+                    {            
+                        sortedCategories.map((category) => {
+                                return (
+                                    <CategoryPill
+                                        id={category.id}
+                                        key={category.id}
+                                        category={category.name}
+                                        isSelected={isSelected}
+                                        setIsSelected={setIsSelected}
+                                    />
+                                )
+                            }
+                        )
                     }
                 </div>
+                <button
+                    type='button'
+                    onClick={() => setOpenModal(false)}    
+                    className="bg-emerald-500 text-white px-8 py-1 mt-3 mb-2 rounded-md border float-right"
+                >
+                    Done
+                </button>
             </div>
-        </div>
+        </>
     );
 }
 

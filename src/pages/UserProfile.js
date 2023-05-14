@@ -50,7 +50,7 @@ function UserProfile() {
                 </button>
             </fieldset>
                 {
-                    openModal ? <InterestsModal setOpenModal={setOpenModal} /> : null
+                    openModal ? <InterestsModal categories={categories} openModal={openModal} setOpenModal={setOpenModal} /> : null
                 }
             <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
                 <legend className="px-3 text-left ml-8">Events</legend>
