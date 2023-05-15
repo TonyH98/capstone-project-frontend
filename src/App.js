@@ -6,16 +6,16 @@ import axios from "axios";
 
 import "flowbite";
 import "./App.css";
-import SignUp from "./Pages/SignUp";
-import Login from "./Pages/Login";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./components/Landing";
-import UserProfile from "./Pages/UserProfile";
-import ShowEvents from "./Pages/ShowEvents";
-import EventDetails from "./Pages/EventDetails";
-import NewEvent from "./Pages/NewEvent";
+import UserProfile from "./pages/UserProfile";
+import ShowEvents from "./pages/ShowEvents";
+import EventDetails from "./pages/EventDetails";
+import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
 const API = process.env.REACT_APP_API_URL;
 
