@@ -1,13 +1,13 @@
 // User profile page that displays user information, interests, events and hosted events
 // NEED TO set up correct routes for useNavigate on button click for categories and store category object with id
-// NEED TO add put requests to update user info on edit
+// NEED TO add post/put requests to update user info on edit
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import profilePic from '../assets/profile-pic-1.png'
 import InterestsModal from '../components/InterestsModal'
 import axios from 'axios'
 
-const API = process.env.REACT_APP_BASE_URL
+const API = process.env.REACT_APP_API_URL
 
 function UserProfile() {
     const navigate = useNavigate()
