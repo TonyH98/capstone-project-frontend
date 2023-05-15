@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+// Pop up modal that opens when edit button in interests field of user profile is clicked
 import CategoryPill from "./CategoryPill";
 import styles from "./modal.module.css"
 
 function InterestsModal({ isSelected, setIsSelected, categories, setOpenModal}) {
 
     const sortedCategories = categories.sort((a, b) => a.name.localeCompare(b.name));
+    console.log(categories)
 
     return (
         <>
-            {/* <div className="w-96 z-10 border m-auto fixed top-[50%] left-[50%] origin-[-50%_-50%] bg-gray-200 rounded-xl shadow-md p-3"> */}
             <div 
                 className={styles.cardBg}
                 onClick={() => setOpenModal(false)} 
