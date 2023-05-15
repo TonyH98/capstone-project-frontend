@@ -74,7 +74,7 @@ function App() {
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
               */}
-            <Route path="/event/details" element={<EventDetails />} />
+            <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/map" element={<Map />} />
           </Routes>
         </main>
