@@ -2,14 +2,9 @@ import { useEffect, useState } from "react";
 import CategoryPill from "./CategoryPill";
 import styles from "./modal.module.css"
 
-function InterestsModal({ categories, setOpenModal}) {
-
-    // useState hook to store selected interests
-    const [ isSelected, setIsSelected ] = useState([])
+function InterestsModal({ isSelected, setIsSelected, categories, setOpenModal}) {
 
     const sortedCategories = categories.sort((a, b) => a.name.localeCompare(b.name));
-
-
 
     return (
         <>

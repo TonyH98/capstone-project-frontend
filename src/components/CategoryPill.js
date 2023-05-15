@@ -1,5 +1,5 @@
 // Component for category pills in interest modal of user profile page
-function CategoryPill({isSelected, setIsSelected, category}) {
+function CategoryPill({ isSelected, setIsSelected, category }) {
     // function to select an interest
         const select = () => {
             setIsSelected([...isSelected, category])

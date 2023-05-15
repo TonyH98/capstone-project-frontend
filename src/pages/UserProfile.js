@@ -9,8 +9,11 @@ function UserProfile() {
     const navigate = useNavigate()
     const [ openModal, setOpenModal ] = useState(false)
 
+    // useState hook to store selected interests
+    const [ isSelected, setIsSelected ] = useState([])
     const [ categories, setCategories ] = useState([])
-    console.log(`${API}/category`)
+
+    const sortedList = isSelected.sort() 
 
     useEffect(() => {
         axios
@@ -21,36 +24,60 @@ function UserProfile() {
         .catch((c) => console.warn("catch, c"));
     }, []);
     
-    console.log(categories)
   return (
     <div>
-        <div className="w-1/2 mb-10 m-auto">
-            <div className='flex'>
-                <img src={profilePic} alt='profile-pic' className="w-36 h-36 mr-10" />
-                <div className="text-left pr-20">
-                    <h1><b>Name (Pronouns)</b></h1>
+        <div className="mb-10 m-auto">
+            <div className='flex justify-center gap-x-10'>
+                <img src={profilePic} alt='profile-pic' className="w-36 h-36" />
+                <div className="text-left">
+                    <h1><b>Firstname Lastname</b></h1>
+                    <h2>(Pronouns)</h2>
                     <h2>Username</h2>
                     <h3>Age</h3>
                 </div>
-                <div className='ml-10'>
+                <div className=''>
                     <p className='text-left'>Bio</p>
-                    <textarea></textarea>
+                    <textarea name='bio' id='bio' col='25' rows='3' placeholder='Insert bio'></textarea>
                 </div>
             </div>
         </div>
         <form className="w-3/4 m-auto pb-10">
-            <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
+            <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${!isSelected.length ? 'h-20' : null}`}>
                 <legend className="px-3 text-left ml-8">Interests</legend>
-                <button 
-                    type='button'
-                    onClick={() => setOpenModal(!openModal)}
-                    className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-                >
-                    Edit
-                </button>
+                <div>
+                    <div className='flex flex-wrap ml-10 mt-2 pr-24 mb-3'>
+                        {
+                            sortedList.map(item => {
+                                return (
+                                    <button
+                                        type="button"
+                                        className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    >
+                                        {item}
+                                    </button>
+                                )
+                            })
+                        }
+                    </div>
+                    <button 
+                        type='button'
+                        onClick={() => setOpenModal(!openModal)}
+                        className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+                    >
+                        Edit
+                    </button>
+                </div>
             </fieldset>
                 {
-                    openModal ? <InterestsModal categories={categories} openModal={openModal} setOpenModal={setOpenModal} /> : null
+                    openModal ? 
+                        <InterestsModal
+                            categories={categories} 
+                            openModal={openModal} 
+                            setOpenModal={setOpenModal}
+                            isSelected={isSelected}
+                            setIsSelected={setIsSelected}
+                        /> 
+                        : null
                 }
             <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
                 <legend className="px-3 text-left ml-8">Events</legend>
@@ -71,14 +98,6 @@ function UserProfile() {
                 </button>
             </fieldset>
         </form>
-        {/* <div className="w-3/4 m-auto">
-            <h2 className="text-left">Events</h2>
-            <div className="w-3/4 h-20 border relative shadow-sm">
-                <button className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md">
-                    Add
-                </button>
-            </div>
-        </div> */}
     </div>
   )
 }
