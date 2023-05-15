@@ -1,5 +1,6 @@
 import SearchEvents from "../components/SearchEvents";
-import EventCard from "../components/EventCard";
+import Events from "../components/Events";
+import "../components/events.css"
 import { Link } from "react-router-dom";
 
 // This will be the page on the wireframe that displays all of the events. The search bar, event cards, the map plugin, and the categories
@@ -11,12 +12,21 @@ import { Link } from "react-router-dom";
 export default function ShowEvents() {
   return (
     <div>
+
+
+
+      <div className="create-section">
+
       <SearchEvents />
+      
       <Link to={"/events/new"}>
-        <button>Create Event</button>
+        <button className="new-event-btns">Create Event</button>
       </Link>
+        
+      </div>
+
       <button>Sort by</button>
-      <EventCard />
+      <Events />
     </div>
   );
 }

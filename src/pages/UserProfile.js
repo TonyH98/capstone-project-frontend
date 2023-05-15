@@ -29,6 +29,8 @@ function UserProfile() {
         .catch((c) => console.warn("catch, c"));
     }, []);
     
+console.log(categories)
+
   return (
     <div>
         <div className="mb-10 m-auto">
