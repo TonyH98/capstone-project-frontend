@@ -1,0 +1,27 @@
+.card {
+    padding: 20px 30px;
+    margin: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index:101;
+    max-height: 80%;
+    width: 750px;
+    box-shadow: 0 10px 55px -10px rgb(0 0 0 / 0.55);
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.cardBg {
+    width: 100vw;
+    height: 100vw;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index:100;
+    background-color: black;
+    opacity: 0.5;
+}
