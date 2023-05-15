@@ -7,7 +7,7 @@ import profilePic from '../assets/profile-pic-1.png'
 import InterestsModal from '../components/InterestsModal'
 import axios from 'axios'
 
-const API = process.env.REACT_APP_BASE_URL
+const API = process.env.REACT_APP_API_URL
 
 function UserProfile() {
     const navigate = useNavigate()
@@ -29,6 +29,8 @@ function UserProfile() {
         .catch((c) => console.warn("catch, c"));
     }, []);
     
+console.log(categories)
+
   return (
     <div>
         <div className="mb-10 m-auto">
