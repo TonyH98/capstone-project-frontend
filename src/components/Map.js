@@ -4,8 +4,8 @@ import { useState, useCallback } from 'react'
 
 // variables to configure map styling and center
 const containerStyle = {
-  width: '500px',
-  height: '500px',
+  width: '300px',
+  height: '300px',
 };
 
 const center = {
@@ -36,17 +36,17 @@ function Map() {
     return isLoaded ? (
         <div>
           <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={8}
-            onLoad={onLoad}
-            onUnmount={onUnmount}
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={10}
+              onLoad={onLoad}
+              onUnmount={onUnmount}
             >
             { /* Child components, such as markers, info windows, etc. */ }
             <></>
           </GoogleMap>
         </div>
-      ) : <div>Not Loaded</div>
+      ) : <div>Map Not Loaded</div>
 }
 
 export default Map;

@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import eventPhoto from '../assets/picnic-pic.jpg'
+import GoogleMap from '../components/Map'
 
 const API = process.env.REACT_APP_API_URL
 export default function EventDetails() {
@@ -109,7 +110,9 @@ export default function EventDetails() {
               </div>
               <h2 className='mt-10'><b>Summary</b></h2>
               <section>{eventInfo?.summary}</section>
-              
+              <div className='float-right w-1/6'>
+                  <GoogleMap/>
+              </div>
           </div>
           <div className='justify-right m-12'>
               <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
