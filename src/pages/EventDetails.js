@@ -8,15 +8,19 @@
 // NEED TO add dynamic src for img based on eventInfo object
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import eventPhoto from '../assets/picnic-pic.jpg'
 
+const API = process.env.REACT_APP_API_URL
 export default function EventDetails() {
-
-  const API = process.env.REACT_APP_API_URL
+  // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams()
+  const navigate = useNavigate()
+
+  // useState hook to store event info
   const [ eventInfo, setEventInfo ] = useState()
 
+  // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
       axios
         .get(`${API}/events/${id}`)
@@ -26,23 +30,86 @@ export default function EventDetails() {
         .catch((c) => console.warn("catch, c"));
   }, [])
 
+  // declare a hash map for converting number date to text date with number to text conversions in monthObj
+  const months = new Map()
+  const monthObj = {
+    '01' : 'January',
+    '02' : 'February',
+    '03' : 'March',
+    '04' : 'April',
+    '05' : 'May',
+    '06' : 'June',
+    '07' : 'July',
+    '08' : 'August',
+    '09' : 'September',
+    '10' : 'October',
+    '11' : 'November',
+    '12' : 'December',
+  }
+  
+  // sets entries in hash map where each numerical key value points to a text month
+  for (const key in monthObj){
+    months.set(key, monthObj[key])
+  }
+
+  // declare variables to construct text date from numerical date
+  const numDate = eventInfo?.date_event
+  const monthName = months.get(numDate?.slice(0,2))
+  let eventDate = `${monthName} ${numDate?.slice(3,5)}, ${numDate?.slice(6)}`
+
   console.log(eventInfo)
-  // console.log(eventInfo.age_max, eventInfo.age_min)
 
   return (
-    <div>
-        <div className='flex flex-row'>
+    <div className=''>
+        <div className='flex flex-row justify-center'>
           <img 
+              // src={eventInfo?.location_image}
               src={eventPhoto}
-              alt={eventPhoto}
+              alt="event photo"
               className='max-h-96 max-w-96 m-12'
           />
           <div className='w-1/2 mt-12'>
-              <h1 className='text-3xl'>{eventInfo.title}</h1>
-              <h2>Date: {eventInfo.date_event}</h2>
-              <h2>Age Restrictions: { eventInfo.age_restriction ? `${eventInfo.age_min} to ${eventInfo.age_max}` : 'None'}</h2>
-              <h2>Categories</h2>
-              <h2>Summary</h2>
+              <div className='flex flex-col'>
+                <h1 className='text-3xl mb-5'>{eventInfo?.title}&nbsp;&nbsp;|&nbsp;&nbsp; 
+                    { 
+                      eventInfo?.age_restriction ? (
+                        <h1 className='inline text-2xl text-gray-500'>
+                            {`${eventInfo?.age_min} to ${eventInfo?.age_max} Only`} 
+                        </h1>
+                      ) : (
+                        <h1 className='inline text-2xl text-gray-500'>
+                            {'All ages'} 
+                        </h1>
+                      )
+                    }
+                </h1>
+                {/* <h2>Age Restrictions: { eventInfo?.age_restriction ? `${eventInfo?.age_min} to ${eventInfo?.age_max}` : 'None'}</h2> */}
+                <h2>Categories: 
+                    {
+                      eventInfo?.category_names ?
+                      eventInfo.category_names.map(category => {
+                        console.log(category)
+                        return (
+                          <button
+                          type="button"
+                          key={category.id}
+                          // update route for events sorted by category
+                          onClick={() => navigate(`/events/${category.name}`)}
+                          className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full text-sm px-2.5 py-1.5 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-3 mb-1"
+                          >
+                              {category.name}
+                            </button>
+                          )
+                        }) : null
+                      }
+                  </h2>     
+                  <h2>Date: <span className='text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3'>{eventDate}</span></h2>
+                  <h2 className='mt-1'>Location: {eventInfo?.location}</h2>
+                  <h2 className='mt-1'>Address: {eventInfo?.address}</h2>
+              </div>
+              <h2 className='mt-10'><b>Summary</b></h2>
+              <section>{eventInfo?.summary}</section>
+              
           </div>
           <div className='justify-right m-12'>
               <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
