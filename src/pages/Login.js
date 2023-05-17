@@ -39,34 +39,36 @@ function Login() {
     logIn(event);
   };
 
-          <label htmlFor="password">
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              placeholder="Password"
-              required
-              onChange={handleTextChange}
-              className="my-3 rounded w-[85%]"
-            />
-            {showPassword ? (
-              <button
-                onClick={() => setShowPassword(!showPassword)}
-                className="px-1 font-semibold"
-              >
-                Hide
-              </button>
-            ) : (
-              <button
-                onClick={() => setShowPassword(!showPassword)}
-                className="px-1 font-semibold"
-              >
-                Show
-              </button>
-            )}
-          </label>
-        </div>
-    );
+  return (
+    <div>
+      <label htmlFor="password">
+        <input
+          type={showPassword ? "text" : "password"}
+          id="password"
+          name="password"
+          placeholder="Password"
+          required
+          onChange={handleTextChange}
+          className="my-3 rounded w-[85%]"
+        />
+        {showPassword ? (
+          <button
+            onClick={() => setShowPassword(!showPassword)}
+            className="px-1 font-semibold"
+          >
+            Hide
+          </button>
+        ) : (
+          <button
+            onClick={() => setShowPassword(!showPassword)}
+            className="px-1 font-semibold"
+          >
+            Show
+          </button>
+        )}
+      </label>
+    </div>
+  );
 }
 
 export default Login;

@@ -20,12 +20,13 @@ import Map from "./components/Map";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
+  // This state is set to false by default and is set to try by the function on line 31
   const [loggedin, setLoggedin] = useState(false);
   const [user, setUser] = useState({});
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
-  // Can Comment back in 28-50 once login page has firebase working
+  // Once the user is authenticated by firebase it sets logged in to true and sets the firebaseid
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setLoggedin(true);
@@ -35,6 +36,7 @@ function App() {
     }
   });
 
+  // This useEffect uses the firebaseId to retrieve the users data from the backend
   useEffect(() => {
     if (loggedin) {
       axios
