@@ -1,21 +1,22 @@
 // Map component using React Google Maps API rendered on events page and events details page
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { useState, useCallback } from 'react'
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { Marker } from '@react-google-maps/api';
 
 // variables to configure map styling and center
-const containerStyle = {
-  width: '300px',
-  height: '300px',
-};
 
-const center = {
-  lat: 40.7127837,
-  lng: -74.0059413
-};
-
-function Map() {
-
-    const [map, setMap] = useState(null)
+function Map({ mapWidth, mapHeight, mapLat, mapLng }) {
+    const containerStyle = {
+      width: mapWidth,
+      height: mapHeight,
+    };
+    
+    const center = {
+      lat: mapLat,
+      lng: mapLng
+    };
+  
+  const [map, setMap] = useState(null)
 
     const { isLoaded } = useJsApiLoader({
       id: 'google-map-script',
@@ -23,8 +24,8 @@ function Map() {
     })
 
     const onLoad = useCallback(function callback(map) {
-        const bounds = new window.google.maps.LatLngBounds(center);
-        map.fitBounds(bounds);
+        // const bounds = new window.google.maps.LatLngBounds(center);
+        // map.fitBounds(bounds);
 
         setMap(map)
     }, [])
@@ -38,12 +39,15 @@ function Map() {
           <GoogleMap
               mapContainerStyle={containerStyle}
               center={center}
-              zoom={10}
+              zoom={14}
               onLoad={onLoad}
               onUnmount={onUnmount}
             >
             { /* Child components, such as markers, info windows, etc. */ }
-            <></>
+            <Marker
+              onLoad={onLoad} 
+              position={center}
+            />
           </GoogleMap>
         </div>
       ) : <div>Map Not Loaded</div>
