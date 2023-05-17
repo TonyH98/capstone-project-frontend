@@ -24,12 +24,21 @@ export default function NewEvent() {
     start_time: "",
     end_time: "",
     location_image: "",
-    creator: users.id, //id of the user
+    creator: "", 
     categoryIds: []
   });
   
+console.log(events)
+
 let [category , setCategory] = useState([])
 
+let[ageError, setAgeError] = useState("")
+
+let[minAge , setMinAge] = useState("")
+
+let[maxError , setMaxError] = useState("")
+
+let[dateError, setDateError] = useState("")
 
 useEffect(() => {
   axios
@@ -37,8 +46,17 @@ useEffect(() => {
   .then((res) => {
     setUsers(res.data)
   })
-  }, [])
+  }, [users.id])
 
+
+  useEffect(() => {
+    if (users.id) {
+      setEvent((prevEvents) => ({
+        ...prevEvents,
+        creator: users.id,
+      }));
+    }
+  }, [users.id]);
 
 useEffect(() => {
   axios
@@ -106,11 +124,78 @@ setEvent({...events, categoryIds: filter})
 
 }
 
+
+function checkAge(){
+
+if(events.age_max >= events.age_min){
+  return true
+}
+else{
+  return false
+}
+
+}
+
+function checkMinAge(){
+  if(events.age_min >= 18){
+    return true
+  }
+  else{
+    return false
+  }
+}
+
+function checkMax(){
+  if(events.max_people > 0){
+    return true
+  }
+  else{
+    return false
+  }
+}
+
+function checkDate() {
+  const eventDate = new Date(events.date_event);
+  const currentDate = new Date();
+
+  if (eventDate > currentDate) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+
   function handleSubmit(event) {
     event.preventDefault();
-    handleAdd(events)
+
+    let isValid = true
+
+    if(!checkAge()){
+      setAgeError("The max age needs to be greater than the minimum age")
+      isValid = false
+    }
+    if(!checkMinAge()){
+      setMinAge("The minimum age needs to be at least 18")
+      isValid = false
+    }
+    if(!checkMax()){
+      setMaxError("The max people needs to be greater than 0")
+      isValid = false
+    }
+    if(!checkDate()){
+      setDateError("The date of the event needs to be later than the current date")
+      isValid = false
+    }
+    if(isValid){
+      handleAdd(events)
+    }
   }
 
+
+
+  
 
   return (
     <div>
@@ -145,11 +230,12 @@ setEvent({...events, categoryIds: filter})
         <label htmlFor="age_min">Minimum Age</label>
         <input type="number" id="age_min" onChange={handleTextChange} value={events.age_min}/>
         <br />
-
+        {ageError && <p style={{color:"red"}}>{ageError}</p>}
+        {minAge && <p style={{color:"red"}}>{minAge}</p>}
         <label htmlFor="age_max">Max Age</label>
         <input type="number" id="age_max" onChange={handleTextChange} value={events.age_max}/>
         <br />
-
+        {ageError && <p style={{color:"red"}}>{ageError}</p>}
         <label htmlFor="location">Location</label>
         <input type="text" id="location" onChange={handleTextChange} value={events.location}/>
         <br />
@@ -157,11 +243,11 @@ setEvent({...events, categoryIds: filter})
         <label htmlFor="max">Max Participants</label>
         <input type="number" id="max_people" onChange={handleTextChange} value={events.max_people}/>
         <br />
-
+        {maxError && <p style={{color:"red"}}>{maxError}</p>}
         <label htmlFor="date_event">Date</label>
         <input type="date" id="date_event" onChange={handleTextChange} value={events.date_event}/>
         <br />
-
+        {dateError && <p style={{color:"red"}}>{dateError}</p>}
         <label htmlFor="start_time">Start Time</label>
         <input type="time" id="start_time" onChange={handleTextChange} value={events.start_time}/>
         <br />
