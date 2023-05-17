@@ -7,25 +7,37 @@ import { useNavigate } from "react-router-dom";
 const API = process.env.REACT_APP_API_URL
 export default function NewEvent() {
 
-
   let navigate = useNavigate();
+
+  let [users , setUsers] = useState({})
 
   const [events, setEvent] = useState({
     title: "",
-    categoryIds: [],
-    age: 18,
-    location: "",
-    max: "", // this value sets the max attendees allowed
     date_event: "",
+    summary: "",
+    max_people: "", // this value sets the max attendees allowed
+    age_restriction: false,
+    age_min: "",
+    age_max: "",
+    location: "",
+    address: "",
     start_time: "",
     end_time: "",
-    summary: "",
-    address: "",
     location_image: "",
-    creator_id: "" //id of the user
+    creator: users.id, //id of the user
+    categoryIds: []
   });
   
 let [category , setCategory] = useState([])
+
+
+useEffect(() => {
+  axios
+  .get(`${API}/users/1`)
+  .then((res) => {
+    setUsers(res.data)
+  })
+  }, [])
 
 
 useEffect(() => {
@@ -44,28 +56,44 @@ const handleAdd = (newEvent) => {
 
   axios
   .post(`${API}/events` , newEvent)
-
+  .then(() => {
+    navigate("/events")
+  })
+  .catch((error) => {
+    console.log(error)
+  })
 }
 
 const handleTextChange = (event) => {
   if (event.target.id === "categoryIds") {
     const { value } = event.target;
 
-   if(!events.categoryIds.includes(value) && events.categoryIds.length < 3 && value){
+    if (!events.categoryIds.includes(value) && events.categoryIds.length < 3 && value) {
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        categoryIds: [...prevEvent.categoryIds, value],
+      }));
+    }
+  } 
+  else if (event.target.id === "age_min" || event.target.id === "age_max" || event.target.id === "max_people") {
+    const { id, value } = event.target;
     setEvent((prevEvent) => ({
       ...prevEvent,
-      categoryIds: [...prevEvent.categoryIds, value],
+      [id]: value ? Number(value) : "", // Convert to number if value exists, otherwise set it as an empty string
     }));
-   }
-  } else {
-    setEvent({ ...events, [event.target.id]: event.target.value });
+  }
+  else {
+    const { id, value } = event.target;
+    setEvent((prevEvent) => ({
+      ...prevEvent,
+      [id]: value,
+    }));
   }
 };
 
 
-  const handleAgeChange = (event) => {
-    setEvent({ ...event, age: parseInt(event.target.value) });
-  };
+
+ 
 
 
 const filterCategory = (category) => {
@@ -84,17 +112,15 @@ setEvent({...events, categoryIds: filter})
   }
 
 
-console.log(events)
-
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title</label>
-        <input type="text" id="title" onChange={handleTextChange} />
+        <input type="text" id="title" onChange={handleTextChange} value={events.title}/>
         <br />
 
         <label htmlFor="categoryIds">Categories</label>
-        <select id="categoryIds" onChange={handleTextChange}>
+        <select id="categoryIds" onChange={handleTextChange} value={events.categoryIds.length > 0 ? events.categoryIds[0] : ""}>
           <option value="">Select a category</option>
           {category.map((option) => (
             <option key={option.id} value={option.name}>
@@ -109,46 +135,53 @@ console.log(events)
             {events.categoryIds.map((category) => {
               return(
                 <div className="category-pills">
-                  {category} <button onClick={() =>filterCategory(category)}>X</button>
+                  {category}  <button onClick={() =>filterCategory(category)}>X</button>
                 </div>
               )
             })}
           </div>
         ) : null}
 
-        <label htmlFor="age">Age</label>
-        <input type="number" id="age" onChange={handleAgeChange} />
+        <label htmlFor="age_min">Minimum Age</label>
+        <input type="number" id="age_min" onChange={handleTextChange} value={events.age_min}/>
+        <br />
+
+        <label htmlFor="age_max">Max Age</label>
+        <input type="number" id="age_max" onChange={handleTextChange} value={events.age_max}/>
         <br />
 
         <label htmlFor="location">Location</label>
-        <input type="text" id="location" onChange={handleTextChange} />
+        <input type="text" id="location" onChange={handleTextChange} value={events.location}/>
         <br />
 
         <label htmlFor="max">Max Participants</label>
-        <input type="number" id="max" onChange={handleTextChange} />
+        <input type="number" id="max_people" onChange={handleTextChange} value={events.max_people}/>
         <br />
 
         <label htmlFor="date_event">Date</label>
-        <input type="date" id="date_event" onChange={handleTextChange} />
+        <input type="date" id="date_event" onChange={handleTextChange} value={events.date_event}/>
         <br />
 
         <label htmlFor="start_time">Start Time</label>
-        <input type="time" id="start_time" onChange={handleTextChange} />
+        <input type="time" id="start_time" onChange={handleTextChange} value={events.start_time}/>
         <br />
         
         <label htmlFor="end_time">End Time</label>
-        <input type="time" id="end_time" onChange={handleTextChange} />
+        <input type="time" id="end_time" onChange={handleTextChange} value={events.end_time}/>
         <br />
         
         <label htmlFor="address">Address</label>
-        <input type="text" id="address" onChange={handleTextChange}/>
+        <input type="text" id="address" onChange={handleTextChange} value={events.address}/>
+            <br></br>
+        <label htmlFor="location_image">Image</label>
+        <input type="text" id="location_image" onChange={handleTextChange} value={events.location_image}/>
 
         <br/>
         <label htmlFor="summary">Summary</label>
-        <textarea id="summary" onChange={handleTextChange} />
+        <textarea type="text" id="summary" onChange={handleTextChange} value={events.summary}/>
         <br />
 
-        <button type="submit">Submit</button>
+        <input type="submit" />
       </form>
     </div>
   );
