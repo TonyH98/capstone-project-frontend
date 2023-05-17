@@ -25,6 +25,7 @@ function App() {
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
+
   // Can Comment back in 28-50 once login page has firebase working
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -49,6 +50,11 @@ function App() {
       setUser({});
     }
   }, [loggedin, firebaseId]);
+
+
+
+
+
 
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
