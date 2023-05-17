@@ -70,7 +70,7 @@ export default function EventDetails() {
         />
         <div className="w-1/2 mt-12">
           <div className="flex flex-col">
-            <h1 className="text-3xl mb-5">
+            <div className="text-3xl mb-5">
               {eventInfo?.title}&nbsp;&nbsp;|&nbsp;&nbsp;
               {eventInfo?.age_restriction ? (
                 <h1 className="inline text-2xl text-gray-500">
@@ -79,7 +79,7 @@ export default function EventDetails() {
               ) : (
                 <h1 className="inline text-2xl text-gray-500">{"All ages"}</h1>
               )}
-            </h1>
+            </div>
             {/* <h2>Age Restrictions: { eventInfo?.age_restriction ? `${eventInfo?.age_min} to ${eventInfo?.age_max}` : 'None'}</h2> */}
             <h2>
               Categories:
@@ -117,18 +117,12 @@ export default function EventDetails() {
 				<div className="flex flex-col gap-y-12 mt-12">
 						<div className="flex flex-row justify-end h-10 gap-x-3">
 							<button
-								id="dropdownHoverButton"
-								data-dropdown-toggle="dropdownHover"
-								data-dropdown-trigger="hover"
 								className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
 								type="button"
 								>
 								Interested
 							</button>
 							<button
-								id="dropdownHoverButton"
-								data-dropdown-toggle="dropdownHover"
-								data-dropdown-trigger="hover"
 								className="border hover:bg-gray-300 focus:bg-gradient-to-r from-purple-100 via-purple-100 to-cyan-100 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 								type="button"
 								>
