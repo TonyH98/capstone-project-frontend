@@ -67,8 +67,21 @@ function SignUp() {
 
   return (
     <div className="sm:w-full md:w-3/5 lg:w-2/5 md:m-auto mx-3 my-6 p-1">
-        <form className="bg-white text-slate-800 dark:text-slate-100 dark:bg-slate-900 shadow-md rounded px-10 pt-6 pb-8 mb-4">
+        <form className="bg-white text-slate-800 dark:text-slate-100 dark:bg-slate-900 shadow-md rounded px-10 pt-6 pb-8 mb-4 mt-6">
             <div className="mb-4">
+                <div className="mb-4">
+                    <label htmlFor="dob" className="block text-gray-700 text-sm font-bold mb-2">
+                        Date of Birth
+                        <input 
+                            type='date' 
+                            name='dob' 
+                            id="dob"
+                            required 
+                            onChange={handleTextChange}
+                            className="rounded block my-2"
+                            />
+                    </label>
+                </div>
                 <label htmlFor="firstname" className="block text-gray-700 text-sm font-bold mb-2">
                 First Name
                 </label>
@@ -89,7 +102,7 @@ function SignUp() {
                     id="lastname"
                     required 
                     onChange={handleTextChange}
-                    className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
             </div>
             <div className="mb-4">
@@ -147,19 +160,6 @@ function SignUp() {
                         Show password
                     </button> 
             }
-            </div>
-            <div className="mb-4">
-            <label htmlFor="dob" className="block text-gray-700 text-sm font-bold mb-2">
-                Date of Birth
-                <input 
-                    type='date' 
-                    name='dob' 
-                    id="dob"
-                    required 
-                    onChange={handleTextChange}
-                    className="rounded block my-2"
-                    />
-            </label>
             </div>
             <div className="flex justify-evenly">
             <button 
