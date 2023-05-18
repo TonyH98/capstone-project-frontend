@@ -101,7 +101,7 @@ export default function EventDetails() {
                 : null}
             </h2>
             <h2>
-              Date:{" "}
+              Date:
               <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
                 {eventDate}
               </span>
@@ -123,7 +123,7 @@ export default function EventDetails() {
 								Interested
 							</button>
 							<button
-								className="border hover:bg-gray-300 focus:bg-gradient-to-r from-purple-100 via-purple-100 to-cyan-100 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+								className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
 								type="button"
 								>
 								RSVP
