@@ -1,13 +1,14 @@
 // Sign up page for new users
 // NEED TO FIX CANCEL BUTTON, UPDATE PARAMS/NAVIGATES/ROUTES IF NEEDED
 // Need to add Validations for age/alert
+// window.alert can be changed to modal or fix issue where it asks user twice
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "../firebase";
 
-const API = process.env.REACT_APP_BASE_URL;
+const API = process.env.REACT_APP_API_URL;
 
 function SignUp() {
   // useNavigate and useParams hooks to navigate to user profile page
@@ -18,70 +19,95 @@ function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
 
   const auth = getAuth(app);
-  const [errorMessage, setErrorMessage] = useState(null);
 
   // useState hook to store user information
   const [newUser, setNewUser] = useState({
-    firstname: "",
-    lastname: "",
+    first_name: "",
+    last_name: "",
     username: "",
     email: "",
     password: "",
-    dob: "",
-    firebaseId: "",
+    age: "",
+    firebase_id: "",
   });
 
   // function to update newUser object on text change
   const handleTextChange = (e) => {
     setNewUser({ ...newUser, [e.target.id]: e.target.value });
-    console.log(newUser);
   };
 
-  // function to create a new account with firebase
-  const signUp = async () => {
-    createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
-      .then(async (userCredential) => {
-        const newUser = userCredential.user;
-        if (newUser) {
-          navigate("/profile");
-        }
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        console.log(errorCode);
-        setErrorMessage(error.message);
-      });
+  //   // function to create a new account with firebase and update the newUser object with firebase_id
+  const createUserCredentials = async () => {
+    try {
+      const userCredentialResponse = await createUserWithEmailAndPassword(
+        auth,
+        newUser.email,
+        newUser.password
+      );
+      const firebaseId = await userCredentialResponse.user.uid;
+      return { ...newUser, firebase_id: firebaseId };
+    } catch (error) {
+      console.error("Error creating credentials", error);
+    }
   };
 
-  // function to make an axios post request and navigate to user profile page
-  // need to update post route
-  const handleSubmit = (e) => {
+  // function to make an axios POST request and navigate to the user profile page
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    signUp();
+    const userCredentials = await createUserCredentials();
 
     axios
-      .post(`${API}/user`, newUser)
+      .post(`${API}/users`, userCredentials)
       .then(() => {
-        navigate(`/profile/${id}`);
+        navigate(`/profile/${userCredentials.username}`);
       })
       .catch((c) => console.warn("catch, c"));
   };
 
+  // useEffect to show age requirement alert on page load and alert if user input age is below 18
+  useEffect(() => {
+    let age = Number(
+      prompt(
+        "Please note this site is 18+ only. Enter your age in years below:"
+      )
+    );
+
+    if (age < 18) {
+      alert("Sorry, you must be at least 18 to access this site.");
+      navigate("/");
+    }
+  }, []);
+
   return (
     <div className="sm:w-full md:w-3/5 lg:w-2/5 md:m-auto mx-3 my-6 p-1">
-      {errorMessage && <div className="alert">{errorMessage}</div>}
       <form className="bg-white text-slate-800 dark:text-slate-100 dark:bg-slate-900 shadow-md rounded px-10 pt-6 pb-8 mb-4">
         <div className="mb-4">
+          <div className="mb-4">
+            <label
+              htmlFor="age"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Date of Birth
+              <input
+                type="date"
+                name="age"
+                id="age"
+                required
+                onChange={handleTextChange}
+                className="rounded block my-2"
+              />
+            </label>
+          </div>
           <label
-            htmlFor="firstname"
+            htmlFor="first_name"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
             First Name
           </label>
           <input
             type="text"
-            name="firstname"
-            id="firstname"
+            name="first_name"
+            id="first_name"
             required
             onChange={handleTextChange}
             className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -89,16 +115,16 @@ function SignUp() {
         </div>
         <div className="mb-4">
           <label
-            htmlFor="lastname"
+            htmlFor="last_name"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
             Last Name
           </label>
           <input
-            id="lastname"
+            id="last_name"
             required
             onChange={handleTextChange}
-            className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
         <div className="mb-4">
@@ -119,14 +145,14 @@ function SignUp() {
         </div>
         <div className="mb-4">
           <label
-            htmlFor="firstname"
+            htmlFor="email"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
             Email
           </label>
           <input
             type="text"
-            name="firstname"
+            name="email"
             id="email"
             required
             onChange={handleTextChange}
@@ -164,6 +190,20 @@ function SignUp() {
             >
               Show password
             </button>
+          )}
+        </div>
+        <div className="flex justify-evenly">
+          <button type="submit" onClick={handleSubmit} className="btn-1">
+            Hide password
+          </button>
+          ) : (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="text-sm underline hover:text-blue-400 inline pt-2"
+          >
+            Show password
+          </button>
           )}
         </div>
         <div className="mb-4">
