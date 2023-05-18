@@ -21,6 +21,8 @@ export default function EventDetails() {
   // useState hook to store event info and user interest
   const [eventInfo, setEventInfo] = useState();
   const [interest, setInterest] = useState();
+  const [user , setUser] = useState({})
+  const [userEvent , setUserEvent] = useState({})
 
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
@@ -31,6 +33,28 @@ export default function EventDetails() {
       })
       .catch((c) => console.warn("catch, c"));
   }, []);
+
+
+useEffect(() => {
+axios
+.get(`${API}/users/1`)
+.then((res) => {
+  setUser(res.data)
+})
+}, [])
+
+useEffect(() => {
+if(user?.id){
+  axios
+  .get(`${API}/users/${user?.id}/events/${id}`)
+  .then((res) => {
+    setUserEvent(res.data)
+  })
+
+}
+}, [user?.id])
+
+console.log(userEvent)
 
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
   const months = new Map();
@@ -59,6 +83,88 @@ export default function EventDetails() {
   const monthName = months.get(numDate?.slice(0, 2));
   let eventDate = `${monthName} ${numDate?.slice(3, 5)}, ${numDate?.slice(6)}`;
 
+
+  function addToInterest() {
+    if (eventInfo && eventInfo?.rsvp === true) {
+      axios
+        .put(`${API}/users/${user?.id}/events/${id}`, {
+          ...userEvent,
+          interested: true,
+          rsvp: false,
+          selected: false
+        })
+        .then((res) => {
+          setUserEvent(res.data);
+        })
+        .catch((error) => {
+          // Handle error
+        });
+    } else {
+      axios
+        .post(`${API}/users/${user?.id}/events/${id}`, eventInfo)
+        .then((res) => {
+          axios
+            .put(`${API}/users/${user?.id}/events/${id}`, {
+              ...userEvent,
+              interested: true,
+              rsvp: false,
+              selected: false
+            })
+            .then((res) => {
+              setUserEvent(res.data);
+            })
+            .catch((error) => {
+              // Handle error
+            });
+        })
+        .catch((error) => {
+          // Handle error
+        });
+    }
+  }
+  
+  function addToRsvp() {
+    if (eventInfo && eventInfo.interested === true) {
+      axios
+        .put(`${API}/users/${user?.id}/events/${id}`, {
+          ...userEvent,
+          rsvp: true,
+          interested: false,
+          selected: false
+        })
+        .then((res) => {
+          setUserEvent(res.data);
+        })
+        .catch((error) => {
+          // Handle error
+        });
+    } else {
+      axios
+        .post(`${API}/users/${user?.id}/events/${id}`, eventInfo)
+        .then((res) => {
+          axios
+            .put(`${API}/users/${user?.id}/events/${id}`, {
+              ...userEvent,
+              rsvp: true,
+              interested: false,
+              selected: false
+            })
+            .then((res) => {
+              setUserEvent(res.data);
+            })
+            .catch((error) => {
+              // Handle error
+            });
+        })
+        .catch((error) => {
+          // Handle error
+        });
+    }
+  }
+  
+
+
+
   return (
     <div className="relative">
       <div className="flex flex-row justify-center gap-x-16 mx-20">
@@ -85,7 +191,7 @@ export default function EventDetails() {
               Categories:
               {eventInfo?.category_names
                 ? eventInfo.category_names.map((category) => {
-                    console.log(category);
+                  
                     return (
                       <button
                         type="button"
@@ -118,13 +224,13 @@ export default function EventDetails() {
 						<div className="flex flex-row justify-end h-10 gap-x-3">
 							<button
 								className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-								type="button"
+								onClick={addToInterest}
 								>
 								Interested
 							</button>
 							<button
 								className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-								type="button"
+								onClick={addToRsvp}
 								>
 								RSVP
 							</button>
