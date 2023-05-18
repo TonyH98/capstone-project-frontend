@@ -5,7 +5,6 @@ import styles from "./modal.module.css"
 function InterestsModal({ isSelected, setIsSelected, categories, setOpenInterestModal}) {
 
     const sortedCategories = categories.sort((a, b) => a.name.localeCompare(b.name));
-    console.log(categories)
 
     return (
         <>

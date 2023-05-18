@@ -1,6 +1,23 @@
+import axios from 'axios'
 import styles from './modal.module.css'
 
-function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
+const API = process.env.REACT_APP_API_KEY
+
+function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, username }) {
+
+    // function to update user info on change
+    const handleTextChange = (e) => {
+        setUpdatedUser({...updatedUser, [e.target.id]: e.target.value})
+    }
+
+    // function that updates the user information in the users table and closes the modal
+    // NEED TO test if working
+    const handleSubmit = (e) => {    
+        axios
+            .put(`${API}/users/${username}`, updatedUser)
+            .then(() => setOpenEditModal(false))
+            .catch((c) => console.warn("catch, c"));
+    }
     console.log(updatedUser)
     return (
         <>
@@ -25,6 +42,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                                 name='first_name'
                                 type='text'
                                 value={updatedUser?.first_name}
+                                onChange={handleTextChange}
                                 className='block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                             />
                         </label>
@@ -35,27 +53,20 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                                 name='last_name'
                                 type='text'
                                 value={updatedUser?.last_name}
+                                onChange={handleTextChange}
                                 className='block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                             />
                         </label>
                         <label htmlFor='pronouns'>
                             Pronouns
-                            <div>
-                                <input 
-                                    id='pronouns'
-                                    name='pronouns'
-                                    type='text'
-                                    className='block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                                    />
-                                <input
-                                    id='display_pronoun'
-                                    type='checkbox'
-                                    className='align-middle'
-                                    />
-                                <p className='inline align-middle ml-2'>
-                                    Display on profile
-                                </p>                            
-                            </div>
+                            <input 
+                                id='pronouns'
+                                name='pronouns'
+                                type='text'
+                                value={updatedUser?.pronouns}
+                                onChange={handleTextChange}
+                                className='block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                            />                           
                         </label>
                         <label htmlFor='img_url'>
                             Image URL
@@ -64,6 +75,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                                 name='img_url'
                                 type='text'
                                 value={updatedUser?.img_url}
+                                onChange={handleTextChange}
                                 className='block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                             />
                         </label>
@@ -72,14 +84,16 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                             <textarea 
                                 id='bio'
                                 name='bio'
+                                value={updatedUser?.bio}
+                                onChange={handleTextChange}
                                 className='block w-[100%]'
                             />
                         </label>
                     </form>
                 </div>
                 <button
-                    type='button'
-                    onClick={() => setOpenEditModal(false)}    
+                    type='submit'
+                    onClick={handleSubmit}    
                     className="bg-emerald-500 text-white px-8 py-1 mt-8 mb-6 rounded-md border w-3/4     m-auto"
                 >
                     Done

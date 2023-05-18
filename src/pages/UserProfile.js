@@ -19,7 +19,7 @@ function UserProfile() {
     const [ openInterestModal, setOpenInterestModal ] = useState(false)
     const [ openEditModal, setOpenEditModal ] = useState((false))
     const [ user, setUser ] = useState({})
-    const [ updatedUser, setUpdatedUser ] = useState({...user})
+    const [ updatedUser, setUpdatedUser ] = useState({})
 
     // useState hook to store selected interests
     const [ categories, setCategories ] = useState([])
@@ -43,11 +43,12 @@ function UserProfile() {
           .get(`${API}/users/${username}`)
           .then((res) => {
             setUser(res.data);
+            setUpdatedUser(res.data)
         })
         .catch((c) => console.warn("catch, c"));
     }, [username])
-    
-console.log(categories)
+
+    console.log(user)
 
   return (
     <div>
@@ -88,6 +89,7 @@ console.log(categories)
             {
                 openEditModal ? (
                     <EditProfileModal 
+                        username={username}
                         setOpenEditModal={setOpenEditModal}
                         updatedUser={updatedUser}
                         setUpdatedUser={setUpdatedUser}
