@@ -22,8 +22,8 @@ const API = process.env.REACT_APP_API_URL;
 
 function App() {
   // This state is set to false by default and is set to try by the function on line 31
-  const [loggedin, setLoggedin] = useState(false);
-  const [user, setUser] = useState({});
+  const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
+  const [user, setUser] = useLocalStorage("user", {});
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
