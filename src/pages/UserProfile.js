@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import { BsPencilSquare } from 'react-icons/bs'
 import { ImQuotesLeft } from 'react-icons/im'
 import { ImQuotesRight } from 'react-icons/im'
-
+import EditProfileModal from '../components/EditProfileModal'
 
 const API = process.env.REACT_APP_API_URL
 
@@ -19,6 +19,7 @@ function UserProfile() {
     const [ openInterestModal, setOpenInterestModal ] = useState(false)
     const [ openEditModal, setOpenEditModal ] = useState((false))
     const [ user, setUser ] = useState({})
+    const [ updatedUser, setUpdatedUser ] = useState({...user})
 
     // useState hook to store selected interests
     const [ categories, setCategories ] = useState([])
@@ -81,20 +82,24 @@ console.log(categories)
                                 {/* Add bio here */}
                             </p>
                         <ImQuotesRight className='text-orange-600 '/>
-                        {/* <span className='text-5xl text-orange-600'>"</span>
-                            
-                        <span>"</span> */}
                     </section>
-                    {/* <textarea name='bio' id='bio' col='25' rows='3' placeholder='Insert bio'></textarea> */}
-                    {/* <button className='absolute top-0 left-64 bg-blue-300 px-6 rounded'>
-                        Edit
-                    </button> */}
                 </div>
             </div>
+            {
+                openEditModal ? (
+                    <EditProfileModal 
+                        setOpenEditModal={setOpenEditModal}
+                        updatedUser={updatedUser}
+                        setUpdatedUser={setUpdatedUser}
+                    />
+                ) : null
+            }
         </div>
         <form className="w-3/4 m-auto pb-10">
             <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${!isSelected.length ? 'h-20' : null}`}>
-                <legend className="px-3 text-left ml-8">Interests</legend>
+                <legend className="px-3 text-left ml-8">
+                    Interests
+                </legend>
                 <div>
                     <div className='flex flex-wrap ml-10 mt-3 pr-24 mb-3'>
                         {
@@ -133,7 +138,9 @@ console.log(categories)
                         : null
                 }
             <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
-                <legend className="px-3 text-left ml-8">Events</legend>
+                <legend className="px-3 text-left ml-8">
+                    Events
+                </legend>
                 <div>
                     <button 
                         onClick={() => navigate('/events')}
@@ -144,7 +151,9 @@ console.log(categories)
                 </div>
             </fieldset>
             <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
-                <legend className="px-3 text-left ml-8">Hosted Events</legend>
+                <legend className="px-3 text-left ml-8">
+                    Hosted Events
+                </legend>
                 <button 
                     onClick={() => navigate('/events/new')}
                     className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"

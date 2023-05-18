@@ -13,14 +13,14 @@ function InterestsModal({ isSelected, setIsSelected, categories, setOpenInterest
                 className={styles.cardBg}
                 onClick={() => setOpenInterestModal(false)} 
             />
-            <div className={`${styles.card} relative`}>
+            <div className={`${styles.card} relative w-[750px]`}>
                 <div 
                     onClick={() => setOpenInterestModal(false)}
                     className="absolute right-4 top-3"
                 >
                     X
                 </div>
-                <p className="pb-6 pt-4">Select all that apply</p>
+                <p className="pb-6 pt-4 text-center">Select all that apply</p>
                 <div className="flex flex-wrap justify-center">
                     {            
                         sortedCategories.map((category) => {
