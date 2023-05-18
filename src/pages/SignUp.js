@@ -51,6 +51,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userCredentials = await createUserCredentials()
+    console.log(userCredentials.username)
 
     axios
         .post(`${API}/users`, userCredentials)
