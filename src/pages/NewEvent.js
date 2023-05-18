@@ -1,16 +1,21 @@
+// DISCUSS whether we want to enforce age min of 18+
+
+// Create new event form that posts a new event to the events table
 import axios from "axios";
 import { useState , useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// The page is only missing the axios call to post an event to the backend
-
 
 const API = process.env.REACT_APP_API_URL
+
 export default function NewEvent() {
 
   let navigate = useNavigate();
 
-  let [users , setUsers] = useState({})
+  // useState to store user ID and categories from axios get request
+  let [ users, setUsers ] = useState({})
+  let [ category, setCategory ] = useState([])
 
+  // useState to store event information
   const [events, setEvent] = useState({
     title: "",
     date_event: "",
@@ -19,8 +24,10 @@ export default function NewEvent() {
     age_restriction: false,
     age_min: "",
     age_max: "",
-    location: "",
+    location_name: "",
     address: "",
+    latitude: 0,
+    longitude: 0,
     start_time: "",
     end_time: "",
     location_image: "",
@@ -30,16 +37,13 @@ export default function NewEvent() {
   
 console.log(events)
 
-let [category , setCategory] = useState([])
+// useState to store error messages
+let [ageError, setAgeError] = useState("")
+let [minAge , setMinAge] = useState("")
+let [maxError , setMaxError] = useState("")
+let [dateError, setDateError] = useState("")
 
-let[ageError, setAgeError] = useState("")
-
-let[minAge , setMinAge] = useState("")
-
-let[maxError , setMaxError] = useState("")
-
-let[dateError, setDateError] = useState("")
-
+// useEffect makes an axios GET request to get the creator's user ID
 useEffect(() => {
   axios
   .get(`${API}/users/1`)
@@ -48,7 +52,7 @@ useEffect(() => {
   })
   }, [users.id])
 
-
+// useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
     if (users.id) {
       setEvent((prevEvents) => ({
@@ -58,6 +62,7 @@ useEffect(() => {
     }
   }, [users.id]);
 
+// useEffect makes a GET request to store all category options
 useEffect(() => {
   axios
   .get(`${API}/category`)
@@ -69,9 +74,8 @@ useEffect(() => {
   })
 }, [])
 
-
+// function that makes a POST request to add the new event to the events table
 const handleAdd = (newEvent) => {
-
   axios
   .post(`${API}/events` , newEvent)
   .then(() => {
@@ -82,7 +86,9 @@ const handleAdd = (newEvent) => {
   })
 }
 
+// function that updates event information on change in the form
 const handleTextChange = (event) => {
+  // handles updating the category IDs allowing up to three unique choices for categories
   if (event.target.id === "categoryIds") {
     const { value } = event.target;
 
@@ -93,6 +99,7 @@ const handleTextChange = (event) => {
       }));
     }
   } 
+  // handles updates to min age, max age and max number of people and converts the value to a number if there is an input
   else if (event.target.id === "age_min" || event.target.id === "age_max" || event.target.id === "max_people") {
     const { id, value } = event.target;
     setEvent((prevEvent) => ({
@@ -100,6 +107,7 @@ const handleTextChange = (event) => {
       [id]: value ? Number(value) : "", // Convert to number if value exists, otherwise set it as an empty string
     }));
   }
+  // handles updating all other fields of the event details
   else {
     const { id, value } = event.target;
     setEvent((prevEvent) => ({
@@ -109,33 +117,25 @@ const handleTextChange = (event) => {
   }
 };
 
-
-
- 
-
-
+// function handles removing a category that was selected on button click and updates the event details object
 const filterCategory = (category) => {
+  const filter = events.categoryIds.filter((ele) => {
+    return ele !== category
+  })
 
-const filter = events.categoryIds.filter((ele) => {
-  return ele !== category
-})
-
-setEvent({...events, categoryIds: filter})
-
+  setEvent({...events, categoryIds: filter})
 }
 
-
+// function validates that the the max age is greater than or equal to the min age
 function checkAge(){
-
-if(events.age_max >= events.age_min){
-  return true
-}
-else{
-  return false
-}
-
+  if(events.age_max >= events.age_min){
+      return true
+    } else {
+      return false
+    }
 }
 
+// function validates that the min age is greater than or equal to 18
 function checkMinAge(){
   if(events.age_min >= 18){
     return true
@@ -145,6 +145,7 @@ function checkMinAge(){
   }
 }
 
+// function validates that a max number of people is input
 function checkMax(){
   if(events.max_people > 0){
     return true
@@ -154,6 +155,7 @@ function checkMax(){
   }
 }
 
+// function validates that the event date is not a date in the past
 function checkDate() {
   const eventDate = new Date(events.date_event);
   const currentDate = new Date();
@@ -165,8 +167,7 @@ function checkDate() {
   }
 }
 
-
-
+// submit function checks if all input fields are valid and posts event to the events table
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -192,10 +193,6 @@ function checkDate() {
       handleAdd(events)
     }
   }
-
-
-
-  
 
   return (
     <div>
