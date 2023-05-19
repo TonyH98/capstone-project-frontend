@@ -46,7 +46,7 @@ let [dateError, setDateError] = useState("")
 // useEffect makes an axios GET request to get the creator's user ID
 useEffect(() => {
   axios
-  .get(`${API}/users/1`)
+  .get(`${API}/users/johndoe`)
   .then((res) => {
     setUsers(res.data)
   })
