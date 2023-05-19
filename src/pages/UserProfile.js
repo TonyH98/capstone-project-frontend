@@ -4,6 +4,9 @@
 import axios from 'axios'
 import profilePic from '../assets/profile-pic-1.png'
 import InterestsModal from '../components/InterestsModal'
+import UserEvents from './UserEvents'
+import { BsTrash } from 'react-icons/bs'
+
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { BsPencilSquare } from 'react-icons/bs'
@@ -24,6 +27,8 @@ function UserProfile() {
     // useState hook to store selected interests
     const [ categories, setCategories ] = useState([])
     const [ isSelected, setIsSelected ] = useState([])
+
+    const [userEvents , setUserEvent] = useState([])
 
     let sortCategory = isSelected.sort()
     // let sortCategory = [];
@@ -61,7 +66,27 @@ function UserProfile() {
     }
  }, [user?.id])   
 
+useEffect(() => {
+    if(user?.id){
+        axios.get(`${API}/users/${user?.id}/events`)
+        .then((res) => {
+            setUserEvent(res.data)
+        })
+    }
 
+}, [user?.id])
+
+function deleteMultiple(){
+    const deleteEvent = userEvents
+    .filter((events) => events.selected)
+    .map((events) => events.event_id)
+
+    Promise.all(
+        deleteEvent.map((eventId) => {
+            axios.delete(`${API}/users/${user?.id}/events/${eventId}`)
+        })
+    )
+}
 
   return (
     <div>
@@ -155,6 +180,16 @@ function UserProfile() {
                     Events
                 </legend>
                 <div>
+                    {userEvents.map((event) => {
+                        return(
+                            <div key={event.event_id}>
+                                <UserEvents event={event}/>
+                            </div>
+                        )
+                    })}
+
+                    <button onClick={deleteMultiple}> <BsTrash/></button>
+
                     <button 
                         onClick={() => navigate('/events')}
                         className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
