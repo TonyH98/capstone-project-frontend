@@ -1,7 +1,8 @@
 import axios from 'axios'
+import { useParams } from 'react-router-dom'
 import styles from './modal.module.css'
 
-const API = process.env.REACT_APP_API_KEY
+const API = process.env.REACT_APP_API_URL
 
 function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, username }) {
 
@@ -10,6 +11,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, usern
         setUpdatedUser({...updatedUser, [e.target.id]: e.target.value})
     }
 
+    console.log(`${API}/users/${username}`)
     // function that updates the user information in the users table and closes the modal
     // NEED TO test if working
     const handleSubmit = (e) => {    
