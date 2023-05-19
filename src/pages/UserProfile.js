@@ -25,7 +25,7 @@ function UserProfile() {
     const [ categories, setCategories ] = useState([])
     const [ isSelected, setIsSelected ] = useState([])
 
-    const sortedList = isSelected.sort() 
+    let sortCategory = isSelected.sort()
 
     // useEffect makes GET request for all categories and is used in the interests field
     useEffect(() => {
@@ -48,7 +48,18 @@ function UserProfile() {
         .catch((c) => console.warn("catch, c"));
     }, [username])
 
-    console.log(user)
+ useEffect(() => {
+    if(user?.id){
+        axios
+        .get(`${API}/users/${user?.id}/category`)
+        .then((res) => {
+            setIsSelected(res.data)
+        })
+
+    }
+ }, [user?.id])   
+
+console.log(isSelected)
 
   return (
     <div>
@@ -104,20 +115,17 @@ function UserProfile() {
                 </legend>
                 <div>
                     <div className='flex flex-wrap ml-10 mt-3 pr-24 mb-3'>
-                        {
-                            sortedList.map((item, index) => {
-                                return (
-                                    <button
-                                        type="button"
-                                        key={index}
-                                        // onClick={() => navigate(`\events\:${item}`)}
-                                        className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >
-                                        {item}
-                                    </button>
-                                )
-                            })
-                        }
+                     {sortCategory.map((item, index) => (
+                    <button
+                        type="button"
+                        key={index}
+                        // onClick={() => navigate(`\events\:${item}`)}
+                        className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                        {item.name} 
+                     </button>
+                    ))} 
+
                     </div>
                     <button 
                         type='button'
@@ -136,6 +144,7 @@ function UserProfile() {
                             setOpenInterestModal={setOpenInterestModal}
                             isSelected={isSelected}
                             setIsSelected={setIsSelected}
+                            user={user}
                         /> 
                         : null
                 }

@@ -2,7 +2,7 @@
 import CategoryPill from "./CategoryPill";
 import styles from "./modal.module.css"
 
-function InterestsModal({ isSelected, setIsSelected, categories, setOpenInterestModal}) {
+function InterestsModal({ isSelected, setIsSelected, categories, setOpenInterestModal, user}) {
 
     const sortedCategories = categories.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -25,11 +25,11 @@ function InterestsModal({ isSelected, setIsSelected, categories, setOpenInterest
                         sortedCategories.map((category) => {
                                 return (
                                     <CategoryPill
-                                        id={category.id}
                                         key={category.id}
-                                        category={category.name}
+                                        category={category}
                                         isSelected={isSelected}
                                         setIsSelected={setIsSelected}
+                                        user={user}
                                     />
                                 )
                             }

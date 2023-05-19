@@ -37,7 +37,7 @@ export default function EventDetails() {
 
 useEffect(() => {
 axios
-.get(`${API}/users/1`)
+.get(`${API}/users/johndoe`)
 .then((res) => {
   setUser(res.data)
 })
