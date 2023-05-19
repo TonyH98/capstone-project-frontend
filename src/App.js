@@ -52,10 +52,6 @@ function App() {
   }, [loggedin, firebaseId]);
 
 
-
-
-
-
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
       {/* useContext files can be pass here to allow all components to have access to global data */}
