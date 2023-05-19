@@ -28,7 +28,10 @@ function SignUp() {
     email: "",
     password: "",
     age: "",
-    firebase_id: "",
+    pronouns: "Default",
+    bio: "About Me",
+    profile_img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F773915517223143233%2F&psig=AOvVaw1zzXfSKza9M_kyTPLRdwJR&ust=1684548392497000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKCUgvalgP8CFQAAAAAdAAAAABAE",
+    firebase_id: ""
   });
 
   // function to update newUser object on text change
@@ -51,6 +54,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userCredentials = await createUserCredentials()
+    console.log(userCredentials.username)
 
     axios
         .post(`${API}/users`, userCredentials)
@@ -72,7 +76,7 @@ function SignUp() {
 
   return (
     <div className="sm:w-full md:w-3/5 lg:w-2/5 md:m-auto mx-3 my-6 p-1">
-        <form className="bg-white text-slate-800 dark:text-slate-100 dark:bg-slate-900 shadow-md rounded px-10 pt-6 pb-8 mb-4">
+        <form className="bg-white text-slate-800 dark:text-slate-100 dark:bg-slate-900 shadow-md rounded px-10 pt-6 pb-8 mb-4 mt-6">
             <div className="mb-4">
                 <div className="mb-4">
                     <label htmlFor="age" className="block text-gray-700 text-sm font-bold mb-2">

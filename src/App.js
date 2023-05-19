@@ -52,10 +52,6 @@ function App() {
   }, [loggedin, firebaseId]);
 
 
-
-
-
-
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
       {/* useContext files can be pass here to allow all components to have access to global data */}
@@ -72,7 +68,7 @@ function App() {
               Comment in when useParams is set up and remove UserProfile below
               <Route path='/profile/:id' element={<UserProfile />} /> 
               */}
-            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/profile/:username" element={<UserProfile />} />
             <Route path="/devs" element={<Devs />} />
             <Route path="/events" element={<ShowEvents />} />
             <Route path="/events/new" element={<NewEvent />} />
