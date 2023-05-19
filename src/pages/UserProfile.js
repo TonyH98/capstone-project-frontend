@@ -26,6 +26,7 @@ function UserProfile() {
     const [ isSelected, setIsSelected ] = useState([])
 
     let sortCategory = isSelected.sort()
+    // let sortCategory = [];
 
     // useEffect makes GET request for all categories and is used in the interests field
     useEffect(() => {
@@ -53,6 +54,7 @@ function UserProfile() {
         axios
         .get(`${API}/users/${user?.id}/category`)
         .then((res) => {
+            console.log(res.data)
             setIsSelected(res.data)
         })
 
