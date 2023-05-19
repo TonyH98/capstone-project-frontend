@@ -47,12 +47,12 @@ function Login() {
                 <p className='text-lg font-bold py-4'>
                     Welcome back! Input login info below
                 </p>
-                <label htmlFor="username">
+                <label htmlFor="email">
                     <input 
                         type='text' 
-                        id='username'
-                        name='usernname' 
-                        placeholder="Username" 
+                        id='email'
+                        name='email' 
+                        placeholder="Email" 
                         required 
                         onChange={handleTextChange}
                         className="rounded w-[85%] bg-transparent appearance-none focus:outline-none"
