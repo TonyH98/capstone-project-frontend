@@ -59,7 +59,7 @@ function UserProfile() {
     }
  }, [user?.id])   
 
-console.log(isSelected)
+
 
   return (
     <div>
