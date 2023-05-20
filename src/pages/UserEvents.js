@@ -12,7 +12,7 @@ function UserEvents({event}){
         ></img>
         <Link to={`/events/${event.event_id}`}>
 
-        <p>{event.title}</p>
+        <p>{event.title}: {event.rsvp ? `RSVP` : `Interested`}</p>
         </Link>
         <input
         type="checkbox"
