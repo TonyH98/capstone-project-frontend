@@ -8,7 +8,10 @@ function UserHostedEvent({hosted}){
           alt={hosted.title}
           className="location-image"
         ></img>
+        <Link to={`/events/${hosted.id}`}>
         <p>{hosted.title}</p>
+
+        </Link>
         </div>
     )
 }
