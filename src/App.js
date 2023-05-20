@@ -17,6 +17,8 @@ import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
+import ShowUsers from "./pages/ShowUsers";
+import Messages from "./pages/Messages";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
@@ -78,6 +80,8 @@ function App() {
               */}
             <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/users" element={<ShowUsers />} />
+            <Route path="/chats" element={<Messages />} />
           </Routes>
         </main>
         {/* <Footer/> */}

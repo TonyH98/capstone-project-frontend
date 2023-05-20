@@ -10,20 +10,21 @@ import { BsPencilSquare } from 'react-icons/bs'
 import { ImQuotesLeft } from 'react-icons/im'
 import { ImQuotesRight } from 'react-icons/im'
 import EditProfileModal from '../components/EditProfileModal'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const API = process.env.REACT_APP_API_URL
 
 function UserProfile() {
     const navigate = useNavigate()
     const { username } = useParams()
-    const [ openInterestModal, setOpenInterestModal ] = useState(false)
-    const [ openEditModal, setOpenEditModal ] = useState((false))
-    const [ user, setUser ] = useState({})
-    const [ updatedUser, setUpdatedUser ] = useState({})
+    const [ openInterestModal, setOpenInterestModal ] = useLocalStorage('openInterestModal', false)
+    const [ openEditModal, setOpenEditModal ] = useLocalStorage('openEditModal', (false))
+    const [ user, setUser ] = useLocalStorage('user', {})
+    const [ updatedUser, setUpdatedUser ] = useLocalStorage('updatedUser', {})
 
-    // useState hook to store selected interests
-    const [ categories, setCategories ] = useState([])
-    const [ isSelected, setIsSelected ] = useState([])
+    // useLocalStorage hook to store selected interests
+    const [ categories, setCategories ] = useLocalStorage('categories', [])
+    const [ isSelected, setIsSelected ] = useLocalStorage('isSelected', [])
 
     let sortCategory = isSelected.sort()
     // let sortCategory = [];
