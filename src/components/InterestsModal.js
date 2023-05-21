@@ -2,25 +2,24 @@
 import CategoryPill from "./CategoryPill";
 import styles from "./modal.module.css"
 
-function InterestsModal({ isSelected, setIsSelected, categories, setOpenModal}) {
+function InterestsModal({ isSelected, setIsSelected, categories, setOpenInterestModal}) {
 
     const sortedCategories = categories.sort((a, b) => a.name.localeCompare(b.name));
-    console.log(categories)
 
     return (
         <>
             <div 
                 className={styles.cardBg}
-                onClick={() => setOpenModal(false)} 
+                onClick={() => setOpenInterestModal(false)} 
             />
-            <div className={`${styles.card} relative`}>
+            <div className={`${styles.card} relative w-[750px]`}>
                 <div 
-                    onClick={() => setOpenModal(false)}
+                    onClick={() => setOpenInterestModal(false)}
                     className="absolute right-4 top-3"
                 >
                     X
                 </div>
-                <p className="pb-6 pt-4">Select all that apply</p>
+                <p className="pb-6 pt-4 text-center">Select all that apply</p>
                 <div className="flex flex-wrap justify-center">
                     {            
                         sortedCategories.map((category) => {
@@ -39,7 +38,7 @@ function InterestsModal({ isSelected, setIsSelected, categories, setOpenModal}) 
                 </div>
                 <button
                     type='button'
-                    onClick={() => setOpenModal(false)}    
+                    onClick={() => setOpenInterestModal(false)}    
                     className="bg-emerald-500 text-white px-8 py-1 mt-3 mb-2 rounded-md border float-right"
                 >
                     Done

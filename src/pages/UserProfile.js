@@ -1,17 +1,25 @@
 // User profile page that displays user information, interests, events and hosted events
 // NEED TO set up correct routes for useNavigate on button click for categories and store category object with id
 // NEED TO add post/put requests to update user info on edit
-import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import axios from "axios";
 import profilePic from "../assets/profile-pic-1.png";
 import InterestsModal from "../components/InterestsModal";
-import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { BsPencilSquare } from "react-icons/bs";
+import { ImQuotesLeft } from "react-icons/im";
+import { ImQuotesRight } from "react-icons/im";
+import EditProfileModal from "../components/EditProfileModal";
 
 const API = process.env.REACT_APP_API_URL;
 
 function UserProfile() {
   const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
+  const { username } = useParams();
+  const [openInterestModal, setOpenInterestModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [user, setUser] = useState({});
+  const [updatedUser, setUpdatedUser] = useState({});
 
   // useState hook to store selected interests
   const [categories, setCategories] = useState([]);
@@ -19,7 +27,7 @@ function UserProfile() {
 
   const sortedList = isSelected.sort();
 
-  // useEffect makes get request for all categories and is used in the interests field
+  // useEffect makes GET request for all categories and is used in the interests field
   useEffect(() => {
     axios
       .get(`${API}/category`)
@@ -29,32 +37,60 @@ function UserProfile() {
       .catch((c) => console.warn("catch, c"));
   }, []);
 
-  console.log(categories);
+  // useEffect makes GET request for user info based on username parameter
+  useEffect(() => {
+    axios
+      .get(`${API}/users/${username}`)
+      .then((res) => {
+        setUser(res.data);
+        setUpdatedUser(res.data);
+      })
+      .catch((c) => console.warn("catch, c"));
+  }, [username]);
+
+  console.log(user);
 
   return (
     <div>
-      <div className="mb-10 m-auto">
-        <div className="flex justify-center gap-x-10">
+      <div className="mb-10 mt-12 m-auto">
+        <div className="flex justify-center gap-x-10 align-items-start">
           <img src={profilePic} alt="profile-pic" className="w-36 h-36" />
-          <div className="text-left">
+          <div className="text-left w-1/6">
             <h1>
-              <b>Firstname Lastname</b>
+              <b>
+                {user?.first_name} {user?.last_name}
+              </b>
+              {user?.pronoun ? <p>({user.pronoun})</p> : null}
             </h1>
-            <h2>(Pronouns)</h2>
-            <h2>Username</h2>
-            <h3>Age</h3>
+            <h2 className="text-emerald-500">@{user?.username}</h2>
+            <h3>
+              <b>Age: </b>
+              {user?.age?.age} years
+            </h3>
           </div>
-          <div className="">
-            <p className="text-left">Bio</p>
-            <textarea
-              name="bio"
-              id="bio"
-              col="25"
-              rows="3"
-              placeholder="Insert bio"
-            ></textarea>
+          <div className="relative w-52">
+            <div className="align-middle inline">
+              <p className="text-left font-bold inline">Bio</p>
+              <BsPencilSquare
+                onClick={() => setOpenEditModal(true)}
+                className="inline text-cyan-800 cursor-pointer float-right mt-2"
+              />
+            </div>
+            <section className="w-52 h-12 relative flex flex-row">
+              <ImQuotesLeft className="text-orange-600 " />
+              <p className="px-4">{/* Add bio here */}</p>
+              <ImQuotesRight className="text-orange-600 " />
+            </section>
           </div>
         </div>
+        {openEditModal ? (
+          <EditProfileModal
+            username={username}
+            setOpenEditModal={setOpenEditModal}
+            updatedUser={updatedUser}
+            setUpdatedUser={setUpdatedUser}
+          />
+        ) : null}
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
@@ -80,18 +116,18 @@ function UserProfile() {
             </div>
             <button
               type="button"
-              onClick={() => setOpenModal(!openModal)}
+              onClick={() => setOpenInterestModal(!openInterestModal)}
               className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
             >
               Edit
             </button>
           </div>
         </fieldset>
-        {openModal ? (
+        {openInterestModal ? (
           <InterestsModal
             categories={categories}
-            openModal={openModal}
-            setOpenModal={setOpenModal}
+            openInterestModal={openInterestModal}
+            setOpenInterestModal={setOpenInterestModal}
             isSelected={isSelected}
             setIsSelected={setIsSelected}
           />
