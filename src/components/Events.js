@@ -50,19 +50,21 @@ useEffect(() => {
   else{
 
     const filteredEvents = events.filter((event) => {
-      const {title, creator, category_names} = event
+      const {title, creator, category_names, location} = event
   
       const {username} = creator[0]
   
       const titleMatch = title.toLowerCase().includes(searchFilter.toLocaleLowerCase())
   
       const usernameMatch = username.toLocaleLowerCase().includes(searchFilter.toLocaleLowerCase())
-  
+      
+      const locationMatch = location.toLocaleLowerCase().includes(searchFilter.toLocaleLowerCase())
+
       const categoryMatch = category_names.some(
         (category) => category.name.toLowerCase().includes(searchFilter.toLowerCase())
       );
   
-      return titleMatch || usernameMatch || categoryMatch
+      return titleMatch || usernameMatch || categoryMatch || locationMatch
   
     })
   
