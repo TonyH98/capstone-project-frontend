@@ -36,45 +36,54 @@ function handlePageChange ({selected: selectedPage }){
 
 
 useEffect(() => {
-
-  const filteredEvents = events.filter((event) => {
-    const {title, creator, category_names} = event
-
-    const {username} = creator[0]
-
-    const titleMatch = title.toLowerCase().includes(searchFilter.toLocaleLowerCase())
-
-    const usernameMatch = username.toLocaleLowerCase().includes(searchFilter.toLocaleLowerCase())
-
-    const categoryMatch = category_names.some(
-      (category) => category.name.toLowerCase().includes(searchFilter.toLowerCase())
-    );
-
-    return titleMatch || usernameMatch || categoryMatch
-
-  })
-
   if(searchFilter === ""){
-    setEvents(events)
+    axios
+      .get(`${API}/events`)
+      .then((res) => {
+        setEvents(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      setCurrentPage(0)
   }
   else{
-    setEvents(filteredEvents)
+
+    const filteredEvents = events.filter((event) => {
+      const {title, creator, category_names} = event
+  
+      const {username} = creator[0]
+  
+      const titleMatch = title.toLowerCase().includes(searchFilter.toLocaleLowerCase())
+  
+      const usernameMatch = username.toLocaleLowerCase().includes(searchFilter.toLocaleLowerCase())
+  
+      const categoryMatch = category_names.some(
+        (category) => category.name.toLowerCase().includes(searchFilter.toLowerCase())
+      );
+  
+      return titleMatch || usernameMatch || categoryMatch
+  
+    })
+  
+    
+      setEvents(filteredEvents)
+      setCurrentPage(0)
   }
+  
 
 }, [searchFilter])
 
 
-const offSet = currentPage * pageData
-
+const offSet = currentPage * pageData;
 
 const currentEvents = events
-.slice(offSet, offSet + pageData)
-.map((event) => 
-<div className='event-card'>
-<EventCard key={event.id} event={event}/>
-</div>
-)
-
+  .slice(offSet, offSet + pageData)
+  .map((event) => (
+    <div className='event-card'>
+      <EventCard key={event.id} event={event} />
+    </div>
+  ));
 
 const pageCount = Math.ceil(events.length/pageData)
 
