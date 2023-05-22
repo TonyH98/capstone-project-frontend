@@ -16,6 +16,8 @@ const [events , setEvents] = useState([])
 
 const [currentPage, setCurrentPage] = useState(0)
 
+const [searchFilter , setSearchFilter] = useState("")
+
 useEffect(() => {
   axios
   .get(`${API}/events`)
@@ -30,6 +32,37 @@ useEffect(() => {
 function handlePageChange ({selected: selectedPage }){
   setCurrentPage(selectedPage)
 }
+
+
+
+useEffect(() => {
+
+  const filteredEvents = events.filter((event) => {
+    const {title, creator, category_names} = event
+
+    const {username} = creator[0]
+
+    const titleMatch = title.toLowerCase().includes(searchFilter.toLocaleLowerCase())
+
+    const usernameMatch = username.toLocaleLowerCase().includes(searchFilter.toLocaleLowerCase())
+
+    const categoryMatch = category_names.some(
+      (category) => category.name.toLowerCase().includes(searchFilter.toLowerCase())
+    );
+
+    return titleMatch || usernameMatch || categoryMatch
+
+  })
+
+  if(searchFilter === ""){
+    setEvents(events)
+  }
+  else{
+    setEvents(filteredEvents)
+  }
+
+}, [searchFilter])
+
 
 const offSet = currentPage * pageData
 
@@ -47,6 +80,15 @@ const pageCount = Math.ceil(events.length/pageData)
 
   return (
     <div>
+      <div className='search-bar'>
+        <label htmlFor='search'>Search By:</label>
+        <input
+        type="text"
+        id='search'
+        value={searchFilter}
+        onChange={(e) => setSearchFilter(e.target.value)}
+        />
+      </div>
       <div className='events-section'>
       {currentEvents}
       </div>
