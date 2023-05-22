@@ -26,35 +26,35 @@ export default function NavBar(){
       {matches && (
         <div className="flex items-center justify-between h-20 sticky z-50">
     <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
-      <li onClick={() => setActive(0)} className={`${active === 0 ? "active" : ""}hover:text-cyan-400`}>
-            <Link to="/events" className="" aria-current="page"><RiHomeLine size={25}/><span className="text-gray-600">Events</span></Link>
+      <li onClick={() => setActive(0)} className={`${active === 0 ? "active" : ""} hover:text-cyan-400`}>
+            <Link to="/events" className="" aria-current="page"><span className="flex flex-col items-center justify-center"><RiHomeLine size={25}/></span><span className="text-gray-600">Events</span></Link>
         </li>
         <li onClick={() => setActive(1)} className="hover:text-cyan-400">
-            <Link to="/users" className="" aria-current="page"><HiOutlineUsers size={25}/><span className="text-gray-600">Users</span></Link>
+            <Link to="/users" className="" aria-current="page"><span className="flex flex-col items-center justify-center"><HiOutlineUsers size={25}/></span><span className="text-gray-600">Users</span></Link>
         </li>
         <li onClick={() => setActive(2)} className="hover:text-cyan-400">
-            <Link to="/chats" className="" aria-current="page"><FiMessageCircle size={25}/><span className="text-gray-600">Chats</span></Link>
+            <Link to="/chats" className="" aria-current="page"><span className="flex flex-col items-center justify-center"><FiMessageCircle size={25}/></span><span className="text-gray-600">Chats</span></Link>
         </li>
         <li onClick={() => setActive(3)} className="hover:text-cyan-400">
-            <Link to="/profile" className="" aria-current="page"><BiUser size={25}/><span className="text-gray-600">Profile</span></Link>
+            <Link to="/profile" className="" aria-current="page"><span className="flex flex-col items-center justify-center"><BiUser size={25}/></span><span className="text-gray-600">Profile</span></Link>
         </li>
       </ul> 
   </div>
     )}
      {!matches && (
-      <div className="navbar blob rounded-[999px]bg-opacity-60 bg-gradient-to-r from-slate-100 via-teal-100 to-blue-100">
-    <ul className="flex justify-center items-center gap-8 font-semibold text-[15px]">
-      <li onClick={() => setActive(0)} className={`${active === 0 ? "bg-cyan-400" : "bg-white"} rounded-full p-2 shadow-md`}>
-            <Link to="/events" className="hover:text-white" aria-current="page"><RiHomeLine size={20}/><span className="text-gray-900 hover:text-white">Events</span></Link>
+      <div className="navbar blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-200 to-cyan-600 z-50 shadow-lg">
+    <ul className="flex justify-center items-center gap-8 font-semibold text-[12px]">
+      <li onClick={() => setActive(0)} className={`${active === 0 ? "bg-cyan-400" : "bg-cyan-200"} rounded-full p-2 shadow-lg`}>
+            <Link to="/events" className="hover:text-white" aria-current="page"><span className="flex flex-col items-center justify-center"><RiHomeLine size={20}/></span><span className="text-gray-900 hover:text-white">Events</span></Link>
         </li>
-        <li onClick={() => setActive(1)} className={`${active === 1 ? "bg-cyan-400" : "bg-white"} rounded-full p-2 shadow-md`}>
-            <Link to="/users" className="hover:text-white" aria-current="page"><HiOutlineUsers size={20}/><span className="text-gray-900 hover:text-white">Users</span></Link>
+        <li onClick={() => setActive(1)} className={`${active === 1 ? "bg-cyan-400" : "bg-cyan-200"} rounded-full p-2 shadow-lg`}>
+            <Link to="/users" className="hover:text-white" aria-current="page"><span className="flex flex-col items-center justify-center"><HiOutlineUsers size={20}/></span><span className="text-gray-900 hover:text-white">Users</span></Link>
         </li>
-        <li onClick={() => setActive(2)} className={`${active === 2 ? "bg-cyan-400" : "bg-white"} rounded-full p-2 shadow-md`}>
-            <Link to="/chats" className="" aria-current="page"><FiMessageCircle size={20}/><span className="text-gray-900">Chats</span></Link>
+        <li onClick={() => setActive(2)} className={`${active === 2 ? "bg-cyan-400" : "bg-cyan-200"} rounded-full p-2 shadow-lg`}>
+            <Link to="/chats" className="" aria-current="page"><span className="flex flex-col items-center justify-center"><FiMessageCircle size={20}/></span><span className="text-gray-900">Chats</span></Link>
         </li>
-        <li onClick={() => setActive(3)} className={`${active === 3 ? "bg-cyan-400" : "bg-white"} rounded-full p-2 shadow-md`}>
-            <Link to="/profile" className="hover:text-white" aria-current="page"><BiUser size={20}/><span className="text-gray-900 hover:text-white">Profile</span></Link>
+        <li onClick={() => setActive(3)} className={`${active === 3 ? "bg-cyan-400" : "bg-cyan-200"} rounded-full p-2 shadow-lg`}>
+            <Link to="/profile" className="hover:text-white" aria-current="page"><span className="flex flex-col items-center justify-center"><BiUser size={20}/></span><span className="text-gray-900 hover:text-white">Profile</span></Link>
         </li>
       </ul>
   </div>

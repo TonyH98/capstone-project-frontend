@@ -215,7 +215,7 @@ function checkDate() {
   }
 
   return (
-    <div>
+    <div className="flex justify-center items-center p-4">
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" onChange={handleTextChange} value={events.title}/>
