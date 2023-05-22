@@ -87,19 +87,27 @@ const currentEvents = events
 
 const pageCount = Math.ceil(events.length/pageData)
 
+
+
+
   return (
     <div>
       <div className='search-bar'>
         <label htmlFor='search'>Search By:</label>
         <input
         type="text"
+        placeholder='Title, Category, or by Creator'
         id='search'
         value={searchFilter}
         onChange={(e) => setSearchFilter(e.target.value)}
         />
       </div>
       <div className='events-section'>
-      {currentEvents}
+      {currentEvents.length > 0 ?  currentEvents :
+      <div>
+        <h1>No Events Found!</h1>
+      </div>  
+    }
       </div>
       <div>
         {events.length < pageData ? null :
