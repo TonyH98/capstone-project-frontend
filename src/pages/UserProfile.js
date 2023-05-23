@@ -4,6 +4,10 @@
 import axios from 'axios'
 import profilePic from '../assets/profile-pic-1.png'
 import InterestsModal from '../components/InterestsModal'
+import UserEvents from './UserEvents'
+import UserHostedEvent from './UserHostedEvents'
+import { BsTrash } from 'react-icons/bs'
+
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { BsPencilSquare } from 'react-icons/bs'
@@ -25,7 +29,12 @@ function UserProfile() {
     const [ categories, setCategories ] = useState([])
     const [ isSelected, setIsSelected ] = useState([])
 
+    const [userEvents , setUserEvent] = useState([])
+
+    const [hostedEvents, setHostedEvents] = useState([])
+
     let sortCategory = isSelected.sort()
+    // let sortCategory = [];
 
     // useEffect makes GET request for all categories and is used in the interests field
     useEffect(() => {
@@ -59,6 +68,39 @@ function UserProfile() {
     }
  }, [user?.id])   
 
+useEffect(() => {
+    if(user?.id){
+        axios.get(`${API}/users/${user?.id}/events`)
+        .then((res) => {
+            setUserEvent(res.data)
+        })
+    }
+
+}, [user?.id])
+
+
+useEffect(() => {
+
+    if(user?.id){
+        axios.get(`${API}/events?creator.id=${user?.id}`)
+        .then((res) => {
+            setHostedEvents(res.data)
+        })
+    }
+
+}, [user?.id])
+
+function deleteMultiple(){
+    const deleteEvent = userEvents
+    .filter((events) => events.selected)
+    .map((events) => events.event_id)
+
+    Promise.all(
+        deleteEvent.map((eventId) => {
+            axios.delete(`${API}/users/${user?.id}/events/${eventId}`)
+        })
+    )
+}
 
 
   return (
@@ -153,6 +195,16 @@ function UserProfile() {
                     Events
                 </legend>
                 <div>
+                    {userEvents.map((event) => {
+                        return(
+                            <div key={event.event_id}>
+                                <UserEvents event={event}/>
+                            </div>
+                        )
+                    })}
+
+                    <button onClick={deleteMultiple}> <BsTrash/></button>
+
                     <button 
                         onClick={() => navigate('/events')}
                         className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
@@ -165,6 +217,14 @@ function UserProfile() {
                 <legend className="px-3 text-left ml-8">
                     Hosted Events
                 </legend>
+                    {hostedEvents.map((hosted) => {
+                        return(
+                            <div key={hosted.id}>
+                                <UserHostedEvent hosted={hosted}/>
+                            </div>
+                        )
+                    })}
+
                 <button 
                     onClick={() => navigate('/events/new')}
                     className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"

@@ -18,6 +18,8 @@ function SignUp() {
   // useState hook to toggle between show/hide password
   const [showPassword, setShowPassword] = useState(false);
 
+    const [ageError, setAgeError] = useState("")
+
   const auth = getAuth(app);
 
   // useState hook to store user information
@@ -50,18 +52,52 @@ function SignUp() {
     }
   };
 
+
+const checkAge = () => {
+
+    const currentDate = new Date();
+    const birthDateObj = new Date(newUser.age);
+  
+    let personAge = currentDate.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = currentDate.getMonth() - birthDateObj.getMonth();
+  
+    if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDateObj.getDate())) {
+      personAge--;
+    }
+
+    if(personAge >= 18){
+        return true
+    }
+    else {
+        return false
+    }
+
+}
+
+
+
   // function to make an axios POST request and navigate to the user profile page
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userCredentials = await createUserCredentials()
     console.log(userCredentials.username)
 
-    axios
-        .post(`${API}/users`, userCredentials)
-        .then(() => {
-            navigate(`/profile/${userCredentials.username}`)
-        })
-        .catch((c) => console.warn("catch, c"))
+    let isValid = true
+
+    if(!checkAge()){
+        setAgeError("User must be 18 or over")
+        isValid = false
+    }
+
+    if(isValid){
+        axios
+            .post(`${API}/users`, userCredentials)
+            .then(() => {
+                navigate(`/profile/${userCredentials.username}`)
+            })
+            .catch((c) => console.warn("catch, c"))
+
+    }
   };
 
   // useEffect to show age requirement alert on page load and alert if user input age is below 18
@@ -91,6 +127,7 @@ function SignUp() {
                             />
                     </label>
                 </div>
+                {ageError && <p style={{color:"red"}}>{ageError}</p>}
                 <label htmlFor="first_name" className="block text-gray-700 text-sm font-bold mb-2">
                 First Name
                 </label>
