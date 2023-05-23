@@ -4,28 +4,38 @@
 import axios from 'axios'
 import profilePic from '../assets/profile-pic-1.png'
 import InterestsModal from '../components/InterestsModal'
+import UserEvents from './UserEvents'
+import UserHostedEvent from './UserHostedEvents'
+import { BsTrash } from 'react-icons/bs'
+
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { BsPencilSquare } from 'react-icons/bs'
 import { ImQuotesLeft } from 'react-icons/im'
 import { ImQuotesRight } from 'react-icons/im'
 import EditProfileModal from '../components/EditProfileModal'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const API = process.env.REACT_APP_API_URL
 
 function UserProfile() {
     const navigate = useNavigate()
     const { username } = useParams()
-    const [ openInterestModal, setOpenInterestModal ] = useState(false)
-    const [ openEditModal, setOpenEditModal ] = useState((false))
-    const [ user, setUser ] = useState({})
-    const [ updatedUser, setUpdatedUser ] = useState({})
+    const [ openInterestModal, setOpenInterestModal ] = useLocalStorage('openInterestModal', false)
+    const [ openEditModal, setOpenEditModal ] = useLocalStorage('openEditModal', (false))
+    const [ user, setUser ] = useLocalStorage('user', {})
+    const [ updatedUser, setUpdatedUser ] = useLocalStorage('updatedUser', {})
 
-    // useState hook to store selected interests
-    const [ categories, setCategories ] = useState([])
-    const [ isSelected, setIsSelected ] = useState([])
+    // useLocalStorage hook to store selected interests
+    const [ categories, setCategories ] = useLocalStorage('categories', [])
+    const [ isSelected, setIsSelected ] = useLocalStorage('isSelected', [])
 
-    const sortedList = isSelected.sort() 
+    const [userEvents , setUserEvent] = useState([])
+
+    const [hostedEvents, setHostedEvents] = useState([])
+
+    let sortCategory = isSelected.sort()
+    // let sortCategory = [];
 
     // useEffect makes GET request for all categories and is used in the interests field
     useEffect(() => {
@@ -48,7 +58,51 @@ function UserProfile() {
         .catch((c) => console.warn("catch, c"));
     }, [username])
 
-    console.log(user)
+ useEffect(() => {
+    if(user?.id){
+        axios
+        .get(`${API}/users/${user?.id}/category`)
+        .then((res) => {
+            setIsSelected(res.data)
+        })
+
+    }
+ }, [user?.id])   
+
+useEffect(() => {
+    if(user?.id){
+        axios.get(`${API}/users/${user?.id}/events`)
+        .then((res) => {
+            setUserEvent(res.data)
+        })
+    }
+
+}, [user?.id])
+
+
+useEffect(() => {
+
+    if(user?.id){
+        axios.get(`${API}/events?creator.id=${user?.id}`)
+        .then((res) => {
+            setHostedEvents(res.data)
+        })
+    }
+
+}, [user?.id])
+
+function deleteMultiple(){
+    const deleteEvent = userEvents
+    .filter((events) => events.selected)
+    .map((events) => events.event_id)
+
+    Promise.all(
+        deleteEvent.map((eventId) => {
+            axios.delete(`${API}/users/${user?.id}/events/${eventId}`)
+        })
+    )
+}
+
 
   return (
     <div>
@@ -104,20 +158,17 @@ function UserProfile() {
                 </legend>
                 <div>
                     <div className='flex flex-wrap ml-10 mt-3 pr-24 mb-3'>
-                        {
-                            sortedList.map((item, index) => {
-                                return (
-                                    <button
-                                        type="button"
-                                        key={index}
-                                        // onClick={() => navigate(`\events\:${item}`)}
-                                        className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >
-                                        {item}
-                                    </button>
-                                )
-                            })
-                        }
+                     {sortCategory.map((item, index) => (
+                    <button
+                        type="button"
+                        key={index}
+                        // onClick={() => navigate(`\events\:${item}`)}
+                        className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                        {item.name} 
+                     </button>
+                    ))} 
+
                     </div>
                     <button 
                         type='button'
@@ -136,6 +187,7 @@ function UserProfile() {
                             setOpenInterestModal={setOpenInterestModal}
                             isSelected={isSelected}
                             setIsSelected={setIsSelected}
+                            user={user}
                         /> 
                         : null
                 }
@@ -144,6 +196,16 @@ function UserProfile() {
                     Events
                 </legend>
                 <div>
+                    {userEvents.map((event) => {
+                        return(
+                            <div key={event.event_id}>
+                                <UserEvents event={event}/>
+                            </div>
+                        )
+                    })}
+
+                    <button onClick={deleteMultiple}> <BsTrash/></button>
+
                     <button 
                         onClick={() => navigate('/events')}
                         className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
@@ -156,6 +218,14 @@ function UserProfile() {
                 <legend className="px-3 text-left ml-8">
                     Hosted Events
                 </legend>
+                    {hostedEvents.map((hosted) => {
+                        return(
+                            <div key={hosted.id}>
+                                <UserHostedEvent hosted={hosted}/>
+                            </div>
+                        )
+                    })}
+
                 <button 
                     onClick={() => navigate('/events/new')}
                     className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
