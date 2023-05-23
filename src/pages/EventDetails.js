@@ -7,6 +7,7 @@
 
 // NEED TO add dynamic src for img based on eventInfo object
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import eventPhoto from "../assets/picnic-pic.jpg";
@@ -37,7 +38,7 @@ export default function EventDetails() {
 
 useEffect(() => {
 axios
-.get(`${API}/users/1`)
+.get(`${API}/users/TonyH98`)
 .then((res) => {
   setUser(res.data)
 })
@@ -162,7 +163,7 @@ console.log(userEvent)
     }
   }
   
-
+  console.log(eventInfo?.creator[0].username)
 
 
   return (
@@ -215,10 +216,20 @@ console.log(userEvent)
             <h2 className="mt-1">Location: {eventInfo?.location}</h2>
             <h2 className="mt-1">Address: {eventInfo?.address}</h2>
           </div>
+
+          <div>
+            Time: {eventInfo?.start_time} - {eventInfo?.end_time}
+          </div>
           <h2 className="mt-10">
             <b>Summary</b>
           </h2>
           <section>{eventInfo?.summary}</section>
+          <div>
+            <Link to={`/profile/${eventInfo?.creator[0].username}`}>
+
+            Host: {eventInfo?.creator[0].username}
+            </Link>
+          </div>
 				</div>
 				<div className="flex flex-col gap-y-12 mt-12">
 						<div className="flex flex-row justify-end h-10 gap-x-3">
