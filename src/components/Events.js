@@ -66,6 +66,7 @@ useEffect(() => {
       .get(`${API}/events`)
       .then((res) => {
         setEvents(res.data);
+        setFilterEvents(res.data)
       })
       .catch((error) => {
         console.error(error);
