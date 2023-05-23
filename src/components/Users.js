@@ -20,11 +20,13 @@ export default function Users() {
         .catch((c) => console.warn("catch, c"));
     }, []);
   return (
-    <div>
-        <h1>All Users</h1>
+    <div className='flex flex-col items-center justify-center p-4'>
+        <h1 className='text-2xl font-semibold'>All Users</h1>
+        <div className='flex flex-col gap-6 sm:w-full md:w-[65%]'>
         {users.map(user => (
-            <User user={user}/>
+            <User key={user.id} user={user} />
         ))}
+        </div>
     </div>
   )
 }
