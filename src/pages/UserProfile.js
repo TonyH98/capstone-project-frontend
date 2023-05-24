@@ -25,7 +25,7 @@ function UserProfile() {
   const [categories, setCategories] = useState([]);
   const [isSelected, setIsSelected] = useState([]);
 
-    let sortCategory = isSelected.sort()
+  const sortedList = isSelected.sort();
 
   // useEffect makes GET request for all categories and is used in the interests field
   useEffect(() => {
@@ -48,18 +48,7 @@ function UserProfile() {
       .catch((c) => console.warn("catch, c"));
   }, [username]);
 
- useEffect(() => {
-    if(user?.id){
-        axios
-        .get(`${API}/users/${user?.id}/category`)
-        .then((res) => {
-            setIsSelected(res.data)
-        })
-
-    }
- }, [user?.id])   
-
-
+  console.log(user);
 
   return (
     <div>
@@ -94,71 +83,76 @@ function UserProfile() {
             </section>
           </div>
         </div>
-        <form className="w-3/4 m-auto pb-10">
-            <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${!isSelected.length ? 'h-20' : null}`}>
-                <legend className="px-3 text-left ml-8">
-                    Interests
-                </legend>
-                <div>
-                    <div className='flex flex-wrap ml-10 mt-3 pr-24 mb-3'>
-                     {sortCategory.map((item, index) => (
-                    <button
-                        type="button"
-                        key={index}
-                        // onClick={() => navigate(`\events\:${item}`)}
-                        className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
-                        {item.name} 
-                     </button>
-                    ))} 
-
-                    </div>
-                    <button 
-                        type='button'
-                        onClick={() => setOpenInterestModal(!openInterestModal)}
-                        className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-                    >
-                        Edit
-                    </button>
-                </div>
-            </fieldset>
-                {
-                    openInterestModal ? 
-                        <InterestsModal
-                            categories={categories} 
-                            openInterestModal={openInterestModal} 
-                            setOpenInterestModal={setOpenInterestModal}
-                            isSelected={isSelected}
-                            setIsSelected={setIsSelected}
-                            user={user}
-                        /> 
-                        : null
-                }
-            <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
-                <legend className="px-3 text-left ml-8">
-                    Events
-                </legend>
-                <div>
-                    <button 
-                        onClick={() => navigate('/events')}
-                        className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-                    >
-                        Add
-                    </button>
-                </div>
-            </fieldset>
-            <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
-                <legend className="px-3 text-left ml-8">
-                    Hosted Events
-                </legend>
-                <button 
-                    onClick={() => navigate('/events/new')}
-                    className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-                >
-                    Create
-                </button>
-            </fieldset>
-        </form>
+        {openEditModal ? (
+          <EditProfileModal
+            username={username}
+            setOpenEditModal={setOpenEditModal}
+            updatedUser={updatedUser}
+            setUpdatedUser={setUpdatedUser}
+          />
+        ) : null}
+      </div>
+      <form className="w-3/4 m-auto pb-10">
+        <fieldset
+          className={`w-3/4 border relative shadow-sm m-auto mb-8 ${
+            !isSelected.length ? "h-20" : null
+          }`}
+        >
+          <legend className="px-3 text-left ml-8">Interests</legend>
+          <div>
+            <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3">
+              {sortedList.map((item, index) => {
+                return (
+                  <button
+                    type="button"
+                    key={index}
+                    // onClick={() => navigate(`\events\:${item}`)}
+                    className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              type="button"
+              onClick={() => setOpenInterestModal(!openInterestModal)}
+              className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+            >
+              Edit
+            </button>
+          </div>
+        </fieldset>
+        {openInterestModal ? (
+          <InterestsModal
+            categories={categories}
+            openInterestModal={openInterestModal}
+            setOpenInterestModal={setOpenInterestModal}
+            isSelected={isSelected}
+            setIsSelected={setIsSelected}
+          />
+        ) : null}
+        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
+          <legend className="px-3 text-left ml-8">Events</legend>
+          <div>
+            <button
+              onClick={() => navigate("/events")}
+              className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+            >
+              Add
+            </button>
+          </div>
+        </fieldset>
+        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
+          <legend className="px-3 text-left ml-8">Hosted Events</legend>
+          <button
+            onClick={() => navigate("/events/new")}
+            className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+          >
+            Create
+          </button>
+        </fieldset>
+      </form>
     </div>
   );
 }
