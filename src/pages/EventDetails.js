@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import eventPhoto from "../assets/picnic-pic.jpg";
 import GoogleMap from "../components/Map";
+import CategoriesModal from "../components/CategoriesModal";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const API = process.env.REACT_APP_API_URL;
 export default function EventDetails() {
@@ -21,9 +23,11 @@ export default function EventDetails() {
 
   // useState hook to store event info and user interest
   const [eventInfo, setEventInfo] = useState();
+  const [category , setCategory] = useState()
   const [interest, setInterest] = useState();
   const [user , setUser] = useState({})
   const [userEvent , setUserEvent] = useState({})
+  const [categoryModal, setCategoryModal] = useState(false)
 
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
@@ -35,6 +39,16 @@ export default function EventDetails() {
       .catch((c) => console.warn("catch, c"));
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`${API}/category`)
+      .then((res) => {
+        setCategory(res.data);
+    })
+    .catch((c) => console.warn("catch, c"));
+}, []);
+
+console.log(category)
 
 useEffect(() => {
 axios
@@ -55,7 +69,7 @@ if(user?.id){
 }
 }, [user?.id])
 
-console.log(userEvent)
+
 
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
   const months = new Map();
@@ -163,7 +177,7 @@ console.log(userEvent)
     }
   }
   
-  console.log(eventInfo?.creator[0].username)
+
 
 
   return (
@@ -206,7 +220,19 @@ console.log(userEvent)
                     );
                   })
                 : null}
+                <button
+                type="button"
+                onClick={() => setCategoryModal(!categoryModal)}
+                >+</button>
             </h2>
+            {categoryModal ? 
+            <CategoriesModal
+            category={category}
+            categoryModal={categoryModal}
+            setCategoryModal={setCategoryModal}
+            eventInfo={eventInfo}
+            setEventInfo={setEventInfo}
+            /> : null}
             <h2>
               Date:
               <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
