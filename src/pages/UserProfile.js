@@ -144,7 +144,7 @@ function deleteMultiple(){
             {
                 openEditModal ? (
                     <EditProfileModal 
-                        username={username}
+                        user={user}
                         setOpenEditModal={setOpenEditModal}
                         updatedUser={updatedUser}
                         setUpdatedUser={setUpdatedUser}
