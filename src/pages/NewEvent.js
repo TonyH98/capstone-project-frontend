@@ -26,8 +26,8 @@ export default function NewEvent() {
     age_max: 0,
     location_name: "",
     address: "",
-    latitude: 0,
-    longitude: 0,
+    // latitude: 0,
+    // longitude: 0,
     start_time: "",
     end_time: "",
     location_image: "",
@@ -46,7 +46,7 @@ let [dateError, setDateError] = useState("")
 // useEffect makes an axios GET request to get the creator's user ID
 useEffect(() => {
   axios
-  .get(`${API}/users/johndoe`)
+  .get(`${API}/users/TonyH98`)
   .then((res) => {
     setUsers(res.data)
   })
@@ -214,8 +214,9 @@ function checkDate() {
     }
   }
 
+
   return (
-    <div>
+    <div className="flex justify-center items-center p-4">
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" onChange={handleTextChange} value={events.title}/>

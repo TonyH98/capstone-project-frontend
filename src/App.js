@@ -17,8 +17,6 @@ import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
-import useLocalStorage from "./hooks/useLocalStorage";
-import { UserProvider } from "./contexts/UserProvider";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {

@@ -11,7 +11,8 @@ function CategoryPill({ category, user,  setIsSelected , isSelected}) {
             .then(() => {
                 axios.get(`${API}/users/${user?.id}/category`)
                 .then((res) => {
-                    setIsSelected(res.data)
+                    console.log(`added categories`, res);
+                    setIsSelected(res.data);
                 })
             })
         }
