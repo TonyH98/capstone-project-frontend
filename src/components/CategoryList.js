@@ -20,6 +20,7 @@ const removeCategory = () => {
 
 const addCategory = async () => {
 
+    if(eventInfo?.category_names.length < 3){
 
         axios.post(
                `${API}/events/${eventInfo?.id}/categories`,
@@ -35,6 +36,7 @@ const addCategory = async () => {
                    setEventInfo(res.data)
                })
            })
+    }
 
     
 
