@@ -111,7 +111,7 @@ function deleteMultiple(){
                 <img src={profilePic} alt='profile-pic' className="w-36 h-36" />
                 <div className="text-left w-1/6">
                     <h1>
-                        <b>{user?.first_name} {user?.last_name}</b>
+                        <b>{user?.first_name} {user?.last_name} {user?.pronouns ? user?.pronouns : null}</b>
                         {
                             user?.pronoun ? (
                                     <p>({user.pronoun})</p>
@@ -125,6 +125,7 @@ function deleteMultiple(){
                     <div className='align-middle inline'>
                         <p className='text-left font-bold inline'>
                             Bio
+                            
                         </p>
                         <BsPencilSquare 
                             onClick={() => setOpenEditModal(true)}
@@ -134,7 +135,7 @@ function deleteMultiple(){
                     <section className='w-52 h-12 relative flex flex-row'>
                         <ImQuotesLeft className='text-orange-600 '/>
                             <p className='px-4'>
-                                {/* Add bio here */}
+                                {user?.bio}
                             </p>
                         <ImQuotesRight className='text-orange-600 '/>
                     </section>
