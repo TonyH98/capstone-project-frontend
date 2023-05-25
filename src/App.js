@@ -17,20 +17,25 @@ import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
+import useLocalStorage from "./hooks/useLocalStorage";
+import { UserProvider, useUser } from "./contexts/UserProvider";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
-  // This state is set to false by default and is set to try by the function on line 31
+  // This state is set to false by default and is set to true by the function on line 31
   const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
   const [user, setUser] = useLocalStorage("user", {});
+  // const { user, setUser } = useState({});
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
   // Once the user is authenticated by firebase it sets logged in to true and sets the firebaseid
+  // This also will set loggedin to false once a user has signed out
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setLoggedin(true);
       setFirebaseId(user.uid);
+      console.log(user.uid);
     } else {
       setLoggedin(false);
     }
@@ -38,12 +43,13 @@ function App() {
 
   // This useEffect uses the firebaseId to retrieve the users data from the backend
   useEffect(() => {
-    if (loggedin) {
+    console.log(firebaseId);
+    if (loggedin && firebaseId) {
+      // Add a condition to check if firebaseId is truthy
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
         .then((response) => {
           setUser(response.data);
-          console.log(user);
         })
         .catch((error) => {
           console.log(error);

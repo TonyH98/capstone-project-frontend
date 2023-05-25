@@ -18,7 +18,7 @@ function SignUp() {
   // useState hook to toggle between show/hide password
   const [showPassword, setShowPassword] = useState(false);
 
-    const [ageError, setAgeError] = useState("")
+  const [ageError, setAgeError] = useState("");
 
   const auth = getAuth(app);
 
@@ -57,29 +57,26 @@ function SignUp() {
     }
   };
 
-
-const checkAge = () => {
-
+  const checkAge = () => {
     const currentDate = new Date();
     const birthDateObj = new Date(newUser.age);
-  
+
     let personAge = currentDate.getFullYear() - birthDateObj.getFullYear();
     const monthDiff = currentDate.getMonth() - birthDateObj.getMonth();
-  
-    if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDateObj.getDate())) {
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && currentDate.getDate() < birthDateObj.getDate())
+    ) {
       personAge--;
     }
 
-    if(personAge >= 18){
-        return true
+    if (personAge >= 18) {
+      return true;
+    } else {
+      return false;
     }
-    else {
-        return false
-    }
-
-}
-
-
+  };
 
   // function to make an axios POST request and navigate to the user profile page
   const handleSubmit = async (e) => {
@@ -87,21 +84,20 @@ const checkAge = () => {
     const userCredentials = await createUserCredentials();
     console.log(userCredentials.username);
 
-    let isValid = true
+    let isValid = true;
 
-    if(!checkAge()){
-        setAgeError("User must be 18 or over")
-        isValid = false
+    if (!checkAge()) {
+      setAgeError("User must be 18 or over");
+      isValid = false;
     }
 
-    if(isValid){
-        axios
-            .post(`${API}/users`, userCredentials)
-            .then(() => {
-                navigate(`/profile/${userCredentials.username}`)
-            })
-            .catch((c) => console.warn("catch, c"))
-
+    if (isValid) {
+      axios
+        .post(`${API}/users`, userCredentials)
+        .then(() => {
+          navigate(`/profile/${userCredentials.username}`);
+        })
+        .catch((c) => console.warn("catch, c"));
     }
   };
 
@@ -121,106 +117,12 @@ const checkAge = () => {
 
   return (
     <div className="sm:w-full md:w-3/5 lg:w-2/5 md:m-auto mx-3 my-6 p-1">
-        <form className="bg-white text-slate-800 dark:text-slate-100 dark:bg-slate-900 shadow-md rounded px-10 pt-6 pb-8 mb-4 mt-6">
-            <div className="mb-4">
-                <div className="mb-4">
-                    <label htmlFor="age" className="block text-gray-700 text-sm font-bold mb-2">
-                        Date of Birth
-                        <input 
-                            type='date' 
-                            name='age' 
-                            id="age"
-                            required 
-                            onChange={handleTextChange}
-                            className="rounded block my-2"
-                            />
-                    </label>
-                </div>
-                {ageError && <p style={{color:"red"}}>{ageError}</p>}
-                <label htmlFor="first_name" className="block text-gray-700 text-sm font-bold mb-2">
-                First Name
-                </label>
-                <input 
-                    type='text' 
-                    name='first_name'
-                    id="first_name" 
-                    required 
-                    onChange={handleTextChange}
-                    className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-            </div>
-            <div className="mb-4">
-                <label htmlFor="last_name" className="block text-gray-700 text-sm font-bold mb-2">
-                Last Name
-                </label>
-                <input 
-                    id="last_name"
-                    required 
-                    onChange={handleTextChange}
-                    className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-            </div>
-            <div className="mb-4">
-                <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">
-                Username
-                </label>
-                <input 
-                    type='text' 
-                    name='username' 
-                    id="username"
-                    required 
-                    onChange={handleTextChange}
-                    className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-            </div>
-            <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
-                Email
-                </label>
-                <input 
-                    type='text' 
-                    name='email' 
-                    id="email"
-                    required 
-                    onChange={handleTextChange}
-                    className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-            </div>
-            <div className="mb-4">
-                <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
-                Password
-                </label>
-                <input 
-                    type={showPassword ? 'text' : 'password' }
-                    name='password' 
-                    id="password"
-                    required 
-                    onChange={handleTextChange}
-                    className="shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-                { 
-                    showPassword ? 
-                        <button 
-                            type='button'
-                            onClick={() => setShowPassword(!showPassword)}    
-                            className="text-sm underline hover:text-blue-400 inline pt-2"
-                        >
-                            Hide password
-                        </button> : 
-                        <button 
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)} 
-                            className="text-sm underline hover:text-blue-400 inline pt-2"
-                        >
-                            Show password
-                        </button> 
-                }
-            </div>
-            <div className="flex justify-evenly">
-            <button 
-                type='submit' 
-                onClick={handleSubmit}
-                className="btn-1"
+      <form className="bg-white text-slate-800 dark:text-slate-100 dark:bg-slate-900 shadow-md rounded px-10 pt-6 pb-8 mb-4 mt-6">
+        <div className="mb-4">
+          <div className="mb-4">
+            <label
+              htmlFor="age"
+              className="block text-gray-700 text-sm font-bold mb-2"
             >
               Date of Birth
               <input
@@ -233,6 +135,7 @@ const checkAge = () => {
               />
             </label>
           </div>
+          {ageError && <p style={{ color: "red" }}>{ageError}</p>}
           <label
             htmlFor="first_name"
             className="block text-gray-700 text-sm font-bold mb-2"
