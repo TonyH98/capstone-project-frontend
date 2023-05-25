@@ -28,6 +28,8 @@ export default function EventDetails() {
   const [user , setUser] = useState({})
   const [userEvent , setUserEvent] = useState({})
   const [categoryModal, setCategoryModal] = useState(false)
+  const [attending, setAttending] = useState([])
+
 
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function EventDetails() {
     .catch((c) => console.warn("catch, c"));
 }, []);
 
-console.log(category)
+
 
 useEffect(() => {
 axios
@@ -69,6 +71,16 @@ if(user?.id){
 }
 }, [user?.id])
 
+
+useEffect(() => {
+  if(eventInfo?.id){
+    axios
+    .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+    .then((res) => {
+      setAttending(res.data)
+    })
+  }
+}, [eventInfo?.id])
 
 
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
@@ -177,7 +189,7 @@ if(user?.id){
     }
   }
   
-
+console.log(attending)
 
 
   return (
@@ -283,7 +295,7 @@ if(user?.id){
 					</div>
       </div>
       <div>
-        <h2>Attendees(Number)</h2>
+        <h2>Attendees: {attending.length}/{eventInfo?.max_people}</h2>
       </div>
       <div>
         <h2>Comments</h2>

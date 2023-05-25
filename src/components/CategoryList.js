@@ -27,7 +27,7 @@ const addCategory = async () => {
                {   
                
                    eventId: eventInfo.id,
-                 categoryIds: [category.id] // Assuming category.id is the ID of the category to be added
+                 categoryIds: [category.id] 
                }
              )
              .then(() => {
