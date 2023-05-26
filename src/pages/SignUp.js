@@ -40,9 +40,9 @@ function SignUp() {
     age: "",
     pronouns: "Default",
     bio: "About Me",
-    profile_img:
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F773915517223143233%2F&psig=AOvVaw1zzXfSKza9M_kyTPLRdwJR&ust=1684548392497000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKCUgvalgP8CFQAAAAAdAAAAABAE",
-    firebase_id: "",
+
+    profile_img: "https://www.pngitem.com/pimgs/m/24-248366_profile-clipart-generic-user-generic-profile-picture-gender.png",
+    firebase_id: ""
   });
 
   // function to update newUser object on text change
