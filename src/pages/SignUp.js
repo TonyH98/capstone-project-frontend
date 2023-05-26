@@ -5,8 +5,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import app from "../firebase";
+import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -14,6 +19,9 @@ function SignUp() {
   // useNavigate and useParams hooks to navigate to user profile page
   const navigate = useNavigate();
   const { id } = useParams();
+
+  // Sets the user in local storage
+  const { setUser } = useUser();
 
   // useState hook to toggle between show/hide password
   const [showPassword, setShowPassword] = useState(false);
@@ -92,6 +100,20 @@ function SignUp() {
     }
 
     if (isValid) {
+      signInWithEmailAndPassword(auth, newUser.email, newUser.password)
+        .then((userCredential) => {
+          const returningUser = userCredential.user;
+          if (returningUser) {
+            alert("You are now logged in!");
+            console.log("logged in");
+            setUser(returningUser);
+          }
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          console.log(errorCode);
+        });
+
       axios
         .post(`${API}/users`, userCredentials)
         .then(() => {

@@ -6,7 +6,9 @@ import { HiOutlineUsers } from "react-icons/hi";
 import { FiMessageCircle } from "react-icons/fi";
 import { GrNotification } from "react-icons/gr";
 import { BiUser } from "react-icons/bi";
-import { UserProvider, useUser } from "../contexts/UserProvider";
+import { useUser } from "../contexts/UserProvider";
+import { getAuth, signOut } from "firebase/auth";
+import app from "../firebase";
 
 export default function NavBar() {
   const [matches, setMatches] = useState(
@@ -15,13 +17,22 @@ export default function NavBar() {
   const [active, setActive] = useState(0);
 
   const { user } = useUser();
+  const auth = getAuth(app);
 
   useEffect(() => {
-    console.log(user.uid);
     window
       .matchMedia("(min-width: 450px)")
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
+
+  // Need to add setting the user to a blank object and loggedIn to false after states are properly being passed
+  const signOut = () => {
+    // signOut(auth).then(() => {
+    //   // Sign-out successful.
+    // }).catch((error) => {
+    //   // An error happened.
+    // });
+  };
 
   return (
     <nav className="flex items-center justify-between h-20 sticky blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-100 to-cyan-400 z-50">
@@ -60,7 +71,7 @@ export default function NavBar() {
             </li>
             <li onClick={() => setActive(3)} className="hover:text-cyan-400">
               <Link
-                to={`/profile/${user.uid}`}
+                to={`/profile/${user.username}`}
                 className=""
                 aria-current="page"
               >
@@ -130,7 +141,7 @@ export default function NavBar() {
               } rounded-full p-2 shadow-lg`}
             >
               <Link
-                to={`/profile/${user.uid}`}
+                to={`/profile/${user.username}`}
                 className="hover:text-white"
                 aria-current="page"
               >

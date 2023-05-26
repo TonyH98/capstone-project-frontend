@@ -50,6 +50,7 @@ function App() {
         .get(`${API}/users/firebase/${firebaseId}`)
         .then((response) => {
           setUser(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

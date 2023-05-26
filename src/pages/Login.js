@@ -21,6 +21,7 @@ function Login() {
         const returningUser = userCredential.user;
         if (returningUser) {
           alert("You are now logged in!");
+          console.log("logged in");
         }
       })
       .catch((error) => {
