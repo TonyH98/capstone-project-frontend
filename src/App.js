@@ -11,39 +11,47 @@ import Login from "./pages/Login";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Devs from "./components/Devs";
-import Landing from "./components/Landing";
+import Landing from "./pages/LandingPage";
 import UserProfile from "./pages/UserProfile";
+import ShowUsers from "./pages/ShowUsers"
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
-import ShowUsers from "./pages/ShowUsers";
-import Messages from "./pages/Messages";
+import useLocalStorage from "./hooks/useLocalStorage";
+import { UserProvider, useUser } from "./contexts/UserProvider";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
-  const [loggedin, setLoggedin] = useState(false);
-  const [user, setUser] = useState({});
+  // This state is set to false by default and is set to true by the function on line 31
+  const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
+  const [user, setUser] = useLocalStorage("user", {});
+  // const { user, setUser } = useState({});
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
-
-  // Can Comment back in 28-50 once login page has firebase working
+  // Once the user is authenticated by firebase it sets logged in to true and sets the firebaseid
+  // This also will set loggedin to false once a user has signed out
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setLoggedin(true);
       setFirebaseId(user.uid);
+      console.log(user.uid);
     } else {
       setLoggedin(false);
     }
   });
 
+  // This useEffect uses the firebaseId to retrieve the users data from the backend
   useEffect(() => {
-    if (loggedin) {
+    console.log(firebaseId);
+    if (loggedin && firebaseId) {
+      // Add a condition to check if firebaseId is truthy
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
         .then((response) => {
           setUser(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -53,41 +61,41 @@ function App() {
     }
   }, [loggedin, firebaseId]);
 
-
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
       {/* useContext files can be pass here to allow all components to have access to global data */}
       {/* let's say we have a FriendsProvider file in our contexts folder, we can pass it here and the MESSAGES, USER_PROFILE, and EVENTS components will all have access to it from here, no need to pass props or creating multiple state. */}
       {/* <FriendsProvider> */}
-      <Router>
-        <NavBar />
-        <main className="h-[100%]">
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            {/* 
+      <UserProvider>
+        <Router>
+          <NavBar />
+          <main className="h-[100%]">
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              {/* 
               Comment in when useParams is set up and remove UserProfile below
               <Route path='/profile/:id' element={<UserProfile />} /> 
               */}
-            <Route path="/profile/:username" element={<UserProfile />} />
-            <Route path="/devs" element={<Devs />} />
-            <Route path="/events" element={<ShowEvents />} />
-            <Route path="/events/new" element={<NewEvent />} />
-            {/* 
+              <Route path="/profile/:username" element={<UserProfile />} />
+              <Route path="/devs" element={<Devs />} />
+              <Route path="/events" element={<ShowEvents />} />
+              <Route path="/events/new" element={<NewEvent />} />
+              <Route path="/users" element={<ShowUsers />} />
+              {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
               */}
-            <Route path="/events/:id" element={<EventDetails />} />
-            <Route path="/map" element={<Map />} />
-            <Route path="/users" element={<ShowUsers />} />
-            <Route path="/chats" element={<Messages />} />
-          </Routes>
-        </main>
-        {/* <Footer/> */}
-      </Router>
+              <Route path="/events/:id" element={<EventDetails />} />
+              <Route path="/map" element={<Map />} />
+            </Routes>
+          </main>
+          {/* <Footer/> */}
+        </Router>
 
-      {/* </FriendsProvider> */}
+        {/* </FriendsProvider> */}
+      </UserProvider>
     </div>
   );
 }
