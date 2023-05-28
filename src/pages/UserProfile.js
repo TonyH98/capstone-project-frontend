@@ -102,6 +102,7 @@ function UserProfile() {
   }
 
   return (
+    <>
     <div>
         <div className="mb-10 mt-12 m-auto">
             <div className='flex justify-center gap-x-10 align-items-start'>
@@ -110,10 +111,10 @@ function UserProfile() {
                     <h1>
                         <b>{user?.first_name} {user?.last_name} {user?.pronouns ? user?.pronouns : null}</b>
                         {
-                            user?.pronoun ? (
-                                    <p>({user.pronoun})</p>
-                                ) : null
-                        }
+                          user?.pronoun ? (
+                            <p>({user.pronoun})</p>
+                            ) : null
+                          }
                     </h1>
                     <h2 className='text-emerald-500'>@{user?.username}</h2>
                     <h3><b>Age: </b>{user?.age?.age} years</h3>
@@ -127,7 +128,7 @@ function UserProfile() {
                         <BsPencilSquare 
                             onClick={() => setOpenEditModal(true)}
                             className='inline text-cyan-800 cursor-pointer float-right mt-2'
-                        />
+                            />
                     </div>
                     <section className='w-52 h-12 relative flex flex-row'>
                         <ImQuotesLeft className='text-orange-600 '/>
@@ -139,40 +140,40 @@ function UserProfile() {
                 </div>
             </div>
             {
-                openEditModal ? (
-                    <EditProfileModal 
-                        user={user}
-                        setOpenEditModal={setOpenEditModal}
-                        updatedUser={updatedUser}
-                        setUpdatedUser={setUpdatedUser}
-                    />
+              openEditModal ? (
+                <EditProfileModal 
+                user={user}
+                setOpenEditModal={setOpenEditModal}
+                updatedUser={updatedUser}
+                setUpdatedUser={setUpdatedUser}
+                />
                 ) : null
-            }
+              }
         </div>
         {openEditModal ? (
           <EditProfileModal
-            username={username}
-            setOpenEditModal={setOpenEditModal}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+          username={username}
+          setOpenEditModal={setOpenEditModal}
+          updatedUser={updatedUser}
+          setUpdatedUser={setUpdatedUser}
           />
-        ) : null}
+          ) : null}
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
           className={`w-3/4 border relative shadow-sm m-auto mb-8 ${
             !isSelected.length ? "h-20" : null
           }`}
-        >
+          >
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
             <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3">
               {sortCategory.map((item, index) => (
                 <button
-                  type="button"
-                  key={index}
-                  // onClick={() => navigate(`\events\:${item}`)}
-                  className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button"
+                key={index}
+                // onClick={() => navigate(`\events\:${item}`)}
+                className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   {item.name}
                 </button>
@@ -182,21 +183,21 @@ function UserProfile() {
               type="button"
               onClick={() => setOpenInterestModal(!openInterestModal)}
               className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-            >
+              >
               Edit
             </button>
           </div>
         </fieldset>
         {openInterestModal ? (
           <InterestsModal
-            categories={categories}
-            openInterestModal={openInterestModal}
-            setOpenInterestModal={setOpenInterestModal}
-            isSelected={isSelected}
-            setIsSelected={setIsSelected}
-            user={user}
+          categories={categories}
+          openInterestModal={openInterestModal}
+          setOpenInterestModal={setOpenInterestModal}
+          isSelected={isSelected}
+          setIsSelected={setIsSelected}
+          user={user}
           />
-        ) : null}
+          ) : null}
         <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
           <legend className="px-3 text-left ml-8">Events</legend>
           <div>
@@ -206,9 +207,9 @@ function UserProfile() {
                   <UserEvents event={event} />
                 </div>
               ))
-            ) : (
-              <p>No events found.</p>
-            )}
+              ) : (
+                <p>No events found.</p>
+                )}
 
             <button onClick={deleteMultiple}>
               {" "}
@@ -218,7 +219,7 @@ function UserProfile() {
             <button
               onClick={() => navigate("/events")}
               className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-            >
+              >
               Add
             </button>
           </div>
@@ -236,12 +237,12 @@ function UserProfile() {
           <button
             onClick={() => navigate("/events/new")}
             className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-          >
+            >
             Create
           </button>
         </fieldset>
       </form>
-    </div>
+    </>
   );
 }
 
