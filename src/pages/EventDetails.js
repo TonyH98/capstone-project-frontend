@@ -54,7 +54,7 @@ export default function EventDetails() {
 
 useEffect(() => {
 axios
-.get(`${API}/users/TonyH98`)
+.get(`${API}/users/klang`)
 .then((res) => {
   setUser(res.data)
 })
@@ -190,14 +190,15 @@ useEffect(() => {
   }
   
 console.log(attending)
+console.log(eventInfo)
 
 
   return (
     <div className="relative">
       <div className="flex flex-row justify-center gap-x-16 mx-20">
         <img
-          // src={eventInfo?.location_image}
-          src={eventPhoto}
+          src={eventInfo?.location_image}
+          // src={eventPhoto}
           alt="event photo"
           className="max-h-96 max-w-96 my-12"
         />
