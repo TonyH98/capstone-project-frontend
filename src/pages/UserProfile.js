@@ -103,51 +103,47 @@ function UserProfile() {
 
   return (
     <div>
+      <div>
         <div className="mb-10 mt-12 m-auto">
-            <div className='flex justify-center gap-x-10 align-items-start'>
-                <img src={profilePic} alt='profile-pic' className="w-36 h-36" />
-                <div className="text-left w-1/6">
-                    <h1>
-                        <b>{user?.first_name} {user?.last_name} {user?.pronouns ? user?.pronouns : null}</b>
-                        {
-                            user?.pronoun ? (
-                                    <p>({user.pronoun})</p>
-                                ) : null
-                        }
-                    </h1>
-                    <h2 className='text-emerald-500'>@{user?.username}</h2>
-                    <h3><b>Age: </b>{user?.age?.age} years</h3>
-                </div>
-                <div className='relative w-52'>
-                    <div className='align-middle inline'>
-                        <p className='text-left font-bold inline'>
-                            Bio
-                            
-                        </p>
-                        <BsPencilSquare 
-                            onClick={() => setOpenEditModal(true)}
-                            className='inline text-cyan-800 cursor-pointer float-right mt-2'
-                        />
-                    </div>
-                    <section className='w-52 h-12 relative flex flex-row'>
-                        <ImQuotesLeft className='text-orange-600 '/>
-                            <p className='px-4'>
-                                {user?.bio}
-                            </p>
-                        <ImQuotesRight className='text-orange-600 '/>
-                    </section>
-                </div>
+          <div className="flex justify-center gap-x-10 align-items-start">
+            <img src={profilePic} alt="profile-pic" className="w-36 h-36" />
+            <div className="text-left w-1/6">
+              <h1>
+                <b>
+                  {user?.first_name} {user?.last_name}{" "}
+                  {user?.pronouns ? user?.pronouns : null}
+                </b>
+                {user?.pronoun ? <p>({user.pronoun})</p> : null}
+              </h1>
+              <h2 className="text-emerald-500">@{user?.username}</h2>
+              <h3>
+                <b>Age: </b>
+                {user?.age?.age} years
+              </h3>
             </div>
-            {
-                openEditModal ? (
-                    <EditProfileModal 
-                        user={user}
-                        setOpenEditModal={setOpenEditModal}
-                        updatedUser={updatedUser}
-                        setUpdatedUser={setUpdatedUser}
-                    />
-                ) : null
-            }
+            <div className="relative w-52">
+              <div className="align-middle inline">
+                <p className="text-left font-bold inline">Bio</p>
+                <BsPencilSquare
+                  onClick={() => setOpenEditModal(true)}
+                  className="inline text-cyan-800 cursor-pointer float-right mt-2"
+                />
+              </div>
+              <section className="w-52 h-12 relative flex flex-row">
+                <ImQuotesLeft className="text-orange-600 " />
+                <p className="px-4">{user?.bio}</p>
+                <ImQuotesRight className="text-orange-600 " />
+              </section>
+            </div>
+          </div>
+          {openEditModal ? (
+            <EditProfileModal
+              user={user}
+              setOpenEditModal={setOpenEditModal}
+              updatedUser={updatedUser}
+              setUpdatedUser={setUpdatedUser}
+            />
+          ) : null}
         </div>
         {openEditModal ? (
           <EditProfileModal
