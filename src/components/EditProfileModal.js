@@ -1,24 +1,38 @@
 import axios from 'axios'
 import styles from './modal.module.css'
 
-const API = process.env.REACT_APP_API_KEY
+const API = process.env.REACT_APP_API_URL
 
-function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, username }) {
+function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, user }) {
 
     // function to update user info on change
     const handleTextChange = (e) => {
         setUpdatedUser({...updatedUser, [e.target.id]: e.target.value})
     }
 
+
     // function that updates the user information in the users table and closes the modal
     // NEED TO test if working
-    const handleSubmit = (e) => {    
-        axios
-            .put(`${API}/users/${username}`, updatedUser)
-            .then(() => setOpenEditModal(false))
-            .catch((c) => console.warn("catch, c"));
-    }
-    console.log(updatedUser)
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevent form submission
+        
+        if (user?.id) {
+          axios
+            .put(`${API}/users/${user?.id}`, updatedUser)
+            .then(() => {
+              setOpenEditModal(false);
+              axios.get(`${API}/users/${user?.username}`).then((res) => {
+                setUpdatedUser(res.data); // Update the state with the response data
+              });
+            })
+            .catch((error) => {
+              console.warn("Error:", error);
+            });
+        }
+      };
+      
+   
+
     return (
         <>
             <div 
@@ -68,13 +82,13 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, usern
                                 className='block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                             />                           
                         </label>
-                        <label htmlFor='img_url'>
-                            Image URL
+                        <label htmlFor='profile_img'>
+                            Profile Image
                             <input 
-                                id='img_url'
-                                name='img_url'
+                                id='profile_img'
+                                name='profile_img'
                                 type='text'
-                                value={updatedUser?.img_url}
+                                value={updatedUser?.profile_img}
                                 onChange={handleTextChange}
                                 className='block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                             />

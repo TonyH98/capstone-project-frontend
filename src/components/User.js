@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 
 export default function User({user}) {
     const navigate = useNavigate();
+
+console.log(user.profile_img)
+
   return (
     <div className='bg-cyan-100 shadow-lg p-4 rounded-md flex justify-between'>
         <div>

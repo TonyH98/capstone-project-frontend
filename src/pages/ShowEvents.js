@@ -20,8 +20,6 @@ export default function ShowEvents() {
       </Link>
         
       </div>
-
-      <button>Sort by</button>
       <Events />
     </div>
   );
