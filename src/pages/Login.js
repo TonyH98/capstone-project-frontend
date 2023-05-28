@@ -50,9 +50,9 @@ function Login() {
                 </p>
                 <label htmlFor="email">
                     <input 
-                        type='text' 
                         id='email'
                         name='email' 
+                        type='text' 
                         placeholder="Email" 
                         required 
                         onChange={handleTextChange}
@@ -62,9 +62,9 @@ function Login() {
 
           <label htmlFor="password">
             <input
-              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               required
               onChange={handleTextChange}
