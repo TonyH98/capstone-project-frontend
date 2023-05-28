@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import User from './User'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const API = process.env.REACT_APP_API_URL
 
 export default function Users() {
-    const [users, setUsers] = useState([])
+    const [users, setUsers] = useLocalStorage('users', [])
 
      // useEffect makes get request for all Users
      useEffect(() => {
