@@ -1,108 +1,105 @@
 // User profile page that displays user information, interests, events and hosted events
 // NEED TO set up correct routes for useNavigate on button click for categories and store category object with id
 // NEED TO add post/put requests to update user info on edit
-import axios from 'axios'
-import profilePic from '../assets/profile-pic-1.png'
-import InterestsModal from '../components/InterestsModal'
-import UserEvents from './UserEvents'
-import UserHostedEvent from './UserHostedEvents'
-import { BsTrash } from 'react-icons/bs'
+import axios from "axios";
+import profilePic from "../assets/profile-pic-1.png";
+import InterestsModal from "../components/InterestsModal";
+import UserEvents from "./UserEvents";
+import UserHostedEvent from "./UserHostedEvents";
+import { BsTrash } from "react-icons/bs";
 
-import { useNavigate, useParams } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { BsPencilSquare } from 'react-icons/bs'
-import { ImQuotesLeft } from 'react-icons/im'
-import { ImQuotesRight } from 'react-icons/im'
-import EditProfileModal from '../components/EditProfileModal'
-import useLocalStorage from '../hooks/useLocalStorage'
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { BsPencilSquare } from "react-icons/bs";
+import { ImQuotesLeft } from "react-icons/im";
+import { ImQuotesRight } from "react-icons/im";
+import EditProfileModal from "../components/EditProfileModal";
+import useLocalStorage from "../hooks/useLocalStorage";
 
-const API = process.env.REACT_APP_API_URL
+const API = process.env.REACT_APP_API_URL;
 
 function UserProfile() {
-    const navigate = useNavigate()
-    const { username } = useParams()
-    const [ openInterestModal, setOpenInterestModal ] = useLocalStorage('openInterestModal', false)
-    const [ openEditModal, setOpenEditModal ] = useLocalStorage('openEditModal', (false))
-    const [ user, setUser ] = useLocalStorage('user', {})
-    const [ updatedUser, setUpdatedUser ] = useLocalStorage('updatedUser', {})
+  const navigate = useNavigate();
+  const { username } = useParams();
+  const [openInterestModal, setOpenInterestModal] = useLocalStorage(
+    "openInterestModal",
+    false
+  );
+  const [openEditModal, setOpenEditModal] = useLocalStorage(
+    "openEditModal",
+    false
+  );
+  const [user, setUser] = useLocalStorage("user", {});
+  const [updatedUser, setUpdatedUser] = useLocalStorage("updatedUser", {});
 
-    // useLocalStorage hook to store selected interests
-    const [ categories, setCategories ] = useLocalStorage('categories', [])
-    const [ isSelected, setIsSelected ] = useLocalStorage('isSelected', [])
+  // useLocalStorage hook to store selected interests
+  const [categories, setCategories] = useLocalStorage("categories", []);
+  const [isSelected, setIsSelected] = useLocalStorage("isSelected", []);
 
-    const [userEvents , setUserEvent] = useState([])
+  const [userEvents, setUserEvent] = useState([]);
 
-    const [hostedEvents, setHostedEvents] = useState([])
+  const [hostedEvents, setHostedEvents] = useState([]);
 
-    let sortCategory = isSelected.sort()
-    // let sortCategory = [];
+  let sortCategory = Array.isArray(isSelected) ? isSelected.sort() : [];
 
-    // useEffect makes GET request for all categories and is used in the interests field
-    useEffect(() => {
-        axios
-          .get(`${API}/category`)
-          .then((res) => {
-            setCategories(res.data);
-        })
-        .catch((c) => console.warn("catch, c"));
-    }, []);
+  // let sortCategory = [];
 
-    // useEffect makes GET request for user info based on username parameter
-    useEffect(() => {
-        axios
-          .get(`${API}/users/${username}`)
-          .then((res) => {
-            setUser(res.data);
-            setUpdatedUser(res.data)
-        })
-        .catch((c) => console.warn("catch, c"));
-    }, [username])
+  // useEffect makes GET request for all categories and is used in the interests field
+  useEffect(() => {
+    axios
+      .get(`${API}/category`)
+      .then((res) => {
+        setCategories(res.data);
+      })
+      .catch((c) => console.warn("catch, c"));
+  }, []);
 
- useEffect(() => {
-    if(user?.id){
-        axios
-        .get(`${API}/users/${user?.id}/category`)
-        .then((res) => {
-            setIsSelected(res.data)
-        })
+  // useEffect makes GET request for user info based on username parameter
+  useEffect(() => {
+    axios
+      .get(`${API}/users/${username}`)
+      .then((res) => {
+        setUser(res.data);
+        setUpdatedUser(res.data);
+      })
+      .catch((c) => console.warn("catch, c"));
+  }, [username]);
 
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/users/${user?.id}/category`).then((res) => {
+        setIsSelected(res.data);
+      });
     }
- }, [user?.id])   
+  }, [user?.id]);
 
-useEffect(() => {
-    if(user?.id){
-        axios.get(`${API}/users/${user?.id}/events`)
-        .then((res) => {
-            setUserEvent(res.data)
-        })
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/users/${user?.id}/events`).then((res) => {
+        setUserEvent(res.data);
+      });
     }
+  }, [user?.id]);
 
-}, [user?.id])
-
-
-useEffect(() => {
-
-    if(user?.id){
-        axios.get(`${API}/events?creator.id=${user?.id}`)
-        .then((res) => {
-            setHostedEvents(res.data)
-        })
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/events?creator.id=${user?.id}`).then((res) => {
+        setHostedEvents(res.data);
+      });
     }
+  }, [user?.id]);
 
-}, [user?.id])
-
-function deleteMultiple(){
+  function deleteMultiple() {
     const deleteEvent = userEvents
-    .filter((events) => events.selected)
-    .map((events) => events.event_id)
+      .filter((events) => events.selected)
+      .map((events) => events.event_id);
 
     Promise.all(
-        deleteEvent.map((eventId) => {
-            axios.delete(`${API}/users/${user?.id}/events/${eventId}`)
-        })
-    )
-}
-
+      deleteEvent.map((eventId) => {
+        axios.delete(`${API}/users/${user?.id}/events/${eventId}`);
+      })
+    );
+  }
 
   return (
     <div>
@@ -152,91 +149,100 @@ function deleteMultiple(){
                 ) : null
             }
         </div>
-        <form className="w-3/4 m-auto pb-10">
-            <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${!isSelected.length ? 'h-20' : null}`}>
-                <legend className="px-3 text-left ml-8">
-                    Interests
-                </legend>
-                <div>
-                    <div className='flex flex-wrap ml-10 mt-3 pr-24 mb-3'>
-                     {sortCategory.map((item, index) => (
-                    <button
-                        type="button"
-                        key={index}
-                        // onClick={() => navigate(`\events\:${item}`)}
-                        className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
-                        {item.name} 
-                     </button>
-                    ))} 
-
-                    </div>
-                    <button 
-                        type='button'
-                        onClick={() => setOpenInterestModal(!openInterestModal)}
-                        className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-                    >
-                        Edit
-                    </button>
-                </div>
-            </fieldset>
-                {
-                    openInterestModal ? 
-                        <InterestsModal
-                            categories={categories} 
-                            openInterestModal={openInterestModal} 
-                            setOpenInterestModal={setOpenInterestModal}
-                            isSelected={isSelected}
-                            setIsSelected={setIsSelected}
-                            user={user}
-                        /> 
-                        : null
-                }
-            <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
-                <legend className="px-3 text-left ml-8">
-                    Events
-                </legend>
-                <div>
-                    {userEvents.map((event) => {
-                        return(
-                            <div key={event.event_id}>
-                                <UserEvents event={event}/>
-                            </div>
-                        )
-                    })}
-
-                    <button onClick={deleteMultiple}> <BsTrash/></button>
-
-                    <button 
-                        onClick={() => navigate('/events')}
-                        className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-                    >
-                        Add
-                    </button>
-                </div>
-            </fieldset>
-            <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
-                <legend className="px-3 text-left ml-8">
-                    Hosted Events
-                </legend>
-                    {hostedEvents.map((hosted) => {
-                        return(
-                            <div key={hosted.id}>
-                                <UserHostedEvent hosted={hosted}/>
-                            </div>
-                        )
-                    })}
-
-                <button 
-                    onClick={() => navigate('/events/new')}
-                    className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+        {openEditModal ? (
+          <EditProfileModal
+            username={username}
+            setOpenEditModal={setOpenEditModal}
+            updatedUser={updatedUser}
+            setUpdatedUser={setUpdatedUser}
+          />
+        ) : null}
+      </div>
+      <form className="w-3/4 m-auto pb-10">
+        <fieldset
+          className={`w-3/4 border relative shadow-sm m-auto mb-8 ${
+            !isSelected.length ? "h-20" : null
+          }`}
+        >
+          <legend className="px-3 text-left ml-8">Interests</legend>
+          <div>
+            <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3">
+              {sortCategory.map((item, index) => (
+                <button
+                  type="button"
+                  key={index}
+                  // onClick={() => navigate(`\events\:${item}`)}
+                  className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                    Create
+                  {item.name}
                 </button>
-            </fieldset>
-        </form>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setOpenInterestModal(!openInterestModal)}
+              className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+            >
+              Edit
+            </button>
+          </div>
+        </fieldset>
+        {openInterestModal ? (
+          <InterestsModal
+            categories={categories}
+            openInterestModal={openInterestModal}
+            setOpenInterestModal={setOpenInterestModal}
+            isSelected={isSelected}
+            setIsSelected={setIsSelected}
+            user={user}
+          />
+        ) : null}
+        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
+          <legend className="px-3 text-left ml-8">Events</legend>
+          <div>
+            {Array.isArray(userEvents) && userEvents.length > 0 ? (
+              userEvents.map((event) => (
+                <div key={event.event_id}>
+                  <UserEvents event={event} />
+                </div>
+              ))
+            ) : (
+              <p>No events found.</p>
+            )}
+
+            <button onClick={deleteMultiple}>
+              {" "}
+              <BsTrash />
+            </button>
+
+            <button
+              onClick={() => navigate("/events")}
+              className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+            >
+              Add
+            </button>
+          </div>
+        </fieldset>
+        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
+          <legend className="px-3 text-left ml-8">Hosted Events</legend>
+          {hostedEvents.map((hosted) => {
+            return (
+              <div key={hosted.id}>
+                <UserHostedEvent hosted={hosted} />
+              </div>
+            );
+          })}
+
+          <button
+            onClick={() => navigate("/events/new")}
+            className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+          >
+            Create
+          </button>
+        </fieldset>
+      </form>
     </div>
-  )
+  );
 }
 
-export default UserProfile
+export default UserProfile;
