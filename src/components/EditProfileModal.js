@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useParams } from 'react-router-dom'
 import styles from './modal.module.css'
 
 const API = process.env.REACT_APP_API_URL
@@ -32,7 +33,6 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, user 
       };
       
    
-
     return (
         <>
             <div 

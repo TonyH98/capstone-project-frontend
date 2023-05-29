@@ -40,31 +40,31 @@ function Login() {
     logIn(event);
   };
 
-  return (
-    <div className="flex flex-col justify-center items-center p-6">
-      <form className="sm:w-96 bg-white shadow-md p-4 rounded-lg flex flex-col items-center justify-center">
-        <button className="relative left-[50%] font-bold text-lg">X</button>
-        <div>
-          <p className="text-lg font-bold py-4">
-            Welcome back! Input login info below
-          </p>
-          <label htmlFor="username">
-            <input
-              type="text"
-              id="username"
-              name="usernname"
-              placeholder="Username"
-              required
-              onChange={handleTextChange}
-              className="rounded w-[85%] bg-transparent appearance-none focus:outline-none"
-            />
-          </label>
+    return (
+        <div className='flex flex-col justify-center items-center p-6'>
+            <form className="sm:w-96 bg-white shadow-md p-4 rounded-lg flex flex-col items-center justify-center">
+                <button className="relative left-[50%] font-bold text-lg">X</button>
+                <div>
+                <p className='text-lg font-bold py-4'>
+                    Welcome back! Input login info below
+                </p>
+                <label htmlFor="email">
+                    <input 
+                        id='email'
+                        name='email' 
+                        type='text' 
+                        placeholder="Email" 
+                        required 
+                        onChange={handleTextChange}
+                        className="rounded w-[85%] bg-transparent appearance-none focus:outline-none"
+                    />
+                </label>
 
           <label htmlFor="password">
             <input
-              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               required
               onChange={handleTextChange}
