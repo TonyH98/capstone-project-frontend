@@ -10,9 +10,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import eventPhoto from "../assets/picnic-pic.jpg";
 import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
+import EditEventModal from "../components/EditEventModal"
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const API = process.env.REACT_APP_API_URL;
@@ -29,6 +29,7 @@ export default function EventDetails() {
   const [userEvent , setUserEvent] = useState({})
   const [categoryModal, setCategoryModal] = useState(false)
   const [attending, setAttending] = useState([])
+  const [openEditModal, setOpenEditModal] = useState(false)
 
 
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
@@ -81,6 +82,7 @@ useEffect(() => {
     })
   }
 }, [eventInfo?.id])
+console.log(eventInfo)
 
 
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
@@ -198,7 +200,6 @@ console.log(eventInfo)
       <div className="flex flex-row justify-center gap-x-16 mx-20">
         <img
           src={eventInfo?.location_image}
-          // src={eventPhoto}
           alt="event photo"
           className="max-h-96 max-w-96 my-12"
         />
@@ -236,16 +237,18 @@ console.log(eventInfo)
                 <button
                 type="button"
                 onClick={() => setCategoryModal(!categoryModal)}
-                >+</button>
+                >+/-</button>
             </h2>
-            {categoryModal ? 
-            <CategoriesModal
-            category={category}
-            categoryModal={categoryModal}
-            setCategoryModal={setCategoryModal}
-            eventInfo={eventInfo}
-            setEventInfo={setEventInfo}
-            /> : null}
+            {
+              categoryModal ? 
+                <CategoriesModal
+                  category={category}
+                  categoryModal={categoryModal}
+                  setCategoryModal={setCategoryModal}
+                  eventInfo={eventInfo}
+                  setEventInfo={setEventInfo}
+                /> : null
+            }
             <h2>
               Date:
               <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
@@ -284,16 +287,30 @@ console.log(eventInfo)
 								>
 								RSVP
 							</button>
+              <button
+                className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+								onClick={() => setOpenEditModal(true)}
+              >
+                Edit
+              </button>
         		</div>
 						<div className="">
 							<GoogleMap
 									mapWidth="300px"
 									mapHeight="300px"
-									mapLat={40.7127837}
-									mapLng={-74.0059413}
+									mapLat={eventInfo?.latitude}
+									mapLng={eventInfo?.longitude}
 							/>
 						</div>
 					</div>
+          {/* {
+            openEditModal ? (
+              <EditEventModal 
+                eventInfo={eventInfo} 
+                setOpenEditModal = {setOpenEditModal}
+              />
+            ) : null
+          } */}
       </div>
       <div>
         <h2>Attendees: {attending.length}/{eventInfo?.max_people}</h2>
