@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
-import EditEventModal from "../components/EditEventModal"
+// import EditEventModal from "../components/EditEventModal"
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const API = process.env.REACT_APP_API_URL;

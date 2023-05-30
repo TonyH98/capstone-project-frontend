@@ -7,7 +7,7 @@ import { useState , useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
-
+import { useUser } from "../contexts/UserProvider";
 const API = process.env.REACT_APP_API_URL
 
 export default function NewEvent() {
@@ -15,9 +15,10 @@ export default function NewEvent() {
   const navigate = useNavigate();
 
   // useState to store user ID and categories from axios get request
-  const [ users, setUsers ] = useState({})
   const [ category, setCategory ] = useState([])
   const [ coordinates, setCoordinates ] = useState({})
+
+  const { user } = useUser();
 
   // useState to store event information
   const [events, setEvents] = useState({
@@ -39,8 +40,6 @@ export default function NewEvent() {
     categoryIds: []
   });
   
-console.log(events)
-
 // useState to store error messages
 const [ageError, setAgeError] = useState("")
 const [minAge , setMinAge] = useState("")
@@ -49,23 +48,17 @@ const [dateError, setDateError] = useState("")
 const [addressError, setAddressError] = useState("")
 
 // useEffect makes an axios GET request to get the creator's user ID
-useEffect(() => {
-  axios
-  .get(`${API}/users/klang`)
-  .then((res) => {
-    setUsers(res.data)
-  })
-  }, [users.id])
+
 
 // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
-    if (users.id) {
+    if (user?.id) {
       setEvents((prevEvents) => ({
         ...prevEvents,
-        creator: users.id,
+        creator: user?.id,
       }));
     }
-  }, [users.id]);
+  }, [user?.id]);
 
 // useEffect makes a GET request to store all category options
 useEffect(() => {
@@ -255,6 +248,8 @@ const verifyAddress = () => {
     }
   }
 
+
+  console.log(events)
 
   return (
     <div className="flex justify-center items-center p-4 flex gap-20">
