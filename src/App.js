@@ -11,8 +11,9 @@ import Login from "./pages/Login";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Devs from "./components/Devs";
-import Landing from "./components/Landing";
+import Landing from "./pages/LandingPage";
 import UserProfile from "./pages/UserProfile";
+import ShowUsers from "./pages/ShowUsers"
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
@@ -81,6 +82,7 @@ function App() {
               <Route path="/devs" element={<Devs />} />
               <Route path="/events" element={<ShowEvents />} />
               <Route path="/events/new" element={<NewEvent />} />
+              <Route path="/users" element={<ShowUsers />} />
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 

@@ -102,7 +102,7 @@ function UserProfile() {
   }
 
   return (
-    <div>
+    <>
       <div>
         <div className="mb-10 mt-12 m-auto">
           <div className="flex justify-center gap-x-10 align-items-start">
@@ -237,7 +237,7 @@ function UserProfile() {
           </button>
         </fieldset>
       </form>
-    </div>
+    </>
   );
 }
 
