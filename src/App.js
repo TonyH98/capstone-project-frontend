@@ -20,6 +20,7 @@ import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { UserProvider, useUser } from "./contexts/UserProvider";
+import Messages from "./pages/Messages";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
               <Route path="/events" element={<ShowEvents />} />
               <Route path="/events/new" element={<NewEvent />} />
               <Route path="/users" element={<ShowUsers />} />
+              <Route path="/chats" element={<Messages user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
