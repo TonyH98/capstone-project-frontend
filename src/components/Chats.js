@@ -35,7 +35,6 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
         message,
       },
     };
-
     socket.emit("send_message", messageContent);
     setMessageList((prevList) => [...prevList, messageContent.content]);
     setMessage("");
@@ -67,26 +66,29 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
     return usernameMatch || firstNameMatch || lastNameMatch;
   });
 
-  const handleRecipientSelection = (recipientId) => {
-    setRoom(`${user.id}-${recipientId}`);
+  const handleRecipientSelection = (recipient) => {
+    const newRoom = `${user.id}-${recipient.id}`;
+    setRoom(newRoom);
+    socket.emit("join_room", newRoom);
   };
 
   return (
     <div className="p-4">
-      {!loggedin ? (
+      <div className="flex items-center justify-center">
+        <label htmlFor="search">Search User: </label>
+          <input
+            type="text"
+            placeholder="Username, First or Last name"
+            id="search"
+            value={searchUser}
+            onChange={(e) => setSearchUser(e.target.value)}
+            className="w-96"
+          />
+      </div>
+      {!user ? (
         <div className="text-center">
-          <div className="search-bar">
-            <label htmlFor="search">Search User: </label>
-            <input
-              type="text"
-              placeholder="username"
-              id="search"
-              value={searchUser}
-              onChange={(e) => setSearchUser(e.target.value)}
-            />
-          </div>
           <div>
-            No conversations yet, search for a user to start a conversation!
+            Log In or Create an account to start a conversation with other users!
           </div>
         </div>
       ) : (
@@ -122,12 +124,12 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
       )}
       <div>
         <h2>Users</h2>
-        {filterUsers.map((user) => (
+        {users.map((recipient) => (
           <div
-            key={user.id}
-            onClick={() => handleRecipientSelection(user.id)}
+            key={recipient.id}
+            onClick={() => handleRecipientSelection(recipient)}
           >
-            {user.first_name}{" "}{user.last_name}
+            {recipient.first_name}{" "}{recipient.last_name}
           </div>
         ))}
       </div>
