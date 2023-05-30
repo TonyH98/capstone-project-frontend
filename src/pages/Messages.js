@@ -1,12 +1,10 @@
 import React from 'react'
 import Chats from '../components/Chats'
-// import Conversations from '../components/Conversations'
 
-export default function Messages() {
+export default function Messages({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   return (
     <div>
-        <Chats/>
-        {/* <Conversations/> */}
+        <Chats loggedin={loggedin} setLoggedin={setLoggedin} user={user} setUser={setUser} firebaseId={firebaseId}/>
     </div>
   )
 }

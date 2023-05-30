@@ -9,12 +9,16 @@ import { BiUser } from "react-icons/bi";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
 import app from "../firebase";
+import axios from "axios";
 
+const API = process.env.REACT_APP_API_URL;
 export default function NavBar() {
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 450px)").matches
   );
   const [active, setActive] = useState(0);
+
+  const [friendsRequest, setFriendsRequest] = useState()
 
   const { user } = useUser();
   const auth = getAuth(app);
@@ -33,6 +37,18 @@ export default function NavBar() {
     //   // An error happened.
     // });
   };
+
+useEffect(() => {
+
+if(user?.id){
+  axios.get(`${API}/friends/${user?.id}/request`)
+  .then((res) => {
+    setFriendsRequest(res.data.length)
+  })
+}
+
+}, [user?.id])
+
 
   return (
     <nav className="flex items-center justify-between h-20 sticky blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-100 to-cyan-400 z-50">
@@ -157,6 +173,7 @@ export default function NavBar() {
       <div className="flex" id="navbar-dropdown">
         <button className="p-2">
           <GrNotification />
+        {friendsRequest}
         </button>
         <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
           <li className="">
