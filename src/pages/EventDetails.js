@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
+import {useUser} from "../contexts/UserProvider"
 // import EditEventModal from "../components/EditEventModal"
 import useLocalStorage from "../hooks/useLocalStorage";
 
@@ -19,13 +20,13 @@ const API = process.env.REACT_APP_API_URL;
 export default function EventDetails() {
   // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams();
+  const { user } = useUser();
   const navigate = useNavigate();
 
   // useState hook to store event info and user interest
   const [eventInfo, setEventInfo] = useState();
   const [category , setCategory] = useState()
   const [interest, setInterest] = useState();
-  const [user , setUser] = useState({})
   const [userEvent , setUserEvent] = useState({})
   const [categoryModal, setCategoryModal] = useState(false)
   const [attending, setAttending] = useState([])
@@ -52,15 +53,6 @@ export default function EventDetails() {
 }, []);
 
 
-
-useEffect(() => {
-axios
-.get(`${API}/users/klang`)
-.then((res) => {
-  setUser(res.data)
-})
-}, [])
-
 useEffect(() => {
 if(user?.id){
   axios
@@ -82,7 +74,6 @@ useEffect(() => {
     })
   }
 }, [eventInfo?.id])
-console.log(eventInfo)
 
 
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
@@ -191,9 +182,7 @@ console.log(eventInfo)
     }
   }
   
-console.log(attending)
-console.log(eventInfo)
-
+const creator = eventInfo?.creator[0].id
 
   return (
     <div className="relative">
@@ -275,6 +264,15 @@ console.log(eventInfo)
 				</div>
 				<div className="flex flex-col gap-y-12 mt-12">
 						<div className="flex flex-row justify-end h-10 gap-x-3">
+              {user?.id === creator ? 
+              <button
+                className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+								onClick={() => setOpenEditModal(true)}
+              >
+                Edit
+              </button>:
+              <>
+
 							<button
 								className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
 								onClick={addToInterest}
@@ -287,12 +285,8 @@ console.log(eventInfo)
 								>
 								RSVP
 							</button>
-              <button
-                className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-								onClick={() => setOpenEditModal(true)}
-              >
-                Edit
-              </button>
+              </>
+            }
         		</div>
 						<div className="">
 							<GoogleMap
