@@ -142,6 +142,7 @@ function UserProfile() {
             {
               openEditModal ? (
                 <EditProfileModal 
+                setUser={setUser}
                 user={user}
                 setOpenEditModal={setOpenEditModal}
                 updatedUser={updatedUser}
@@ -150,14 +151,6 @@ function UserProfile() {
                 ) : null
               }
         </div>
-        {openEditModal ? (
-          <EditProfileModal
-          username={username}
-          setOpenEditModal={setOpenEditModal}
-          updatedUser={updatedUser}
-          setUpdatedUser={setUpdatedUser}
-          />
-          ) : null}
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
