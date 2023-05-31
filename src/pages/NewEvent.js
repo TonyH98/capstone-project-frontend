@@ -175,7 +175,11 @@ function checkDate() {
   const eventDate = new Date(events.date_event);
   const currentDate = new Date();
 
-  if (eventDate > currentDate) {
+  // Set the time component of both dates to midnight
+  eventDate.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
+
+  if (eventDate >= currentDate) {
     return true;
   } else {
     return false;
@@ -207,6 +211,11 @@ const verifyAddress = () => {
     }
   );
 }
+
+useEffect(() => {
+  verifyAddress()
+}, [events.address])
+
 
 // submit function checks if all input fields are valid and posts event to the events table
   function handleSubmit(event) {
@@ -447,13 +456,13 @@ const verifyAddress = () => {
           required
         />
 
-        <button
+        {/* <button
           type='button'
           className="underline pl-3"
           onClick={verifyAddress}
         >
           Verify address
-        </button>
+        </button> */}
         <br/>
         
         {
