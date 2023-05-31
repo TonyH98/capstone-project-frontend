@@ -12,9 +12,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import eventPhoto from "../assets/picnic-pic.jpg";
 import GoogleMap from "../components/Map";
+import CustomComponent from "../components/commentSection";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const API = process.env.REACT_APP_API_URL;
+
 export default function EventDetails() {
+
   // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams();
   const navigate = useNavigate();
@@ -22,40 +26,35 @@ export default function EventDetails() {
   // useState hook to store event info and user interest
   const [eventInfo, setEventInfo] = useState();
   const [interest, setInterest] = useState();
-  const [user , setUser] = useState({})
+  const [user , setUser] = useLocalStorage('user',{})
   const [userEvent , setUserEvent] = useState({})
+  // const [data, setCommentData] = useLocalStorage('comments',[])
+
+  
+// this useEffect calls and retrieves user information on page loading
+  useEffect(() => {
+  axios
+  .get(`${API}/users/jblaze12`)
+  .then((res) => {
+    setUser(res.data)
+    
+  })
+  },[])
 
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
     axios
       .get(`${API}/events/${id}`)
       .then((res) => {
+        console.log(res.data)
         setEventInfo(res.data);
+        
       })
       .catch((c) => console.warn("catch, c"));
   }, []);
 
 
-useEffect(() => {
-axios
-.get(`${API}/users/TonyH98`)
-.then((res) => {
-  setUser(res.data)
-})
-}, [])
 
-useEffect(() => {
-if(user?.id){
-  axios
-  .get(`${API}/users/${user?.id}/events/${id}`)
-  .then((res) => {
-    setUserEvent(res.data)
-  })
-
-}
-}, [user?.id])
-
-console.log(userEvent)
 
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
   const months = new Map();
@@ -163,7 +162,7 @@ console.log(userEvent)
     }
   }
   
-  console.log(eventInfo?.creator[0].username)
+  // console.log(eventInfo?.creator[0].username)
 
 
   return (
@@ -260,7 +259,19 @@ console.log(userEvent)
         <h2>Attendees(Number)</h2>
       </div>
       <div>
+        
         <h2>Comments</h2>
+        
+        <CustomComponent
+        currentUser={{
+          currentUserId: `${user.id}`,
+          currentUserProfile:`localhost:3000/profile/`+user.username,
+          currentUserFullName: `${user.first_name}`+' '+`${user.last_name} `,
+          currentUserImg: `https://ui-avatars.com/api/name=`+user.first_name+`&background=random`
+        
+        }}
+        
+        /> 
         <p>Comment section will go here</p>
       </div>
     </div>
