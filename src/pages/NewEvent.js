@@ -203,7 +203,7 @@ const verifyAddress = () => {
     },
     (error) => {
       console.error(error);
-      // setAddressError("Invalid address")
+      setAddressError("Invalid address")
       setAddressIsVerified(false)
       setCoordinates({})
     }
@@ -456,13 +456,13 @@ const verifyAddress = () => {
           required
         />
 
-        {/* <button
+        <button
           type='button'
           className="underline pl-3"
           onClick={verifyAddress}
         >
           Verify address
-        </button> */}
+        </button>
         <br/>
         
         {
