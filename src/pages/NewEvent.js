@@ -48,7 +48,13 @@ const [dateError, setDateError] = useState("")
 const [addressError, setAddressError] = useState("")
 
 // useEffect makes an axios GET request to get the creator's user ID
-
+useEffect(() => {
+  axios
+  .get(`${API}/users/jblaze12`)
+  .then((res) => {
+    setUsers(res.data)
+  })
+  }, [users.id])
 
 // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {

@@ -14,10 +14,13 @@ import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
 import {useUser} from "../contexts/UserProvider"
 // import EditEventModal from "../components/EditEventModal"
+import CustomComponent from "../components/commentSection";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const API = process.env.REACT_APP_API_URL;
+
 export default function EventDetails() {
+
   // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams();
   const { user } = useUser();
@@ -32,13 +35,28 @@ export default function EventDetails() {
   const [attending, setAttending] = useState([])
   const [openEditModal, setOpenEditModal] = useState(false)
 
+  const [userMain , setUser] = useLocalStorage('user',{})
+  // const [data, setCommentData] = useLocalStorage('comments',[])
+
+  
+// this useEffect calls and retrieves user information on page loading
+  useEffect(() => {
+  axios
+  .get(`${API}/users/jblaze12`)
+  .then((res) => {
+    setUser(res.data)
+    
+  })
+  },[])
 
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
     axios
       .get(`${API}/events/${id}`)
       .then((res) => {
+        console.log(res.data)
         setEventInfo(res.data);
+        
       })
       .catch((c) => console.warn("catch, c"));
   }, []);
@@ -310,7 +328,19 @@ const creator = eventInfo?.creator[0].id
         <h2>Attendees: {attending.length}/{eventInfo?.max_people}</h2>
       </div>
       <div>
+        
         <h2>Comments</h2>
+        
+        <CustomComponent
+        currentUser={{
+          currentUserId: `${user.id}`,
+          currentUserProfile:`localhost:3000/profile/`+user.username,
+          currentUserFullName: `${user.first_name}`+' '+`${user.last_name} `,
+          currentUserImg: `https://ui-avatars.com/api/name=`+user.first_name+`&background=random`
+        
+        }}
+        
+        /> 
         <p>Comment section will go here</p>
       </div>
     </div>
