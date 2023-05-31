@@ -4,6 +4,7 @@ import io, { connect } from "socket.io-client";
 import useLocalStorage from "../hooks/useLocalStorage";
 import Global from "../utils/Global";
 import { getUserInfo } from "../utils/appUtils";
+import { BiSend } from "react-icons/bi"
 
 let socket;
 const API = process.env.REACT_APP_API_URL;
@@ -16,6 +17,9 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   const [searchUser, setSearchUser] = useState("");
 
   const [selectedUser, setSelectedUser] = useState(null);
+  const [active, setActive] = useState(searchUser);
+
+  let receiver;
 
   //This is not working, messages not being sent
   // useEffect(() => {
@@ -77,7 +81,7 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
     const messageContent = {
       room: strRoom,
       content: {
-        author: user.first_name,
+        author: user.id,
         message,
       },
     };
@@ -117,6 +121,7 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   });
 
   const handleRecipientSelection = (recipient) => {
+    console.log(`selected one user: ${JSON.stringify(recipient)}`);
     console.log(`selected one user: ${recipient.id}`);
     setSelectedUser(recipient);
     // const newRoom = `${user.id}-${recipient.id}`;
@@ -128,66 +133,99 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 flex flex-col gap-2">
       <div className="flex items-center justify-center">
-        <label htmlFor="search">Search User: </label>
+        <label htmlFor="search" className="font-bold">Search User:</label>
           <input
             type="text"
-            placeholder="Username, First or Last name"
+            placeholder="Username, Firstname, Lastname"
             id="search"
             value={searchUser}
             onChange={(e) => setSearchUser(e.target.value)}
-            className="w-96"
+            className="w-96 mx-2 rounded-md"
           />
       </div>
-      {!user ? (
+      <section className="flex">
+      <div className="flex">
+      {searchUser ? (
+        <div className="flex gap-4">
+        <div className="bg-cyan-100/50 rounded-md p-4 overflow-y-auto min-h-screen">
+        <h2 className="text-2xl text-cyan-400 font-semibold py-2 px-4">Searched User</h2>
+        {filterUsers.map((recipient) => (
+          <div
+            key={recipient.id}
+            onClick={() => handleRecipientSelection(recipient)}
+            className={`${active ? "bg-cyan-400" : ""} font-semibold py-1 flex gap-1`}
+            >
+            <span className="hidden">{receiver = JSON.stringify(recipient)}</span>
+            {/* <span><img src={recipient.profile_img} alt="" className="w-10 rounded-full"></img></span> */}
+            <span>{recipient.first_name[0].toUpperCase() + recipient.first_name.substring(1)}{" "}{recipient.last_name[0].toUpperCase() + recipient.last_name.substring(1)}</span>
+          </div>
+        ))}
+      </div>
+      </div>
+      ) : (
+        <div className="flex gap-4 mt-4">
+        <div className="bg-cyan-100/50 rounded-md p-4 overflow-y-auto min-h-screen">
+        <h2 className="text-2xl text-cyan-400 font-semibold py-2 px-4">Users</h2>
+        {users.map((recipient) => (
+          <div
+            key={recipient.id}
+            onClick={() => handleRecipientSelection(recipient)}
+            className={`${active ? "bg-cyan-400" : ""} font-semibold py-1 px-4 flex gap-1`}
+            >
+            <span className="hidden">{receiver = JSON.stringify(recipient)}</span>
+            {/* <span><img src={recipient.profile_img} alt="" className="w-10 rounded-full"></img></span> */}
+            <span>{recipient.first_name[0].toUpperCase() + recipient.first_name.substring(1)}{" "}{recipient.last_name[0].toUpperCase() + recipient.last_name.substring(1)}</span>
+          </div>
+        ))}
+      </div>
+      </div>
+      )}
+      </div>
+      <div className="flex-auto p-4 overflow-y-auto min-h-screen">
+      {!Global.user ? (
         <div className="text-center">
           <div>
             Log In or Create an account to start a conversation with other users!
           </div>
         </div>
       ) : (
-        <div className="flex gap-6 divide-x-4">
-          <div className="text-2xl text-cyan-400 font-semibold p-4">
-            Conversations
-          </div>
+        <div className="flex gap-6 px-4 flex-auto ml-20 min-h-screen bg-cyan-100/50 rounded-md md:w-[450px] lg:w-[700px]">
           <div className="flex flex-col p-4">
+            <article className="mb-auto">
             {messageList.map((val, key) => {
               return (
                 <div
-                  className="messageContainer"
-                  id={val.author === user.first_name ? "You" : user.first_name}
+                  className={`my-1 flex flex-col ${val.author === receiver.id ? 'items-start' : 'self-end items-end'}`}
+                  id={val.author === receiver.id ? receiver.first_name : "You"}
                   key={key}
                 >
-                  <div className="messageIndividual">
-                    {val.author}: {val.message}
+                  <div className={`rounded-md px-2 py-1 text-base  ${val.author === receiver.id ? 'bg-gray-300' : 'bg-cyan-500 text-slate-200'}`}>
+                    {val.message}
+                  </div>
+                  <div className={`text-xs ${val.author === receiver.id ? '' : 'text-right'}`}>
+                  {val.author === receiver.id ? receiver.first_name : "You"}
                   </div>
                 </div>
               );
             })}
-            <div className="absolute bottom-0 p-4">
+            </article>
+            <div className="p-4 sticky flex">
               <input
                 type="text"
                 placeholder="Message..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
+                className="mx-2 w-96 rounded-md"
               />
-              <button onClick={sendMessage}>Send</button>
+              <button onClick={sendMessage} className="hover:text-cyan-400"><BiSend size={35}/></button>
             </div>
           </div>
         </div>
       )}
-      <div>
-        <h2>Users</h2>
-        {users.map((recipient) => (
-          <div
-            key={recipient.id}
-            onClick={() => handleRecipientSelection(recipient)}
-          >
-            {recipient.first_name}{" "}{recipient.last_name}
-          </div>
-        ))}
       </div>
+      </section>
     </div>
   );
 }
