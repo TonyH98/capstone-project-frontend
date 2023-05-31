@@ -1,9 +1,10 @@
 import axios from 'axios'
+import { useParams } from 'react-router-dom'
 import styles from './modal.module.css'
 
 const API = process.env.REACT_APP_API_URL
 
-function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, user }) {
+function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, user, setUser }) {
 
     // function to update user info on change
     const handleTextChange = (e) => {
@@ -23,6 +24,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, user 
               setOpenEditModal(false);
               axios.get(`${API}/users/${user?.username}`).then((res) => {
                 setUpdatedUser(res.data); // Update the state with the response data
+                setUser(res.data)
               });
             })
             .catch((error) => {
@@ -32,7 +34,6 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, user 
       };
       
    
-
     return (
         <>
             <div 
