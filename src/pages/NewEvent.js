@@ -21,7 +21,7 @@ export default function NewEvent() {
   const [ isValid, setIsValid ] = useState(false)
 
   const { user } = useUser();
-
+const  [users, setUsers] = useState({})
   // useState to store event information
   const [events, setEvents] = useState({
     title: "",

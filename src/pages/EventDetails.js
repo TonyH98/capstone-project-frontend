@@ -17,10 +17,13 @@ import {useUser} from "../contexts/UserProvider"
 import { BsPencilFill } from "react-icons/bs"
 import "../components/tooltip.css"
 // import EditEventModal from "../components/EditEventModal"
+import CustomComponent from "../components/commentSection";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const API = process.env.REACT_APP_API_URL;
+
 export default function EventDetails() {
+
   // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams();
   const { user } = useUser();
@@ -39,11 +42,17 @@ export default function EventDetails() {
   
   const creator = eventInfo?.creator[0].id
 
+  const [userMain , setUser] = useLocalStorage('user',{})
+  // const [data, setCommentData] = useLocalStorage('comments',[])
+
+
+
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
     axios
       .get(`${API}/events/${id}`)
       .then((res) => {
+        console.log(res.data)
         setEventInfo(res.data);
         getCoordiniates()
       })
@@ -67,7 +76,7 @@ export default function EventDetails() {
 useEffect(() => {
 if(user?.id){
   axios
-  .get(`${API}/users/${user?.id}/events/${id}`)
+  .get(`${API}/users/${user?.username}/events/${id}`)
   .then((res) => {
     setUserEvent(res.data)
   })
@@ -409,7 +418,19 @@ useEffect(() => {
         <h2>Attendees: {attending.length}/{eventInfo?.max_people}</h2>
       </div>
       <div>
+        
         <h2>Comments</h2>
+        
+        <CustomComponent
+        currentUser={{
+          currentUserId: `${user.id}`,
+          currentUserProfile:`localhost:3000/profile/`+user.username,
+          currentUserFullName: `${user.first_name}`+' '+`${user.last_name} `,
+          currentUserImg: `https://ui-avatars.com/api/name=`+user.first_name+`&background=random`
+        
+        }}
+        
+        /> 
         <p>Comment section will go here</p>
       </div>
     </div>
