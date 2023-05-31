@@ -9,7 +9,11 @@ import { BiUser } from "react-icons/bi";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
 import app from "../firebase";
+
+import { getUserInfo } from "../utils/appUtils";
+
 import axios from "axios";
+
 
 const API = process.env.REACT_APP_API_URL;
 export default function NavBar() {
@@ -37,6 +41,9 @@ export default function NavBar() {
     //   // An error happened.
     // });
   };
+
+
+  const userInfo = getUserInfo();
 
 useEffect(() => {
 
@@ -86,8 +93,9 @@ if(user?.id){
               </Link>
             </li>
             <li onClick={() => setActive(3)} className="hover:text-cyan-400">
+              
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user?.username}`}
                 className=""
                 aria-current="page"
               >
@@ -157,7 +165,7 @@ if(user?.id){
               } rounded-full p-2 shadow-lg`}
             >
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user?.username}`}
                 className="hover:text-white"
                 aria-current="page"
               >
