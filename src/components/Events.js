@@ -60,9 +60,6 @@ export default function Events() {
         filterCategories.includes(category.name)
         )
       );
-
-      console.log(filterEvents)
-
     }
   
     if (searchFilter) {
@@ -79,12 +76,9 @@ export default function Events() {
     setCurrentPage(0);
   };
   
-  
-  
   useEffect(() => {
     applyFilters();
   }, [searchFilter, filterCategories]);
-
 
   const sortByDate = (date) => {
     if (date === '') {
