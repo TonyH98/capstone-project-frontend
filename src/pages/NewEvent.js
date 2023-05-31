@@ -19,7 +19,7 @@ export default function NewEvent() {
   const [ coordinates, setCoordinates ] = useState({})
 
   const { user } = useUser();
-
+const  [users, setUsers] = useState({})
   // useState to store event information
   const [events, setEvents] = useState({
     title: "",
@@ -50,7 +50,7 @@ const [addressError, setAddressError] = useState("")
 // useEffect makes an axios GET request to get the creator's user ID
 useEffect(() => {
   axios
-  .get(`${API}/users/jblaze12`)
+  .get(`${API}/users/jblack12`)
   .then((res) => {
     setUsers(res.data)
   })

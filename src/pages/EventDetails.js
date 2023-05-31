@@ -42,7 +42,7 @@ export default function EventDetails() {
 // this useEffect calls and retrieves user information on page loading
   useEffect(() => {
   axios
-  .get(`${API}/users/jblaze12`)
+  .get(`${API}/users/jblack12`)
   .then((res) => {
     setUser(res.data)
     
@@ -74,7 +74,7 @@ export default function EventDetails() {
 useEffect(() => {
 if(user?.id){
   axios
-  .get(`${API}/users/${user?.id}/events/${id}`)
+  .get(`${API}/users/${user?.username}/events/${id}`)
   .then((res) => {
     setUserEvent(res.data)
   })
