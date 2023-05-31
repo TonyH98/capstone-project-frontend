@@ -28,6 +28,8 @@ function SignUp() {
 
   const [ageError, setAgeError] = useState("");
 
+  const [usernameError, setUsernameError] = useState("")
+
   const auth = getAuth(app);
 
   // useState hook to store user information
@@ -86,17 +88,33 @@ function SignUp() {
     }
   };
 
+  const checkUsername = () => {
+    return axios.get(`${API}/users?username=${newUser?.username}`)
+    .then((res) => {
+      return res.data.length > 0;
+    })
+    .catch((error) => {
+      console.error(error);
+      return false;
+    });
+  }
+
   // function to make an axios POST request and navigate to the user profile page
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userCredentials = await createUserCredentials();
-    console.log(userCredentials.username);
+    console.log(userCredentials?.username);
 
     let isValid = true;
 
     if (!checkAge()) {
       setAgeError("User must be 18 or over");
       isValid = false;
+    }
+
+    if(await checkUsername()){
+      setUsernameError("Username already taken")
+      isValid = false
     }
 
     if (isValid) {
@@ -203,6 +221,7 @@ function SignUp() {
             className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
+        {usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
         <div className="mb-4">
           <label
             htmlFor="email"
