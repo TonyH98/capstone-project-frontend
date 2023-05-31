@@ -223,10 +223,13 @@ const creator = eventInfo?.creator[0].id
                     );
                   })
                 : null}
+                {user?.id === creator ? 
                 <button
                 type="button"
                 onClick={() => setCategoryModal(!categoryModal)}
-                >+/-</button>
+                >+/-</button>: null
+                
+              }
             </h2>
             {
               categoryModal ? 
