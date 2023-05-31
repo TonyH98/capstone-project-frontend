@@ -250,6 +250,42 @@ useEffect(() => {
             </div>
             {/* <h2>Age Restrictions: { eventInfo?.age_restriction ? `${eventInfo?.age_min} to ${eventInfo?.age_max}` : 'None'}</h2> */}
             <h2>
+              Categories:
+              {eventInfo?.category_names
+                ? eventInfo.category_names.map((category) => {
+                  
+                    return (
+                      <button
+                        type="button"
+                        key={category.id}
+                        // update route for events sorted by category
+                        onClick={() => navigate(`/events/${category.name}`)}
+                        className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full text-sm px-2.5 py-1.5 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-3 mb-1"
+                      >
+                        {category.name}
+                      </button>
+                    );
+                  })
+                : null}
+                {user?.id === creator ? 
+                <button
+                type="button"
+                onClick={() => setCategoryModal(!categoryModal)}
+                >+/-</button>: null
+                
+              }
+            </h2>
+            {
+              categoryModal ? 
+                <CategoriesModal
+                  category={category}
+                  categoryModal={categoryModal}
+                  setCategoryModal={setCategoryModal}
+                  eventInfo={eventInfo}
+                  setEventInfo={setEventInfo}
+                /> : null
+            }
+            <h2>
               Date:
               <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
                 {eventDate}

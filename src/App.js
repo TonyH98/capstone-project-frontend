@@ -44,7 +44,14 @@ function App() {
 
   // This useEffect uses the firebaseId to retrieve the users data from the backend
   useEffect(() => {
+
+    console.log(firebaseId);
+
+    console.log('call here for first login', loggedin, firebaseId);
+
     if (loggedin && firebaseId) {
+
+      console.log('call here for first login')
       // Add a condition to check if firebaseId is truthy
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
