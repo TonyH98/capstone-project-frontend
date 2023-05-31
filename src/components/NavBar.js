@@ -9,6 +9,7 @@ import { BiUser } from "react-icons/bi";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
 import app from "../firebase";
+import { getUserInfo } from "../utils/appUtils";
 
 export default function NavBar() {
   const [matches, setMatches] = useState(
@@ -33,6 +34,8 @@ export default function NavBar() {
     //   // An error happened.
     // });
   };
+
+  const userInfo = getUserInfo();
 
   return (
     <nav className="flex items-center justify-between h-20 sticky blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-100 to-cyan-400 z-50">
@@ -70,8 +73,9 @@ export default function NavBar() {
               </Link>
             </li>
             <li onClick={() => setActive(3)} className="hover:text-cyan-400">
+              
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user?.username}`}
                 className=""
                 aria-current="page"
               >
@@ -141,7 +145,7 @@ export default function NavBar() {
               } rounded-full p-2 shadow-lg`}
             >
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user?.username}`}
                 className="hover:text-white"
                 aria-current="page"
               >

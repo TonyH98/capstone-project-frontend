@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import io from "socket.io-client";
+import io, { connect } from "socket.io-client";
 import useLocalStorage from "../hooks/useLocalStorage";
+import Global from "../utils/Global";
+import { getUserInfo } from "../utils/appUtils";
 
 let socket;
 const API = process.env.REACT_APP_API_URL;
@@ -13,32 +15,80 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   const [users, setUsers] = useLocalStorage("users", []);
   const [searchUser, setSearchUser] = useState("");
 
-  useEffect(() => {
-    socket = io(API);
-    socket.on("receive_message", (data) => {
-      setMessageList((prevList) => [...prevList, data]);
-    });
-  }, [API]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
-  const connectToRoom = () => {
+  //This is not working, messages not being sent
+  // useEffect(() => {
+  //   socket = io(API);
+  //   socket.on("receive_message", (data) => {
+  //     console.log('received = ', data);
+  //     setMessageList((prevList) => [...prevList, data]);
+  //   });
+
+  //   connectToRoom();
+  // }, [API]);
+
+  const onReceiveMessage = (data) => {
+    console.log('received = ', data);
+    setMessageList((prevList) => [...prevList, data]);
+  };
+
+  useEffect(() => {
+    let userInfo = getUserInfo();
+
+    console.log('user info ===== ', userInfo);
+
+    if (Global.user) {
+      console.log('call here---', Global.user.id);   
+      socket = io(API);
+      socket.on("receive_message", onReceiveMessage);
+
+
+      let strRoom = `user_${Global.user.id}`;
+
+      connectToRoom(strRoom);
+
+      return () => {
+        socket.off('receive_message', onReceiveMessage);
+      }
+    } else {
+      alert("please login first");
+    }
+  }, []);
+
+  const connectToRoom = (strRoom) => {
     setLoggedin(true);
-    socket.emit("join_room", room);
+
+    socket.emit("join_room", strRoom);
   };
 
   const sendMessage = () => {
-    console.log(user);
-    console.log(user.first_name);
+
+    if (!selectedUser) {
+      alert("Please select user");
+      return;
+    }
+
+
+    // console.log(user);
+    // console.log(user.first_name);
+
+    let strRoom = `user_${selectedUser.id}`;
     const messageContent = {
-      room,
+      room: strRoom,
       content: {
         author: user.first_name,
         message,
       },
     };
+
+    console.log('message content = ', messageContent);
     socket.emit("send_message", messageContent);
     setMessageList((prevList) => [...prevList, messageContent.content]);
     setMessage("");
   };
+
+  
 
   useEffect(() => {
     axios
@@ -67,9 +117,14 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   });
 
   const handleRecipientSelection = (recipient) => {
-    const newRoom = `${user.id}-${recipient.id}`;
-    setRoom(newRoom);
-    socket.emit("join_room", newRoom);
+    console.log(`selected one user: ${recipient.id}`);
+    setSelectedUser(recipient);
+    // const newRoom = `${user.id}-${recipient.id}`;
+    // setRoom(newRoom);
+    // console.log(`Coming from: ${user.first_name}`);
+    // console.log(`Going to: ${recipient.id}`);
+    // console.log(`In room: ${room}`);
+    // socket.emit("join_room", newRoom);
   };
 
   return (

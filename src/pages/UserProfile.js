@@ -15,6 +15,8 @@ import { ImQuotesLeft } from "react-icons/im";
 import { ImQuotesRight } from "react-icons/im";
 import EditProfileModal from "../components/EditProfileModal";
 import useLocalStorage from "../hooks/useLocalStorage";
+import Global from "../utils/Global";
+import { getUserInfo, setUserInfo } from "../utils/appUtils";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -54,15 +56,34 @@ function UserProfile() {
       .catch((c) => console.warn("catch, c"));
   }, []);
 
+  const onLoadUserInof = 
+
   // useEffect makes GET request for user info based on username parameter
   useEffect(() => {
-    axios
+
+    let userInfo = getUserInfo();
+    if (userInfo) {
+      setUser(userInfo);
+      Global.user = userInfo;
+      return;
+    }
+
+    console.log('user name = ', username);
+
+    if (!!username) {
+      axios
       .get(`${API}/users/${username}`)
       .then((res) => {
+
+        console.log('user info = ', res.data);
         setUser(res.data);
+        setUserInfo(res.data);
+        Global.user = res.data;
         setUpdatedUser(res.data);
       })
       .catch((c) => console.warn("catch, c"));
+    }
+    
   }, [username]);
 
   useEffect(() => {
