@@ -17,6 +17,8 @@ export default function NewEvent() {
   // useState to store user ID and categories from axios get request
   const [ category, setCategory ] = useState([])
   const [ coordinates, setCoordinates ] = useState({})
+  const [ addressIsVerified, setAddressIsVerified ] = useState(false)
+  const [ isValid, setIsValid ] = useState(false)
 
   const { user } = useUser();
 
@@ -31,8 +33,6 @@ export default function NewEvent() {
     age_max: 0,
     location_name: "",
     address: "",
-    latitude: 0,
-    longitude: 0,
     start_time: "",
     end_time: "",
     location_image: "",
@@ -46,9 +46,6 @@ const [minAge , setMinAge] = useState("")
 const [maxError , setMaxError] = useState("")
 const [dateError, setDateError] = useState("")
 const [addressError, setAddressError] = useState("")
-
-// useEffect makes an axios GET request to get the creator's user ID
-
 
 // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
@@ -141,8 +138,7 @@ function checkAge(){
       } else {
         return false
       }
-  }
-  else{
+  } else {
     return true
   }
 }
@@ -164,8 +160,7 @@ function checkMinAge(){
 function checkMax(){
   if(events.max_people > 0){
     return true
-  }
-  else{
+  } else {
     return false
   }
 }
@@ -184,9 +179,11 @@ function checkDate() {
 
 // function that uses geocode API to verify and convert address to latitude and longitude for Google Maps rendering
 const verifyAddress = () => {
-  setAddressError('')   // resets address error to re-verify on click
+  // resets useState hooks to re-verify on click or on submit
+  setAddressError('')   
+  setAddressIsVerified(false)
 
-  // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+  // set Google Maps Geocoding API for purposes of quota management
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
   
   // Get latitude & longitude from address.
@@ -198,18 +195,25 @@ const verifyAddress = () => {
         longitude: lng
       })
       setEvents({...events, latitude:lat, longitude:lng})
-      console.log(events)
+      setAddressIsVerified(true)
     },
     (error) => {
       console.error(error);
-      setAddressError("Invalid address")
+      // setAddressError("Invalid address")
+      setAddressIsVerified(false)
       setCoordinates({})
     }
   );
+    console.log('addressIsVerified', addressIsVerified)
 }
 
+// useEffect to run verify address on address field change
+// useEffect(() => {
+//   verifyAddress()
+// }, [events.address])
+
 // submit function checks if all input fields are valid and posts event to the events table
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     // resets useState for error messages to re-test if valid
@@ -221,10 +225,10 @@ const verifyAddress = () => {
 
     let isValid = true
 
-    // verifies the address is valid and can be converted to coordinates
-    verifyAddress()   
-    
-    if(addressError){
+    verifyAddress()
+
+    if(!addressIsVerified){
+      // setAddressError('Invalid address')
       isValid = false
     }
     if(!checkAge()){
@@ -243,14 +247,15 @@ const verifyAddress = () => {
       setDateError("The date of the event needs to be later than the current date")
       isValid = false
     }
+   
     if(isValid){
       handleAdd(events)
+      console.log("Submit went through")
+    } else {
+      console.log("Submit was blocked")
     }
   }
-
-
-  console.log(events)
-
+  
   return (
     <div className="flex justify-center items-center p-4 flex gap-20">
       {
@@ -486,14 +491,14 @@ const verifyAddress = () => {
         <input type="submit" />
       </form>
       {
-        (!addressError && !!events?.address) ? (
+        addressIsVerified ? (
           <GoogleMap 
             mapWidth="300px"
             mapHeight="300px"
             mapLat={coordinates?.latitude}
             mapLng={coordinates?.longitude}
           />
-        ) : (
+          ) : (
           <div className="">
             <p className="w-[300px] h-[300px] bg-gray-200 text-center pt-[125px] m-auto">
               Please verify a valid address
