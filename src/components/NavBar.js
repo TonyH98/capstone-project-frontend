@@ -9,13 +9,20 @@ import { BiUser } from "react-icons/bi";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { getUserInfo } from "../utils/appUtils";
+import axios from "axios";
 import app from "../firebase";
 
-export default function NavBar() {
+const API = process.env.REACT_APP_API_URL
+
+export default function NavBar({setUser, setLoggedIn}) {
+  const navigate = useNavigate()
+
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 450px)").matches
   );
   const [active, setActive] = useState(0);
+  const [friendsRequest, setFriendsRequest] = useState([])
 
   const { user } = useUser();
   const auth = getAuth(app);
