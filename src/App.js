@@ -73,7 +73,7 @@ function App() {
       {/* <FriendsProvider> */}
       <UserProvider>
         <Router>
-          <NavBar setLoggedIn={setLoggedin} />
+          <NavBar setLoggedIn={setLoggedin} setUser={setUser} />
           <main className="h-[100%]">
             <Routes>
               <Route path="/" element={<Landing />} />

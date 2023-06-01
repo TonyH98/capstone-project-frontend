@@ -10,7 +10,7 @@ import GoogleMap from "../components/Map";
 import { useUser } from "../contexts/UserProvider";
 const API = process.env.REACT_APP_API_URL
 
-export default function NewEvent() {
+export default function NewEvent () {
 
   const navigate = useNavigate();
 
@@ -21,7 +21,8 @@ export default function NewEvent() {
   const [ isValid, setIsValid ] = useState(false)
 
   const { user } = useUser();
-const  [users, setUsers] = useState({})
+  const  [users, setUsers] = useState({})
+
   // useState to store event information
   const [events, setEvents] = useState({
     title: "",
@@ -86,11 +87,12 @@ const [addressError, setAddressError] = useState("")
     // handles updating the category IDs allowing up to three unique choices for categories
     if (event.target.id === "categoryIds") {
       const { value } = event.target;
-
+      
     if (!events.categoryIds.includes(value) && events.categoryIds.length < 3 && value) {
+
       setEvents((prevEvent) => ({
         ...prevEvent,
-        age_restriction: isAgeRestricted,
+        categoryIds: [...prevEvent.categoryIds, value],
       }));
     }
   } 
@@ -121,6 +123,45 @@ const [addressError, setAddressError] = useState("")
   }
 };
 
+//   const handleTextChange = (event) => {
+//     // handles updating the category IDs allowing up to three unique choices for categories
+//     if (event.target.id === "categoryIds") {
+//       const { value } = event.target;
+
+//     if (!events.categoryIds.includes(value) && events.categoryIds.length < 3 && value) {
+//       setEvents((prevEvent) => ({
+//         ...prevEvent,
+//         age_restriction: isAgeRestricted,
+//       }));
+//     }
+//   } 
+//   // handles updates to min age, max age and max number of people and converts the value to a number if there is an input
+//   else if (event.target.id === "age_min" || event.target.id === "age_max" || event.target.id === "max_people") {
+//     const { id, value } = event.target;
+//     setEvents((prevEvent) => ({
+//       ...prevEvent,
+//       [id]: value ? Number(value) : "", // Convert to number if value exists, otherwise set it as an empty string
+//     }));
+//   }
+
+//   else if (event.target.id === "age_restriction") {
+//     const { value } = event.target;
+//     const isAgeRestricted = value === "true"; 
+//     setEvents((prevEvent) => ({
+//       ...prevEvent,
+//       age_restriction: isAgeRestricted,
+//     }));
+//   }
+//   // handles updating all other fields of the event details
+//   else {
+//     const { id, value } = event.target;
+//     setEvents((prevEvent) => ({
+//       ...prevEvent,
+//       [id]: value,
+//     }));
+//   }
+// };
+
   // function handles removing a category that was selected on button click and updates the event details object
   const filterCategory = (category) => {
     const filter = events.categoryIds.filter((ele) => {
@@ -141,6 +182,7 @@ const [addressError, setAddressError] = useState("")
   } else {
     return true
   }
+}
 
 // function validates that the min age is greater than or equal to 18
 function checkMinAge(){
@@ -162,6 +204,7 @@ function checkMax(){
   } else {
     return false
   }
+}
 
   // function validates that the event date is not a date in the past
   function checkDate() {
@@ -177,6 +220,7 @@ function checkMax(){
   } else {
     return false;
   }
+}
 
 // function that uses geocode API to verify and convert address to latitude and longitude for Google Maps rendering
 const verifyAddress = () => {
