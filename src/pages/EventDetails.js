@@ -258,7 +258,7 @@ useEffect(() => {
               }
             </div>
             {/* <h2>Age Restrictions: { eventInfo?.age_restriction ? `${eventInfo?.age_min} to ${eventInfo?.age_max}` : 'None'}</h2> */}
-            <h2>
+            {/* <h2>
               Categories:
               {eventInfo?.category_names
                 ? eventInfo.category_names.map((category) => {
@@ -283,7 +283,7 @@ useEffect(() => {
                 >+/-</button>: null
                 
               }
-            </h2>
+            </h2> */}
             {
               categoryModal ? 
                 <CategoriesModal
