@@ -15,12 +15,13 @@ import { ImQuotesLeft } from "react-icons/im";
 import { ImQuotesRight } from "react-icons/im";
 import EditProfileModal from "../components/EditProfileModal";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
 
 function UserProfile() {
   const navigate = useNavigate();
-  const { username } = useParams();
+  const { profileName } = useParams();
   const [openInterestModal, setOpenInterestModal] = useLocalStorage(
     "openInterestModal",
     false
@@ -29,7 +30,9 @@ function UserProfile() {
     "openEditModal",
     false
   );
-  const [user, setUser] = useLocalStorage("user", {});
+  // const [user, setUser] = useLocalStorage("user", {});
+  const { user, setUser } = useUser();
+  // Dont have time to test right now but I think we can just use user only and delete updatedUser
   const [updatedUser, setUpdatedUser] = useLocalStorage("updatedUser", {});
 
   // useLocalStorage hook to store selected interests
@@ -57,13 +60,13 @@ function UserProfile() {
   // useEffect makes GET request for user info based on username parameter
   useEffect(() => {
     axios
-      .get(`${API}/users/${username}`)
+      .get(`${API}/users/${profileName}`)
       .then((res) => {
         setUser(res.data);
         setUpdatedUser(res.data);
       })
       .catch((c) => console.warn("catch, c"));
-  }, [username]);
+  }, [profileName]);
 
   useEffect(() => {
     if (user?.id) {
@@ -147,7 +150,7 @@ function UserProfile() {
         </div>
         {openEditModal ? (
           <EditProfileModal
-            username={username}
+            profileName={profileName}
             setOpenEditModal={setOpenEditModal}
             updatedUser={updatedUser}
             setUpdatedUser={setUpdatedUser}

@@ -2,7 +2,8 @@
 // Need to set up open/close modal
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserProvider";
 import app from "../firebase";
 
 function Login() {
@@ -13,6 +14,10 @@ function Login() {
     password: "",
   });
   const auth = getAuth(app);
+  const navigate = useNavigate();
+
+  // Sets the user in local storage
+  const { user, setUser } = useUser();
 
   // function to send login information to firebase
   const logIn = () => {
@@ -22,6 +27,9 @@ function Login() {
         if (returningUser) {
           alert("You are now logged in!");
           console.log("logged in");
+          setUser(returningUser);
+          console.log(user);
+          navigate(`/profile/${user.username}`);
         }
       })
       .catch((error) => {
@@ -48,12 +56,12 @@ function Login() {
           <p className="text-lg font-bold py-4">
             Welcome back! Input login info below
           </p>
-          <label htmlFor="username">
+          <label htmlFor="email">
             <input
               type="text"
-              id="username"
-              name="usernname"
-              placeholder="Username"
+              id="email"
+              name="email"
+              placeholder="email"
               required
               onChange={handleTextChange}
               className="rounded w-[85%] bg-transparent appearance-none focus:outline-none"
@@ -90,6 +98,7 @@ function Login() {
         <button
           type="submit"
           className="bg-cyan-400 border border-cyan-400 text-white hover:text-cyan-400 rounded-md hover:bg-transparent hover:border px-2 py-1 font-bold"
+          onClick={handleSubmit}
         >
           Login
         </button>

@@ -8,15 +8,16 @@ import { GrNotification } from "react-icons/gr";
 import { BiUser } from "react-icons/bi";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import app from "../firebase";
 
-export default function NavBar() {
+export default function NavBar({ setLoggedIn }) {
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 450px)").matches
   );
   const [active, setActive] = useState(0);
-
-  const { user } = useUser();
+  const navigate = useNavigate();
+  const { user, setUser } = useUser();
   const auth = getAuth(app);
 
   useEffect(() => {
@@ -25,13 +26,25 @@ export default function NavBar() {
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
 
+  useEffect(() => {
+    if (user && user.username) {
+      console.log(user.username);
+    }
+  }, [user]);
+
   // Need to add setting the user to a blank object and loggedIn to false after states are properly being passed
-  const signOut = () => {
-    // signOut(auth).then(() => {
-    //   // Sign-out successful.
-    // }).catch((error) => {
-    //   // An error happened.
-    // });
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        setUser({});
+        setLoggedIn(false);
+        console.log("signed out");
+        navigate(`/`);
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
 
   return (
@@ -196,9 +209,10 @@ export default function NavBar() {
                 </li>
               </ul>
               <div className="hover:bg-[#f6854b] rounded-b-lg">
-                <Link to="/" className="block px-4 py-2">
+                {/* <Link to="/" className="block px-4 py-2">
                   Sign out
-                </Link>
+                </Link> */}
+                <button onClick={handleSignOut}>Sign Out</button>
               </div>
             </div>
           </li>
