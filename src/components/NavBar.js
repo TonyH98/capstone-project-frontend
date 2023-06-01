@@ -11,13 +11,13 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import app from "../firebase";
 
-export default function NavBar({ setLoggedIn }) {
+export default function NavBar() {
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 450px)").matches
   );
   const [active, setActive] = useState(0);
-  const navigate = useNavigate();
-  const { user, setUser } = useUser();
+
+  const { user } = useUser();
   const auth = getAuth(app);
 
   useEffect(() => {
@@ -46,6 +46,16 @@ export default function NavBar({ setLoggedIn }) {
         // An error happened.
       });
   };
+
+  const userInfo = getUserInfo();
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/friends/${user?.id}/request`).then((res) => {
+        setFriendsRequest(res.data.length);
+      });
+    }
+  }, [user?.id]);
 
   return (
     <nav className="flex items-center justify-between h-20 sticky blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-100 to-cyan-400 z-50">
@@ -84,7 +94,7 @@ export default function NavBar({ setLoggedIn }) {
             </li>
             <li onClick={() => setActive(3)} className="hover:text-cyan-400">
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user?.username}`}
                 className=""
                 aria-current="page"
               >
@@ -154,7 +164,7 @@ export default function NavBar({ setLoggedIn }) {
               } rounded-full p-2 shadow-lg`}
             >
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user?.username}`}
                 className="hover:text-white"
                 aria-current="page"
               >
@@ -170,6 +180,7 @@ export default function NavBar({ setLoggedIn }) {
       <div className="flex" id="navbar-dropdown">
         <button className="p-2">
           <GrNotification />
+          {friendsRequest}
         </button>
         <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
           <li className="">

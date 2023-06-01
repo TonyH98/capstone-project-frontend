@@ -2,12 +2,10 @@
 // NEED TO set up correct routes for useNavigate on button click for categories and store category object with id
 // NEED TO add post/put requests to update user info on edit
 import axios from "axios";
-import profilePic from "../assets/profile-pic-1.png";
 import InterestsModal from "../components/InterestsModal";
 import UserEvents from "./UserEvents";
 import UserHostedEvent from "./UserHostedEvents";
 import { BsTrash } from "react-icons/bs";
-
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
@@ -15,7 +13,6 @@ import { ImQuotesLeft } from "react-icons/im";
 import { ImQuotesRight } from "react-icons/im";
 import EditProfileModal from "../components/EditProfileModal";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -57,16 +54,20 @@ function UserProfile() {
       .catch((c) => console.warn("catch, c"));
   }, []);
 
-  // useEffect makes GET request for user info based on username parameter
-  useEffect(() => {
-    axios
-      .get(`${API}/users/${profileName}`)
-      .then((res) => {
-        setUser(res.data);
-        setUpdatedUser(res.data);
-      })
-      .catch((c) => console.warn("catch, c"));
-  }, [profileName]);
+  const onLoadUserInof =
+    // useEffect makes GET request for user info based on username parameter
+    useEffect(() => {
+      axios
+        .get(`${API}/users/${username}`)
+        .then((res) => {
+          console.log("user info = ", res.data);
+          setUser(res.data);
+          setUserInfo(res.data);
+          Global.user = res.data;
+          setUpdatedUser(res.data);
+        })
+        .catch((c) => console.warn("catch, c"));
+    }, [username]);
 
   useEffect(() => {
     if (user?.id) {
@@ -104,12 +105,18 @@ function UserProfile() {
     );
   }
 
+  console.log(user);
+
   return (
     <>
       <div>
         <div className="mb-10 mt-12 m-auto">
           <div className="flex justify-center gap-x-10 align-items-start">
-            <img src={profilePic} alt="profile-pic" className="w-36 h-36" />
+            <img
+              src={user?.profile_img}
+              alt="profile-pic"
+              className="w-36 h-36"
+            />
             <div className="text-left w-1/6">
               <h1>
                 <b>
@@ -141,6 +148,7 @@ function UserProfile() {
           </div>
           {openEditModal ? (
             <EditProfileModal
+              setUser={setUser}
               user={user}
               setOpenEditModal={setOpenEditModal}
               updatedUser={updatedUser}
@@ -150,7 +158,7 @@ function UserProfile() {
         </div>
         {openEditModal ? (
           <EditProfileModal
-            profileName={profileName}
+            username={username}
             setOpenEditModal={setOpenEditModal}
             updatedUser={updatedUser}
             setUpdatedUser={setUpdatedUser}

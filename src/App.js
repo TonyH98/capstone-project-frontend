@@ -20,6 +20,7 @@ import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { UserProvider, useUser } from "./contexts/UserProvider";
+import Messages from "./pages/Messages";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
@@ -36,7 +37,6 @@ function App() {
     if (user) {
       setLoggedin(true);
       setFirebaseId(user.uid);
-      console.log(user.uid);
     } else {
       setLoggedin(false);
     }
@@ -44,14 +44,19 @@ function App() {
 
   // This useEffect uses the firebaseId to retrieve the users data from the backend
   useEffect(() => {
+
     console.log(firebaseId);
+
+    console.log('call here for first login', loggedin, firebaseId);
+
     if (loggedin && firebaseId) {
+
+      console.log('call here for first login')
       // Add a condition to check if firebaseId is truthy
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
         .then((response) => {
           setUser(response.data);
-          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -83,6 +88,7 @@ function App() {
               <Route path="/events" element={<ShowEvents />} />
               <Route path="/events/new" element={<NewEvent />} />
               <Route path="/users" element={<ShowUsers />} />
+              <Route path="/chats" element={<Messages user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 

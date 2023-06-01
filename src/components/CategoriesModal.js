@@ -16,7 +16,7 @@ function CategoriesModal ({eventInfo, category, setCategoryModal, setEventInfo})
                     >
                         X
                     </div>
-                    <p className="pb-6 pt-4 text-center">Select all that apply</p>
+                    <p className="pb-6 pt-4 text-center">Select up to three categories</p>
                     <div className="flex flex-wrap justify-center">
                         {            
                             category.map((category) => {

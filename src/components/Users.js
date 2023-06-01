@@ -24,8 +24,8 @@ export default function Users() {
     <div className='flex flex-col items-center justify-center p-4'>
         <h1 className='text-2xl font-semibold'>All Users</h1>
         <div className='flex flex-col gap-6 sm:w-full md:w-[65%]'>
-        {users.map(user => (
-            <User key={user.id} user={user} />
+        {users.map(users => (
+            <User key={users.id} users={users}/>
         ))}
         </div>
     </div>

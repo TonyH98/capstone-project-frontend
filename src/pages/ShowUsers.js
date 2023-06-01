@@ -3,10 +3,10 @@ import Users from '../components/Users'
 
 
 
-export default function ShowUsers() {
+export default function ShowUsers({user}) {
   return (
     <div>
-        <Users/>
+        <Users user={user}/>
     </div>
   )
 }
