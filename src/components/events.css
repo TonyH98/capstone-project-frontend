@@ -29,8 +29,9 @@
 }
 
 .new-event-btns{
-    border: 1px black solid;
+    background: white;
     height: 40px;
     width: 110px;
-    color: blue;
+    color: #0cc0df;
+    border-radius: 1rem;
 }
