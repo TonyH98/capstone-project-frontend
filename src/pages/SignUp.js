@@ -43,8 +43,9 @@ function SignUp() {
     pronouns: "Default",
     bio: "About Me",
 
-    profile_img: "https://www.pngitem.com/pimgs/m/24-248366_profile-clipart-generic-user-generic-profile-picture-gender.png",
-    firebase_id: ""
+    profile_img:
+      "https://www.pngitem.com/pimgs/m/24-248366_profile-clipart-generic-user-generic-profile-picture-gender.png",
+    firebase_id: "",
   });
 
   // function to update newUser object on text change

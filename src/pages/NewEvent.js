@@ -3,7 +3,7 @@
 
 // Create new event form that posts a new event to the events table
 import axios from "axios";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
@@ -36,8 +36,8 @@ const  [users, setUsers] = useState({})
     start_time: "",
     end_time: "",
     location_image: "",
-    creator: "", 
-    categoryIds: []
+    creator: "",
+    categoryIds: [],
   });
   
 // useState to store error messages
@@ -47,7 +47,7 @@ const [maxError , setMaxError] = useState("")
 const [dateError, setDateError] = useState("")
 const [addressError, setAddressError] = useState("")
 
-// useEffect populates previous event information and adds the creator's user ID
+  // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
     if (user?.id) {
       setEvents((prevEvents) => ({
@@ -57,40 +57,40 @@ const [addressError, setAddressError] = useState("")
     }
   }, [user?.id]);
 
-// useEffect makes a GET request to store all category options
-useEffect(() => {
-  axios
-  .get(`${API}/category`)
-  .then((res) => {
-    setCategory(res.data)
-  })
-  .catch((error) => {
-    console.log(error)
-  })
-}, [])
+  // useEffect makes a GET request to store all category options
+  useEffect(() => {
+    axios
+      .get(`${API}/category`)
+      .then((res) => {
+        setCategory(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-// function that makes a POST request to add the new event to the events table
-const handleAdd = (newEvent) => {
-  axios
-  .post(`${API}/events` , newEvent)
-  .then(() => {
-    navigate("/events")
-  })
-  .catch((error) => {
-    console.log(error)
-  })
-}
+  // function that makes a POST request to add the new event to the events table
+  const handleAdd = (newEvent) => {
+    axios
+      .post(`${API}/events`, newEvent)
+      .then(() => {
+        navigate("/events");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-// function that updates event information on change in the form
-const handleTextChange = (event) => {
-  // handles updating the category IDs allowing up to three unique choices for categories
-  if (event.target.id === "categoryIds") {
-    const { value } = event.target;
+  // function that updates event information on change in the form
+  const handleTextChange = (event) => {
+    // handles updating the category IDs allowing up to three unique choices for categories
+    if (event.target.id === "categoryIds") {
+      const { value } = event.target;
 
     if (!events.categoryIds.includes(value) && events.categoryIds.length < 3 && value) {
       setEvents((prevEvent) => ({
         ...prevEvent,
-        categoryIds: [...prevEvent.categoryIds, value],
+        age_restriction: isAgeRestricted,
       }));
     }
   } 
@@ -121,27 +121,26 @@ const handleTextChange = (event) => {
   }
 };
 
-// function handles removing a category that was selected on button click and updates the event details object
-const filterCategory = (category) => {
-  const filter = events.categoryIds.filter((ele) => {
-    return ele !== category
-  })
+  // function handles removing a category that was selected on button click and updates the event details object
+  const filterCategory = (category) => {
+    const filter = events.categoryIds.filter((ele) => {
+      return ele !== category;
+    });
 
   setEvents({...events, categoryIds: filter})
 }
 
-// function validates that the the max age is greater than or equal to the min age
-function checkAge(){
-  if(events.age_restriction){
-    if(events.age_max >= events.age_min){
-        return true
+  // function validates that the the max age is greater than or equal to the min age
+  function checkAge() {
+    if (events.age_restriction) {
+      if (events.age_max >= events.age_min) {
+        return true;
       } else {
-        return false
+        return false;
       }
   } else {
     return true
   }
-}
 
 // function validates that the min age is greater than or equal to 18
 function checkMinAge(){
@@ -163,12 +162,11 @@ function checkMax(){
   } else {
     return false
   }
-}
 
-// function validates that the event date is not a date in the past
-function checkDate() {
-  const eventDate = new Date(events.date_event);
-  const currentDate = new Date();
+  // function validates that the event date is not a date in the past
+  function checkDate() {
+    const eventDate = new Date(events.date_event);
+    const currentDate = new Date();
 
   // Set the time component of both dates to midnight
   eventDate.setHours(0, 0, 0, 0);
@@ -179,7 +177,6 @@ function checkDate() {
   } else {
     return false;
   }
-}
 
 // function that uses geocode API to verify and convert address to latitude and longitude for Google Maps rendering
 const verifyAddress = () => {
@@ -239,17 +236,19 @@ const verifyAddress = () => {
       setAgeError("The max age needs to be greater than the minimum age")
       isValid = false
     }
-    if(!checkMinAge()){
-      setMinAge("The minimum age needs to be at least 18")
-      isValid = false
+    if (!checkMinAge()) {
+      setMinAge("The minimum age needs to be at least 18");
+      isValid = false;
     }
-    if(!checkMax()){
-      setMaxError("The max people needs to be greater than 0")
-      isValid = false
+    if (!checkMax()) {
+      setMaxError("The max people needs to be greater than 0");
+      isValid = false;
     }
-    if(!checkDate()){
-      setDateError("The date of the event needs to be later than the current date")
-      isValid = false
+    if (!checkDate()) {
+      setDateError(
+        "The date of the event needs to be later than the current date"
+      );
+      isValid = false;
     }
    
     if(isValid){

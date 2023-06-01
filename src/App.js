@@ -13,7 +13,7 @@ import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./pages/LandingPage";
 import UserProfile from "./pages/UserProfile";
-import ShowUsers from "./pages/ShowUsers"
+import ShowUsers from "./pages/ShowUsers";
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
@@ -27,7 +27,7 @@ function App() {
   // This state is set to false by default and is set to true by the function on line 31
   const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
   const [user, setUser] = useLocalStorage("user", {});
-  // const { user, setUser } = useState({});
+  // const { user, setUser } = useUser();
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
@@ -73,7 +73,7 @@ function App() {
       {/* <FriendsProvider> */}
       <UserProvider>
         <Router>
-          <NavBar />
+          <NavBar setLoggedIn={setLoggedin} />
           <main className="h-[100%]">
             <Routes>
               <Route path="/" element={<Landing />} />
