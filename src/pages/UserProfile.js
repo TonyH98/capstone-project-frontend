@@ -43,6 +43,10 @@ function UserProfile() {
 
   const [hostedEvents, setHostedEvents] = useState([]);
 
+  const [friendsRequest , setFriendRequest] = useState([])
+
+  const [friends , setFriends] = useState([])
+
   let sortCategory = Array.isArray(isSelected) ? isSelected.sort() : [];
 
   // let sortCategory = [];
@@ -63,7 +67,6 @@ function UserProfile() {
       axios
         .get(`${API}/users/${user?.username}`)
         .then((res) => {
-          console.log("user info = ", res.data);
           setUser(res.data);
           setUserInfo(res.data);
           Global.user = res.data;
@@ -82,6 +85,15 @@ function UserProfile() {
 
   useEffect(() => {
     if (user?.id) {
+      axios.get(`${API}/friends/${user?.id}/list`).then((res) => {
+        setFriends(res.data);
+      });
+    }
+  }, [user?.id]);
+
+
+  useEffect(() => {
+    if (user?.id) {
       axios.get(`${API}/users/${user?.id}/events`).then((res) => {
         setUserEvent(res.data);
       });
@@ -96,6 +108,16 @@ function UserProfile() {
     }
   }, [user?.id]);
 
+
+useEffect(() => {
+if(user?.id){
+  axios.get(`${API}/friends/${user?.id}/request`)
+  .then((res) => {
+    setFriendRequest(res.data);
+  });
+}
+}, [user?.id])
+
   function deleteMultiple() {
     const deleteEvent = userEvents
       .filter((events) => events.selected)
@@ -108,7 +130,34 @@ function UserProfile() {
     );
   }
 
-  console.log(user);
+const acceptRequest = (senderId) => {
+
+axios.post(`${API}/friends/${user?.id}/accept/${senderId}`, {users_id: user?.id, friends_id: senderId})
+.then(() => {
+  axios.get(`${API}/friends/${user?.id}/request`)
+  .then((res) => {
+    setFriendRequest(res.data)
+  })
+})
+
+}
+
+const declineRequest = (senderId) => {
+  axios
+    .delete(`${API}/friends/${user?.id}/denied/${senderId}`)
+    .then(() => {
+      axios.get(`${API}/friends/${user?.id}/request`)
+      .then((res) => {
+      setFriendRequest(res.data)
+  })
+    })
+    .catch((error) => {
+      console.error("Error declining friend request:", error);
+    });
+};
+
+
+
 
   return (
     <>
@@ -159,14 +208,21 @@ function UserProfile() {
             />
           ) : null}
         </div>
-        {openEditModal ? (
-          <EditProfileModal
-            username={user?.username}
-            setOpenEditModal={setOpenEditModal}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
-          />
-        ) : null}
+      </div>
+
+      <div>
+        {friendsRequest.map((request) => {
+          return(
+          <div key={request.id}>
+           <img
+           src={request?.profile_img}
+              alt="profile-pic"
+              className="w-20 h-30"
+            /> {request.first_name} {request.last_name} <button onClick={() => acceptRequest(request.id)}>Accept</button> {""} <button onClick={() => declineRequest(request.id)}>Decline</button>
+          </div>
+
+          )
+        })}
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
@@ -249,6 +305,22 @@ function UserProfile() {
           >
             Create
           </button>
+        </fieldset>
+          <br/>
+        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
+          <legend className="px-3 text-left ml-8">Friends</legend>
+          {friends.map((friend) => {
+            return (
+              <div key={friend.id}>
+               <img
+           src={friend?.profile_img}
+              alt="profile-pic"
+              className="w-10 h-15"
+            />
+            {friend.username} {friend.pronouns}
+              </div>
+            );
+          })}
         </fieldset>
       </form>
     </>
