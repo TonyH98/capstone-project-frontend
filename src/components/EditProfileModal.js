@@ -30,7 +30,6 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, user,
             });
         }
       };
-      
    
     return (
         <>
