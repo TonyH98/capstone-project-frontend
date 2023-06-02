@@ -35,7 +35,7 @@ export default function EventDetails() {
   const [ category , setCategory ] = useState()
   const [ userEvent , setUserEvent ] = useState({})
   const [ categoryModal, setCategoryModal ] = useState(false)
-  const [ attending, setAttending ] = useState([])
+  const [ attending, setAttending ] = useState()
   
   const [ editMode, setEditMode ] = useState(false)
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
@@ -90,7 +90,7 @@ useEffect(() => {
     axios
     .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
     .then((res) => {
-      setAttending(res.data)
+      setAttending(res.data.length)
     })
   }
 }, [eventInfo?.id])
@@ -415,7 +415,7 @@ useEffect(() => {
           } */}
       </div>
       <div>
-        <h2>Attendees: {attending.length}/{eventInfo?.max_people}</h2>
+        <h2>Attendees: {attending}/{eventInfo?.max_people}</h2>
       </div>
       <div>
         
