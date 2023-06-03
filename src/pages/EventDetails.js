@@ -279,7 +279,7 @@ function handleFilter(event){
 }
 
 function createHost(userId){
-if(eventInfo?.id && hosts.length < 3){
+if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === userId)){
   axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
   .then(() => {
     axios.get(`${API}/events/${eventInfo?.id}/hosts`)
@@ -297,7 +297,7 @@ if(eventInfo?.id && hosts.length < 3){
 
   }
 
-console.log(hosts)
+
 
   return (
     <div className="relative">
