@@ -435,7 +435,10 @@ console.log(hosts)
             </div>
           </div>
           <div>
-            <button onClick={showSearchBar}>Add Co-Host</button>
+            {user?.id === eventInfo?.creator[0].id ? 
+            <button onClick={showSearchBar}>Add Co-Host</button>: null
+            
+          }
             {showSearch ? (
               <div>
                 <input
