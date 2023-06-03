@@ -37,6 +37,7 @@ export default function EventDetails() {
   const [ categoryModal, setCategoryModal ] = useState(false)
   const [ attending, setAttending ] = useState()
   
+  const [showSearch, setShowSearch] = useState(false)
   const [ editMode, setEditMode ] = useState(false)
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
   
@@ -45,7 +46,10 @@ export default function EventDetails() {
   const [userMain , setUser] = useLocalStorage('user',{})
   // const [data, setCommentData] = useLocalStorage('comments',[])
 
-
+  //Filtering users friends list states
+  let [search , setSearch] = useState("")
+  let [friends , setFriends] = useState([])
+  let [filterFriends, setFilterFriends] = useState([])
 
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
@@ -59,8 +63,16 @@ export default function EventDetails() {
       .catch((c) => console.warn("catch, c"));
     }, [eventInfo?.id]
   );
-    
-    console.log(eventInfo)
+
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/friends/${user?.id}/list`)
+      .then((res) => {
+        setFriends(res.data);
+      });
+    }
+  }, [user?.id]);
 
   useEffect(() => {
     axios
@@ -224,6 +236,39 @@ useEffect(() => {
     }
   }
 
+
+const showSearchBar = () => {
+  setShowSearch(!showSearch)
+}
+
+
+function handleFilter(event){
+  let searchResult = event.target.value
+  setSearch(searchResult)
+  const filter = friends.filter((friend) => {
+    const {first_name, username} = friend
+
+    const matchFirstName = first_name.toLowerCase().includes(searchResult.toLowerCase())
+
+
+    const matchUsername = username.toLowerCase().includes(searchResult.toLowerCase())
+
+    return matchFirstName || matchUsername
+  })
+
+  if(searchResult === ""){
+    setFilterFriends([])
+  }
+  else{
+    setFilterFriends(filter)
+  }
+}
+
+function clear(){
+  setFilterFriends([])
+  setSearch("")
+}
+
   // function updates a new event object and makes a put request to update informmation
   const handleEdit = () => {
 
@@ -355,6 +400,34 @@ useEffect(() => {
 
             Host: {eventInfo?.creator[0].username}
             </Link>
+          </div>
+          <div>
+            <button onClick={showSearchBar}>Add Co-Host</button>
+            {showSearch ? (
+              <div>
+                <input
+                type="text"
+                value={search}
+                onChange={handleFilter}
+                />
+              {filterFriends.length !== 0 && (
+                <div className="dataResult">
+
+                  {filterFriends.slice(0,5).map((friend) => {
+                    return(
+                      <div className="search-link">
+                        <br></br>
+                        <button className="dropdown-link">
+                         {friend.username}
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+              </div>
+              
+            ): null}
           </div>
 				</div>
 				<div className="flex flex-col gap-y-12 mt-12">

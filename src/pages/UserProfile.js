@@ -157,7 +157,7 @@ const declineRequest = (senderId) => {
 };
 
 
-
+console.log(friends)
 
   return (
     <>
