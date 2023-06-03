@@ -279,7 +279,7 @@ function handleFilter(event){
 }
 
 function createHost(userId){
-if(eventInfo?.id){
+if(eventInfo?.id && hosts.length < 3){
   axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
   .then(() => {
     axios.get(`${API}/events/${eventInfo?.id}/hosts`)
