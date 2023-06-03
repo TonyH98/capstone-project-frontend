@@ -51,6 +51,9 @@ export default function EventDetails() {
   let [friends , setFriends] = useState([])
   let [filterFriends, setFilterFriends] = useState([])
 
+  //States for creating and getting co-host for events
+  let [hosts , setHosts] = useState([])
+
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
     axios
@@ -104,6 +107,17 @@ useEffect(() => {
     .then((res) => {
       setAttending(res.data.length)
     })
+  }
+}, [eventInfo?.id])
+
+
+useEffect(() => {
+  if(eventInfo?.id){
+    axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+      .then((res) => {
+        setHosts(res.data)
+      })
+
   }
 }, [eventInfo?.id])
 
@@ -264,15 +278,26 @@ function handleFilter(event){
   }
 }
 
-function clear(){
-  setFilterFriends([])
-  setSearch("")
+function createHost(userId){
+if(eventInfo?.id){
+  axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
+  .then(() => {
+    axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+    .then((res) => {
+      setHosts(res.data)
+    })
+  })
+
+}
+
 }
 
   // function updates a new event object and makes a put request to update informmation
   const handleEdit = () => {
 
   }
+
+console.log(hosts)
 
   return (
     <div className="relative">
@@ -400,6 +425,14 @@ function clear(){
 
             Host: {eventInfo?.creator[0].username}
             </Link>
+
+            <div>
+             Co-Hosts: {hosts.map((host) => {
+                return(
+                  <div>{host.username}</div>
+                )
+              })}
+            </div>
           </div>
           <div>
             <button onClick={showSearchBar}>Add Co-Host</button>
@@ -417,7 +450,7 @@ function clear(){
                     return(
                       <div className="search-link">
                         <br></br>
-                        <button className="dropdown-link">
+                        <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
                          {friend.username}
                         </button>
                       </div>
