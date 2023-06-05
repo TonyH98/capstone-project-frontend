@@ -1,5 +1,5 @@
 // Map component using React Google Maps API rendered on events page and events details page
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { Marker } from '@react-google-maps/api';
 
@@ -33,6 +33,10 @@ function Map({ mapWidth, mapHeight, mapLat, mapLng }) {
     const onUnmount = useCallback(function callback(map) {
         setMap(null)
     }, [])
+
+    // useEffect(() => {
+    //   getCoordinates()
+    // }, [address])
 
     return isLoaded ? (
         <div>

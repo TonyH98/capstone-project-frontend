@@ -1,30 +1,45 @@
-/* Tooltip container */
-.tooltip {
-    position: relative;
-    display: inline-block;
-  }
-  
-  /* Tooltip text */
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-   
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    z-index: 1;
-  }
+.background {
+  width: 100vw;
+  height: 100vw;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index:1;
+  background-color: black;
+  opacity: 0.5;
+}
 
-  .tooltip .tooltiptext {
-    top: -5px;
-    left: 105%;
-  }
-  
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-  }
+.show {
+  opacity: 100%;
+  z-index: 200;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  background-color:  rgb(229, 205, 246);
+  background-color: azure;
+  text-align: left;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 10%;
+  margin-left: -60px;
+}
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 25%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgb(229, 205, 246) transparent;
+  border-color: transparent transparent azure transparent;
+}

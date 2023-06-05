@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { useParams } from 'react-router-dom'
 import styles from './modal.module.css'
 
 const API = process.env.REACT_APP_API_URL
@@ -10,7 +9,6 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, user,
     const handleTextChange = (e) => {
         setUpdatedUser({...updatedUser, [e.target.id]: e.target.value})
     }
-
 
     // function that updates the user information in the users table and closes the modal
     // NEED TO test if working
@@ -32,7 +30,6 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser, user,
             });
         }
       };
-      
    
     return (
         <>
