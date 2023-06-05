@@ -109,9 +109,6 @@ export default function EventDetails() {
         })
     }
   }, [eventInfo?.id])
-
-  useEffect(() => {
-  }, [eventInfo]);
   
   useEffect(() => {
     getCoordinates()
@@ -141,8 +138,8 @@ export default function EventDetails() {
 
   // declare variables to construct text date from numerical date
   const numDate = eventInfo?.date_event;
-  const monthName = months.get(numDate?.slice(0, 2));
-  let eventDate = `${monthName} ${numDate?.slice(3, 5)}, ${numDate?.slice(6)}`;
+  const monthName = months.get(numDate?.slice(5, 7));
+  let eventDate = `${monthName} ${numDate?.slice(8)}, ${numDate?.slice(0, 4)}`;
 
   const getCoordinates = () => {
     // using Geocode API to convert address to coordinates on map
@@ -241,6 +238,7 @@ export default function EventDetails() {
       })
     }
   }
+
   // function that adds event to user profile as rsvp
   function addToRsvp() {
     if (eventInfo && eventInfo.interested === true) {
