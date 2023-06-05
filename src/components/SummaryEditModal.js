@@ -5,7 +5,7 @@ function SummaryEditModal({ eventInfo, setOpenSummaryEdit, handleTextChange, han
         <div className="relative">
             <div className={`${styles.card} w-1/3`}>
                 <label
-                    htmlFor="summary"
+                    htmlFor="summary" 
                     className="block mb-2"
                 >
                     Summary

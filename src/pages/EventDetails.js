@@ -37,10 +37,10 @@ export default function EventDetails() {
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
   const [ openLocationEdit, setOpenLocationEdit ] = useState(false)
   const [ openSummaryEdit, setOpenSummaryEdit ] = useState(false)
-  const [showSearch, setShowSearch] = useState(false)
+  const [ showSearch, setShowSearch ] = useState(false)
 
   const creator = eventInfo?.creator[0].id;
-  const [userMain, setUser] = useLocalStorage("user", {});
+  const [ userMain, setUser ] = useLocalStorage("user", {});
   
 
   //Filtering users friends list states
@@ -50,8 +50,7 @@ export default function EventDetails() {
 
   //States for creating and getting co-host for events
   let [hosts , setHosts] = useState([])
-
-
+  
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
     axios
@@ -63,18 +62,17 @@ export default function EventDetails() {
       getCoordinates();
     })
     .catch((c) => console.warn("catch, c"));
-
   }, [eventInfo?.id]);
-
+  
   useEffect(() => {
-    if (user?.id) {
+    if (user?.id) {	    
       axios.get(`${API}/friends/${user?.id}/list`)
-      .then((res) => {
-        setFriends(res.data);
+      .then((res) => {	      
+        setFriends(res.data);	        
       });
     }
   }, [user?.id]);
-
+  
   useEffect(() => {
     axios
     .get(`${API}/category`)
@@ -86,7 +84,8 @@ export default function EventDetails() {
   
   useEffect(() => {
     if (user?.id) {
-      axios.get(`${API}/users/${user?.username}/events/${id}`).then((res) => {
+      axios.get(`${API}/users/${user?.username}/events/${id}`)
+      .then((res) => {
         setUserEvent(res.data);
       });
     }
@@ -95,7 +94,6 @@ export default function EventDetails() {
   useEffect(() => {
     if (eventInfo?.id) {
       axios
-
       .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
       .then((res) => {
         setAttending(res.data);
@@ -104,39 +102,21 @@ export default function EventDetails() {
   }, [eventInfo?.id]);
 
   useEffect(() => {
+    if(eventInfo?.id){
+      axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+        .then((res) => {
+          setHosts(res.data)
+        })
+    }
+  }, [eventInfo?.id])
+
+  useEffect(() => {
   }, [eventInfo]);
   
   useEffect(() => {
     getCoordinates()
   }, [eventInfo?.address])
   
-  .get(`${API}/users/${user?.username}/events/${id}`)
-  .then((res) => {
-    setUserEvent(res.data)
-  })
-}, [user?.id])
-
-
-useEffect(() => {
-  if(eventInfo?.id){
-    axios
-    .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
-    .then((res) => {
-      setAttending(res.data.length)
-    })
-  }
-}, [eventInfo?.id])
-
-
-useEffect(() => {
-  if(eventInfo?.id){
-    axios.get(`${API}/events/${eventInfo?.id}/hosts`)
-      .then((res) => {
-        setHosts(res.data)
-      })
-  }
-}, [eventInfo?.id])
-
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
   const months = new Map();
   const monthObj = {
@@ -225,6 +205,42 @@ useEffect(() => {
     }
   }
 
+  const showSearchBar = () => {
+    setShowSearch(!showSearch)
+  }
+
+  function handleFilter(event){
+    let searchResult = event.target.value
+    setSearch(searchResult)
+    const filter = friends.filter((friend) => {
+      const {first_name, username} = friend
+  
+      const matchFirstName = first_name.toLowerCase().includes(searchResult.toLowerCase())
+  
+      const matchUsername = username.toLowerCase().includes(searchResult.toLowerCase())
+  
+      return matchFirstName || matchUsername
+    })
+  
+    if(searchResult === ""){
+      setFilterFriends([])
+    }
+    else{
+      setFilterFriends(filter)
+    }
+  }
+  
+  function createHost(userId){
+  if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === userId)){
+    axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
+      .then(() => {
+        axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+        .then((res) => {
+          setHosts(res.data)
+        })
+      })
+    }
+  }
   // function that adds event to user profile as rsvp
   function addToRsvp() {
     if (eventInfo && eventInfo.interested === true) {
@@ -265,52 +281,11 @@ useEffect(() => {
     }
   }
 
-const showSearchBar = () => {
-  setShowSearch(!showSearch)
-}
-
-
-function handleFilter(event){
-  let searchResult = event.target.value
-  setSearch(searchResult)
-  const filter = friends.filter((friend) => {
-    const {first_name, username} = friend
-
-    const matchFirstName = first_name.toLowerCase().includes(searchResult.toLowerCase())
-
-    const matchUsername = username.toLowerCase().includes(searchResult.toLowerCase())
-
-    return matchFirstName || matchUsername
-  })
-
-  if(searchResult === ""){
-    setFilterFriends([])
-  }
-  else{
-    setFilterFriends(filter)
-  }
-}
-
-function createHost(userId){
-if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === userId)){
-  axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
-  .then(() => {
-    axios.get(`${API}/events/${eventInfo?.id}/hosts`)
-    .then((res) => {
-      setHosts(res.data)
-    })
-  })
-
-}
-
-}
-
   // function to update information on text change in edit forms
   const handleTextChange = (e) => {
     setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
     console.log(updatedEventInfo.date_event)
   };
-
 
   // function updates a new event object and makes a put request to update informmation
   const handleEdit = () => {
@@ -345,8 +320,6 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
   };
 
   console.log(updatedEventInfo)
-
-
 
   return (
     <div className="relative">
@@ -536,6 +509,47 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
               </Link>
             </div>
           </div>
+
+          <div>
+            <div>
+              Co-Hosts: {hosts.map((host) => {
+                  return(
+                    <div>{host.username}</div>
+                  )
+                })}
+              </div>
+            <div>
+              {user?.id === eventInfo?.creator[0].id ? 
+                <button onClick={showSearchBar}>Add Co-Host</button>: null
+            }
+              {showSearch ? (
+                <div>
+                  <input
+                  type="text"
+                  value={search}
+                  onChange={handleFilter}
+                  />
+                {filterFriends.length !== 0 && (
+                  <div className="dataResult">
+
+                    {filterFriends.slice(0,5).map((friend) => {
+                      return(
+                        <div className="search-link">
+                          <br></br>
+                          <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
+                          {friend.username}
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+                </div>
+                
+              ): null}
+            </div>
+          </div>
+
           <div>
             <h2 className="inline">
               <b>Summary</b>
@@ -560,91 +574,11 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
               />
             ) : null
           }
-
         </div>
         <div className="flex flex-col gap-y-12 mt-12">
           <div className="flex flex-row justify-end h-10 gap-x-3">
             {user?.id === creator ? (
               editMode ? (
-
-          <h2 className="mt-10">
-            <b>Summary</b>
-          </h2>
-          <section>{eventInfo?.summary}</section>
-          <div>
-            <Link to={`/profile/${eventInfo?.creator[0].username}`}>
-              Host: {eventInfo?.creator[0].username}
-            </Link>
-
-            <div>
-             Co-Hosts: {hosts.map((host) => {
-                return(
-                  <div>{host.username}</div>
-                )
-              })}
-            </div>
-          </div>
-          <div>
-            {user?.id === eventInfo?.creator[0].id ? 
-            <button onClick={showSearchBar}>Add Co-Host</button>: null
-            
-          }
-            {showSearch ? (
-              <div>
-                <input
-                type="text"
-                value={search}
-                onChange={handleFilter}
-                />
-              {filterFriends.length !== 0 && (
-                <div className="dataResult">
-
-                  {filterFriends.slice(0,5).map((friend) => {
-                    return(
-                      <div className="search-link">
-                        <br></br>
-                        <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
-                         {friend.username}
-                        </button>
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-              </div>
-              
-            ): null}
-          </div>
-				</div>
-				<div className="flex flex-col gap-y-12 mt-12">
-						<div className="flex flex-row justify-end h-10 gap-x-3">
-            {
-              user?.id === creator ? (
-                editMode ? (
-                  <>
-                    <button
-                      className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                      onClick={handleDelete}
-                    >
-                    Delete 
-                    </button>
-                    <button
-                      className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
-                      onClick={() => setEditMode(false)}
-                      >
-                      Done 
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                    onClick={() => setEditMode(true)}
-                  >
-                    Edit
-                  </button>
-                )
-              ) : (
-
                 <>
                   <button
                     className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
@@ -705,7 +639,6 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
           } */}
       </div>
       <div>
-
         <h2 className="text-lg ml-20 font-bold">
           Attendees: {attending.length}/{eventInfo?.max_people}
         </h2>
@@ -723,11 +656,7 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
               Still space in this event. RSVP now to save your place!
             </h1>
           )
-
         }
-
-        <h2>Attendees: {attending}/{eventInfo?.max_people}</h2>
-
       </div>
       <div>
         <CustomComponent

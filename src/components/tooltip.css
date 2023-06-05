@@ -32,7 +32,6 @@
   left: 10%;
   margin-left: -60px;
 }
-
 .tooltip .tooltiptext::after {
   content: "";
   position: absolute;
