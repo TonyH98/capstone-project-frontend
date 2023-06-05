@@ -24,6 +24,7 @@ export default function EventDetails() {
   const navigate = useNavigate();
 
   // useState hook to store event info and user interest
+
   const [eventInfo, setEventInfo] = useState();
   const [updatedEventInfo, setUpdatedEventInfo] = useState();
   const [coordinates, setCoordinates] = useState({});
@@ -39,9 +40,36 @@ export default function EventDetails() {
 
   const creator = eventInfo?.creator[0].id;
   const [userMain, setUser] = useLocalStorage("user", {});
+
+  const [ eventInfo, setEventInfo ] = useState();
+  const [ updatedEventInfo, setUpdatedEventInfo ] = useState()
+  const [ coordinates, setCoordinates ] = useState({})
+  const [ category , setCategory ] = useState()
+  const [ userEvent , setUserEvent ] = useState({})
+  const [ categoryModal, setCategoryModal ] = useState(false)
+  const [ attending, setAttending ] = useState()
+  
+  const [showSearch, setShowSearch] = useState(false)
+  const [ editMode, setEditMode ] = useState(false)
+  const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
+  
+  const creator = eventInfo?.creator[0].id
+
   
   // const [data, setCommentData] = useLocalStorage('comments',[])
+
   
+
+
+  //Filtering users friends list states
+  let [search , setSearch] = useState("")
+  let [friends , setFriends] = useState([])
+  let [filterFriends, setFilterFriends] = useState([])
+
+  //States for creating and getting co-host for events
+  let [hosts , setHosts] = useState([])
+
+
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
     axios
@@ -53,11 +81,26 @@ export default function EventDetails() {
       getCoordinates();
     })
     .catch((c) => console.warn("catch, c"));
+
   }, [eventInfo?.id]);
   
   console.log(eventInfo);
   console.log("update", updatedEventInfo);
   
+
+  }, [eventInfo?.id]
+  );
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/friends/${user?.id}/list`)
+      .then((res) => {
+        setFriends(res.data);
+      });
+    }
+  }, [user?.id]);
+
+
   useEffect(() => {
     axios
     .get(`${API}/category`)
@@ -78,6 +121,7 @@ export default function EventDetails() {
   useEffect(() => {
     if (eventInfo?.id) {
       axios
+
       .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
       .then((res) => {
         setAttending(res.data);
@@ -92,6 +136,38 @@ export default function EventDetails() {
     getCoordinates()
   }, [eventInfo?.address])
   
+=======
+  .get(`${API}/users/${user?.username}/events/${id}`)
+  .then((res) => {
+    setUserEvent(res.data)
+  })
+}
+}, [user?.id])
+
+
+useEffect(() => {
+  if(eventInfo?.id){
+    axios
+    .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+    .then((res) => {
+      setAttending(res.data.length)
+    })
+  }
+}, [eventInfo?.id])
+
+
+useEffect(() => {
+  if(eventInfo?.id){
+    axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+      .then((res) => {
+        setHosts(res.data)
+      })
+
+  }
+}, [eventInfo?.id])
+
+
+
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
   const months = new Map();
   const monthObj = {
@@ -220,11 +296,52 @@ export default function EventDetails() {
     }
   }
 
+const showSearchBar = () => {
+  setShowSearch(!showSearch)
+}
+
+
+function handleFilter(event){
+  let searchResult = event.target.value
+  setSearch(searchResult)
+  const filter = friends.filter((friend) => {
+    const {first_name, username} = friend
+
+    const matchFirstName = first_name.toLowerCase().includes(searchResult.toLowerCase())
+
+    const matchUsername = username.toLowerCase().includes(searchResult.toLowerCase())
+
+    return matchFirstName || matchUsername
+  })
+
+  if(searchResult === ""){
+    setFilterFriends([])
+  }
+  else{
+    setFilterFriends(filter)
+  }
+}
+
+function createHost(userId){
+if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === userId)){
+  axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
+  .then(() => {
+    axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+    .then((res) => {
+      setHosts(res.data)
+    })
+  })
+
+}
+
+}
+
   // function to update information on text change in edit forms
   const handleTextChange = (e) => {
     setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
     console.log(updatedEventInfo.date_event)
   };
+
 
   // function updates a new event object and makes a put request to update informmation
   const handleEdit = () => {
@@ -259,6 +376,8 @@ export default function EventDetails() {
   };
 
   console.log(updatedEventInfo)
+
+
 
   return (
     <div className="relative">
@@ -472,11 +591,91 @@ export default function EventDetails() {
               />
             ) : null
           }
+
         </div>
         <div className="flex flex-col gap-y-12 mt-12">
           <div className="flex flex-row justify-end h-10 gap-x-3">
             {user?.id === creator ? (
               editMode ? (
+
+          <h2 className="mt-10">
+            <b>Summary</b>
+          </h2>
+          <section>{eventInfo?.summary}</section>
+          <div>
+            <Link to={`/profile/${eventInfo?.creator[0].username}`}>
+              Host: {eventInfo?.creator[0].username}
+            </Link>
+
+            <div>
+             Co-Hosts: {hosts.map((host) => {
+                return(
+                  <div>{host.username}</div>
+                )
+              })}
+            </div>
+          </div>
+          <div>
+            {user?.id === eventInfo?.creator[0].id ? 
+            <button onClick={showSearchBar}>Add Co-Host</button>: null
+            
+          }
+            {showSearch ? (
+              <div>
+                <input
+                type="text"
+                value={search}
+                onChange={handleFilter}
+                />
+              {filterFriends.length !== 0 && (
+                <div className="dataResult">
+
+                  {filterFriends.slice(0,5).map((friend) => {
+                    return(
+                      <div className="search-link">
+                        <br></br>
+                        <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
+                         {friend.username}
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+              </div>
+              
+            ): null}
+          </div>
+				</div>
+				<div className="flex flex-col gap-y-12 mt-12">
+						<div className="flex flex-row justify-end h-10 gap-x-3">
+            {
+              user?.id === creator ? (
+                editMode ? (
+                  <>
+                    <button
+                      className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+                      onClick={handleDelete}
+                    >
+                    Delete 
+                    </button>
+                    <button
+                      className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+                      onClick={() => setEditMode(false)}
+                      >
+                      Done 
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+                    onClick={() => setEditMode(true)}
+                  >
+                    Edit
+                  </button>
+                )
+              ) : (
+
                 <>
                   <button
                     className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
@@ -537,6 +736,7 @@ export default function EventDetails() {
           } */}
       </div>
       <div>
+
         <h2 className="text-lg ml-20 font-bold">
           Attendees: {attending.length}/{eventInfo?.max_people}
         </h2>
@@ -556,6 +756,9 @@ export default function EventDetails() {
           )
 
         }
+
+        <h2>Attendees: {attending}/{eventInfo?.max_people}</h2>
+
       </div>
       <div>
         <CustomComponent
