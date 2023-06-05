@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // this prefix is the same name as our app title in the index.html file
 const prefix = 'Kick.It';
 
-// the purpose of this file is have one localStorage made for our entire app that will keep track of all changes in our app and save info so that upon refresh users will not lose data.
+// the purpose of this file is have one localStorage made for our entire app that will keep trask of all changes in our app and save info so that upon refresh users will not lose data.
 
 // from here, all we have to do is use the function useLocalStorage whenever we are creating a new state that we want to persist.
 // EXAMPLE: const [friends, setFriends] = useLocalStorage('friends', [])

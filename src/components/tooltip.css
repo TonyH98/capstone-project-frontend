@@ -22,7 +22,6 @@
 
 .tooltip .tooltiptext {
   background-color:  rgb(229, 205, 246);
-  background-color: azure;
   text-align: left;
   border-radius: 6px;
   padding: 5px 0;
@@ -42,5 +41,4 @@
   border-width: 5px;
   border-style: solid;
   border-color: transparent transparent rgb(229, 205, 246) transparent;
-  border-color: transparent transparent azure transparent;
 }
