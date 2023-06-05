@@ -36,6 +36,7 @@ export default function EventDetails() {
   const [openTitleEdit, setOpenTitleEdit] = useState(false);
   const [openLocationEdit, setOpenLocationEdit] = useState(false)
   const [openSummaryEdit, setOpenSummaryEdit] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
 
   const creator = eventInfo?.creator[0].id;
   const [userMain, setUser] = useLocalStorage("user", {});
@@ -55,8 +56,14 @@ export default function EventDetails() {
     .catch((c) => console.warn("catch, c"));
   }, [eventInfo?.id]);
   
-  console.log(eventInfo);
-  console.log("update", updatedEventInfo);
+  useEffect(() => {
+    if (user?.id) {	    
+      axios.get(`${API}/friends/${user?.id}/list`)
+      .then((res) => {	      
+        setFriends(res.data);	        
+      });
+    }
+  }, [user?.id]);
   
   useEffect(() => {
     axios
@@ -69,7 +76,8 @@ export default function EventDetails() {
   
   useEffect(() => {
     if (user?.id) {
-      axios.get(`${API}/users/${user?.username}/events/${id}`).then((res) => {
+      axios.get(`${API}/users/${user?.username}/events/${id}`)
+      .then((res) => {
         setUserEvent(res.data);
       });
     }
@@ -84,6 +92,15 @@ export default function EventDetails() {
       });
     }
   }, [eventInfo?.id]);
+
+  useEffect(() => {
+    if(eventInfo?.id){
+      axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+        .then((res) => {
+          setHosts(res.data)
+        })
+    }
+  }, [eventInfo?.id])
 
   useEffect(() => {
   }, [eventInfo]);
@@ -180,6 +197,44 @@ export default function EventDetails() {
     }
   }
 
+  const showSearchBar = () => {
+    setShowSearch(!showSearch)
+  }
+
+  function handleFilter(event){
+    let searchResult = event.target.value
+    setSearch(searchResult)
+    const filter = friends.filter((friend) => {
+      const {first_name, username} = friend
+  
+      const matchFirstName = first_name.toLowerCase().includes(searchResult.toLowerCase())
+  
+      const matchUsername = username.toLowerCase().includes(searchResult.toLowerCase())
+  
+      return matchFirstName || matchUsername
+    })
+  
+    if(searchResult === ""){
+      setFilterFriends([])
+    }
+    else{
+      setFilterFriends(filter)
+    }
+  }
+  
+  function createHost(userId){
+  if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === userId)){
+    axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
+    .then(() => {
+      axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+      .then((res) => {
+        setHosts(res.data)
+      })
+    })
+  
+  }
+  
+  }
   // function that adds event to user profile as rsvp
   function addToRsvp() {
     if (eventInfo && eventInfo.interested === true) {
