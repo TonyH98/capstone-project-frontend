@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
 import { useUser } from "../contexts/UserProvider";
+
 const API = process.env.REACT_APP_API_URL
 
 export default function NewEvent() {
@@ -21,7 +22,8 @@ export default function NewEvent() {
   const [ isValid, setIsValid ] = useState(false)
 
   const { user } = useUser();
-const  [users, setUsers] = useState({})
+  const [ users, setUsers ] = useState({});
+
   // useState to store event information
   const [events, setEvents] = useState({
     title: "",
@@ -102,7 +104,6 @@ const handleTextChange = (event) => {
       [id]: value ? Number(value) : "", // Convert to number if value exists, otherwise set it as an empty string
     }));
   }
-
   else if (event.target.id === "age_restriction") {
     const { value } = event.target;
     const isAgeRestricted = value === "true"; 
@@ -119,6 +120,7 @@ const handleTextChange = (event) => {
       [id]: value,
     }));
   }
+  console.log(events.date_event)
 };
 
 // function handles removing a category that was selected on button click and updates the event details object
@@ -167,6 +169,7 @@ function checkMax(){
 
 // function validates that the event date is not a date in the past
 function checkDate() {
+  console.log(events.date_event)
   const eventDate = new Date(events.date_event);
   const currentDate = new Date();
 
@@ -182,7 +185,7 @@ function checkDate() {
 }
 
 // function that uses geocode API to verify and convert address to latitude and longitude for Google Maps rendering
-const verifyAddress = () => {
+  const verifyAddress = () => {
   // resets useState hooks to re-verify on click or on submit
   setAddressError('')   
   setAddressIsVerified(false)
@@ -259,6 +262,7 @@ const verifyAddress = () => {
       console.log("Submit was blocked")
     }
   }
+  console.log(events)
   
   return (
     <div className="flex justify-center items-center p-4 flex gap-20">
