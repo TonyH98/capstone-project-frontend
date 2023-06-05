@@ -231,7 +231,7 @@ export default function EventDetails() {
   }
   
   function createHost(userId){
-  if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === userId)){
+  if(eventInfo?.id && hosts?.length < 3 && !hosts.some(host => host.user_id === userId)){
     axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
       .then(() => {
         axios.get(`${API}/events/${eventInfo?.id}/hosts`)
@@ -529,7 +529,7 @@ export default function EventDetails() {
                   value={search}
                   onChange={handleFilter}
                   />
-                {filterFriends.length !== 0 && (
+                {filterFriends?.length !== 0 && (
                   <div className="dataResult">
 
                     {filterFriends.slice(0,5).map((friend) => {
@@ -640,10 +640,10 @@ export default function EventDetails() {
       </div>
       <div>
         <h2 className="text-lg ml-20 font-bold">
-          Attendees: {attending.length}/{eventInfo?.max_people}
+          Attendees: {attending?.length}/{eventInfo?.max_people}
         </h2>
         {
-          attending.length ? (
+          attending?.length ? (
             <div>
               {
                 attending.map((attendee) => {
