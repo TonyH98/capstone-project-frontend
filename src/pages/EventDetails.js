@@ -87,6 +87,9 @@ export default function EventDetails() {
   useEffect(() => {
   }, [eventInfo]);
   
+  useEffect(() => {
+    getCoordinates()
+  }, [eventInfo?.address])
   
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
   const months = new Map();
@@ -385,6 +388,7 @@ export default function EventDetails() {
                 handleTextChange={handleTextChange}
                 getCoordinates={getCoordinates}
                 setOpenLocationEdit={setOpenLocationEdit}
+                handleEdit={handleEdit}
               />
               : null
           }
@@ -517,6 +521,8 @@ export default function EventDetails() {
               mapHeight="300px"
               mapLat={coordinates?.latitude}
               mapLng={coordinates?.longitude}
+              // address={eventInfo?.address}
+              // getCoordinates={getCoordinates}
             />
           </div>
         </div>
