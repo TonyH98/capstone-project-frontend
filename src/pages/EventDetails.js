@@ -28,8 +28,9 @@ export default function EventDetails() {
   const [ category , setCategory ] = useState()
   const [ userEvent , setUserEvent ] = useState({})
   const [ categoryModal, setCategoryModal ] = useState(false)
-  const [ attending, setAttending ] = useState([])
+  const [ attending, setAttending ] = useState()
   
+  const [showSearch, setShowSearch] = useState(false)
   const [ editMode, setEditMode ] = useState(false)
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
   
@@ -37,9 +38,15 @@ export default function EventDetails() {
   
   const [userMain , setUser] = useLocalStorage('user',{})
   // const [data, setCommentData] = useLocalStorage('comments',[])
-  
-  
-  
+
+  //Filtering users friends list states
+  let [search , setSearch] = useState("")
+  let [friends , setFriends] = useState([])
+  let [filterFriends, setFilterFriends] = useState([])
+
+  //States for creating and getting co-host for events
+  let [hosts , setHosts] = useState([])
+
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
     axios
@@ -53,10 +60,16 @@ export default function EventDetails() {
     .catch((c) => console.warn("catch, c"));
   }, [eventInfo?.id]
   );
-  
-  console.log(eventInfo)
-  console.log('update', updatedEventInfo)
-  
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/friends/${user?.id}/list`)
+      .then((res) => {
+        setFriends(res.data);
+      });
+    }
+  }, [user?.id]);
+
   useEffect(() => {
     axios
     .get(`${API}/category`)
@@ -83,8 +96,19 @@ useEffect(() => {
     axios
     .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
     .then((res) => {
-      setAttending(res.data)
+      setAttending(res.data.length)
     })
+  }
+}, [eventInfo?.id])
+
+
+useEffect(() => {
+  if(eventInfo?.id){
+    axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+      .then((res) => {
+        setHosts(res.data)
+      })
+
   }
 }, [eventInfo?.id])
 
@@ -217,10 +241,51 @@ useEffect(() => {
     }
   }
 
+const showSearchBar = () => {
+  setShowSearch(!showSearch)
+}
+
+
+function handleFilter(event){
+  let searchResult = event.target.value
+  setSearch(searchResult)
+  const filter = friends.filter((friend) => {
+    const {first_name, username} = friend
+
+    const matchFirstName = first_name.toLowerCase().includes(searchResult.toLowerCase())
+
+    const matchUsername = username.toLowerCase().includes(searchResult.toLowerCase())
+
+    return matchFirstName || matchUsername
+  })
+
+  if(searchResult === ""){
+    setFilterFriends([])
+  }
+  else{
+    setFilterFriends(filter)
+  }
+}
+
+function createHost(userId){
+if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === userId)){
+  axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
+  .then(() => {
+    axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+    .then((res) => {
+      setHosts(res.data)
+    })
+  })
+
+}
+
+}
+
   // function to update information on text change in edit forms
   const handleTextChange = (e) => {
     setUpdatedEventInfo({...updatedEventInfo, [e.target.id]: e.target.value})
   }
+
 
   // function updates a new event object and makes a put request to update informmation
   const handleEdit = () => {
@@ -242,6 +307,8 @@ useEffect(() => {
         .catch((c) => console.warn("catch, c"))
     }
   }
+
+
 
   return (
     <div className="relative" >
@@ -458,6 +525,45 @@ useEffect(() => {
             <Link to={`/profile/${eventInfo?.creator[0].username}`}>
               Host: {eventInfo?.creator[0].username}
             </Link>
+
+            <div>
+             Co-Hosts: {hosts.map((host) => {
+                return(
+                  <div>{host.username}</div>
+                )
+              })}
+            </div>
+          </div>
+          <div>
+            {user?.id === eventInfo?.creator[0].id ? 
+            <button onClick={showSearchBar}>Add Co-Host</button>: null
+            
+          }
+            {showSearch ? (
+              <div>
+                <input
+                type="text"
+                value={search}
+                onChange={handleFilter}
+                />
+              {filterFriends.length !== 0 && (
+                <div className="dataResult">
+
+                  {filterFriends.slice(0,5).map((friend) => {
+                    return(
+                      <div className="search-link">
+                        <br></br>
+                        <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
+                         {friend.username}
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+              </div>
+              
+            ): null}
           </div>
 				</div>
 				<div className="flex flex-col gap-y-12 mt-12">
@@ -524,7 +630,7 @@ useEffect(() => {
           } */}
       </div>
       <div>
-        <h2>Attendees: {attending.length}/{eventInfo?.max_people}</h2>
+        <h2>Attendees: {attending}/{eventInfo?.max_people}</h2>
       </div>
       <div>
         

@@ -47,6 +47,7 @@ const [minAge , setMinAge] = useState("")
 const [maxError , setMaxError] = useState("")
 const [dateError, setDateError] = useState("")
 const [addressError, setAddressError] = useState("")
+const [categoryError, setCategoryError] = useState("")
 
   // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
@@ -111,6 +112,8 @@ const [addressError, setAddressError] = useState("")
     setEvents((prevEvent) => ({
       ...prevEvent,
       age_restriction: isAgeRestricted,
+      age_min : isAgeRestricted ? prevEvent.age_min : 0,
+      age_max : isAgeRestricted ? prevEvent.age_max : 0
     }));
   }
   // handles updating all other fields of the event details
@@ -181,6 +184,17 @@ const [addressError, setAddressError] = useState("")
       }
   } else {
     return true
+  }
+}
+
+
+//function validate how many categories there are 
+function checkCategory(){
+  if(events.categoryIds.length > 0){
+    return true
+  }
+  else{
+    return false
   }
 }
 
@@ -267,7 +281,7 @@ const verifyAddress = () => {
     setMinAge('')
     setMaxError('')
     setDateError('')
-
+    setCategoryError('')
     let isValid = true
 
     verifyAddress()
@@ -294,7 +308,10 @@ const verifyAddress = () => {
       );
       isValid = false;
     }
-   
+   if(!checkCategory()){
+     setCategoryError("The event most have at least one category")
+     isValid = false
+   }
     if(isValid){
       handleAdd(events)
       console.log("Submit went through")
@@ -334,7 +351,6 @@ const verifyAddress = () => {
           id="categoryIds" 
           value={events.categoryIds.length > 0 ? events.categoryIds[0] : ""}
           onChange={handleTextChange} 
-          required
         >
           <option value="">
             Select a category
@@ -370,6 +386,9 @@ const verifyAddress = () => {
               </div>
             ) : null
         }
+        {
+          categoryError && <p style={{color:"red"}}>{categoryError}</p>
+        }
           <br/>
 
           <label htmlFor="age_restriction">
@@ -394,7 +413,7 @@ const verifyAddress = () => {
                   <input 
                     type="number" 
                     id="age_min" 
-                    value={events.age_min}
+                    value={events.age_restriction ? events.age_min : 0}
                     onChange={handleTextChange} 
                   />
                   <br />
@@ -410,7 +429,7 @@ const verifyAddress = () => {
                   <input 
                     type="number" 
                     id="age_max" 
-                    value={events.age_max}
+                    value={events.age_restriction ? events.age_max : 0}
                     onChange={handleTextChange} 
                   />
                 </div>
