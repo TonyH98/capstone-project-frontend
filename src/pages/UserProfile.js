@@ -49,6 +49,8 @@ function UserProfile() {
 
   let sortCategory = Array.isArray(isSelected) ? isSelected.sort() : [];
 
+  console.log(user)
+
   // let sortCategory = [];
 
   // useEffect makes GET request for all categories and is used in the interests field
