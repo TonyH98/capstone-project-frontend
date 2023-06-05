@@ -1,4 +1,5 @@
 // event details page where a host can edit their event or users can show interest
+/// NEED TO add attendees list
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -536,13 +537,27 @@ export default function EventDetails() {
           } */}
       </div>
       <div>
-        <h2>
+        <h2 className="text-lg ml-20 font-bold">
           Attendees: {attending.length}/{eventInfo?.max_people}
         </h2>
+        {
+          attending.length ? (
+            <div>
+              {
+                attending.map((attendee) => {
+
+                })
+              }
+            </div>
+          ) : (
+            <h1 className="ml-32 my-5 text-gray-400 text-lg">
+              Still space in this event. RSVP now to save your place!
+            </h1>
+          )
+
+        }
       </div>
       <div>
-        <h2>Comments</h2>
-
         <CustomComponent
           currentUser={{
             currentUserId: `${user.id}`,
@@ -555,7 +570,6 @@ export default function EventDetails() {
               `&background=random`,
           }}
         />
-        <p>Comment section will go here</p>
       </div>
     </div>
   );
