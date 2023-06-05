@@ -41,7 +41,12 @@ export default function EventDetails() {
   const creator = eventInfo?.creator[0].id;
   const [userMain, setUser] = useLocalStorage("user", {});
   
-  // const [data, setCommentData] = useLocalStorage('comments',[])
+  let [search , setSearch] = useState("")
+  let [friends , setFriends] = useState([])
+  let [filterFriends, setFilterFriends] = useState([])
+
+  //States for creating and getting co-host for events
+  let [hosts , setHosts] = useState([])
   
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
@@ -502,7 +507,50 @@ export default function EventDetails() {
                 {eventInfo?.creator[0].username}
               </Link>
             </div>
+
+
+            
           </div>
+          <div>
+            <div>
+              Co-Hosts: {hosts.map((host) => {
+                  return(
+                    <div>{host.username}</div>
+                  )
+                })}
+              </div>
+            <div>
+              {user?.id === eventInfo?.creator[0].id ? 
+                <button onClick={showSearchBar}>Add Co-Host</button>: null
+            }
+              {showSearch ? (
+                <div>
+                  <input
+                  type="text"
+                  value={search}
+                  onChange={handleFilter}
+                  />
+                {filterFriends.length !== 0 && (
+                  <div className="dataResult">
+
+                    {filterFriends.slice(0,5).map((friend) => {
+                      return(
+                        <div className="search-link">
+                          <br></br>
+                          <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
+                          {friend.username}
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+                </div>
+                
+              ): null}
+            </div>
+          </div>
+
           <div>
             <h2 className="inline">
               <b>Summary</b>
