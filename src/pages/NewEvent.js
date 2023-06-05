@@ -3,14 +3,15 @@
 
 // Create new event form that posts a new event to the events table
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState , useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
 import { useUser } from "../contexts/UserProvider";
+
 const API = process.env.REACT_APP_API_URL
 
-export default function NewEvent () {
+export default function NewEvent() {
 
   const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ export default function NewEvent () {
   const [ isValid, setIsValid ] = useState(false)
 
   const { user } = useUser();
-  const  [users, setUsers] = useState({})
+  const [ users, setUsers ] = useState({});
 
   // useState to store event information
   const [events, setEvents] = useState({
@@ -37,8 +38,8 @@ export default function NewEvent () {
     start_time: "",
     end_time: "",
     location_image: "",
-    creator: "",
-    categoryIds: [],
+    creator: "", 
+    categoryIds: []
   });
   
 // useState to store error messages
@@ -47,9 +48,8 @@ const [minAge , setMinAge] = useState("")
 const [maxError , setMaxError] = useState("")
 const [dateError, setDateError] = useState("")
 const [addressError, setAddressError] = useState("")
-const [categoryError, setCategoryError] = useState("")
 
-  // useEffect populates previous event information and adds the creator's user ID
+// useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
     if (user?.id) {
       setEvents((prevEvents) => ({
@@ -59,38 +59,37 @@ const [categoryError, setCategoryError] = useState("")
     }
   }, [user?.id]);
 
-  // useEffect makes a GET request to store all category options
-  useEffect(() => {
-    axios
-      .get(`${API}/category`)
-      .then((res) => {
-        setCategory(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+// useEffect makes a GET request to store all category options
+useEffect(() => {
+  axios
+  .get(`${API}/category`)
+  .then((res) => {
+    setCategory(res.data)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
+}, [])
 
-  // function that makes a POST request to add the new event to the events table
-  const handleAdd = (newEvent) => {
-    axios
-      .post(`${API}/events`, newEvent)
-      .then(() => {
-        navigate("/events");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+// function that makes a POST request to add the new event to the events table
+const handleAdd = (newEvent) => {
+  axios
+  .post(`${API}/events` , newEvent)
+  .then(() => {
+    navigate("/events")
+  })
+  .catch((error) => {
+    console.log(error)
+  })
+}
 
-  // function that updates event information on change in the form
-  const handleTextChange = (event) => {
-    // handles updating the category IDs allowing up to three unique choices for categories
-    if (event.target.id === "categoryIds") {
-      const { value } = event.target;
-      
+// function that updates event information on change in the form
+const handleTextChange = (event) => {
+  // handles updating the category IDs allowing up to three unique choices for categories
+  if (event.target.id === "categoryIds") {
+    const { value } = event.target;
+
     if (!events.categoryIds.includes(value) && events.categoryIds.length < 3 && value) {
-
       setEvents((prevEvent) => ({
         ...prevEvent,
         categoryIds: [...prevEvent.categoryIds, value],
@@ -105,15 +104,12 @@ const [categoryError, setCategoryError] = useState("")
       [id]: value ? Number(value) : "", // Convert to number if value exists, otherwise set it as an empty string
     }));
   }
-
   else if (event.target.id === "age_restriction") {
     const { value } = event.target;
     const isAgeRestricted = value === "true"; 
     setEvents((prevEvent) => ({
       ...prevEvent,
       age_restriction: isAgeRestricted,
-      age_min : isAgeRestricted ? prevEvent.age_min : 0,
-      age_max : isAgeRestricted ? prevEvent.age_max : 0
     }));
   }
   // handles updating all other fields of the event details
@@ -124,77 +120,28 @@ const [categoryError, setCategoryError] = useState("")
       [id]: value,
     }));
   }
+  console.log(events.date_event)
 };
 
-//   const handleTextChange = (event) => {
-//     // handles updating the category IDs allowing up to three unique choices for categories
-//     if (event.target.id === "categoryIds") {
-//       const { value } = event.target;
-
-//     if (!events.categoryIds.includes(value) && events.categoryIds.length < 3 && value) {
-//       setEvents((prevEvent) => ({
-//         ...prevEvent,
-//         age_restriction: isAgeRestricted,
-//       }));
-//     }
-//   } 
-//   // handles updates to min age, max age and max number of people and converts the value to a number if there is an input
-//   else if (event.target.id === "age_min" || event.target.id === "age_max" || event.target.id === "max_people") {
-//     const { id, value } = event.target;
-//     setEvents((prevEvent) => ({
-//       ...prevEvent,
-//       [id]: value ? Number(value) : "", // Convert to number if value exists, otherwise set it as an empty string
-//     }));
-//   }
-
-//   else if (event.target.id === "age_restriction") {
-//     const { value } = event.target;
-//     const isAgeRestricted = value === "true"; 
-//     setEvents((prevEvent) => ({
-//       ...prevEvent,
-//       age_restriction: isAgeRestricted,
-//     }));
-//   }
-//   // handles updating all other fields of the event details
-//   else {
-//     const { id, value } = event.target;
-//     setEvents((prevEvent) => ({
-//       ...prevEvent,
-//       [id]: value,
-//     }));
-//   }
-// };
-
-  // function handles removing a category that was selected on button click and updates the event details object
-  const filterCategory = (category) => {
-    const filter = events.categoryIds.filter((ele) => {
-      return ele !== category;
-    });
+// function handles removing a category that was selected on button click and updates the event details object
+const filterCategory = (category) => {
+  const filter = events.categoryIds.filter((ele) => {
+    return ele !== category
+  })
 
   setEvents({...events, categoryIds: filter})
 }
 
-  // function validates that the the max age is greater than or equal to the min age
-  function checkAge() {
-    if (events.age_restriction) {
-      if (events.age_max >= events.age_min) {
-        return true;
+// function validates that the the max age is greater than or equal to the min age
+function checkAge(){
+  if(events.age_restriction){
+    if(events.age_max >= events.age_min){
+        return true
       } else {
-        return false;
+        return false
       }
   } else {
     return true
-  }
-}
-
-
-//function validate how many categories there are 
-function checkCategory(){
-  if(events.categoryIds.length > 0){
-    return true
-  }
-  else{
-    return false
   }
 }
 
@@ -220,10 +167,11 @@ function checkMax(){
   }
 }
 
-  // function validates that the event date is not a date in the past
-  function checkDate() {
-    const eventDate = new Date(events.date_event);
-    const currentDate = new Date();
+// function validates that the event date is not a date in the past
+function checkDate() {
+  console.log(events.date_event)
+  const eventDate = new Date(events.date_event);
+  const currentDate = new Date();
 
   // Set the time component of both dates to midnight
   eventDate.setHours(0, 0, 0, 0);
@@ -237,7 +185,7 @@ function checkMax(){
 }
 
 // function that uses geocode API to verify and convert address to latitude and longitude for Google Maps rendering
-const verifyAddress = () => {
+  const verifyAddress = () => {
   // resets useState hooks to re-verify on click or on submit
   setAddressError('')   
   setAddressIsVerified(false)
@@ -281,7 +229,7 @@ const verifyAddress = () => {
     setMinAge('')
     setMaxError('')
     setDateError('')
-    setCategoryError('')
+
     let isValid = true
 
     verifyAddress()
@@ -294,24 +242,19 @@ const verifyAddress = () => {
       setAgeError("The max age needs to be greater than the minimum age")
       isValid = false
     }
-    if (!checkMinAge()) {
-      setMinAge("The minimum age needs to be at least 18");
-      isValid = false;
+    if(!checkMinAge()){
+      setMinAge("The minimum age needs to be at least 18")
+      isValid = false
     }
-    if (!checkMax()) {
-      setMaxError("The max people needs to be greater than 0");
-      isValid = false;
+    if(!checkMax()){
+      setMaxError("The max people needs to be greater than 0")
+      isValid = false
     }
-    if (!checkDate()) {
-      setDateError(
-        "The date of the event needs to be later than the current date"
-      );
-      isValid = false;
+    if(!checkDate()){
+      setDateError("The date of the event needs to be later than the current date")
+      isValid = false
     }
-   if(!checkCategory()){
-     setCategoryError("The event most have at least one category")
-     isValid = false
-   }
+   
     if(isValid){
       handleAdd(events)
       console.log("Submit went through")
@@ -319,6 +262,7 @@ const verifyAddress = () => {
       console.log("Submit was blocked")
     }
   }
+  console.log(events)
   
   return (
     <div className="flex justify-center items-center p-4 flex gap-20">
@@ -351,6 +295,7 @@ const verifyAddress = () => {
           id="categoryIds" 
           value={events.categoryIds.length > 0 ? events.categoryIds[0] : ""}
           onChange={handleTextChange} 
+          required
         >
           <option value="">
             Select a category
@@ -386,9 +331,6 @@ const verifyAddress = () => {
               </div>
             ) : null
         }
-        {
-          categoryError && <p style={{color:"red"}}>{categoryError}</p>
-        }
           <br/>
 
           <label htmlFor="age_restriction">
@@ -413,7 +355,7 @@ const verifyAddress = () => {
                   <input 
                     type="number" 
                     id="age_min" 
-                    value={events.age_restriction ? events.age_min : 0}
+                    value={events.age_min}
                     onChange={handleTextChange} 
                   />
                   <br />
@@ -429,7 +371,7 @@ const verifyAddress = () => {
                   <input 
                     type="number" 
                     id="age_max" 
-                    value={events.age_restriction ? events.age_max : 0}
+                    value={events.age_max}
                     onChange={handleTextChange} 
                   />
                 </div>
