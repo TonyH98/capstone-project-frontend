@@ -2,8 +2,8 @@ import styles from "./modal.module.css";
 
 function LocationEditModal({
   updatedEventInfo,
-  setUpdatedEventInfo,
   handleTextChange,
+  handleEdit,
   getCoordinates,
   setOpenLocationEdit
 }) {
@@ -53,6 +53,19 @@ function LocationEditModal({
                 className="rounded h-8 ml-2 pl-3"
             />
         </div>
+        <div className="mb-2">
+            <label htmlFor="location" className="inline">
+                Location
+            </label>
+            <input
+            type="text"
+            id="location"
+            value={updatedEventInfo.location}
+            onChange={handleTextChange}
+            required
+            className="rounded h-8 ml-2 inline w-3/4"
+          />
+        </div>
         <div className="mb-9">
             <label htmlFor="address">Address</label>
             <input
@@ -61,11 +74,11 @@ function LocationEditModal({
                 value={updatedEventInfo.address}
                 onChange={handleTextChange}
                 required
-                className="rounded h-8 ml-2"
+                className="rounded h-8 ml-2 w-3/4"
             />
             <button
                 type="button"
-                className="underline pl-3 text-pink-400 text-md"
+                className="underline ml-20 text-pink-400 text-md"
                 onClick={getCoordinates}
             >
                 Verify address
@@ -73,6 +86,7 @@ function LocationEditModal({
         </div>
         <button 
             className="border bg-purple-500 text-white py-1 px-6 rounded shadow position absolute right-10 bottom-4 hover:bg-purple-400"
+            onClick={handleEdit}
         >
             Save
         </button>
