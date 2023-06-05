@@ -25,22 +25,6 @@ export default function EventDetails() {
 
   // useState hook to store event info and user interest
 
-  const [eventInfo, setEventInfo] = useState();
-  const [updatedEventInfo, setUpdatedEventInfo] = useState();
-  const [coordinates, setCoordinates] = useState({});
-  const [category, setCategory] = useState();
-  const [userEvent, setUserEvent] = useState({});
-  const [categoryModal, setCategoryModal] = useState(false);
-  const [attending, setAttending] = useState([]);
-
-  const [editMode, setEditMode] = useState(false);
-  const [openTitleEdit, setOpenTitleEdit] = useState(false);
-  const [openLocationEdit, setOpenLocationEdit] = useState(false)
-  const [openSummaryEdit, setOpenSummaryEdit] = useState(false)
-
-  const creator = eventInfo?.creator[0].id;
-  const [userMain, setUser] = useLocalStorage("user", {});
-
   const [ eventInfo, setEventInfo ] = useState();
   const [ updatedEventInfo, setUpdatedEventInfo ] = useState()
   const [ coordinates, setCoordinates ] = useState({})
@@ -48,18 +32,16 @@ export default function EventDetails() {
   const [ userEvent , setUserEvent ] = useState({})
   const [ categoryModal, setCategoryModal ] = useState(false)
   const [ attending, setAttending ] = useState()
-  
-  const [showSearch, setShowSearch] = useState(false)
+
   const [ editMode, setEditMode ] = useState(false)
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
-  
-  const creator = eventInfo?.creator[0].id
+  const [ openLocationEdit, setOpenLocationEdit ] = useState(false)
+  const [ openSummaryEdit, setOpenSummaryEdit ] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
 
+  const creator = eventInfo?.creator[0].id;
+  const [userMain, setUser] = useLocalStorage("user", {});
   
-  // const [data, setCommentData] = useLocalStorage('comments',[])
-
-  
-
 
   //Filtering users friends list states
   let [search , setSearch] = useState("")
@@ -83,13 +65,6 @@ export default function EventDetails() {
     .catch((c) => console.warn("catch, c"));
 
   }, [eventInfo?.id]);
-  
-  console.log(eventInfo);
-  console.log("update", updatedEventInfo);
-  
-
-  }, [eventInfo?.id]
-  );
 
   useEffect(() => {
     if (user?.id) {
@@ -99,7 +74,6 @@ export default function EventDetails() {
       });
     }
   }, [user?.id]);
-
 
   useEffect(() => {
     axios
@@ -136,12 +110,10 @@ export default function EventDetails() {
     getCoordinates()
   }, [eventInfo?.address])
   
-=======
   .get(`${API}/users/${user?.username}/events/${id}`)
   .then((res) => {
     setUserEvent(res.data)
   })
-}
 }, [user?.id])
 
 
@@ -162,11 +134,8 @@ useEffect(() => {
       .then((res) => {
         setHosts(res.data)
       })
-
   }
 }, [eventInfo?.id])
-
-
 
   // declare a hash map for converting number date to text date with number to text conversions in monthObj
   const months = new Map();
