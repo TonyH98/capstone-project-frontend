@@ -1,11 +1,4 @@
-// Will add an axios call to fetch the information of a specific event
-// If the map ends up being its own component we can just import it here
-// Will probably add the comment section and the attendees as their own components
-// The edit button will link to a prefilled edit page and the cancel button will have a modal window asking to confirm cancellation
-// The rsvp button is a placeholder and will be replaced with a dropdown
-// I left off any links incase anyone else is working on routes to avoid merge conflicts
-
-// NEED TO add dynamic src for img based on eventInfo object
+// event details page where a host can edit their event or users can show interest
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -15,15 +8,14 @@ import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
 import {useUser} from "../contexts/UserProvider"
 import { BsPencilFill } from "react-icons/bs"
-import "../components/tooltip.css"
-// import EditEventModal from "../components/EditEventModal"
 import CustomComponent from "../components/commentSection";
 import useLocalStorage from "../hooks/useLocalStorage";
+import "../components/tooltip.css"
 
 const API = process.env.REACT_APP_API_URL;
 
 export default function EventDetails() {
-
+  
   // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams();
   const { user } = useUser();
@@ -31,6 +23,7 @@ export default function EventDetails() {
   
   // useState hook to store event info and user interest
   const [ eventInfo, setEventInfo ] = useState();
+  const [ updatedEventInfo, setUpdatedEventInfo ] = useState()
   const [ coordinates, setCoordinates ] = useState({})
   const [ category , setCategory ] = useState()
   const [ userEvent , setUserEvent ] = useState({})
@@ -42,7 +35,7 @@ export default function EventDetails() {
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
   
   const creator = eventInfo?.creator[0].id
-
+  
   const [userMain , setUser] = useLocalStorage('user',{})
   // const [data, setCommentData] = useLocalStorage('comments',[])
 
@@ -57,16 +50,16 @@ export default function EventDetails() {
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
     axios
-      .get(`${API}/events/${id}`)
-      .then((res) => {
-        console.log(res.data)
-        setEventInfo(res.data);
-        getCoordiniates()
-      })
-      .catch((c) => console.warn("catch, c"));
-    }, [eventInfo?.id]
+    .get(`${API}/events/${id}`)
+    .then((res) => {
+      console.log(res.data)
+      setEventInfo(res.data);
+      setUpdatedEventInfo(res.data)
+      getCoordiniates()
+    })
+    .catch((c) => console.warn("catch, c"));
+  }, [eventInfo?.id]
   );
-
 
   useEffect(() => {
     if (user?.id) {
@@ -79,23 +72,21 @@ export default function EventDetails() {
 
   useEffect(() => {
     axios
-      .get(`${API}/category`)
-      .then((res) => {
-        setCategory(res.data);
+    .get(`${API}/category`)
+    .then((res) => {
+      setCategory(res.data);
     })
     .catch((c) => console.warn("catch, c"));
-  }, []
-);
-
-
-useEffect(() => {
-if(user?.id){
-  axios
+  }, [eventInfo]
+  );
+    
+  useEffect(() => {
+    if(user?.id){
+      axios
   .get(`${API}/users/${user?.username}/events/${id}`)
   .then((res) => {
     setUserEvent(res.data)
   })
-
 }
 }, [user?.id])
 
@@ -250,7 +241,6 @@ useEffect(() => {
     }
   }
 
-
 const showSearchBar = () => {
   setShowSearch(!showSearch)
 }
@@ -263,7 +253,6 @@ function handleFilter(event){
     const {first_name, username} = friend
 
     const matchFirstName = first_name.toLowerCase().includes(searchResult.toLowerCase())
-
 
     const matchUsername = username.toLowerCase().includes(searchResult.toLowerCase())
 
@@ -292,15 +281,41 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
 
 }
 
+  // function to update information on text change in edit forms
+  const handleTextChange = (e) => {
+    setUpdatedEventInfo({...updatedEventInfo, [e.target.id]: e.target.value})
+  }
+
+
   // function updates a new event object and makes a put request to update informmation
   const handleEdit = () => {
+    axios
+      .put(`${API}/events/${id}`, updatedEventInfo)
+      .then(res => {
+        setEventInfo({...updatedEventInfo})
+        setOpenTitleEdit(false)
+      })
+      .catch((c) => console.warn("catch, c"))
+  }
 
+  // function deletes event from database
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to permanently delete this event?")) {
+      axios
+        .delete(`${API}/events/${id}`)
+        .then(() => navigate('/events'))
+        .catch((c) => console.warn("catch, c"))
+    }
   }
 
 
 
   return (
-    <div className="relative">
+    <div className="relative" >
+      <div 
+        className={`${openTitleEdit ? 'background' : null}`} 
+        onClick={() => setOpenTitleEdit(false)}
+      />
       <div className="flex flex-row justify-center gap-x-16 mx-20">
         <img
           src={eventInfo?.location_image}
@@ -309,26 +324,112 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
         />
         <div className="w-1/2 mt-12">
           <div className="flex flex-col">
-            <div className="text-3xl mb-5 tooltip">
-              {eventInfo?.title}&nbsp;&nbsp;|&nbsp;&nbsp;
-              {eventInfo?.age_restriction ? (
-                <h1 className="inline text-2xl text-gray-500">
-                  {`${eventInfo?.age_min} to ${eventInfo?.age_max} Only`}
-                </h1>
-              ) : (
-                <h1 className="inline text-2xl text-gray-500">{"All ages"}</h1>
-              )}
+            <div className={`tooltip`}>
+              <div className={`text-3xl mb-5 `}>
+                {eventInfo?.title}&nbsp;&nbsp;|&nbsp;&nbsp;
+                {
+                  eventInfo?.age_restriction ? (
+                    <h1 className={`inline text-2xl text-gray-500 `}>
+                      {`${eventInfo?.age_min} to ${eventInfo?.age_max} Only`}
+                    </h1>
+                  ) : (
+                    <h1 className="inline text-2xl text-gray-500">{"All ages"}</h1>
+                    )}
+                {
+                  editMode ?  
+                  <div className="hover:text-yellow-800 inline">
+                      <BsPencilFill 
+                        onClick={() => {setOpenTitleEdit(!openTitleEdit)}}
+                        className="inline text-lg text-gray-800 ml-3" 
+                        /> 
+                    </div>
+                      : null
+                    }
+              </div>
               {
-                editMode ?  
-                  <BsPencilFill 
-                    onClick={() => {setOpenTitleEdit(true)}}
-                    className="inline text-lg text-gray-800 ml-3" 
-                  /> 
-                    : null
+                openTitleEdit ? (
+                  <div className="tooltiptext bg-indigo-200 w-full">
+                    <div className="ml-10 mt-4">
+                      <label htmlFor="title">
+                        Title
+                      </label>
+                      <input 
+                        type="text"
+                        id="title"
+                        name="title"
+                        value={updatedEventInfo.title}
+                        onChange={handleTextChange}
+                        className="ml-3 rounded h-8 w-3/4 bg-gray-100" 
+                      />
+                    </div>
+                    <div className="ml-10 mb-14">
+                      <label htmlFor="age_restriction">
+                        Age Restriction
+                      </label>
+                      <select
+                        id="age_restriction"
+                        name="age_restriction"
+                        required
+                        onChange={handleTextChange}
+                        className="ml-1 mr-6 mt-2 rounded h-8 text-sm pb-1 bg-gray-100"
+                      >
+                        <option 
+                          value={true}
+                          {
+                            ...updatedEventInfo.age_restriction ? "selected" : null
+                          }
+                        >
+                          True
+                        </option>
+                        <option
+                          value={false}
+                          {
+                            ...updatedEventInfo.age_restriction ? "selected" : null
+                          }
+                        >
+                          False
+                        </option>
+                      </select>
+                      {
+                        updatedEventInfo?.age_restriction ? (
+                          <div className="inline">
+                            <label htmlFor="age_min">
+                              Min
+                            </label>
+                            <input 
+                              type="number" 
+                              id="age_min" 
+                              value={updatedEventInfo?.age_min}
+                              onChange={handleTextChange} 
+                              className="w-14 pr-1 mr-2 text-center rounded h-8 bg-gray-100 ml-1"
+                            />
+                            <label htmlFor="age_max">
+                              Max
+                            </label>
+                            <input 
+                              type="number" 
+                              id="age_max" 
+                              value={updatedEventInfo.age_max}
+                              onChange={handleTextChange} 
+                              className="w-14 pr-1 text-center rounded h-8 bg-gray-100 ml-1"
+                            />
+                          </div>
+                        ) : null
+                      }
+                    </div>
+                    <button 
+                      type="button"
+                      className="border bg-gray-100 px-3 rounded shadow position absolute right-10 bottom-3"
+                      onClick={handleEdit}
+                    >
+                        Save
+                    </button>
+                  </div>
+                ) : null
               }
             </div>
             {/* <h2>Age Restrictions: { eventInfo?.age_restriction ? `${eventInfo?.age_min} to ${eventInfo?.age_max}` : 'None'}</h2> */}
-            <h2>
+            {/* <h2>
               Categories:
               {eventInfo?.category_names
                 ? eventInfo.category_names.map((category) => {
@@ -353,7 +454,7 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
                 >+/-</button>: null
                 
               }
-            </h2>
+            </h2> */}
             {
               categoryModal ? 
                 <CategoriesModal
@@ -422,8 +523,7 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
           <section>{eventInfo?.summary}</section>
           <div>
             <Link to={`/profile/${eventInfo?.creator[0].username}`}>
-
-            Host: {eventInfo?.creator[0].username}
+              Host: {eventInfo?.creator[0].username}
             </Link>
 
             <div>
@@ -471,12 +571,20 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
             {
               user?.id === creator ? (
                 editMode ? (
-                  <button
-                    className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                    onClick={() => setEditMode(false)}
-                  >
-                    Done 
-                  </button>
+                  <>
+                    <button
+                      className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+                      onClick={handleDelete}
+                    >
+                    Delete 
+                    </button>
+                    <button
+                      className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+                      onClick={() => setEditMode(false)}
+                      >
+                      Done 
+                    </button>
+                  </>
                 ) : (
                   <button
                     className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
@@ -486,21 +594,19 @@ if(eventInfo?.id && hosts.length < 3 && !hosts.some(host => host.user_id === use
                   </button>
                 )
               ) : (
-
                 <>
-
-							<button
-								className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-								onClick={addToInterest}
-								>
-								Interested
-							</button>
-							<button
-								className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-								onClick={addToRsvp}
-								>
-								RSVP
-							</button>
+                  <button
+                    className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+                    onClick={addToInterest}
+                    >
+                    Interested
+                  </button>
+                  <button
+                    className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+                    onClick={addToRsvp}
+                    >
+                    RSVP
+                  </button>
               </>
             )
             }
