@@ -542,12 +542,13 @@ export default function EventDetails() {
                 />
                 : null
             }
-            <section>{eventInfo?.summary}</section>
+            <section className="break-words text-ellipsis">{eventInfo?.summary}</section>
           </div>
           {
             openSummaryEdit ? (
               <SummaryEditModal 
                 eventInfo={eventInfo}
+                updatedEventInfo={updatedEventInfo}
                 setOpenSummaryEdit={setOpenSummaryEdit}
                 handleTextChange={handleTextChange}
                 handleEdit={handleEdit}
