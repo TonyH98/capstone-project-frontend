@@ -345,34 +345,34 @@ export default function EventDetails() {
       />
       <div className="flex flex-row justify-center gap-x-16 mx-20">
         <div className="w-96">
-          <div>
+          <div className="relative">
             <img
               src={eventInfo?.location_image}
               alt="event photo"
               className="max-h-96 max-w-96 mt-12"
             />
-          </div>
-          <div className="max-w-96 tooltip">
-          {
-            editMode ? 
-            <button 
-            onClick={() => {setOpenImageEdit(true)}}
-            className="text-blue-800 pl-1 pt-2 text-sm hover:text-blue-600"
-            >
-                Change Event Photo
-              </button>
-                : null
-              }
-              {
-                openImageEdit ? 
-                <ImageEditModal 
-                  updatedEventInfo={updatedEventInfo}
-                  setOpenImageEdit={setOpenImageEdit}
-                  handleTextChange={handleTextChange}
-                  handleEdit={handleEdit}
-                />
-                : null
-              }
+            <div className="w-36 tooltip absolute left-0 bottom-3">
+            {
+              editMode ? 
+              <button 
+              onClick={() => {setOpenImageEdit(true)}}
+              className="text-blue-800 pl-1 mb-7 text-left absolute left-0 top-0 w-56 text-sm hover:text-blue-600"
+              >
+                  Change Event Photo
+                </button>
+                  : null
+                }
+                {
+                  openImageEdit ? 
+                  <ImageEditModal 
+                    updatedEventInfo={updatedEventInfo}
+                    setOpenImageEdit={setOpenImageEdit}
+                    handleTextChange={handleTextChange}
+                    handleEdit={handleEdit}
+                  />
+                  : null
+                }
+            </div>
           </div>
         </div>
         <div className="w-1/2 mt-12">
@@ -609,7 +609,7 @@ export default function EventDetails() {
         </div>
       </div>
       <div>
-        <div className="tooltip">
+        <div className="tooltip pt-7">
           <div>
             <h2 className="text-lg ml-20 font-bold inline">
               Attendees: {attending?.length}/{eventInfo?.max_people}
