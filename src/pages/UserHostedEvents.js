@@ -3,11 +3,12 @@ import { Link } from "react-router-dom"
 function UserHostedEvent({hosted}){
     return(
         <div>
-              <img
+              {/* <img
           src={hosted.location_image}
           alt={hosted.title}
           className="location-image"
-        ></img>
+          
+        ></img> */}
         <Link to={`/events/${hosted.id}`}>
         <p>{hosted.title}</p>
 
