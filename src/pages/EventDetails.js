@@ -457,64 +457,6 @@ export default function EventDetails() {
                 </div>
               ) : null}
             </div>
-            <div className="relative">
-              <h2 className="inline">
-                Date:
-                <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
-                  {eventDate}
-                </span>
-                <span className="text-sm text-blue-800">
-                  @ {eventInfo?.start_time} - {eventInfo?.end_time}
-                </span>
-              </h2>
-              {
-                editMode ? 
-                  <BsPencilFill 
-                    onClick={() => {setOpenLocationEdit(true)}}
-                    className="right-10 top-0 text-md text-gray-800 inline ml-4 align-baseline hover:cursor-pointer"
-                  />
-                  : null
-              }
-              <h2 className="mt-1">Location: {eventInfo?.location}</h2>
-              <h2 className="mt-1">Address: {eventInfo?.address}</h2>
-            </div>
-            {/* <h2>Age Restrictions: { eventInfo?.age_restriction ? `${eventInfo?.age_min} to ${eventInfo?.age_max}` : 'None'}</h2> */}
-            <h2>
-              Categories:
-              {eventInfo?.category_names
-                ? eventInfo.category_names.map((category) => {
-                  
-                    return (
-                      <button
-                        type="button"
-                        key={category.id}
-                        // update route for events sorted by category
-                        onClick={() => navigate(`/events/${category.name}`)}
-                        className="inline text-white bg-indigo-500 hover:bg-blue-800 rounded-full text-sm px-2.5 py-1.5 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-3 mb-1"
-                      >
-                        {category.name}
-                      </button>
-                    );
-                  })
-                : null}
-                {user?.id === creator ? 
-                <button
-                type="button"
-                onClick={() => setCategoryModal(!categoryModal)}
-                >+/-</button>: null
-                
-              }
-            </h2>
-            {
-              categoryModal ? 
-                <CategoriesModal
-                  category={category}
-                  categoryModal={categoryModal}
-                  setCategoryModal={setCategoryModal}
-                  eventInfo={eventInfo}
-                  setEventInfo={setEventInfo}
-                /> : null
-            }
             <h2>
               Date:
               <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
