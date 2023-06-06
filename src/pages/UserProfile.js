@@ -57,20 +57,25 @@ function UserProfile() {
       .catch((c) => console.warn("catch, c"));
   }, []);
 
-  const onLoadUserInof =
-    // useEffect makes GET request for user info based on username parameter
-    useEffect(() => {
-      axios
-        .get(`${API}/users/${user?.username}`)
-        .then((res) => {
-          console.log("user info = ", res.data);
-          setUser(res.data);
-          setUserInfo(res.data);
-          Global.user = res.data;
-          setUpdatedUser(res.data);
-        })
-        .catch((c) => console.warn("catch, c"));
-    }, [user?.username]);
+  useEffect(() => {
+
+    console.log('user name = ', user.username);
+    axios
+      .get(`${API}/users/${user?.username}`)
+      .then((res) => {
+        console.log("user info = ", res.data);
+        setUser(res.data);
+        setUserInfo(res.data);
+        Global.user = res.data;
+
+        setUpdatedUser(res.data);
+      })
+      .catch((c) => console.warn("catch, c"));
+  }, [user?.username]);
+
+  // const onLoadUserInof =
+  //   // useEffect makes GET request for user info based on username parameter
+    
 
   useEffect(() => {
     if (user?.id) {

@@ -1,10 +1,14 @@
-import React from 'react'
-import Chats from '../components/Chats'
+import React from 'react';
+import RoomsList from '../components/RoomsList';
 
-export default function Messages({ loggedin, setLoggedin, user, setUser, firebaseId }) {
+const Messages = ({user, setUser, users, setUsers}) => {
+
+
   return (
     <div>
-        <Chats loggedin={loggedin} setLoggedin={setLoggedin} user={user} setUser={setUser} firebaseId={firebaseId}/>
+      <RoomsList user={user} setUser={setUser} users={users} setUsers={setUsers} />
     </div>
-  )
-}
+  );
+};
+
+export default Messages;

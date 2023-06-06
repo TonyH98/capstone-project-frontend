@@ -14,9 +14,9 @@
      grid-row-gap: 30px;
  }
 
- .event-card{
+ /* .event-card{
      border: black solid 1px;
- }
+ } */
 
  .event-category{
      display: grid;
@@ -33,5 +33,4 @@
     height: 40px;
     width: 110px;
     color: #0cc0df;
-    border-radius: 1rem;
 }

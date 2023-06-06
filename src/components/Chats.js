@@ -3,7 +3,7 @@ import axios from "axios";
 import io, { connect } from "socket.io-client";
 import useLocalStorage from "../hooks/useLocalStorage";
 import Global from "../utils/Global";
-import { getUserInfo } from "../utils/appUtils";
+import { getMessageListByUserId, getUserInfo, saveMessageByUserId } from "../utils/appUtils";
 import { BiSend } from "react-icons/bi"
 
 let socket;
@@ -12,7 +12,9 @@ const API = process.env.REACT_APP_API_URL;
 function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   const [room, setRoom] = useState("");
   const [message, setMessage] = useState("");
-  const [messageList, setMessageList] = useLocalStorage("messageList", []);
+  // const [messageList, setMessageList] = useLocalStorage("messageList", []);
+  const [messageList, setMessageList] = useState([]);
+
   const [users, setUsers] = useLocalStorage("users", []);
   const [searchUser, setSearchUser] = useState("");
 
@@ -32,9 +34,31 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   //   connectToRoom();
   // }, [API]);
 
+
+  const onLoadMessageList = (user_id) => {
+    // get from backend server
+
+    axios.post(`${API}/chats?sender_id${user_id}&receiver_id=${Global.user?.id}`)
+          .then((res) => {
+              console.log('resu ==== ', res.data);
+            
+              let data = res.data ?? [];
+
+              setMessageList([...data]);
+            })
+  }
+
   const onReceiveMessage = (data) => {
     console.log('received = ', data);
-    setMessageList((prevList) => [...prevList, data]);
+
+    // check existing
+    let checkItem = messageList.filter((item) => item.id === data.id);
+
+    if (checkItem) {
+      return;
+    }
+
+    setMessageList([...messageList, data]);
   };
 
   useEffect(() => {
@@ -61,7 +85,7 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   }, []);
 
   const connectToRoom = (strRoom) => {
-    setLoggedin(true);
+    // setLoggedin(true);
 
     socket.emit("join_room", strRoom);
   };
@@ -73,22 +97,28 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
       return;
     }
 
+    console.log('selected user = ', selectedUser);
+    // return;
+
 
     // console.log(user);
     // console.log(user.first_name);
 
     let strRoom = `user_${selectedUser.id}`;
     const messageContent = {
-      room: strRoom,
-      content: {
-        author: user.id,
-        message,
-      },
+      sender_id: Global.user?.id,
+      receiver_id: selectedUser.id,
+      content: message,
     };
 
     console.log('message content = ', messageContent);
     socket.emit("send_message", messageContent);
-    setMessageList((prevList) => [...prevList, messageContent.content]);
+    
+    // // save to local storage
+    // let tempMessageList = saveMessageByUserId(selectedUser?.id, messageContent.content);
+
+    // setMessageList([...tempMessageList]);
+    // setMessageList((prevList) => [...prevList, messageContent.content]);
     setMessage("");
   };
 
@@ -99,6 +129,11 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
       .get(`${API}/users`)
       .then((res) => {
         setUsers(res.data);
+
+        if (res.data?.length > 0) {
+          setSelectedUser(res.data[0]);
+          onLoadMessageList(res.data[0]?.id);
+        }
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
@@ -124,6 +159,8 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
     console.log(`selected one user: ${JSON.stringify(recipient)}`);
     console.log(`selected one user: ${recipient.id}`);
     setSelectedUser(recipient);
+
+    onLoadMessageList(recipient.id);
     // const newRoom = `${user.id}-${recipient.id}`;
     // setRoom(newRoom);
     // console.log(`Coming from: ${user.first_name}`);
@@ -168,11 +205,13 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
         <div className="flex gap-4 mt-4">
         <div className="bg-cyan-100/50 rounded-md p-4 overflow-y-auto min-h-screen">
         <h2 className="text-2xl text-cyan-400 font-semibold py-2 px-4">Users</h2>
-        {users.map((recipient) => (
+        {users.map((recipient, recipientKey) => (
+          Global.user?.id === recipient.id ? null :
           <div
-            key={recipient.id}
+            key={recipientKey}
             onClick={() => handleRecipientSelection(recipient)}
             className={`${active ? "bg-cyan-400" : ""} font-semibold py-1 px-4 flex gap-1`}
+            style={{cursor: 'hand', color: selectedUser?.id === recipient.id ? 'red' : 'black'}}
             >
             <span className="hidden">{receiver = JSON.stringify(recipient)}</span>
             {/* <span><img src={recipient.profile_img} alt="" className="w-10 rounded-full"></img></span> */}
@@ -194,18 +233,18 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
         <div className="flex gap-6 px-4 flex-auto ml-20 min-h-screen bg-cyan-100/50 rounded-md md:w-[450px] lg:w-[700px]">
           <div className="flex flex-col p-4">
             <article className="mb-auto">
-            {messageList.map((val, key) => {
+            {messageList.map((messageItem, key) => {
               return (
                 <div
-                  className={`my-1 flex flex-col ${val.author === receiver.id ? 'items-start' : 'self-end items-end'}`}
-                  id={val.author === receiver.id ? receiver.first_name : "You"}
+                  className={`my-1 flex flex-col ${messageItem.author === receiver.id ? 'items-start' : 'self-end items-end'}`}
+                  id={messageItem.sender_id === receiver.id ? receiver.first_name : "You"}
                   key={key}
                 >
-                  <div className={`rounded-md px-2 py-1 text-base  ${val.author === receiver.id ? 'bg-gray-300' : 'bg-cyan-500 text-slate-200'}`}>
-                    {val.message}
+                  <div className={`rounded-md px-2 py-1 text-base  ${messageItem.author === receiver.id ? 'bg-gray-300' : 'bg-cyan-500 text-slate-200'}`}>
+                    {messageItem.content}
                   </div>
-                  <div className={`text-xs ${val.author === receiver.id ? '' : 'text-right'}`}>
-                  {val.author === receiver.id ? receiver.first_name : "You"}
+                  <div className={`text-xs ${messageItem.author === receiver.id ? '' : 'text-right'}`}>
+                  {messageItem.sender_id === receiver.id ? receiver.first_name : "You"}
                   </div>
                 </div>
               );
