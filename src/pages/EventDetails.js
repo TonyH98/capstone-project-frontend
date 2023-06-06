@@ -4,17 +4,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useUser } from "../contexts/UserProvider";
+import { BsPencilFill } from "react-icons/bs";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
-import { useUser } from "../contexts/UserProvider";
-import { BsPencilFill } from "react-icons/bs";
 import CustomComponent from "../components/commentSection";
 import useLocalStorage from "../hooks/useLocalStorage";
+import TitleEditModal from "../components/TitleEditModal";
 import LocationEditModal from "../components/LocationEditModal";
-import "../components/tooltip.css";
 import SummaryEditModal from "../components/SummaryEditModal";
 import ImageEditModal from "../components/ImageEditModal";
+import AttendeesEditModal from "../components/AttendeesEditModal"
+import "../components/tooltip.css";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -39,6 +41,7 @@ export default function EventDetails() {
   const [ openLocationEdit, setOpenLocationEdit ] = useState(false)
   const [ openSummaryEdit, setOpenSummaryEdit ] = useState(false)
   const [ openImageEdit, setOpenImageEdit ] = useState(false)
+  const [ openAttendeesEdit, setOpenAttendeesEdit ] = useState(false)
   const [ showSearch, setShowSearch ] = useState(false)
 
   const creator = eventInfo?.creator[0].id;
@@ -295,17 +298,17 @@ export default function EventDetails() {
   }, [updatedEventInfo?.age_restriction])
 
   // function updates a new event object and makes a put request to update informmation
-  const handleEdit = () => {
+  const handleEdit = async () => {
     // handles reset for age min and max if age_restriction is set to false
-    if(!updatedEventInfo.age_restriction){
+    if(!updatedEventInfo?.age_restriction){
       console.log("age res is falsey")
       setUpdatedEventInfo({...updatedEventInfo, age_min: 0, age_max: 0})
     }
-    setEventInfo({ ...updatedEventInfo });
+    await setEventInfo({ ...updatedEventInfo });
     
     axios
       .put(`${API}/events/${id}`, updatedEventInfo)
-      .then((res) => {
+      .then(() => {
         setOpenTitleEdit(false);
         setOpenLocationEdit(false);
         setOpenSummaryEdit(false)
@@ -330,17 +333,19 @@ export default function EventDetails() {
   const closeModal = () => {
     setOpenImageEdit(false)
     setOpenTitleEdit(false)
+    setOpenAttendeesEdit(false)
+    setUpdatedEventInfo(eventInfo)
   }
   
   return (
     <div className="relative">
       <div
-        className={`${openTitleEdit || openImageEdit ? "background" : null}`}
+        className={`${openTitleEdit || openImageEdit || openAttendeesEdit ? "background" : null}`}
         onClick={closeModal}
       />
       <div className="flex flex-row justify-center gap-x-16 mx-20">
         <div className="w-96">
-          <div className="tooltip">
+          <div>
             <img
               src={eventInfo?.location_image}
               alt="event photo"
@@ -352,7 +357,7 @@ export default function EventDetails() {
             editMode ? 
             <button 
             onClick={() => {setOpenImageEdit(true)}}
-            className="text-blue-800 pl-1 text-sm hover:text-blue-600"
+            className="text-blue-800 pl-1 pt-2 text-sm hover:text-blue-600"
             >
                 Change Event Photo
               </button>
@@ -395,67 +400,14 @@ export default function EventDetails() {
                   </div>
                 ) : null}
               </div>
-              {openTitleEdit ? (
-                <div className="tooltiptext bg-indigo-200 w-full">
-                  <div className="ml-10 mt-4">
-                    <label htmlFor="title">Title</label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      value={updatedEventInfo.title}
-                      onChange={handleTextChange}
-                      className="ml-3 rounded h-8 w-3/4 bg-gray-100"
-                    />
-                  </div>
-                  <div className="ml-10 mb-14">
-                    <label htmlFor="age_restriction">Age Restriction</label>
-                    <select
-                      id="age_restriction"
-                      name="age_restriction"
-                      required
-                      onChange={handleTextChange}
-                      className="ml-1 mr-6 mt-2 rounded h-8 text-sm pb-1 bg-gray-100"
-                    >
-                      {updatedEventInfo.age_restriction ? 
-                        <option value={true} selected> True </option>
-                        : <option value={true}> True </option>
-                      }
-                      {!updatedEventInfo.age_restriction ? 
-                        <option value={false} selected> False </option>
-                        : <option value={false}> False </option>
-                      }
-                    </select>
-                    {updatedEventInfo?.age_restriction ? (
-                      <div className="inline">
-                        <label htmlFor="age_min">Min</label>
-                        <input
-                          type="number"
-                          id="age_min"
-                          value={updatedEventInfo?.age_min}
-                          onChange={handleTextChange}
-                          className="w-14 pr-1 mr-2 text-center rounded h-8 bg-gray-100 ml-1"
-                        />
-                        <label htmlFor="age_max">Max</label>
-                        <input
-                          type="number"
-                          id="age_max"
-                          value={updatedEventInfo.age_max}
-                          onChange={handleTextChange}
-                          className="w-14 pr-1 text-center rounded h-8 bg-gray-100 ml-1"
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                  <button
-                    type="button"
-                    className="border bg-gray-100 px-3 rounded shadow position absolute right-10 bottom-3"
-                    onClick={handleEdit}
-                  >
-                    Save
-                  </button>
-                </div>
-              ) : null}
+              {openTitleEdit ? 
+                <TitleEditModal 
+                  eventInfo={eventInfo}
+                  updatedEventInfo={updatedEventInfo}
+                  handleTextChange={handleTextChange}
+                  handleEdit={handleEdit}
+                />
+              : null}
             </div>
             <div className="relative">
               <h2 className="inline">
@@ -667,9 +619,31 @@ export default function EventDetails() {
         </div>
       </div>
       <div>
-        <h2 className="text-lg ml-20 font-bold">
-          Attendees: {attending?.length}/{eventInfo?.max_people}
-        </h2>
+        <div className="tooltip">
+          <div>
+            <h2 className="text-lg ml-20 font-bold inline">
+              Attendees: {attending?.length}/{eventInfo?.max_people}
+            </h2>
+            {
+              editMode ?
+                <BsPencilFill 
+                  onClick={() => {setOpenAttendeesEdit(true)}}
+                  className="text-md text-gray-800 inline ml-4 align-baseline hover:cursor-pointer"
+                />
+                  : null
+            }
+            {
+              openAttendeesEdit ? (
+                <AttendeesEditModal
+                  updatedEventInfo={updatedEventInfo}
+                  setOpenAttendeesEdit={setOpenAttendeesEdit}
+                  handleTextChange={handleTextChange}
+                  handleEdit={handleEdit}
+                />
+              ) : null
+            }
+          </div>
+        </div>
         {
           attending?.length ? (
             <div>
@@ -681,7 +655,7 @@ export default function EventDetails() {
             </div>
           ) : (
             <h1 className="ml-32 my-5 text-gray-400 text-lg">
-              Still space in this event. RSVP now to save your place!
+              Still space in this event. RSVP now to save your spot!
             </h1>
           )
         }
