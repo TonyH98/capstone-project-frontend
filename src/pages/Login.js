@@ -27,9 +27,6 @@ function Login() {
         if (returningUser) {
           alert("You are now logged in!");
           console.log("logged in");
-          setUser(returningUser);
-          console.log(user);
-          navigate(`/profile/${user.username}`);
         }
       })
       .catch((error) => {
@@ -46,6 +43,7 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     logIn(event);
+    navigate(`/profile/${user.username}`);
   };
 
   return (

@@ -14,7 +14,7 @@ import { ImQuotesRight } from "react-icons/im";
 import EditProfileModal from "../components/EditProfileModal";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { getUserInfo, setUserInfo } from "../utils/appUtils";
-import Global from "../utils/Global"
+import Global from "../utils/Global";
 import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
@@ -32,6 +32,7 @@ function UserProfile() {
   );
   // const [user, setUser] = useLocalStorage("user", {});
   const { user, setUser } = useUser();
+  // console.log("testing user", user);
   // Dont have time to test right now but I think we can just use user only and delete updatedUser
   const [updatedUser, setUpdatedUser] = useLocalStorage("updatedUser", {});
 
@@ -47,54 +48,59 @@ function UserProfile() {
 
   // let sortCategory = [];
 
-  // useEffect makes GET request for all categories and is used in the interests field
   useEffect(() => {
     axios
       .get(`${API}/category`)
       .then((res) => {
         setCategories(res.data);
       })
-      .catch((c) => console.warn("catch, c"));
-  }, []);
+      .catch((error) => {
+        console.warn("Error fetching categories:", error);
+      });
 
-  const onLoadUserInof =
-    // useEffect makes GET request for user info based on username parameter
-    useEffect(() => {
+    if (user.username) {
       axios
-        .get(`${API}/users/${user?.username}`)
+        .get(`${API}/users/${user.username}`)
         .then((res) => {
-          console.log("user info = ", res.data);
-          setUser(res.data);
+          console.log("User info:", res.data);
           setUserInfo(res.data);
           Global.user = res.data;
           setUpdatedUser(res.data);
         })
-        .catch((c) => console.warn("catch, c"));
-    }, [user?.username]);
-
-  useEffect(() => {
-    if (user?.id) {
-      axios.get(`${API}/users/${user?.id}/category`).then((res) => {
-        setIsSelected(res.data);
-      });
+        .catch((error) => {
+          console.warn("Error fetching user info:", error);
+        });
     }
-  }, [user?.id]);
 
-  useEffect(() => {
-    if (user?.id) {
-      axios.get(`${API}/users/${user?.id}/events`).then((res) => {
-        setUserEvent(res.data);
-      });
-    }
-  }, [user?.id]);
+    if (user.id) {
+      axios
+        .get(`${API}/users/${user.id}/category`)
+        .then((res) => {
+          setIsSelected(res.data);
+        })
+        .catch((error) => {
+          console.warn("Error fetching user's selected categories:", error);
+        });
 
-  useEffect(() => {
-    if (user?.id) {
-      axios.get(`${API}/events?creator.id=${user?.id}`).then((res) => {
-        setHostedEvents(res.data);
-      });
+      axios
+        .get(`${API}/users/${user.id}/events`)
+        .then((res) => {
+          setUserEvent(res.data);
+        })
+        .catch((error) => {
+          console.warn("Error fetching user's events:", error);
+        });
+
+      axios
+        .get(`${API}/events?creator.id=${user.id}`)
+        .then((res) => {
+          setHostedEvents(res.data);
+        })
+        .catch((error) => {
+          console.warn("Error fetching hosted events:", error);
+        });
     }
-  }, [user?.id]);
+  }, [API, user.username, user.id]);
 
   function deleteMultiple() {
     const deleteEvent = userEvents
@@ -103,7 +109,7 @@ function UserProfile() {
 
     Promise.all(
       deleteEvent.map((eventId) => {
-        axios.delete(`${API}/users/${user?.id}/events/${eventId}`);
+        axios.delete(`${API}/users/${user.id}/events/${eventId}`);
       })
     );
   }
@@ -116,22 +122,22 @@ function UserProfile() {
         <div className="mb-10 mt-12 m-auto">
           <div className="flex justify-center gap-x-10 align-items-start">
             <img
-              src={user?.profile_img}
+              src={user.profile_img}
               alt="profile-pic"
               className="w-36 h-36"
             />
             <div className="text-left w-1/6">
               <h1>
                 <b>
-                  {user?.first_name} {user?.last_name}{" "}
-                  {user?.pronouns ? user?.pronouns : null}
+                  {user.first_name} {user.last_name}{" "}
+                  {user.pronouns ? user.pronouns : null}
                 </b>
-                {user?.pronoun ? <p>({user.pronoun})</p> : null}
+                {user.pronoun ? <p>({user.pronoun})</p> : null}
               </h1>
-              <h2 className="text-emerald-500">@{user?.username}</h2>
+              <h2 className="text-emerald-500">@{user.username}</h2>
               <h3>
                 <b>Age: </b>
-                {user?.age?.age} years
+                {user.age?.age} years
               </h3>
             </div>
             <div className="relative w-52">
@@ -144,7 +150,7 @@ function UserProfile() {
               </div>
               <section className="w-52 h-12 relative flex flex-row">
                 <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{user?.bio}</p>
+                <p className="px-4">{user.bio}</p>
                 <ImQuotesRight className="text-orange-600 " />
               </section>
             </div>
@@ -161,7 +167,7 @@ function UserProfile() {
         </div>
         {openEditModal ? (
           <EditProfileModal
-            username={user?.username}
+            username={user.username}
             setOpenEditModal={setOpenEditModal}
             updatedUser={updatedUser}
             setUpdatedUser={setUpdatedUser}

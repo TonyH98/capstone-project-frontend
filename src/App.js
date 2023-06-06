@@ -44,14 +44,12 @@ function App() {
 
   // This useEffect uses the firebaseId to retrieve the users data from the backend
   useEffect(() => {
-
     console.log(firebaseId);
 
-    console.log('call here for first login', loggedin, firebaseId);
+    console.log("call here for first login", loggedin, firebaseId);
 
     if (loggedin && firebaseId) {
-
-      console.log('call here for first login')
+      console.log("call here for first login");
       // Add a condition to check if firebaseId is truthy
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
@@ -83,12 +81,23 @@ function App() {
               Comment in when useParams is set up and remove UserProfile below
               <Route path='/profile/:id' element={<UserProfile />} /> 
               */}
-              <Route path="/profile/:username" element={<UserProfile />} />
+              <Route path="/profile/:profileName" element={<UserProfile />} />
               <Route path="/devs" element={<Devs />} />
               <Route path="/events" element={<ShowEvents />} />
               <Route path="/events/new" element={<NewEvent />} />
               <Route path="/users" element={<ShowUsers />} />
-              <Route path="/chats" element={<Messages user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
+              <Route
+                path="/chats"
+                element={
+                  <Messages
+                    user={user}
+                    setUser={setUser}
+                    loggedin={loggedin}
+                    setLoggedin={setLoggedin}
+                    firebaseId={firebaseId}
+                  />
+                }
+              />
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
