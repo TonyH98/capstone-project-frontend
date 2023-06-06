@@ -15,47 +15,42 @@ function RoomsList({user, setUser, users, serUsers}) {
   }
 
   useEffect(() => {
-    fetchRooms();
+    axios.get(`${API}/rooms/${user.id}`)
+    .then((res) => {
+      setRooms(res.data)
+    })
   }, []);
 
-  const fetchRooms = async () => {
-    try {
-      const response = await axios.get(`${API}/rooms`);
-      setRooms(response.data);
-      console.log(response.data);
-      console.log("this is user:", user);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  const handleRoomClick = (roomId, user2Id) => {
 
-    // try {
-    //   const response = await axios.get(`${API}/rooms/${user?.id}/${user2Id}`);
-    // }
-    setSelectedRoom(roomId);
-
-    console.log("This is the selected room:", selectedRoom);
-
+  const handleRoomClick = (roomId) => {
     const socket = socketIOClient(API);
-    
-      // Join the initial room(s)
-      socket.emit("switch_room", roomId);
-
-      // Listen for new messages in the current room
-      socket.on("receive_message", (newMessage) => {
+  
+    // Leave the current room
+    socket.emit("switch_room", null);
+  
+    // Join the new room
+    socket.emit("switch_room", roomId);
+  
+    // Update the selected room state
+    setSelectedRoom(roomId);
+  
+    console.log("This is the selected room:", selectedRoom);
+  
+    // Listen for new messages in the current room
+    socket.on("receive_message", (newMessage) => {
       // Update the UI with the new message
       console.log("Received new message:", newMessage);
     });
-
+  
     // Listen for new room creation
     socket.on("new_room_created", (newRoom) => {
-        // Update the room list and UI with the new room
-        setRooms((prevRooms) => [...prevRooms, newRoom]);
-        console.log("New room created:", newRoom);
-      });
+      // Update the room list and UI with the new room
+      setRooms((prevRooms) => [...prevRooms, newRoom]);
+      console.log("New room created:", newRoom);
+    });
   };
+  
 
   const handleCreateRoom = async (user2Id) => {
     try {
