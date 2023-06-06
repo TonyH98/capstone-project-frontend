@@ -1,12 +1,14 @@
-import React from 'react'
-import Chats from '../components/Chats'
-// import Conversations from '../components/Conversations'
+import React from 'react';
+import RoomsList from '../components/RoomsList';
 
-export default function Messages() {
+const Messages = ({user, setUser, users, setUsers}) => {
+
+
   return (
     <div>
-        <Chats/>
-        {/* <Conversations/> */}
+      <RoomsList user={user} setUser={setUser} users={users} setUsers={setUsers} />
     </div>
-  )
-}
+  );
+};
+
+export default Messages;

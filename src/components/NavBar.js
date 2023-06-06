@@ -8,13 +8,21 @@ import { GrNotification } from "react-icons/gr";
 import { BiUser } from "react-icons/bi";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { getUserInfo } from "../utils/appUtils";
+import axios from "axios";
 import app from "../firebase";
 
-export default function NavBar() {
+const API = process.env.REACT_APP_API_URL
+
+export default function NavBar({setUser, setLoggedIn}) {
+  const navigate = useNavigate()
+
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 450px)").matches
   );
   const [active, setActive] = useState(0);
+  const [friendsRequest, setFriendsRequest] = useState([])
 
   const { user } = useUser();
   const auth = getAuth(app);
@@ -25,14 +33,36 @@ export default function NavBar() {
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
 
+  useEffect(() => {
+    if (user && user.username) {
+      console.log(user.username);
+    }
+  }, [user]);
+
   // Need to add setting the user to a blank object and loggedIn to false after states are properly being passed
-  const signOut = () => {
-    // signOut(auth).then(() => {
-    //   // Sign-out successful.
-    // }).catch((error) => {
-    //   // An error happened.
-    // });
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        setUser({});
+        setLoggedIn(false);
+        console.log("signed out");
+        navigate(`/`);
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
+
+  const userInfo = getUserInfo();
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/friends/${user?.id}/request`).then((res) => {
+        setFriendsRequest(res.data.length);
+      });
+    }
+  }, [user?.id]);
 
   return (
     <nav className="flex items-center justify-between h-20 sticky blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-100 to-cyan-400 z-50">
@@ -62,7 +92,7 @@ export default function NavBar() {
               </Link>
             </li>
             <li onClick={() => setActive(2)} className="hover:text-cyan-400">
-              <Link to="/chats" className="" aria-current="page">
+              <Link to="/rooms" className="" aria-current="page">
                 <span className="flex flex-col items-center justify-center">
                   <FiMessageCircle size={25} />
                 </span>
@@ -71,7 +101,7 @@ export default function NavBar() {
             </li>
             <li onClick={() => setActive(3)} className="hover:text-cyan-400">
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user?.username}`}
                 className=""
                 aria-current="page"
               >
@@ -141,7 +171,7 @@ export default function NavBar() {
               } rounded-full p-2 shadow-lg`}
             >
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user?.username}`}
                 className="hover:text-white"
                 aria-current="page"
               >
@@ -157,6 +187,7 @@ export default function NavBar() {
       <div className="flex" id="navbar-dropdown">
         <button className="p-2">
           <GrNotification />
+          {friendsRequest}
         </button>
         <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
           <li className="">
@@ -196,9 +227,10 @@ export default function NavBar() {
                 </li>
               </ul>
               <div className="hover:bg-[#f6854b] rounded-b-lg">
-                <Link to="/" className="block px-4 py-2">
+                {/* <Link to="/" className="block px-4 py-2">
                   Sign out
-                </Link>
+                </Link> */}
+                <button onClick={handleSignOut}>Sign Out</button>
               </div>
             </div>
           </li>

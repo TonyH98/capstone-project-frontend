@@ -13,20 +13,25 @@ import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./pages/LandingPage";
 import UserProfile from "./pages/UserProfile";
-import ShowUsers from "./pages/ShowUsers"
+import ShowUsers from "./pages/ShowUsers";
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { UserProvider, useUser } from "./contexts/UserProvider";
+import Messages from "./pages/Messages";
+import ShowRoom from "./pages/ShowRoom";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
   // This state is set to false by default and is set to true by the function on line 31
   const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
+  // store current user
   const [user, setUser] = useLocalStorage("user", {});
-  // const { user, setUser } = useState({});
+  // store all other users
+  const [users, setUsers] = useState([]);
+  // const { user, setUser } = useUser();
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
 
@@ -36,7 +41,6 @@ function App() {
     if (user) {
       setLoggedin(true);
       setFirebaseId(user.uid);
-      console.log(user.uid);
     } else {
       setLoggedin(false);
     }
@@ -44,8 +48,14 @@ function App() {
 
   // This useEffect uses the firebaseId to retrieve the users data from the backend
   useEffect(() => {
+
     console.log(firebaseId);
+
+    console.log('call here for first login', loggedin, firebaseId);
+
     if (loggedin && firebaseId) {
+
+      console.log('call here for first login')
       // Add a condition to check if firebaseId is truthy
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
@@ -61,6 +71,17 @@ function App() {
     }
   }, [loggedin, firebaseId]);
 
+  // useEffect makes get request for all Users
+  useEffect(() => {
+    axios
+      .get(`${API}/users`)
+      .then((res) => {
+        setUsers(res.data);
+        console.log(res.data)
+    })
+    .catch((c) => console.warn("catch, c"));
+}, []);
+
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
       {/* useContext files can be pass here to allow all components to have access to global data */}
@@ -68,7 +89,7 @@ function App() {
       {/* <FriendsProvider> */}
       <UserProvider>
         <Router>
-          <NavBar />
+          <NavBar setLoggedIn={setLoggedin} setUser={setUser} />
           <main className="h-[100%]">
             <Routes>
               <Route path="/" element={<Landing />} />
@@ -83,6 +104,9 @@ function App() {
               <Route path="/events" element={<ShowEvents />} />
               <Route path="/events/new" element={<NewEvent />} />
               <Route path="/users" element={<ShowUsers />} />
+              <Route path="/rooms" element={<Messages user={user} setUser={setUser} users={users} setUsers={setUsers} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
+              <Route path="/rooms/:user1_id/:user2_id" element={<ShowRoom user={user} setUser={setUser} users={users} setUsers={setUsers} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
+              {/* <Route path="/chat/:conversationId" element={<ConversationsPage user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} /> */}
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
