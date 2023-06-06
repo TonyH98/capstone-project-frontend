@@ -91,11 +91,11 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
   };
 
   const sendMessage = () => {
-
-    if (!selectedUser) {
+    if (!receiver) {
       alert("Please select user");
       return;
     }
+<<<<<<< Updated upstream
 
     console.log('selected user = ', selectedUser);
     // return;
@@ -109,6 +109,15 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
       sender_id: Global.user?.id,
       receiver_id: selectedUser.id,
       content: message,
+=======
+  
+    const messageContent = {
+      room: `user_${receiver.id}`,
+      content: {
+        author: user.id,
+        message,
+      },
+>>>>>>> Stashed changes
     };
 
     console.log('message content = ', messageContent);
@@ -191,10 +200,12 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
         {filterUsers.map((recipient) => (
           <div
             key={recipient.id}
-            onClick={() => handleRecipientSelection(recipient)}
-            className={`${active ? "bg-cyan-400" : ""} font-semibold py-1 flex gap-1`}
-            >
-            <span className="hidden">{receiver = JSON.stringify(recipient)}</span>
+            onClick={() => {
+              handleRecipientSelection(recipient);
+              setSelectedUser(recipient);
+            }}
+            className={`font-semibold py-1 flex gap-1 ${selectedUser && selectedUser.id === recipient.id ? 'bg-cyan-400' : ''}`}
+          >
             {/* <span><img src={recipient.profile_img} alt="" className="w-10 rounded-full"></img></span> */}
             <span>{recipient.first_name[0].toUpperCase() + recipient.first_name.substring(1)}{" "}{recipient.last_name[0].toUpperCase() + recipient.last_name.substring(1)}</span>
           </div>
@@ -232,6 +243,7 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
       ) : (
         <div className="flex gap-6 px-4 flex-auto ml-20 min-h-screen bg-cyan-100/50 rounded-md md:w-[450px] lg:w-[700px]">
           <div className="flex flex-col p-4">
+<<<<<<< Updated upstream
             <article className="mb-auto">
             {messageList.map((messageItem, key) => {
               return (
@@ -245,11 +257,25 @@ function Chats({ loggedin, setLoggedin, user, setUser, firebaseId }) {
                   </div>
                   <div className={`text-xs ${messageItem.author === receiver.id ? '' : 'text-right'}`}>
                   {messageItem.sender_id === receiver.id ? receiver.first_name : "You"}
+=======
+          <article className="mb-auto">
+            {messageList.map((val, key) => {
+              return (
+                <div
+                  className={`my-1 flex flex-col ${val.author === user.id ? 'items-end' : 'items-start'}`}
+                  key={key}
+                >
+                  <div className={`rounded-md px-2 py-1 text-base ${val.author === user.id ? 'bg-cyan-500 text-slate-200' : 'bg-gray-300'}`}>
+                    {val.message}
+                  </div>
+                  <div className={`text-xs ${val.author === user.id ? 'text-right' : ''}`}>
+                    {val.author === user.id ? receiver.first_name : 'You'}
+>>>>>>> Stashed changes
                   </div>
                 </div>
               );
             })}
-            </article>
+          </article>
             <div className="p-4 sticky flex">
               <input
                 type="text"
