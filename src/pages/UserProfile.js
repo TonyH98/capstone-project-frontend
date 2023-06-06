@@ -32,7 +32,6 @@ function UserProfile() {
   );
   // const [user, setUser] = useLocalStorage("user", {});
   const { user, setUser } = useUser();
-  // console.log("testing user", user);
   // Dont have time to test right now but I think we can just use user only and delete updatedUser
   const [updatedUser, setUpdatedUser] = useLocalStorage("updatedUser", {});
 
@@ -44,63 +43,79 @@ function UserProfile() {
 
   const [hostedEvents, setHostedEvents] = useState([]);
 
+  const [friendsRequest, setFriendRequest] = useState([]);
+
+  const [friends, setFriends] = useState([]);
+
   let sortCategory = Array.isArray(isSelected) ? isSelected.sort() : [];
+
+  console.log(user);
 
   // let sortCategory = [];
 
+  // useEffect makes GET request for all categories and is used in the interests field
   useEffect(() => {
     axios
       .get(`${API}/category`)
       .then((res) => {
         setCategories(res.data);
       })
-      .catch((error) => {
-        console.warn("Error fetching categories:", error);
-      });
+      .catch((c) => console.warn("catch, c"));
+  }, []);
 
-    if (user.username) {
+  const onLoadUserInof =
+    // useEffect makes GET request for user info based on username parameter
+    useEffect(() => {
       axios
-        .get(`${API}/users/${user.username}`)
+        .get(`${API}/users/${user?.username}`)
         .then((res) => {
-          console.log("User info:", res.data);
+          setUser(res.data);
           setUserInfo(res.data);
           Global.user = res.data;
           setUpdatedUser(res.data);
         })
-        .catch((error) => {
-          console.warn("Error fetching user info:", error);
-        });
+        .catch((c) => console.warn("catch, c"));
+    }, [user?.username]);
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/users/${user?.id}/category`).then((res) => {
+        setIsSelected(res.data);
+      });
     }
+  }, [user?.id]);
 
-    if (user.id) {
-      axios
-        .get(`${API}/users/${user.id}/category`)
-        .then((res) => {
-          setIsSelected(res.data);
-        })
-        .catch((error) => {
-          console.warn("Error fetching user's selected categories:", error);
-        });
-
-      axios
-        .get(`${API}/users/${user.id}/events`)
-        .then((res) => {
-          setUserEvent(res.data);
-        })
-        .catch((error) => {
-          console.warn("Error fetching user's events:", error);
-        });
-
-      axios
-        .get(`${API}/events?creator.id=${user.id}`)
-        .then((res) => {
-          setHostedEvents(res.data);
-        })
-        .catch((error) => {
-          console.warn("Error fetching hosted events:", error);
-        });
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/friends/${user?.id}/list`).then((res) => {
+        setFriends(res.data);
+      });
     }
-  }, [API, user.username, user.id]);
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/users/${user?.id}/events`).then((res) => {
+        setUserEvent(res.data);
+      });
+    }
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/events?creator.id=${user?.id}`).then((res) => {
+        setHostedEvents(res.data);
+      });
+    }
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/friends/${user?.id}/request`).then((res) => {
+        setFriendRequest(res.data);
+      });
+    }
+  }, [user?.id]);
 
   function deleteMultiple() {
     const deleteEvent = userEvents
@@ -109,12 +124,38 @@ function UserProfile() {
 
     Promise.all(
       deleteEvent.map((eventId) => {
-        axios.delete(`${API}/users/${user.id}/events/${eventId}`);
+        axios.delete(`${API}/users/${user?.id}/events/${eventId}`);
       })
     );
   }
 
-  console.log(user);
+  const acceptRequest = (senderId) => {
+    axios
+      .post(`${API}/friends/${user?.id}/accept/${senderId}`, {
+        users_id: user?.id,
+        friends_id: senderId,
+      })
+      .then(() => {
+        axios.get(`${API}/friends/${user?.id}/request`).then((res) => {
+          setFriendRequest(res.data);
+        });
+      });
+  };
+
+  const declineRequest = (senderId) => {
+    axios
+      .delete(`${API}/friends/${user?.id}/denied/${senderId}`)
+      .then(() => {
+        axios.get(`${API}/friends/${user?.id}/request`).then((res) => {
+          setFriendRequest(res.data);
+        });
+      })
+      .catch((error) => {
+        console.error("Error declining friend request:", error);
+      });
+  };
+
+  console.log(friends);
 
   return (
     <>
@@ -122,22 +163,22 @@ function UserProfile() {
         <div className="mb-10 mt-12 m-auto">
           <div className="flex justify-center gap-x-10 align-items-start">
             <img
-              src={user.profile_img}
+              src={user?.profile_img}
               alt="profile-pic"
               className="w-36 h-36"
             />
             <div className="text-left w-1/6">
               <h1>
                 <b>
-                  {user.first_name} {user.last_name}{" "}
-                  {user.pronouns ? user.pronouns : null}
+                  {user?.first_name} {user?.last_name}{" "}
+                  {user?.pronouns ? user?.pronouns : null}
                 </b>
-                {user.pronoun ? <p>({user.pronoun})</p> : null}
+                {user?.pronoun ? <p>({user.pronoun})</p> : null}
               </h1>
-              <h2 className="text-emerald-500">@{user.username}</h2>
+              <h2 className="text-emerald-500">@{user?.username}</h2>
               <h3>
                 <b>Age: </b>
-                {user.age?.age} years
+                {user?.age?.age} years
               </h3>
             </div>
             <div className="relative w-52">
@@ -150,7 +191,7 @@ function UserProfile() {
               </div>
               <section className="w-52 h-12 relative flex flex-row">
                 <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{user.bio}</p>
+                <p className="px-4">{user?.bio}</p>
                 <ImQuotesRight className="text-orange-600 " />
               </section>
             </div>
@@ -165,14 +206,26 @@ function UserProfile() {
             />
           ) : null}
         </div>
-        {openEditModal ? (
-          <EditProfileModal
-            username={user.username}
-            setOpenEditModal={setOpenEditModal}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
-          />
-        ) : null}
+      </div>
+
+      <div>
+        {friendsRequest.map((request) => {
+          return (
+            <div key={request.id}>
+              <img
+                src={request?.profile_img}
+                alt="profile-pic"
+                className="w-20 h-30"
+              />{" "}
+              {request.first_name} {request.last_name}{" "}
+              <button onClick={() => acceptRequest(request.id)}>Accept</button>{" "}
+              {""}{" "}
+              <button onClick={() => declineRequest(request.id)}>
+                Decline
+              </button>
+            </div>
+          );
+        })}
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
@@ -255,6 +308,22 @@ function UserProfile() {
           >
             Create
           </button>
+        </fieldset>
+        <br />
+        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
+          <legend className="px-3 text-left ml-8">Friends</legend>
+          {friends.map((friend) => {
+            return (
+              <div key={friend.id}>
+                <img
+                  src={friend?.profile_img}
+                  alt="profile-pic"
+                  className="w-10 h-15"
+                />
+                {friend.username} {friend.pronouns}
+              </div>
+            );
+          })}
         </fieldset>
       </form>
     </>
