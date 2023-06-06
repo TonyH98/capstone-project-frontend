@@ -21,12 +21,16 @@ import Map from "./components/Map";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { UserProvider, useUser } from "./contexts/UserProvider";
 import Messages from "./pages/Messages";
+import ShowRoom from "./pages/ShowRoom";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
   // This state is set to false by default and is set to true by the function on line 31
   const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
+  // store current user
   const [user, setUser] = useLocalStorage("user", {});
+  // store all other users
+  const [users, setUsers] = useState([]);
   // const { user, setUser } = useUser();
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
@@ -57,6 +61,7 @@ function App() {
         .get(`${API}/users/firebase/${firebaseId}`)
         .then((response) => {
           setUser(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -65,6 +70,17 @@ function App() {
       setUser({});
     }
   }, [loggedin, firebaseId]);
+
+  // useEffect makes get request for all Users
+  useEffect(() => {
+    axios
+      .get(`${API}/users`)
+      .then((res) => {
+        setUsers(res.data);
+        console.log(res.data)
+    })
+    .catch((c) => console.warn("catch, c"));
+}, []);
 
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
@@ -88,7 +104,9 @@ function App() {
               <Route path="/events" element={<ShowEvents />} />
               <Route path="/events/new" element={<NewEvent />} />
               <Route path="/users" element={<ShowUsers />} />
-              <Route path="/chats" element={<Messages user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
+              <Route path="/rooms" element={<Messages user={user} setUser={setUser} users={users} setUsers={setUsers} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
+              <Route path="/rooms/:user1_id/:user2_id" element={<ShowRoom user={user} setUser={setUser} users={users} setUsers={setUsers} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
+              {/* <Route path="/chat/:conversationId" element={<ConversationsPage user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} /> */}
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
