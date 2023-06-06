@@ -20,8 +20,7 @@
   display: inline-block;
 }
 
-.tooltip .tooltiptext {
-  background-color:  rgb(229, 205, 246);
+.tooltip .tooltiptext-bottom {
   background-color: azure;
   text-align: left;
   border-radius: 6px;
@@ -32,7 +31,7 @@
   left: 10%;
   margin-left: -60px;
 }
-.tooltip .tooltiptext::after {
+.tooltip .tooltiptext-bottom::after {
   content: "";
   position: absolute;
   bottom: 100%;
@@ -40,6 +39,27 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent rgb(229, 205, 246) transparent;
   border-color: transparent transparent azure transparent;
+}
+
+.tooltip .tooltiptext-right {
+  background-color: azure;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: -50px;
+  left: 110%;
+}
+
+.tooltip .tooltiptext-right::after {
+  content: "";
+  position: absolute;
+  bottom: 23%;
+  right: 100%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent azure transparent transparent;
 }
