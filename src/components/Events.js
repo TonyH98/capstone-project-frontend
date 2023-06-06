@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import EventCard from './EventCard';
 import ReactPaginate from 'react-paginate';
@@ -114,26 +115,33 @@ export default function Events() {
   const pageCount = Math.ceil(events.length / pageData);
 
   return (
-    <div>
-       <div className='search-bar'>
-      <label htmlFor='search'>Search By:</label>
-      <input
-        type='text'
-        id='search'
-        value={searchFilter}
-        onChange={(e) => setSearchFilter(e.target.value)}
-      />
-    </div>
-    <div className='sort-by-event-date'>
-      <label htmlFor='sort-by-event-date'>Sort by date:</label>
-      <select onChange={(e) => sortByDate(e.target.value)}>
-        <option value=''>Select</option>
-        <option value='Latest to Earliest'>Latest to Earliest</option>
-        <option value='Earliest to Latest'>Earliest to Latest</option>
-      </select>
-    </div>
-
-    <div>
+    <div className='flex flex-col'>
+       <section className='flex p-4 justify-evenly'>
+        <div className='sort-by-event-date'>
+          <label htmlFor='sort-by-event-date' className='mx-1'>Sort by date:</label>
+          <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'>
+            <option value=''>Select</option>
+            <option value='Latest to Earliest'>Latest to Earliest</option>
+            <option value='Earliest to Latest'>Earliest to Latest</option>
+          </select>
+        </div>
+        <div className='search-bar'>
+          <label htmlFor='search' className='mx-1'>Search By:</label>
+          <input
+          type='text'
+          id='search'
+          value={searchFilter}
+          onChange={(e) => setSearchFilter(e.target.value)}
+          className='w-96 border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'
+          />
+        </div>
+        <div className="create-section">
+          <Link to={"/events/new"}>
+            <button className="new-event-btns shadow-md rounded-md">Create Event</button>
+          </Link>
+        </div>
+      </section>
+    <div className='p-2 flex justify-center'>
       {categories.map((category) => {
         return filterCategories.includes(category.name) ? (
           <button
@@ -142,7 +150,7 @@ export default function Events() {
             removeCategory(category.name);
             applyFilters();
           }}
-          className='inline text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+          className='inline shadow text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
         >
           {category.name}
         </button>
@@ -153,14 +161,14 @@ export default function Events() {
             addCategory(category.name);
             applyFilters();
           }}
-          className='inline py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
+          className='inline shadow shadow-white z-50 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
         >
           {category.name}
         </button>
         );
       })}
     </div>
-      <div className='events-section'>
+      <div className='flex flex-wrap gap-6 mx-16 my-4'>
       {currentEvents.length > 0 ?  currentEvents :
       <div>
         <h1>No Events Found!</h1>

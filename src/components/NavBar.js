@@ -92,7 +92,7 @@ export default function NavBar({setUser, setLoggedIn}) {
               </Link>
             </li>
             <li onClick={() => setActive(2)} className="hover:text-cyan-400">
-              <Link to="/chats" className="" aria-current="page">
+              <Link to="/rooms" className="" aria-current="page">
                 <span className="flex flex-col items-center justify-center">
                   <FiMessageCircle size={25} />
                 </span>
