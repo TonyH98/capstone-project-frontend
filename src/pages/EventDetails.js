@@ -14,6 +14,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import LocationEditModal from "../components/LocationEditModal";
 import "../components/tooltip.css";
 import SummaryEditModal from "../components/SummaryEditModal";
+import ImageEditModal from "../components/ImageEditModal";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -37,6 +38,7 @@ export default function EventDetails() {
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
   const [ openLocationEdit, setOpenLocationEdit ] = useState(false)
   const [ openSummaryEdit, setOpenSummaryEdit ] = useState(false)
+  const [ openImageEdit, setOpenImageEdit ] = useState(false)
   const [ showSearch, setShowSearch ] = useState(false)
 
   const creator = eventInfo?.creator[0].id;
@@ -156,10 +158,8 @@ export default function EventDetails() {
       },
       (error) => {
         console.error(error);
-        // setCoordinates({})
       }
     );
-    console.log(coordinates);
   };
 
   // function that adds event to user profile as interested
@@ -284,6 +284,15 @@ export default function EventDetails() {
     setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
     console.log(updatedEventInfo.date_event)
   };
+ 
+  useEffect(() => {
+    if(!updatedEventInfo?.age_restriction){
+      console.log("age res is falsey")
+      setUpdatedEventInfo({ age_min: 0, age_max: 0, ...updatedEventInfo})
+    } else {
+      console.log("age res is truthy")
+    }
+  }, [updatedEventInfo?.age_restriction])
 
   // function updates a new event object and makes a put request to update informmation
   const handleEdit = () => {
@@ -300,6 +309,7 @@ export default function EventDetails() {
         setOpenTitleEdit(false);
         setOpenLocationEdit(false);
         setOpenSummaryEdit(false)
+        setOpenImageEdit(false)
       })
       // .then(() => {window.location.reload(true)})
       .catch((c) => console.warn("catch, c"));
@@ -317,20 +327,49 @@ export default function EventDetails() {
     }
   };
 
-  console.log(updatedEventInfo)
-
+  const closeModal = () => {
+    setOpenImageEdit(false)
+    setOpenTitleEdit(false)
+  }
+  
   return (
     <div className="relative">
       <div
-        className={`${openTitleEdit ? "background" : null}`}
-        onClick={() => setOpenTitleEdit(false)}
+        className={`${openTitleEdit || openImageEdit ? "background" : null}`}
+        onClick={closeModal}
       />
       <div className="flex flex-row justify-center gap-x-16 mx-20">
-        <img
-          src={eventInfo?.location_image}
-          alt="event photo"
-          className="max-h-96 max-w-96 my-12"
-        />
+        <div className="w-96">
+          <div className="tooltip">
+            <img
+              src={eventInfo?.location_image}
+              alt="event photo"
+              className="max-h-96 max-w-96 mt-12"
+            />
+          </div>
+          <div className="max-w-96 tooltip">
+          {
+            editMode ? 
+            <button 
+            onClick={() => {setOpenImageEdit(true)}}
+            className="text-blue-800 pl-1 text-sm hover:text-blue-600"
+            >
+                Change Event Photo
+              </button>
+                : null
+              }
+              {
+                openImageEdit ? 
+                <ImageEditModal 
+                  updatedEventInfo={updatedEventInfo}
+                  setOpenImageEdit={setOpenImageEdit}
+                  handleTextChange={handleTextChange}
+                  handleEdit={handleEdit}
+                />
+                : null
+              }
+          </div>
+        </div>
         <div className="w-1/2 mt-12">
           <div className="flex flex-col relative">
             <div className={`tooltip`}>
@@ -342,7 +381,7 @@ export default function EventDetails() {
                   </h1>
                 ) : (
                   <h1 className="inline text-2xl text-gray-500">
-                    {"All ages"}
+                    All ages
                   </h1>
                 )}
                 {editMode ? (
@@ -490,7 +529,7 @@ export default function EventDetails() {
               setEventInfo={setEventInfo}
             />
           ) : null}
-          <div className="text-gray-600 mt-3 mb-8">
+          <div className="text-gray-600 mt-3">
               Hosted by 
             <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
               <Link 
@@ -506,49 +545,50 @@ export default function EventDetails() {
                 {eventInfo?.creator[0].username}
               </Link>
             </div>
-          </div>
-
-          <div>
-            <div>
-              Co-Hosts: {hosts.map((host) => {
+            {
+              hosts.length ? (
+                <div>
+                  Co-Hosts: {hosts.map((host) => {
                   return(
                     <div>{host.username}</div>
                   )
                 })}
-              </div>
-            <div>
-              {user?.id === eventInfo?.creator[0].id ? 
-                <button onClick={showSearchBar}>Add Co-Host</button>: null
-            }
-              {showSearch ? (
-                <div>
-                  <input
-                  type="text"
-                  value={search}
-                  onChange={handleFilter}
-                  />
-                {filterFriends?.length !== 0 && (
-                  <div className="dataResult">
-
-                    {filterFriends.slice(0,5).map((friend) => {
-                      return(
-                        <div className="search-link">
-                          <br></br>
-                          <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
-                          {friend.username}
-                          </button>
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
                 </div>
-                
-              ): null}
-            </div>
+              ) : (
+                <div>
+                  {user?.id === eventInfo?.creator[0].id ? 
+                    <button onClick={showSearchBar} className="text-sm">Add Co-Host</button>: null
+                  }
+                  {showSearch ? (
+                    <div>
+                      <input
+                      type="text"
+                      value={search}
+                      onChange={handleFilter}
+                      />
+                    {filterFriends?.length !== 0 && (
+                      <div className="dataResult">
+    
+                        {filterFriends.slice(0,5).map((friend) => {
+                          return(
+                            <div className="search-link">
+                              <br></br>
+                              <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
+                              {friend.username}
+                              </button>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                ): null}
+                </div >
+              )
+            }
           </div>
 
-          <div>
+          <div className="mt-8">
             <h2 className="inline">
               <b>Summary</b>
             </h2>
@@ -622,19 +662,9 @@ export default function EventDetails() {
               mapHeight="300px"
               mapLat={coordinates?.latitude}
               mapLng={coordinates?.longitude}
-              // address={eventInfo?.address}
-              // getCoordinates={getCoordinates}
             />
           </div>
         </div>
-        {/* {
-            openEditModal ? (
-              <EditEventModal 
-                eventInfo={eventInfo} 
-                setOpenEditModal = {setOpenEditModal}
-              />
-            ) : null
-          } */}
       </div>
       <div>
         <h2 className="text-lg ml-20 font-bold">
