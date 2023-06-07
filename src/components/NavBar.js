@@ -112,6 +112,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                 className={`${
                   active === 2 ? "bg-cyan-400" : "bg-cyan-200"
                 } rounded-full p-2 shadow-lg`}
+
               >
                 <Link to="/chats" className="" aria-current="page">
                   <span className="flex flex-col items-center justify-center">

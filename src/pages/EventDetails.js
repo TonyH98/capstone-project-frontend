@@ -4,16 +4,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useUser } from "../contexts/UserProvider";
+import { BsPencilFill } from "react-icons/bs";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
-import { useUser } from "../contexts/UserProvider";
-import { BsPencilFill } from "react-icons/bs";
 import CustomComponent from "../components/commentSection";
 import useLocalStorage from "../hooks/useLocalStorage";
+import TitleEditModal from "../components/TitleEditModal";
 import LocationEditModal from "../components/LocationEditModal";
-import "../components/tooltip.css";
 import SummaryEditModal from "../components/SummaryEditModal";
+import ImageEditModal from "../components/ImageEditModal";
+import AttendeesEditModal from "../components/AttendeesEditModal"
+import "../components/tooltip.css";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -37,6 +40,8 @@ export default function EventDetails() {
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
   const [ openLocationEdit, setOpenLocationEdit ] = useState(false)
   const [ openSummaryEdit, setOpenSummaryEdit ] = useState(false)
+  const [ openImageEdit, setOpenImageEdit ] = useState(false)
+  const [ openAttendeesEdit, setOpenAttendeesEdit ] = useState(false)
   const [ showSearch, setShowSearch ] = useState(false)
 
   const creator = eventInfo?.creator[0].id;
@@ -109,9 +114,6 @@ export default function EventDetails() {
         })
     }
   }, [eventInfo?.id])
-
-  useEffect(() => {
-  }, [eventInfo]);
   
   useEffect(() => {
     getCoordinates()
@@ -141,8 +143,8 @@ export default function EventDetails() {
 
   // declare variables to construct text date from numerical date
   const numDate = eventInfo?.date_event;
-  const monthName = months.get(numDate?.slice(0, 2));
-  let eventDate = `${monthName} ${numDate?.slice(3, 5)}, ${numDate?.slice(6)}`;
+  const monthName = months.get(numDate?.slice(5, 7));
+  let eventDate = `${monthName} ${numDate?.slice(8)}, ${numDate?.slice(0, 4)}`;
 
   const getCoordinates = () => {
     // using Geocode API to convert address to coordinates on map
@@ -159,10 +161,8 @@ export default function EventDetails() {
       },
       (error) => {
         console.error(error);
-        // setCoordinates({})
       }
     );
-    console.log(coordinates);
   };
 
   // function that adds event to user profile as interested
@@ -241,6 +241,7 @@ export default function EventDetails() {
       })
     }
   }
+
   // function that adds event to user profile as rsvp
   function addToRsvp() {
     if (eventInfo && eventInfo.interested === true) {
@@ -286,22 +287,32 @@ export default function EventDetails() {
     setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
     console.log(updatedEventInfo.date_event)
   };
+ 
+  useEffect(() => {
+    if(!updatedEventInfo?.age_restriction){
+      console.log("age res is falsey")
+      setUpdatedEventInfo({ age_min: 0, age_max: 0, ...updatedEventInfo})
+    } else {
+      console.log("age res is truthy")
+    }
+  }, [updatedEventInfo?.age_restriction])
 
   // function updates a new event object and makes a put request to update informmation
-  const handleEdit = () => {
+  const handleEdit = async () => {
     // handles reset for age min and max if age_restriction is set to false
-    if(!updatedEventInfo.age_restriction){
+    if(!updatedEventInfo?.age_restriction){
       console.log("age res is falsey")
       setUpdatedEventInfo({...updatedEventInfo, age_min: 0, age_max: 0})
     }
-    setEventInfo({ ...updatedEventInfo });
+    await setEventInfo({ ...updatedEventInfo });
     
     axios
       .put(`${API}/events/${id}`, updatedEventInfo)
-      .then((res) => {
+      .then(() => {
         setOpenTitleEdit(false);
         setOpenLocationEdit(false);
         setOpenSummaryEdit(false)
+        setOpenImageEdit(false)
       })
       // .then(() => {window.location.reload(true)})
       .catch((c) => console.warn("catch, c"));
@@ -319,20 +330,51 @@ export default function EventDetails() {
     }
   };
 
-  console.log(updatedEventInfo)
-
+  const closeModal = () => {
+    setOpenImageEdit(false)
+    setOpenTitleEdit(false)
+    setOpenAttendeesEdit(false)
+    setUpdatedEventInfo(eventInfo)
+  }
+  
   return (
     <div className="relative">
       <div
-        className={`${openTitleEdit ? "background" : null}`}
-        onClick={() => setOpenTitleEdit(false)}
+        className={`${openTitleEdit || openImageEdit || openAttendeesEdit ? "background" : null}`}
+        onClick={closeModal}
       />
       <div className="flex flex-row justify-center gap-x-16 mx-20">
-        <img
-          src={eventInfo?.location_image}
-          alt="event photo"
-          className="max-h-96 max-w-96 my-12"
-        />
+        <div className="w-96">
+          <div>
+            <img
+              src={eventInfo?.location_image}
+              alt="event photo"
+              className="max-h-96 max-w-96 mt-12"
+            />
+          </div>
+          <div className="max-w-96 tooltip">
+          {
+            editMode ? 
+            <button 
+            onClick={() => {setOpenImageEdit(true)}}
+            className="text-blue-800 pl-1 pt-2 text-sm hover:text-blue-600"
+            >
+                Change Event Photo
+              </button>
+                : null
+              }
+              {
+                openImageEdit ? 
+                <ImageEditModal 
+                  updatedEventInfo={updatedEventInfo}
+                  setOpenImageEdit={setOpenImageEdit}
+                  handleTextChange={handleTextChange}
+                  handleEdit={handleEdit}
+                />
+                : null
+              }
+          </div>
+        </div>
         <div className="w-1/2 mt-12">
           <div className="flex flex-col relative">
             <div className={`tooltip`}>
@@ -344,7 +386,7 @@ export default function EventDetails() {
                   </h1>
                 ) : (
                   <h1 className="inline text-2xl text-gray-500">
-                    {"All ages"}
+                    All ages
                   </h1>
                 )}
                 {editMode ? (
@@ -358,89 +400,26 @@ export default function EventDetails() {
                   </div>
                 ) : null}
               </div>
-              {openTitleEdit ? (
-                <div className="tooltiptext bg-indigo-200 w-full">
-                  <div className="ml-10 mt-4">
-                    <label htmlFor="title">Title</label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      value={updatedEventInfo.title}
-                      onChange={handleTextChange}
-                      className="ml-3 rounded h-8 w-3/4 bg-gray-100"
-                    />
-                  </div>
-                  <div className="ml-10 mb-14">
-                    <label htmlFor="age_restriction">Age Restriction</label>
-                    <select
-                      id="age_restriction"
-                      name="age_restriction"
-                      required
-                      onChange={handleTextChange}
-                      className="ml-1 mr-6 mt-2 rounded h-8 text-sm pb-1 bg-gray-100"
-                    >
-                      {updatedEventInfo.age_restriction ? 
-                        <option value={true} selected> True </option>
-                        : <option value={true}> True </option>
-                      }
-                      {!updatedEventInfo.age_restriction ? 
-                        <option value={false} selected> False </option>
-                        : <option value={false}> False </option>
-                      }
-                    </select>
-                    {updatedEventInfo?.age_restriction ? (
-                      <div className="inline">
-                        <label htmlFor="age_min">Min</label>
-                        <input
-                          type="number"
-                          id="age_min"
-                          value={updatedEventInfo?.age_min}
-                          onChange={handleTextChange}
-                          className="w-14 pr-1 mr-2 text-center rounded h-8 bg-gray-100 ml-1"
-                        />
-                        <label htmlFor="age_max">Max</label>
-                        <input
-                          type="number"
-                          id="age_max"
-                          value={updatedEventInfo.age_max}
-                          onChange={handleTextChange}
-                          className="w-14 pr-1 text-center rounded h-8 bg-gray-100 ml-1"
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                  <button
-                    type="button"
-                    className="border bg-gray-100 px-3 rounded shadow position absolute right-10 bottom-3"
-                    onClick={handleEdit}
-                  >
-                    Save
-                  </button>
-                </div>
-              ) : null}
+              {openTitleEdit ? 
+                <TitleEditModal 
+                  eventInfo={eventInfo}
+                  updatedEventInfo={updatedEventInfo}
+                  handleTextChange={handleTextChange}
+                  handleEdit={handleEdit}
+                />
+              : null}
             </div>
-            <div className="relative">
-              <h2 className="inline">
-                Date:
-                <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
-                  {eventDate}
-                </span>
-                <span className="text-sm text-blue-800">
-                  @ {eventInfo?.start_time} - {eventInfo?.end_time}
-                </span>
-              </h2>
-              {
-                editMode ? 
-                  <BsPencilFill 
-                    onClick={() => {setOpenLocationEdit(true)}}
-                    className="right-10 top-0 text-md text-gray-800 inline ml-4 align-baseline hover:cursor-pointer"
-                  />
-                  : null
-              }
-              <h2 className="mt-1">Location: {eventInfo?.location}</h2>
-              <h2 className="mt-1">Address: {eventInfo?.address}</h2>
-            </div>
+            <h2>
+              Date:
+              <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
+                {eventDate}
+              </span>
+              <span className="text-sm text-blue-800">
+                @ {eventInfo?.start_time} - {eventInfo?.end_time}
+              </span>
+            </h2>
+            <h2 className="mt-1">Location: {eventInfo?.location}</h2>
+            <h2 className="mt-1">Address: {eventInfo?.address}</h2>
           </div>
           {
             openLocationEdit ?
@@ -492,7 +471,7 @@ export default function EventDetails() {
               setEventInfo={setEventInfo}
             />
           ) : null}
-          <div className="text-gray-600 mt-3 mb-8">
+          <div className="text-gray-600 mt-3">
               Hosted by 
             <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
               <Link 
@@ -508,49 +487,50 @@ export default function EventDetails() {
                 {eventInfo?.creator[0].username}
               </Link>
             </div>
-          </div>
-
-          <div>
-            <div>
-              Co-Hosts: {hosts.map((host) => {
+            {
+              hosts.length ? (
+                <div>
+                  Co-Hosts: {hosts.map((host) => {
                   return(
                     <div>{host.username}</div>
                   )
                 })}
-              </div>
-            <div>
-              {user?.id === eventInfo?.creator[0].id ? 
-                <button onClick={showSearchBar}>Add Co-Host</button>: null
-            }
-              {showSearch ? (
-                <div>
-                  <input
-                  type="text"
-                  value={search}
-                  onChange={handleFilter}
-                  />
-                {filterFriends?.length !== 0 && (
-                  <div className="dataResult">
-
-                    {filterFriends.slice(0,5).map((friend) => {
-                      return(
-                        <div className="search-link">
-                          <br></br>
-                          <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
-                          {friend.username}
-                          </button>
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
                 </div>
-                
-              ): null}
-            </div>
+              ) : (
+                <div>
+                  {user?.id === eventInfo?.creator[0].id ? 
+                    <button onClick={showSearchBar} className="text-sm">Add Co-Host</button>: null
+                  }
+                  {showSearch ? (
+                    <div>
+                      <input
+                      type="text"
+                      value={search}
+                      onChange={handleFilter}
+                      />
+                    {filterFriends?.length !== 0 && (
+                      <div className="dataResult">
+    
+                        {filterFriends.slice(0,5).map((friend) => {
+                          return(
+                            <div className="search-link">
+                              <br></br>
+                              <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
+                              {friend.username}
+                              </button>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                ): null}
+                </div >
+              )
+            }
           </div>
 
-          <div>
+          <div className="mt-8">
             <h2 className="inline">
               <b>Summary</b>
             </h2>
@@ -624,24 +604,36 @@ export default function EventDetails() {
               mapHeight="300px"
               mapLat={coordinates?.latitude}
               mapLng={coordinates?.longitude}
-              // address={eventInfo?.address}
-              // getCoordinates={getCoordinates}
             />
           </div>
         </div>
-        {/* {
-            openEditModal ? (
-              <EditEventModal 
-                eventInfo={eventInfo} 
-                setOpenEditModal = {setOpenEditModal}
-              />
-            ) : null
-          } */}
       </div>
       <div>
-        <h2 className="text-lg ml-20 font-bold">
-          Attendees: {attending?.length}/{eventInfo?.max_people}
-        </h2>
+        <div className="tooltip">
+          <div>
+            <h2 className="text-lg ml-20 font-bold inline">
+              Attendees: {attending?.length}/{eventInfo?.max_people}
+            </h2>
+            {
+              editMode ?
+                <BsPencilFill 
+                  onClick={() => {setOpenAttendeesEdit(true)}}
+                  className="text-md text-gray-800 inline ml-4 align-baseline hover:cursor-pointer"
+                />
+                  : null
+            }
+            {
+              openAttendeesEdit ? (
+                <AttendeesEditModal
+                  updatedEventInfo={updatedEventInfo}
+                  setOpenAttendeesEdit={setOpenAttendeesEdit}
+                  handleTextChange={handleTextChange}
+                  handleEdit={handleEdit}
+                />
+              ) : null
+            }
+          </div>
+        </div>
         {
           attending?.length ? (
             <div>
@@ -653,7 +645,7 @@ export default function EventDetails() {
             </div>
           ) : (
             <h1 className="ml-32 my-5 text-gray-400 text-lg">
-              Still space in this event. RSVP now to save your place!
+              Still space in this event. RSVP now to save your spot!
             </h1>
           )
         }
