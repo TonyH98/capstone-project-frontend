@@ -471,13 +471,12 @@ export default function EventDetails() {
               setEventInfo={setEventInfo}
             />
           ) : null}
-          <div className="text-gray-600 mt-3">
+          <div className="text-gray-600 my-5 text-sm py-3 align-baseline">
               Hosted by 
             <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
               <Link 
                 to={`/profile/${eventInfo?.creator[0].username}`}
                 className="hover:text-blue-500 hover:border-blue-500 w-12"
-                // onMouseOver={setHover(true)}
               >
                 <img 
                   src={user.profile_img}
@@ -489,24 +488,42 @@ export default function EventDetails() {
             </div>
             {
               hosts.length ? (
-                <div>
-                  Co-Hosts: {hosts.map((host) => {
-                  return(
-                    <div>{host.username}</div>
-                  )
-                })}
+                <div className="inline">
+                  Co-Hosts: 
+                  {hosts.map((host) => {
+                    return(
+                      <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
+                        <Link 
+                          to={`/profile/${host.username}`}
+                          className="hover:text-blue-500 hover:border-blue-500 w-12"
+                        >
+                          <img 
+                            src={host.profile_img}
+                            alt="profile image"
+                            className="h-7 w-7 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500"
+                          /> 
+                          {host.username}
+                        </Link>
+                      </div>
+                    )
+                  })
+                }
                 </div>
               ) : (
-                <div>
+                <div className="inline ml-4">
                   {user?.id === eventInfo?.creator[0].id ? 
-                    <button onClick={showSearchBar} className="text-sm">Add Co-Host</button>: null
+                    <button onClick={showSearchBar} className="text-[12px] border rounded-xl px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
+                      Add Co-Host
+                    </button>
+                      : null
                   }
                   {showSearch ? (
-                    <div>
+                    <div className="inline">
                       <input
-                      type="text"
-                      value={search}
-                      onChange={handleFilter}
+                        type="text"
+                        value={search}
+                        onChange={handleFilter}
+                        className="inline h-7 rounded align-middle"
                       />
                     {filterFriends?.length !== 0 && (
                       <div className="dataResult">
@@ -529,8 +546,7 @@ export default function EventDetails() {
               )
             }
           </div>
-
-          <div className="mt-8">
+          <div className="mt-6">
             <h2 className="inline">
               <b>Summary</b>
             </h2>
