@@ -18,7 +18,7 @@ function LocationEditModal({
             <input
             type="date"
             id="date_event"
-            value={`${updatedEventInfo?.date_event.slice(6)}-${updatedEventInfo?.date_event.slice(0,2)}-${updatedEventInfo?.date_event.slice(3,5)}`}
+            value={updatedEventInfo.date_event}
             onChange={handleTextChange}
             required
             className="rounded h-8 ml-2"

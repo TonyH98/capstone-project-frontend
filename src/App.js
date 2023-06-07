@@ -21,12 +21,13 @@ import Map from "./components/Map";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { UserProvider } from "./contexts/UserProvider";
 import Messages from "./pages/Messages";
+import ShowRoom from "./pages/ShowRoom";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
   // This state is set to false by default and is set to true by the function on line 31
   const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
-  const [loggedInUser, setLoggedInUser] = useLocalStorage("loggedInUser", {});
+  const [user, setUser] = useLocalStorage("user", {});
   // const { user, setUser } = useUser();
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
@@ -54,8 +55,7 @@ function App() {
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
         .then((response) => {
-          setLoggedInUser(response.data);
-          console.log("RESPONSE SERVER", response.data);
+          setUser(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -65,7 +65,6 @@ function App() {
     }
   }, [loggedin, firebaseId]);
 
-  console.log("USER", loggedInUser);
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
       {/* useContext files can be pass here to allow all components to have access to global data */}
@@ -97,8 +96,8 @@ function App() {
                 path="/chats"
                 element={
                   <Messages
-                    user={loggedInUser}
-                    setUser={setLoggedInUser}
+                    user={user}
+                    setUser={setUser}
                     loggedin={loggedin}
                     setLoggedin={setLoggedin}
                     firebaseId={firebaseId}

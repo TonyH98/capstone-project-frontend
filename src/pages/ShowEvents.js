@@ -1,7 +1,6 @@
 
 import Events from "../components/Events";
-import "../components/events.css"
-import { Link } from "react-router-dom";
+import "../components/events.css";
 
 // This will be the page on the wireframe that displays all of the events. The search bar, event cards, the map plugin, and the categories
 //  will be their own components.
@@ -12,14 +11,6 @@ import { Link } from "react-router-dom";
 export default function ShowEvents() {
   return (
     <div>
-
-      <div className="create-section">
-      
-      <Link to={"/events/new"}>
-        <button className="new-event-btns">Create Event</button>
-      </Link>
-        
-      </div>
       <Events />
     </div>
   );
