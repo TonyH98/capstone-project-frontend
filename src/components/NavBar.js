@@ -39,6 +39,13 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
     }
   }, [user]);
 
+  let dropdownText;
+  if (loggedin) {
+    dropdownText = "Sign Out";
+  } else {
+    dropdownText = "Login";
+  }
+
   // Need to add setting the user to a blank object and loggedIn to false after states are properly being passed
   const handleSignOut = () => {
     signOut(auth)
@@ -229,7 +236,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
               data-dropdown-toggle="dropdownNavbar"
               className="flex items-center justify-between text-base font-bold "
             >
-              Dropdown
+              {dropdownText}
               <svg
                 className="w-5 h-5 ml-1"
                 aria-hidden="true"
