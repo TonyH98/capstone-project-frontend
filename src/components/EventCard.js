@@ -36,9 +36,9 @@ let eventDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice(0
     <Link to={`/events/${event?.id}`}>
       <div className="w-[600px] h-[200px] flex shadow-2xl bg-white rounded-md my-4">
         <Link to={`/events/${event?.id}`}>
-          <img src={event.location_image} className="w-[200px] h-[200px] rounded-l-md object-cover mr-2"></img>
+          <img src={event.location_image} className="w-[200px] h-[200px] rounded-l-md mr-3 object-cover mr-2"></img>
         </Link>
-        <div className="p-3">
+        <div className="p-3 pl-6 w-3/4">
           <Link to={`/events/${event?.id}`}>
             <h2 className="text-lg font-semibold inline">{event.title}</h2>
             <p className="text-cyan-500 text-sm inline ml-2">@{event.location}</p>
