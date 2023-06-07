@@ -51,8 +51,7 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     logIn(event);
-    // navigate(`/profile/${loggedInUser.username}`);
-    navigate("/");
+    navigate(`/profile/${loggedInUser.username}`);
   };
 
   return (
