@@ -15,12 +15,7 @@ import app from "../firebase";
 
 const API = process.env.REACT_APP_API_URL;
 
-export default function NavBar({
-  setUser,
-  setLoggedIn,
-  loggedin,
-  setFirebaseId,
-}) {
+export default function NavBar({ setUser, setLoggedIn, loggedin }) {
   const navigate = useNavigate();
 
   const [matches, setMatches] = useState(
@@ -51,7 +46,6 @@ export default function NavBar({
         // Sign-out successful.
         setUser({});
         setLoggedIn(false);
-        setFirebaseId("");
         console.log("signed out");
         navigate(`/`);
       })
@@ -238,9 +232,6 @@ export default function NavBar({
                   </Link>
                 </li>
               </ul>
-              {/* <div className="hover:bg-[#f6854b] rounded-b-lg">
-                <button onClick={handleSignOut}>Sign Out</button>
-              </div> */}
             </div>
           </li>
         </ul>
