@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 export default function EventCard({ event }) {
 
-
 // declare a hash map for converting number date to text date with number to text conversions in monthObj
 const months = new Map();
 const monthObj = {
@@ -42,12 +41,12 @@ let eventDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice(0
         <div className="p-3">
           <Link to={`/events/${event?.id}`}>
             <h2 className="text-lg font-semibold inline">{event.title}</h2>
-            <p className="text-cyan-400 text-sm inline ml-2">@{event.location}</p>
+            <p className="text-cyan-500 text-sm inline ml-2">@{event.location}</p>
           </Link>
-          <div className="flex py-1">
-          <p className="font-semibold text-sm">{eventDate}&nbsp;</p>
-          <p className="font-semibold text-sm">&nbsp;From &nbsp;{event.start_time}{"-"}</p>
-          <p className="font-semibold text-sm">{event.end_time}</p>
+          <div className="flex">
+            <p className="font-semibold text-[12px] bg-pink-300 px-2 rounded-full py-0.5 border">{eventDate}&nbsp;</p>
+            <p className="font-semibold text-[12px] py-1">&nbsp;From &nbsp;{event.start_time}{"-"}</p>
+            <p className="font-semibold text-[12px] py-1">{event.end_time}</p>
           </div>
           <p className="text-sm mb-2">Hosted by: {event.creator[0].username}</p>
           <div className="flex flex-wrap gap-2">
