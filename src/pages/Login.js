@@ -48,9 +48,9 @@ function Login() {
     setLogin({ ...login, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    logIn(event);
+    await logIn(event);
     navigate(`/profile/${loggedInUser?.username}`);
   };
 

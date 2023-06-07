@@ -35,7 +35,6 @@ function App() {
   // This also will set loggedin to false once a user has signed out
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log("AUTH CHANGED", loggedInUser);
       setLoggedin(true);
       setFirebaseId(user.uid);
     } else {

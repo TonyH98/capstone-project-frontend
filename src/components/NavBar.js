@@ -71,117 +71,150 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
       </Link>
       {matches && (
         <div className="flex items-center justify-between h-20 sticky z-50">
-          <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
-            <li
-              onClick={() => setActive(0)}
-              className={`${active === 0 ? "active" : ""} hover:text-cyan-400`}
-            >
-              <Link to="/events" className="" aria-current="page">
-                <span className="flex flex-col items-center justify-center">
-                  <RiHomeLine size={25} />
-                </span>
-                <span className="text-gray-600">Events</span>
-              </Link>
-            </li>
-            <li onClick={() => setActive(1)} className="hover:text-cyan-400">
-              <Link to="/users" className="" aria-current="page">
-                <span className="flex flex-col items-center justify-center">
-                  <HiOutlineUsers size={25} />
-                </span>
-                <span className="text-gray-600">Users</span>
-              </Link>
-            </li>
-            <li onClick={() => setActive(2)} className="hover:text-cyan-400">
-              <Link to="/chats" className="" aria-current="page">
-                <span className="flex flex-col items-center justify-center">
-                  <FiMessageCircle size={25} />
-                </span>
-                <span className="text-gray-600">Chats</span>
-              </Link>
-            </li>
-            <li onClick={() => setActive(3)} className="hover:text-cyan-400">
-              <Link
-                to={`/profile/${user?.username}`}
-                className=""
-                aria-current="page"
+          {loggedin && (
+            <ul className="flex justify-center items-center gap-8 font-semibold text-[12px]">
+              <li
+                onClick={() => setActive(0)}
+                className={`${
+                  active === 0 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
               >
-                <span className="flex flex-col items-center justify-center">
-                  <BiUser size={25} />
-                </span>
-                <span className="text-gray-600">Profile</span>
-              </Link>
-            </li>
-          </ul>
+                <Link
+                  to="/events"
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <RiHomeLine size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">Events</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(1)}
+                className={`${
+                  active === 1 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
+              >
+                <Link
+                  to="/users"
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <HiOutlineUsers size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">Users</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(2)}
+                className={`${
+                  active === 2 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
+              >
+                <Link to="/chats" className="" aria-current="page">
+                  <span className="flex flex-col items-center justify-center">
+                    <FiMessageCircle size={20} />
+                  </span>
+                  <span className="text-gray-900">Chats</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(3)}
+                className={`${
+                  active === 3 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
+              >
+                <Link
+                  to={`/profile/${user?.username}`}
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <BiUser size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">
+                    Profile
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          )}
         </div>
       )}
       {!matches && (
         <div className="navbar blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-200 to-cyan-600 z-50 shadow-lg">
-          <ul className="flex justify-center items-center gap-8 font-semibold text-[12px]">
-            <li
-              onClick={() => setActive(0)}
-              className={`${
-                active === 0 ? "bg-cyan-400" : "bg-cyan-200"
-              } rounded-full p-2 shadow-lg`}
-            >
-              <Link
-                to="/events"
-                className="hover:text-white"
-                aria-current="page"
+          {loggedin && (
+            <ul className="flex justify-center items-center gap-8 font-semibold text-[12px]">
+              <li
+                onClick={() => setActive(0)}
+                className={`${
+                  active === 0 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
               >
-                <span className="flex flex-col items-center justify-center">
-                  <RiHomeLine size={20} />
-                </span>
-                <span className="text-gray-900 hover:text-white">Events</span>
-              </Link>
-            </li>
-            <li
-              onClick={() => setActive(1)}
-              className={`${
-                active === 1 ? "bg-cyan-400" : "bg-cyan-200"
-              } rounded-full p-2 shadow-lg`}
-            >
-              <Link
-                to="/users"
-                className="hover:text-white"
-                aria-current="page"
+                <Link
+                  to="/events"
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <RiHomeLine size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">Events</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(1)}
+                className={`${
+                  active === 1 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
               >
-                <span className="flex flex-col items-center justify-center">
-                  <HiOutlineUsers size={20} />
-                </span>
-                <span className="text-gray-900 hover:text-white">Users</span>
-              </Link>
-            </li>
-            <li
-              onClick={() => setActive(2)}
-              className={`${
-                active === 2 ? "bg-cyan-400" : "bg-cyan-200"
-              } rounded-full p-2 shadow-lg`}
-            >
-              <Link to="/chats" className="" aria-current="page">
-                <span className="flex flex-col items-center justify-center">
-                  <FiMessageCircle size={20} />
-                </span>
-                <span className="text-gray-900">Chats</span>
-              </Link>
-            </li>
-            <li
-              onClick={() => setActive(3)}
-              className={`${
-                active === 3 ? "bg-cyan-400" : "bg-cyan-200"
-              } rounded-full p-2 shadow-lg`}
-            >
-              <Link
-                to={`/profile/${user?.username}`}
-                className="hover:text-white"
-                aria-current="page"
+                <Link
+                  to="/users"
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <HiOutlineUsers size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">Users</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(2)}
+                className={`${
+                  active === 2 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
               >
-                <span className="flex flex-col items-center justify-center">
-                  <BiUser size={20} />
-                </span>
-                <span className="text-gray-900 hover:text-white">Profile</span>
-              </Link>
-            </li>
-          </ul>
+                <Link to="/chats" className="" aria-current="page">
+                  <span className="flex flex-col items-center justify-center">
+                    <FiMessageCircle size={20} />
+                  </span>
+                  <span className="text-gray-900">Chats</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(3)}
+                className={`${
+                  active === 3 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
+              >
+                <Link
+                  to={`/profile/${user?.username}`}
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <BiUser size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">
+                    Profile
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          )}
         </div>
       )}
       <div className="flex" id="navbar-dropdown">
@@ -196,7 +229,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
               data-dropdown-toggle="dropdownNavbar"
               className="flex items-center justify-between text-base font-bold "
             >
-              Login
+              Dropdown
               <svg
                 className="w-5 h-5 ml-1"
                 aria-hidden="true"
