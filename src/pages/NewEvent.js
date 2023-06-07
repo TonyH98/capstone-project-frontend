@@ -5,6 +5,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
 import { useUser } from "../contexts/UserProvider";
@@ -615,21 +616,6 @@ export default function NewEvent() {
               <p className="w-[300px] h-[300px] bg-gray-200 text-center pt-[125px] m-auto">
                 Please verify a valid address
               </p>
-            </div>
-          )}
-        </>
-      )}
-      {formStep === 1 && (
-        <>
-          {events?.location_image ? (
-            <img
-              src={events?.location_image}
-              alt="event photo"
-              className="max-h-[300px] max-w-[300px]"
-            />
-          ) : (
-            <div className="bg-gray-200 w-[300px] h-[300px] flex justify-center items-center">
-              <p className="w-96 text-center">Preview event image</p>
             </div>
           )}
         </>
