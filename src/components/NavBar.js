@@ -13,16 +13,21 @@ import { getUserInfo } from "../utils/appUtils";
 import axios from "axios";
 import app from "../firebase";
 
-const API = process.env.REACT_APP_API_URL
+const API = process.env.REACT_APP_API_URL;
 
-export default function NavBar({setUser, setLoggedIn}) {
-  const navigate = useNavigate()
+export default function NavBar({
+  setUser,
+  setLoggedIn,
+  loggedin,
+  setFirebaseId,
+}) {
+  const navigate = useNavigate();
 
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 450px)").matches
   );
   const [active, setActive] = useState(0);
-  const [friendsRequest, setFriendsRequest] = useState([])
+  const [friendsRequest, setFriendsRequest] = useState([]);
 
   const { user } = useUser();
   const auth = getAuth(app);
@@ -46,6 +51,7 @@ export default function NavBar({setUser, setLoggedIn}) {
         // Sign-out successful.
         setUser({});
         setLoggedIn(false);
+        setFirebaseId("");
         console.log("signed out");
         navigate(`/`);
       })
@@ -216,9 +222,15 @@ export default function NavBar({setUser, setLoggedIn}) {
               className="hidden bg-[#3bd4ee] -z-50 divide-y divide-gray-100 rounded-b-lg w-32"
             >
               <ul className="py-4 mt-1" aria-labelledby="dropdownLargeButton">
-                <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                  <Link to="/login">Login</Link>
-                </li>
+                {!loggedin ? (
+                  <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                    <Link to="/login">Login</Link>
+                  </li>
+                ) : (
+                  <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                    <button onClick={handleSignOut}>Sign Out</button>
+                  </li>
+                )}
                 <li className="block px-4 py-2 hover:bg-[#f5fefd]">Settings</li>
                 <li className="block px-4 py-2 hover:bg-[#f5fefd]">
                   <Link to="/devs" className="">
@@ -226,12 +238,9 @@ export default function NavBar({setUser, setLoggedIn}) {
                   </Link>
                 </li>
               </ul>
-              <div className="hover:bg-[#f6854b] rounded-b-lg">
-                {/* <Link to="/" className="block px-4 py-2">
-                  Sign out
-                </Link> */}
+              {/* <div className="hover:bg-[#f6854b] rounded-b-lg">
                 <button onClick={handleSignOut}>Sign Out</button>
-              </div>
+              </div> */}
             </div>
           </li>
         </ul>

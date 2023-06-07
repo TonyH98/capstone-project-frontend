@@ -4,7 +4,9 @@ import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserProvider";
+import axios from "axios";
 import app from "../firebase";
+const API = process.env.REACT_APP_API_URL;
 
 function Login() {
   // useState hooks to toggle between show/hide password and store login information
@@ -17,7 +19,7 @@ function Login() {
   const navigate = useNavigate();
 
   // Sets the user in local storage
-  const { user, setUser } = useUser();
+  const { loggedInUser, setLoggedInUser } = useUser();
 
   // function to send login information to firebase
   const logIn = () => {
@@ -26,7 +28,13 @@ function Login() {
         const returningUser = userCredential.user;
         if (returningUser) {
           alert("You are now logged in!");
-          console.log("logged in");
+
+          axios
+            .get(`${API}/users/firebase/${returningUser.uid}`)
+            .then((res) => {
+              setLoggedInUser(res.data);
+            })
+            .catch((c) => console.warn("Log in failed"));
         }
       })
       .catch((error) => {
@@ -43,7 +51,8 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     logIn(event);
-    navigate(`/profile/${user.username}`);
+    // navigate(`/profile/${loggedInUser.username}`);
+    navigate("/");
   };
 
   return (

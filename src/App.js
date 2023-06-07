@@ -19,14 +19,14 @@ import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
 import useLocalStorage from "./hooks/useLocalStorage";
-import { UserProvider, useUser } from "./contexts/UserProvider";
+import { UserProvider } from "./contexts/UserProvider";
 import Messages from "./pages/Messages";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
   // This state is set to false by default and is set to true by the function on line 31
   const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
-  const [user, setUser] = useLocalStorage("user", {});
+  const [loggedInUser, setLoggedInUser] = useLocalStorage("loggedInUser", {});
   // const { user, setUser } = useUser();
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
@@ -35,6 +35,7 @@ function App() {
   // This also will set loggedin to false once a user has signed out
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      console.log("AUTH CHANGED", loggedInUser);
       setLoggedin(true);
       setFirebaseId(user.uid);
     } else {
@@ -54,16 +55,18 @@ function App() {
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
         .then((response) => {
-          setUser(response.data);
+          setLoggedInUser(response.data);
+          console.log("RESPONSE SERVER", response.data);
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
-      setUser({});
+      setLoggedInUser({});
     }
   }, [loggedin, firebaseId]);
 
+  console.log("USER", loggedInUser);
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
       {/* useContext files can be pass here to allow all components to have access to global data */}
@@ -71,7 +74,12 @@ function App() {
       {/* <FriendsProvider> */}
       <UserProvider>
         <Router>
-          <NavBar setLoggedIn={setLoggedin} setUser={setUser} />
+          <NavBar
+            loggedin={loggedin}
+            setLoggedIn={setLoggedin}
+            setUser={setLoggedInUser}
+            setFirebaseId={setFirebaseId}
+          />
           <main className="h-[100%]">
             <Routes>
               <Route path="/" element={<Landing />} />
@@ -90,8 +98,8 @@ function App() {
                 path="/chats"
                 element={
                   <Messages
-                    user={user}
-                    setUser={setUser}
+                    user={loggedInUser}
+                    setUser={setLoggedInUser}
                     loggedin={loggedin}
                     setLoggedin={setLoggedin}
                     firebaseId={firebaseId}

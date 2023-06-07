@@ -3,15 +3,13 @@
 
 // Create new event form that posts a new event to the events table
 import axios from "axios";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
 import { useUser } from "../contexts/UserProvider";
 
-const API = process.env.REACT_APP_API_URL
-
-export default function NewEvent() {
+const API = process.env.REACT_APP_API_URL;
 
 export default function NewEvent() {
   const navigate = useNavigate();
@@ -23,7 +21,7 @@ export default function NewEvent() {
   const [isValid, setIsValid] = useState(false);
 
   const { user } = useUser();
-  const [ users, setUsers ] = useState({});
+  const [users, setUsers] = useState({});
 
   // useState to store event information
   const [events, setEvents] = useState({
@@ -39,8 +37,8 @@ export default function NewEvent() {
     start_time: "",
     end_time: "",
     location_image: "",
-    creator: "", 
-    categoryIds: []
+    creator: "",
+    categoryIds: [],
   });
 
   // useState to store error messages
@@ -50,7 +48,7 @@ export default function NewEvent() {
   const [dateError, setDateError] = useState("");
   const [addressError, setAddressError] = useState("");
 
-// useEffect populates previous event information and adds the creator's user ID
+  // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
     if (user?.id) {
       setEvents((prevEvents) => ({
@@ -60,86 +58,93 @@ export default function NewEvent() {
     }
   }, [user?.id]);
 
-// useEffect makes a GET request to store all category options
-useEffect(() => {
-  axios
-  .get(`${API}/category`)
-  .then((res) => {
-    setCategory(res.data)
-  })
-  .catch((error) => {
-    console.log(error)
-  })
-}, [])
+  // useEffect makes a GET request to store all category options
+  useEffect(() => {
+    axios
+      .get(`${API}/category`)
+      .then((res) => {
+        setCategory(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-// function that makes a POST request to add the new event to the events table
-const handleAdd = (newEvent) => {
-  axios
-  .post(`${API}/events` , newEvent)
-  .then(() => {
-    navigate("/events")
-  })
-  .catch((error) => {
-    console.log(error)
-  })
-}
+  // function that makes a POST request to add the new event to the events table
+  const handleAdd = (newEvent) => {
+    axios
+      .post(`${API}/events`, newEvent)
+      .then(() => {
+        navigate("/events");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-// function that updates event information on change in the form
-const handleTextChange = (event) => {
-  // handles updating the category IDs allowing up to three unique choices for categories
-  if (event.target.id === "categoryIds") {
-    const { value } = event.target;
+  // function that updates event information on change in the form
+  const handleTextChange = (event) => {
+    // handles updating the category IDs allowing up to three unique choices for categories
+    if (event.target.id === "categoryIds") {
+      const { value } = event.target;
 
-    if (!events.categoryIds.includes(value) && events.categoryIds.length < 3 && value) {
+      if (
+        !events.categoryIds.includes(value) &&
+        events.categoryIds.length < 3 &&
+        value
+      ) {
+        setEvents((prevEvent) => ({
+          ...prevEvent,
+          categoryIds: [...prevEvent.categoryIds, value],
+        }));
+      }
+    }
+    // handles updates to min age, max age and max number of people and converts the value to a number if there is an input
+    else if (
+      event.target.id === "age_min" ||
+      event.target.id === "age_max" ||
+      event.target.id === "max_people"
+    ) {
+      const { id, value } = event.target;
+      setEvents((prevEvent) => ({
+        ...prevEvent,
+        [id]: value ? Number(value) : "", // Convert to number if value exists, otherwise set it as an empty string
+      }));
+    } else if (event.target.id === "age_restriction") {
+      const { value } = event.target;
+      const isAgeRestricted = value === "true";
       setEvents((prevEvent) => ({
         ...prevEvent,
         age_restriction: isAgeRestricted,
       }));
     }
-  } 
-  // handles updates to min age, max age and max number of people and converts the value to a number if there is an input
-  else if (event.target.id === "age_min" || event.target.id === "age_max" || event.target.id === "max_people") {
-    const { id, value } = event.target;
-    setEvents((prevEvent) => ({
-      ...prevEvent,
-      [id]: value ? Number(value) : "", // Convert to number if value exists, otherwise set it as an empty string
-    }));
-  }
-  else if (event.target.id === "age_restriction") {
-    const { value } = event.target;
-    const isAgeRestricted = value === "true"; 
-    setEvents((prevEvent) => ({
-      ...prevEvent,
-      age_restriction: isAgeRestricted,
-    }));
-  }
-  // handles updating all other fields of the event details
-  else {
-    const { id, value } = event.target;
-    setEvents((prevEvent) => ({
-      ...prevEvent,
-      [id]: value,
-    }));
-  }
-  console.log(events.date_event)
-};
+    // handles updating all other fields of the event details
+    else {
+      const { id, value } = event.target;
+      setEvents((prevEvent) => ({
+        ...prevEvent,
+        [id]: value,
+      }));
+    }
+    console.log(events.date_event);
+  };
 
-// function handles removing a category that was selected on button click and updates the event details object
-const filterCategory = (category) => {
-  const filter = events.categoryIds.filter((ele) => {
-    return ele !== category
-  })
+  // function handles removing a category that was selected on button click and updates the event details object
+  const filterCategory = (category) => {
+    const filter = events.categoryIds.filter((ele) => {
+      return ele !== category;
+    });
 
     setEvents({ ...events, categoryIds: filter });
   };
 
-// function validates that the the max age is greater than or equal to the min age
-function checkAge(){
-  if(events.age_restriction){
-    if(events.age_max >= events.age_min){
-        return true
+  // function validates that the the max age is greater than or equal to the min age
+  function checkAge() {
+    if (events.age_restriction) {
+      if (events.age_max >= events.age_min) {
+        return true;
       } else {
-        return false
+        return false;
       }
     } else {
       return true;
@@ -168,11 +173,11 @@ function checkAge(){
     }
   }
 
-// function validates that the event date is not a date in the past
-function checkDate() {
-  console.log(events.date_event)
-  const eventDate = new Date(events.date_event);
-  const currentDate = new Date();
+  // function validates that the event date is not a date in the past
+  function checkDate() {
+    console.log(events.date_event);
+    const eventDate = new Date(events.date_event);
+    const currentDate = new Date();
 
     // Set the time component of both dates to midnight
     eventDate.setHours(0, 0, 0, 0);
@@ -185,35 +190,35 @@ function checkDate() {
     }
   }
 
-// function that uses geocode API to verify and convert address to latitude and longitude for Google Maps rendering
+  // function that uses geocode API to verify and convert address to latitude and longitude for Google Maps rendering
   const verifyAddress = () => {
-  // resets useState hooks to re-verify on click or on submit
-  setAddressError('')   
-  setAddressIsVerified(false)
+    // resets useState hooks to re-verify on click or on submit
+    setAddressError("");
+    setAddressIsVerified(false);
 
-  // set Google Maps Geocoding API for purposes of quota management
-  Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
-  
-  // Get latitude & longitude from address.
-  Geocode.fromAddress(events.address).then(
-    (response) => {
-      const { lat, lng } = response.results[0].geometry.location;
-      setCoordinates({
-        latitude: lat,
-        longitude: lng
-      })
-      setEvents({...events, latitude:lat, longitude:lng})
-      setAddressIsVerified(true)
-    },
-    (error) => {
-      console.error(error);
-      setAddressError("Invalid address")
-      setAddressIsVerified(false)
-      setCoordinates({})
-    }
-  );
-    console.log('addressIsVerified', addressIsVerified)
-}
+    // set Google Maps Geocoding API for purposes of quota management
+    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
+
+    // Get latitude & longitude from address.
+    Geocode.fromAddress(events.address).then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        setCoordinates({
+          latitude: lat,
+          longitude: lng,
+        });
+        setEvents({ ...events, latitude: lat, longitude: lng });
+        setAddressIsVerified(true);
+      },
+      (error) => {
+        console.error(error);
+        setAddressError("Invalid address");
+        setAddressIsVerified(false);
+        setCoordinates({});
+      }
+    );
+    console.log("addressIsVerified", addressIsVerified);
+  };
 
   // useEffect to run verify address on address field change
   // useEffect(() => {
@@ -243,17 +248,19 @@ function checkDate() {
       setAgeError("The max age needs to be greater than the minimum age");
       isValid = false;
     }
-    if(!checkMinAge()){
-      setMinAge("The minimum age needs to be at least 18")
-      isValid = false
+    if (!checkMinAge()) {
+      setMinAge("The minimum age needs to be at least 18");
+      isValid = false;
     }
-    if(!checkMax()){
-      setMaxError("The max people needs to be greater than 0")
-      isValid = false
+    if (!checkMax()) {
+      setMaxError("The max people needs to be greater than 0");
+      isValid = false;
     }
-    if(!checkDate()){
-      setDateError("The date of the event needs to be later than the current date")
-      isValid = false
+    if (!checkDate()) {
+      setDateError(
+        "The date of the event needs to be later than the current date"
+      );
+      isValid = false;
     }
 
     if (isValid) {
@@ -262,9 +269,9 @@ function checkDate() {
     } else {
       console.log("Submit was blocked");
     }
-  }
-  console.log(events)
-  
+  };
+  console.log(events);
+
   return (
     <div className="flex justify-center items-center p-4 flex gap-20">
       {events?.location_image ? (
