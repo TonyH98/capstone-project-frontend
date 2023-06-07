@@ -16,6 +16,7 @@ import LocationEditModal from "../components/LocationEditModal";
 import SummaryEditModal from "../components/SummaryEditModal";
 import ImageEditModal from "../components/ImageEditModal";
 import AttendeesEditModal from "../components/AttendeesEditModal"
+import AttendeeIcon from "../components/AttendeeIcon";
 import "../components/tooltip.css";
 
 const API = process.env.REACT_APP_API_URL;
@@ -477,7 +478,6 @@ export default function EventDetails() {
               <Link 
                 to={`/profile/${eventInfo?.creator[0].username}`}
                 className="hover:text-blue-500 hover:border-blue-500 w-12"
-                // onMouseOver={setHover(true)}
               >
                 <img 
                   src={user.profile_img}
@@ -529,7 +529,6 @@ export default function EventDetails() {
               )
             }
           </div>
-
           <div className="mt-8">
             <h2 className="inline">
               <b>Summary</b>
@@ -639,7 +638,13 @@ export default function EventDetails() {
             <div>
               {
                 attending.map((attendee) => {
-
+                  return(
+                    <div className="flex flex-row">
+                      <AttendeeIcon 
+                        attendee={attendee}
+                      />
+                  </div>
+                  )
                 })
               }
             </div>

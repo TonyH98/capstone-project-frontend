@@ -16,8 +16,8 @@ function MultipleMarkers({ filterEvents }) {
     };
 
     const center2 = {
-        lat: 40.705,
-        lng: -73.930
+        lat: 40.7205,
+        lng: -73.8797
     };
 
     const center3 = {
