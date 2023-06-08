@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import EventCard from './EventCard';
 import ReactPaginate from 'react-paginate';
+import GoogleMap from "../components/MapMultipleMarkers"
 import './events.css';
 
 const pageData = 10;
@@ -49,8 +50,6 @@ export default function Events() {
 
     setFilterCategories(filter);
   };
-
-
   
   const applyFilters = () => {
     let filteredEvents = events;
@@ -114,6 +113,11 @@ export default function Events() {
 
   const pageCount = Math.ceil(events.length / pageData);
 
+  // useEffect to re-render map when filters change
+  useEffect(() => {
+
+  }, [events, filterEvents])
+
   return (
     <div className='md:flex flex-col max-w-[100vw]'>
        <section className='sm:flex p-4 justify-evenly'>
@@ -174,7 +178,12 @@ export default function Events() {
         <h1>No Events Found!</h1>
       </div>  
     }
-      </div>
+    <div className='w-[600px] m-auto'>
+      <GoogleMap 
+        events={events}
+        filterEvents={filterEvents}
+        />
+    </div>
       <div>
         {events.length < pageData ? null :
         <ReactPaginate
