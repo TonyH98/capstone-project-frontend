@@ -134,7 +134,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                 } rounded-full p-2 shadow-lg`}
               >
                 <Link
-                  to={`/profile/${user?.username}`}
+                  to={`/personalprofile`}
                   className="hover:text-white"
                   aria-current="page"
                 >
@@ -208,7 +208,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                 } rounded-full p-2 shadow-lg`}
               >
                 <Link
-                  to={`/profile/${user?.username}`}
+                  to={`/personalprofile`}
                   className="hover:text-white"
                   aria-current="page"
                 >

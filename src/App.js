@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./pages/LandingPage";
 import UserProfile from "./pages/UserProfile";
+import OtherProfile from "./pages/OtherProfile";
 import ShowUsers from "./pages/ShowUsers";
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
@@ -27,14 +28,11 @@ const API = process.env.REACT_APP_API_URL;
 function App() {
   // This state is set to false by default and is set to true by the function on line 31
   const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
-<<<<<<<<< Temporary merge branch 1
+
   // store current user
-  const [user, setUser] = useLocalStorage("user", {});
+  const [loggedInUser, setLoggedInUser] = useLocalStorage("loggedInUser", {});
   // store all other users
   const [users, setUsers] = useState([]);
-=========
-  const [loggedInUser, setLoggedInUser] = useLocalStorage("loggedInUser", {});
->>>>>>>>> Temporary merge branch 2
   // const { user, setUser } = useUser();
   const [firebaseId, setFirebaseId] = useState("");
   const auth = getAuth(app);
@@ -62,13 +60,8 @@ function App() {
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
         .then((response) => {
-<<<<<<<<< Temporary merge branch 1
-          setUser(response.data);
-          console.log(response.data);
-=========
           setLoggedInUser(response.data);
           console.log("RESPONSE SERVER", response.data);
->>>>>>>>> Temporary merge branch 2
         })
         .catch((error) => {
           console.log(error);
@@ -78,21 +71,17 @@ function App() {
     }
   }, [loggedin, firebaseId]);
 
-<<<<<<<<< Temporary merge branch 1
   // useEffect makes get request for all Users
   useEffect(() => {
     axios
       .get(`${API}/users`)
       .then((res) => {
         setUsers(res.data);
-        console.log(res.data)
-    })
-    .catch((c) => console.warn("catch, c"));
-}, []);
+        console.log(res.data);
+      })
+      .catch((c) => console.warn("catch, c"));
+  }, []);
 
-=========
-  console.log("USER", loggedInUser);
->>>>>>>>> Temporary merge branch 2
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
       {/* useContext files can be pass here to allow all components to have access to global data */}
@@ -115,29 +104,39 @@ function App() {
               Comment in when useParams is set up and remove UserProfile below
               <Route path='/profile/:id' element={<UserProfile />} /> 
               */}
-              <Route path="/profile/:profileName" element={<UserProfile />} />
+              <Route path="/personalprofile" element={<UserProfile />} />
+              <Route path="/profile/:username" element={<OtherProfile />} />
               <Route path="/devs" element={<Devs />} />
               <Route path="/events" element={<ShowEvents />} />
               <Route path="/events/new" element={<NewEvent />} />
               <Route path="/users" element={<ShowUsers />} />
-<<<<<<<<< Temporary merge branch 1
-              <Route path="/rooms" element={<Messages user={user} setUser={setUser} users={users} setUsers={setUsers} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
-              <Route path="/rooms/:user1_id/:user2_id" element={<ShowRoom user={user} setUser={setUser} users={users} setUsers={setUsers} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
-              {/* <Route path="/chat/:conversationId" element={<ConversationsPage user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} /> */}
-=========
+
               <Route
-                path="/chats"
+                path="/rooms"
                 element={
                   <Messages
-                    user={loggedInUser}
-                    setUser={setLoggedInUser}
+                    users={users}
+                    setUsers={setUsers}
                     loggedin={loggedin}
                     setLoggedin={setLoggedin}
                     firebaseId={firebaseId}
                   />
                 }
               />
->>>>>>>>> Temporary merge branch 2
+              <Route
+                path="/rooms/:user1_id/:user2_id"
+                element={
+                  <ShowRoom
+                    users={users}
+                    setUsers={setUsers}
+                    loggedin={loggedin}
+                    setLoggedin={setLoggedin}
+                    firebaseId={firebaseId}
+                  />
+                }
+              />
+              {/* <Route path="/chat/:conversationId" element={<ConversationsPage user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} /> */}
+
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 

@@ -18,7 +18,7 @@ function Login() {
   const auth = getAuth(app);
   const navigate = useNavigate();
 
-  // Sets the user in local storage
+  // Sets and retrieves the user in local storage
   const { loggedInUser, setLoggedInUser } = useUser();
 
   // function to send login information to firebase
@@ -51,7 +51,7 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     logIn(event);
-    navigate(`/profile/${loggedInUser?.username}`);
+    navigate(`/personalprofile`);
   };
 
   return (
