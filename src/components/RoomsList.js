@@ -4,24 +4,74 @@ import socketIOClient from "socket.io-client";
 import Room from "./Room";
 const API = process.env.REACT_APP_API_URL;
 
-function RoomsList({user, setUser, users, serUsers}) {
+function RoomsList({user}) {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [roomByIndex , setRoomByIndex] = useState([])
+  const [selectedUser,setSelectedUser] = useState(null)
+  const [chat , setChat] = useState([])
+  
+  let otherUser = [roomByIndex["user1_id"],roomByIndex["user2_id"]].filter((users) => {
+    return users !== user.id
+  })
+
+  const [newChat, setNewChat] = useState({
+    roomId: selectedRoom,
+    user1_id: user?.id,
+    user2_id: otherUser[0],
+    content: ""
+  });
+
+  useEffect(() => {
+    
+    if (otherUser[0]) {
+      setNewChat((prevChat) => ({ ...prevChat, user2_id: otherUser[0] }));
+    }
+  }, [otherUser[0]]);
+  
+
+  useEffect(() => {
+    
+    if (selectedRoom) {
+      setNewChat((prevChat) => ({ ...prevChat, roomId: selectedRoom }));
+    }
+  }, [selectedRoom]);
+
 
   function handleSelectedUser (recipient) {
     console.log(`selected one user: ${JSON.stringify(recipient)}`);
     setSelectedUser(recipient);
   }
 
+  
   useEffect(() => {
     axios.get(`${API}/rooms/${user.id}`)
     .then((res) => {
       setRooms(res.data)
     })
   }, []);
+  
+  useEffect(() => {
+    if(selectedRoom){
+      axios.get(`${API}/rooms/${selectedRoom}/messages`)
+      .then((res) => {
+        setChat(res.data)
+      })
+
+    }
+  }, [selectedRoom]);
 
 
+  useEffect(() => {
+    if(selectedRoom){
+      axios.get(`${API}/rooms/${selectedRoom}/selected`)
+      .then((res) => {
+        setRoomByIndex(res.data)
+      })
+
+    }
+  }, [selectedRoom]);
+  
 
   const handleRoomClick = (roomId) => {
     const socket = socketIOClient(API);
@@ -35,19 +85,15 @@ function RoomsList({user, setUser, users, serUsers}) {
     // Update the selected room state
     setSelectedRoom(roomId);
   
-    console.log("This is the selected room:", selectedRoom);
-  
     // Listen for new messages in the current room
     socket.on("receive_message", (newMessage) => {
       // Update the UI with the new message
-      console.log("Received new message:", newMessage);
     });
   
     // Listen for new room creation
     socket.on("new_room_created", (newRoom) => {
       // Update the room list and UI with the new room
       setRooms((prevRooms) => [...prevRooms, newRoom]);
-      console.log("New room created:", newRoom);
     });
   };
   
@@ -72,17 +118,47 @@ function RoomsList({user, setUser, users, serUsers}) {
       // Listen for new messages in the current room
       socket.on("receive_message", (newMessage) => {
         // Update the UI with the new message
-        console.log("Received new message:", newMessage);
       });
-
-      console.log("New room created:", newRoom);
     } catch (error) {
-      console.log(error);
     }
   };
 
 
-  
+//Create new chats
+
+function handleNewMessage(newMessage) {
+  axios
+    .post(`${API}/rooms/${selectedRoom}/messages/${selectedRoom}`, newMessage)
+    .then(() => {
+      if (selectedRoom) {
+        axios.get(`${API}/rooms/${selectedRoom}/messages`).then((res) => {
+          setChat(res.data);
+        });
+      }
+    });
+}
+
+
+const handleTextChange = (event) => {
+    setNewChat({...newChat, content: event.target.value})
+}
+
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  handleNewMessage(newChat);
+  setNewChat((prevChat) => ({ ...prevChat, content: "" }));
+};
+
+
+
+
+
+
+console.log(newChat)
+
+
+
 
   return (
     <div className="p-6">
@@ -101,10 +177,43 @@ function RoomsList({user, setUser, users, serUsers}) {
         {rooms.map((room) => (
             <section key={room.id}>
               {/* <p>{room.username}</p> */}
-              <Room room={room} handleRoomClick={handleRoomClick}/>
+              <Room room={room} handleRoomClick={handleRoomClick} selectedRoom={selectedRoom}/>
             </section>
         ))}
       </ul>
+
+      <div>
+  {Array.isArray(chat) ? (
+    chat.map((chatItem) => (
+      <div key={chatItem.id}>
+        <p>{chatItem.date_created}</p>
+        <p>{chatItem.content}</p>
+        <div>{user?.id === chatItem.userid ? "You" : chatItem.username}</div>
+
+     
+
+      </div>
+    ))
+  ) : (
+    <div>
+      <p>No chat available</p>
+    </div>
+  )}
+</div>
+{selectedRoom ? 
+<form onSubmit={handleSubmit}>
+      <input
+      type="text"
+      id="content"
+      value={newChat.content}
+      onChange={handleTextChange}
+      />
+     <input type="submit"/>
+      </form>: null
+
+}
+
+
     </div>
   );
 }
