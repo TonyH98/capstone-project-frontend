@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 import Room from "./Room";
+import SendMessageForm from "./SendMessageForm";
 const API = process.env.REACT_APP_API_URL;
 
 function RoomsList({user, setUser, users, serUsers}) {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [chats, setChats] = useState([]);
 
-  function handleSelectedUser (recipient) {
-    console.log(`selected one user: ${JSON.stringify(recipient)}`);
-    setSelectedUser(recipient);
-  }
 
   useEffect(() => {
     axios.get(`${API}/rooms/${user.id}`)
@@ -22,6 +19,17 @@ function RoomsList({user, setUser, users, serUsers}) {
   }, []);
 
 
+  useEffect(() => {
+    if (selectedRoom){
+      axios.get(`${API}/rooms/${selectedRoom}/messages`)
+      .then((res) => {
+        setChats(res.data)
+      })
+    }
+  }, [selectedRoom]);
+
+  console.log(selectedRoom)
+  console.log(chats)
 
   const handleRoomClick = (roomId) => {
     const socket = socketIOClient(API);
@@ -35,7 +43,7 @@ function RoomsList({user, setUser, users, serUsers}) {
     // Update the selected room state
     setSelectedRoom(roomId);
   
-    console.log("This is the selected room:", selectedRoom);
+    console.log("This is the selected room:", roomId);
   
     // Listen for new messages in the current room
     socket.on("receive_message", (newMessage) => {
@@ -85,7 +93,8 @@ function RoomsList({user, setUser, users, serUsers}) {
   
 
   return (
-    <div className="p-6">
+    <div className="p-6 flex flex-col">
+      <div className="">
       <h2>Create Room</h2>
       <form
         onSubmit={(e) => {
@@ -96,15 +105,27 @@ function RoomsList({user, setUser, users, serUsers}) {
         <input type="text" name="user2Id" placeholder="User ID" required />
         <button type="submit">Create Room</button>
       </form>
+      </div>
+      <article className="flex gap-6">
+      <div>
       <h2>Rooms List</h2>
       <ul>
         {rooms.map((room) => (
             <section key={room.id}>
-              {/* <p>{room.username}</p> */}
               <Room room={room} handleRoomClick={handleRoomClick}/>
             </section>
         ))}
       </ul>
+      </div>
+      <div className="flex items-center justify-center text-center">
+      {selectedRoom && (
+        <div className="flex flex-col items-center justify-center">
+          <h2>Send Message</h2>
+          <SendMessageForm selectedRoom={selectedRoom} />
+        </div>
+      )}
+      </div>
+      </article>
     </div>
   );
 }

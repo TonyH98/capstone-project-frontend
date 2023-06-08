@@ -35,7 +35,7 @@ let eventDate = `${monthName} ${numDate?.slice(3, 5)}, ${numDate?.slice(6)}`;
   console.log(event)
   return (
     <Link to={`/events/${event?.id}`}>
-      <div className="w-[600px] h-[200px] flex shadow-2xl bg-white rounded-md my-4">
+      <div className="lg:w-[600px] lg:h-[200px] md:w-[680px] sm:w-screen flex shadow-2xl bg-white rounded-md my-4">
         <Link to={`/events/${event?.id}`}>
           <img src={event.location_image} className="max-w-[200px] min-h-[200px] rounded-l-md"></img>
         </Link>
