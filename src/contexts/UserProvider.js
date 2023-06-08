@@ -8,10 +8,10 @@ export function useUser() {
 }
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useLocalStorage("user", {});
+  const [loggedInUser, setLoggedInUser] = useLocalStorage("loggedInUser", {});
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ loggedInUser, setLoggedInUser }}>
       {children}
     </UserContext.Provider>
   );
