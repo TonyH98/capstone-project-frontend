@@ -118,6 +118,8 @@ export default function Events() {
 
   }, [events, filterEvents])
 
+  console.log(filterEvents)
+
   return (
     <div className='md:flex flex-col max-w-[100vw]'>
        <section className='sm:flex p-4 justify-evenly'>
