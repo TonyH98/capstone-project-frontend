@@ -34,7 +34,7 @@ let eventDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice(0
   console.log(event)
   return (
     <Link to={`/events/${event?.id}`}>
-      <div className="w-[600px] h-[200px] flex shadow-2xl bg-white rounded-md my-4">
+      <div className="lg:w-[600px] lg:h-[200px] md:w-[680px] sm:w-screen flex shadow-2xl bg-white rounded-md my-4">
         <Link to={`/events/${event?.id}`}>
           <img src={event.location_image} className="w-[200px] h-[200px] rounded-l-md mr-3 object-cover mr-2"></img>
         </Link>

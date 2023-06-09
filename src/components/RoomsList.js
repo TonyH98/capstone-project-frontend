@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 import Room from "./Room";
+import SendMessageForm from "./SendMessageForm";
 const API = process.env.REACT_APP_API_URL;
 
 function RoomsList({users}) {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
+
   const [roomByIndex , setRoomByIndex] = useState([])
   const [selectedUser,setSelectedUser] = useState(null)
   const [chat , setChat] = useState([])
@@ -38,10 +40,6 @@ function RoomsList({users}) {
   }, [selectedRoom]);
 
 
-  function handleSelectedUser (recipient) {
-    console.log(`selected one user: ${JSON.stringify(recipient)}`);
-    setSelectedUser(recipient);
-  }
 
   
   useEffect(() => {
@@ -161,7 +159,8 @@ console.log(newChat)
 
 
   return (
-    <div className="p-6">
+    <div className="p-6 flex flex-col">
+      <div className="">
       <h2>Create Room</h2>
       <form
         onSubmit={(e) => {
@@ -172,6 +171,7 @@ console.log(newChat)
         <input type="text" name="user2Id" placeholder="User ID" required />
         <button type="submit">Create Room</button>
       </form>
+      </div>
       <h2>Rooms List</h2>
       <ul>
         {rooms.map((room) => (
@@ -181,7 +181,6 @@ console.log(newChat)
             </section>
         ))}
       </ul>
-
       <div>
   {Array.isArray(chat) ? (
     chat.map((chatItem) => (
@@ -212,7 +211,6 @@ console.log(newChat)
       </form>: null
 
 }
-
 
     </div>
   );
