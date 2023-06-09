@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import EventCard from './EventCard';
 import ReactPaginate from 'react-paginate';
+import GoogleMap from "../components/MapMultipleMarkers"
 import './events.css';
 
 const pageData = 10;
@@ -49,8 +50,6 @@ export default function Events() {
 
     setFilterCategories(filter);
   };
-
-
   
   const applyFilters = () => {
     let filteredEvents = events;
@@ -114,9 +113,16 @@ export default function Events() {
 
   const pageCount = Math.ceil(events.length / pageData);
 
+  // useEffect to re-render map when filters change
+  useEffect(() => {
+
+  }, [events, filterEvents])
+
+  console.log(filterEvents)
+
   return (
-    <div className='md:flex flex-col max-w-[100vw]'>
-       <section className='sm:flex p-4 justify-evenly'>
+    <div className='flex flex-col'>
+       <section className='flex p-4 justify-evenly'>
         <div className='sort-by-event-date'>
           <label htmlFor='sort-by-event-date' className='mx-1'>Sort by date:</label>
           <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'>
@@ -125,14 +131,14 @@ export default function Events() {
             <option value='Earliest to Latest'>Earliest to Latest</option>
           </select>
         </div>
-        <div className='search-bar my-2'>
+        <div className='search-bar'>
           <label htmlFor='search' className='mx-1'>Search By:</label>
           <input
           type='text'
           id='search'
           value={searchFilter}
           onChange={(e) => setSearchFilter(e.target.value)}
-          className='lg:w-96 border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'
+          className='w-96 border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'
           />
         </div>
         <div className="create-section">
@@ -141,7 +147,7 @@ export default function Events() {
           </Link>
         </div>
       </section>
-    <div className='p-2 text-xs flex justify-center md:flex-wrap gap-2 overflow-x-scroll'>
+    <div className='p-2 flex justify-center'>
       {categories.map((category) => {
         return filterCategories.includes(category.name) ? (
           <button
@@ -150,7 +156,7 @@ export default function Events() {
             removeCategory(category.name);
             applyFilters();
           }}
-          className=' inline shadow text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+          className='inline shadow text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
         >
           {category.name}
         </button>
@@ -168,12 +174,26 @@ export default function Events() {
         );
       })}
     </div>
+    <GoogleMap 
+        events={events}
+        filterEvents={filterEvents}
+      />
       <div className='md:flex flex-wrap sm:mx-16 gap-6'>
       {currentEvents.length > 0 ?  currentEvents :
       <div>
         <h1>No Events Found!</h1>
       </div>  
     }
+    <div className='w-[600px] m-auto'>
+      
+    </div>
+    <div className='flex flex-wrap gap-6 mx-16 my-4'>
+      {currentEvents.length > 0 ?  
+        currentEvents : (
+        <div>
+          <h1>No Events Found!</h1>
+        </div> ) 
+      }
       </div>
       <div>
         {events.length < pageData ? null :
@@ -189,6 +209,7 @@ export default function Events() {
         />
         }
       </div>
+    </div>
     </div>
   )
 }

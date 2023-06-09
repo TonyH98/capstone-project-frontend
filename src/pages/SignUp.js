@@ -28,7 +28,7 @@ function SignUp() {
 
   const [ageError, setAgeError] = useState("");
 
-  const [usernameError, setUsernameError] = useState("")
+  const [usernameError, setUsernameError] = useState("");
 
   const auth = getAuth(app);
 
@@ -90,15 +90,16 @@ function SignUp() {
   };
 
   const checkUsername = () => {
-    return axios.get(`${API}/users?username=${newUser?.username}`)
-    .then((res) => {
-      return res.data.length > 0;
-    })
-    .catch((error) => {
-      console.error(error);
-      return false;
-    });
-  }
+    return axios
+      .get(`${API}/users?username=${newUser?.username}`)
+      .then((res) => {
+        return res.data.length > 0;
+      })
+      .catch((error) => {
+        console.error(error);
+        return false;
+      });
+  };
 
   // function to make an axios POST request and navigate to the user profile page
   const handleSubmit = async (e) => {
@@ -113,9 +114,9 @@ function SignUp() {
       isValid = false;
     }
 
-    if(await checkUsername()){
-      setUsernameError("Username already taken")
-      isValid = false
+    if (await checkUsername()) {
+      setUsernameError("Username already taken");
+      isValid = false;
     }
 
     if (isValid) {
@@ -136,7 +137,7 @@ function SignUp() {
       axios
         .post(`${API}/users`, userCredentials)
         .then(() => {
-          navigate(`/profile/${userCredentials.username}`);
+          navigate(`/personalprofile`);
         })
         .catch((c) => console.warn("catch, c"));
     }

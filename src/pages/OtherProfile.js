@@ -11,35 +11,21 @@ import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import { ImQuotesLeft } from "react-icons/im";
 import { ImQuotesRight } from "react-icons/im";
-import EditProfileModal from "../components/EditProfileModal";
-import useLocalStorage from "../hooks/useLocalStorage";
-// import { getUserInfo, setUserInfo } from "../utils/appUtils";
-// import Global from "../utils/Global";
 import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
 
-function UserProfile() {
+function OtherProfile() {
   const navigate = useNavigate();
-  // const { profileName } = useParams();
-  const [openInterestModal, setOpenInterestModal] = useLocalStorage(
-    "openInterestModal",
-    false
-  );
-  const [openEditModal, setOpenEditModal] = useLocalStorage(
-    "openEditModal",
-    false
-  );
-  // const [user, setUser] = useLocalStorage("user", {});
-  const { loggedInUser, setLoggedInUser } = useUser();
-  // Dont have time to test right now but I think we can just use user only and delete updatedUser
-  const [updatedUser, setUpdatedUser] = useLocalStorage("updatedUser", {});
+  const { username } = useParams();
 
-  // useLocalStorage hook to store selected interests
-  const [categories, setCategories] = useLocalStorage("categories", []);
-  const [isSelected, setIsSelected] = useLocalStorage("isSelected", []);
+  const { loggedInUser } = useUser();
+
+  const [profileInfo, setProfileInfo] = useState({});
 
   const [userEvents, setUserEvent] = useState([]);
+
+  const [categories, setCategories] = useState([]);
 
   const [hostedEvents, setHostedEvents] = useState([]);
 
@@ -47,9 +33,19 @@ function UserProfile() {
 
   const [friends, setFriends] = useState([]);
 
-  let sortCategory = Array.isArray(isSelected) ? isSelected.sort() : [];
+  let sortCategory = Array.isArray(categories) ? categories.sort() : [];
 
   // let sortCategory = [];
+
+  useEffect(() => {
+    axios
+      .get(`${API}/users/${username}`)
+      .then((res) => {
+        setProfileInfo(res.data);
+        console.log(res.data);
+      })
+      .catch((c) => console.warn("catch, c"));
+  }, [username]);
 
   // useEffect makes GET request for all categories and is used in the interests field
   useEffect(() => {
@@ -62,44 +58,49 @@ function UserProfile() {
   }, []);
 
   useEffect(() => {
-    if (loggedInUser?.id) {
-      axios.get(`${API}/users/${loggedInUser?.id}/category`).then((res) => {
-        setIsSelected(res.data);
+    if (profileInfo?.id) {
+      axios.get(`${API}/users/${profileInfo?.id}/category`).then((res) => {
+        setCategories(res.data);
       });
     }
-  }, [loggedInUser?.id]);
+  }, [profileInfo?.id]);
 
   useEffect(() => {
-    if (loggedInUser?.id) {
-      axios.get(`${API}/friends/${loggedInUser?.id}/list`).then((res) => {
+    if (profileInfo?.id) {
+      axios.get(`${API}/friends/${profileInfo?.id}/list`).then((res) => {
         setFriends(res.data);
       });
     }
-  }, [loggedInUser?.id]);
+  }, [profileInfo?.id]);
 
   useEffect(() => {
-    if (loggedInUser?.id) {
-      axios.get(`${API}/users/${loggedInUser?.id}/events`).then((res) => {
+    if (profileInfo?.id) {
+      axios.get(`${API}/users/${profileInfo?.id}/events`).then((res) => {
         setUserEvent(res.data);
       });
     }
-  }, [loggedInUser?.id]);
+  }, [profileInfo?.id]);
 
   useEffect(() => {
-    if (loggedInUser?.id) {
-      axios.get(`${API}/events?creator.id=${loggedInUser?.id}`).then((res) => {
-        setHostedEvents(res.data);
-      });
+    if (profileInfo?.id) {
+      axios
+        .get(`${API}/events?creator.id=${profileInfo?.id}`)
+        .then((res) => {
+          setHostedEvents(res.data);
+        })
+        .catch((err) => {
+          setHostedEvents(["Fake Event"]);
+        });
     }
-  }, [loggedInUser?.id]);
+  }, [profileInfo?.id]);
 
   useEffect(() => {
-    if (loggedInUser?.id) {
-      axios.get(`${API}/friends/${loggedInUser?.id}/request`).then((res) => {
+    if (profileInfo?.id) {
+      axios.get(`${API}/friends/${profileInfo?.id}/request`).then((res) => {
         setFriendRequest(res.data);
       });
     }
-  }, [loggedInUser?.id]);
+  }, [profileInfo?.id]);
 
   function deleteMultiple() {
     const deleteEvent = userEvents
@@ -108,19 +109,19 @@ function UserProfile() {
 
     Promise.all(
       deleteEvent.map((eventId) => {
-        axios.delete(`${API}/users/${loggedInUser?.id}/events/${eventId}`);
+        axios.delete(`${API}/users/${profileInfo?.id}/events/${eventId}`);
       })
     );
   }
 
   const acceptRequest = (senderId) => {
     axios
-      .post(`${API}/friends/${loggedInUser?.id}/accept/${senderId}`, {
-        users_id: loggedInUser?.id,
+      .post(`${API}/friends/${profileInfo?.id}/accept/${senderId}`, {
+        users_id: profileInfo?.id,
         friends_id: senderId,
       })
       .then(() => {
-        axios.get(`${API}/friends/${loggedInUser?.id}/request`).then((res) => {
+        axios.get(`${API}/friends/${profileInfo?.id}/request`).then((res) => {
           setFriendRequest(res.data);
         });
       });
@@ -128,9 +129,9 @@ function UserProfile() {
 
   const declineRequest = (senderId) => {
     axios
-      .delete(`${API}/friends/${loggedInUser?.id}/denied/${senderId}`)
+      .delete(`${API}/friends/${profileInfo?.id}/denied/${senderId}`)
       .then(() => {
-        axios.get(`${API}/friends/${loggedInUser?.id}/request`).then((res) => {
+        axios.get(`${API}/friends/${profileInfo?.id}/request`).then((res) => {
           setFriendRequest(res.data);
         });
       })
@@ -147,48 +148,35 @@ function UserProfile() {
         <div className="mb-10 mt-12 m-auto">
           <div className="flex justify-center gap-x-10 align-items-start">
             <img
-              src={loggedInUser?.profile_img}
+              src={profileInfo?.profile_img}
               alt="profile-pic"
               className="w-36 h-36"
             />
             <div className="text-left w-1/6">
               <h1>
                 <b>
-                  {loggedInUser?.first_name} {loggedInUser?.last_name}{" "}
-                  {loggedInUser?.pronouns ? loggedInUser?.pronouns : null}
+                  {profileInfo?.first_name} {profileInfo?.last_name}{" "}
+                  {profileInfo?.pronouns ? profileInfo?.pronouns : null}
                 </b>
-                {loggedInUser?.pronoun ? <p>({loggedInUser.pronoun})</p> : null}
+                {profileInfo?.pronoun ? <p>({profileInfo.pronoun})</p> : null}
               </h1>
-              <h2 className="text-emerald-500">@{loggedInUser?.username}</h2>
+              <h2 className="text-emerald-500">@{profileInfo?.username}</h2>
               <h3>
                 <b>Age: </b>
-                {loggedInUser?.age?.age} years
+                {profileInfo?.age?.age} years
               </h3>
             </div>
             <div className="relative w-52">
               <div className="align-middle inline">
                 <p className="text-left font-bold inline">Bio</p>
-                <BsPencilSquare
-                  onClick={() => setOpenEditModal(true)}
-                  className="inline text-cyan-800 cursor-pointer float-right mt-2"
-                />
               </div>
               <section className="w-52 h-12 relative flex flex-row">
                 <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{loggedInUser?.bio}</p>
+                <p className="px-4">{profileInfo?.bio}</p>
                 <ImQuotesRight className="text-orange-600 " />
               </section>
             </div>
           </div>
-          {openEditModal ? (
-            <EditProfileModal
-              setUser={setLoggedInUser}
-              user={loggedInUser}
-              setOpenEditModal={setOpenEditModal}
-              updatedUser={updatedUser}
-              setUpdatedUser={setUpdatedUser}
-            />
-          ) : null}
         </div>
       </div>
 
@@ -216,9 +204,7 @@ function UserProfile() {
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
-          className={`w-3/4 border relative shadow-sm m-auto mb-8 ${
-            !isSelected.length ? "h-20" : null
-          }`}
+          className={`w-3/4 border relative shadow-sm m-auto mb-8 h-20`}
         >
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
@@ -234,25 +220,8 @@ function UserProfile() {
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              onClick={() => setOpenInterestModal(!openInterestModal)}
-              className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-            >
-              Edit
-            </button>
           </div>
         </fieldset>
-        {openInterestModal ? (
-          <InterestsModal
-            categories={categories}
-            openInterestModal={openInterestModal}
-            setOpenInterestModal={setOpenInterestModal}
-            isSelected={isSelected}
-            setIsSelected={setIsSelected}
-            user={loggedInUser}
-          />
-        ) : null}
         <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
           <legend className="px-3 text-left ml-8">Events</legend>
           <div>
@@ -265,39 +234,18 @@ function UserProfile() {
             ) : (
               <p>No events found.</p>
             )}
-
-            {userEvents.length > 0 && (
-              <button onClick={deleteMultiple}>
-                <BsTrash />
-              </button>
-            )}
-
-            <button
-              onClick={() => navigate("/events")}
-              className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-            >
-              Add
-            </button>
           </div>
         </fieldset>
         <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
           <legend className="px-3 text-left ml-8">Hosted Events</legend>
-          {hostedEvents.length > 0 ? (
-            hostedEvents.map((hosted) => (
-              <div key={hosted.id}>
-                <UserHostedEvent hosted={hosted} />
-              </div>
-            ))
-          ) : (
-            <p>No hosted events found.</p>
-          )}
-
-          <button
-            onClick={() => navigate("/events/new")}
-            className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-          >
-            Create
-          </button>
+          {hostedEvents[0] &&
+            hostedEvents.map((hosted) => {
+              return (
+                <div key={hosted.id}>
+                  <UserHostedEvent hosted={hosted} />
+                </div>
+              );
+            })}
         </fieldset>
         <br />
         <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
@@ -321,4 +269,4 @@ function UserProfile() {
   );
 }
 
-export default UserProfile;
+export default OtherProfile;
