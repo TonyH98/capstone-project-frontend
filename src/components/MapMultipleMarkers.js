@@ -7,12 +7,11 @@ import Geocode from "react-geocode";
 function MultipleMarkers ({ filterEvents, events }) {
 
   const [ markers, setMarkers ] = useState([])
-  const [ showInfo, setShowInfo ] = useState(false)
   const navigate = useNavigate()
 
   const mapStyles = {
     height: '300px',
-    width: '100%'
+    width: '600px'
   };
 
   const defaultCenter = {
@@ -79,15 +78,17 @@ function MultipleMarkers ({ filterEvents, events }) {
     ));
 
   return (
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-      <GoogleMap
-        mapContainerStyle={mapStyles}
-        zoom={10}
-        center={defaultCenter}
-      >
-        <Markers />
-      </GoogleMap>
-    </LoadScript>
+    <div className="w-[600px] m-auto">
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+        <GoogleMap
+          mapContainerStyle={mapStyles}
+          zoom={10}
+          center={defaultCenter}
+          >
+          <Markers />
+        </GoogleMap>
+      </LoadScript>
+    </div>
   );
 }
 

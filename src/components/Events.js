@@ -174,6 +174,10 @@ export default function Events() {
         );
       })}
     </div>
+    <GoogleMap 
+        events={events}
+        filterEvents={filterEvents}
+      />
       <div className='md:flex flex-wrap sm:mx-16 gap-6'>
       {currentEvents.length > 0 ?  currentEvents :
       <div>
@@ -181,10 +185,7 @@ export default function Events() {
       </div>  
     }
     <div className='w-[600px] m-auto'>
-      <GoogleMap 
-        events={events}
-        filterEvents={filterEvents}
-        />
+      
     </div>
       <div>
         {events.length < pageData ? null :
@@ -200,6 +201,7 @@ export default function Events() {
         />
         }
       </div>
+    </div>
     </div>
   )
 }
