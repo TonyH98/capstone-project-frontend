@@ -13,6 +13,12 @@ function RoomsList({users}) {
   const [selectedUser,setSelectedUser] = useState(null)
   const [chat , setChat] = useState([])
   
+
+  //Filtering users
+  let [search , setSearch] = useState("")
+  let [otherUsers , setOtherUsers] = useState([])
+  let [filterUsers, setFilterUsers] = useState([])
+
   let otherUser = [roomByIndex["user1_id"],roomByIndex["user2_id"]].filter((users) => {
     return users !== users?.id
   })
@@ -23,6 +29,17 @@ function RoomsList({users}) {
     user2_id: otherUser[0],
     content: ""
   });
+
+useEffect(() => {
+axios.get(`${API}/users`)
+.then((res) => {
+  const filter = res.data.filter((user) => {
+    return user.id !== users.id 
+  })
+
+  setOtherUsers(filter)
+})
+}, [])
 
   useEffect(() => {
     
@@ -96,11 +113,11 @@ function RoomsList({users}) {
   };
   
 
-  const handleCreateRoom = async (user2Id) => {
+  const handleCreateRoom = async (user2Name) => {
     try {
-      const response = await axios.post(`${API}/rooms/${users.id}/new/${user2Id}`, {
-        user1_id: users.id,
-        user2_id: user2Id
+      const response = await axios.post(`${API}/rooms/${users.username}/new/${user2Name}`, {
+        username1: users.username,
+        username2: user2Name
       });
 
       // Handle the created room
@@ -149,13 +166,25 @@ const handleSubmit = (event) => {
 };
 
 
+function handleFilter(event){
+  let searchResult = event.target.value
+    setSearch(searchResult)
+    const filter = otherUsers.filter((friend) => {
+      const {username} = friend
+  
 
-
-
-
-console.log(newChat)
-
-
+      const matchUsername = username.toLowerCase().includes(searchResult.toLowerCase())
+  
+      return  matchUsername
+    })
+  
+    if(searchResult === ""){
+      setFilterUsers([])
+    }
+    else{
+      setFilterUsers(filter)
+    }
+}
 
 
   return (
@@ -163,14 +192,40 @@ console.log(newChat)
       <div className="">
       <h2>Create Room</h2>
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleCreateRoom(e.target.user2Id.value);
-        }}
-      >
-        <input type="text" name="user2Id" placeholder="User ID" required />
-        <button type="submit">Create Room</button>
-      </form>
+  onSubmit={(e) => {
+    e.preventDefault();
+    handleCreateRoom(e.target.user2Name.value);
+  }}
+>
+  <input
+    type="text"
+    name="user2Name"
+    placeholder="Username"
+    value={search}
+    onChange={handleFilter}
+    required
+  />
+  {filterUsers.length !== 0 && (
+    <div className="data=result">
+      {filterUsers.slice(0, 5).map((users) => {
+        return (
+          <div
+            className="search"
+            onClick={() => {
+              document.getElementsByName("user2Name")[0].value =
+                users.username;
+            }}
+            key={users.username}
+          >
+            <br></br>
+            {users.username}
+          </div>
+        );
+      })}
+    </div>
+  )}
+  <button type="submit">Create Room</button>
+</form>
       </div>
       <h2>Rooms List</h2>
       <ul>
