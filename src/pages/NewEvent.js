@@ -26,25 +26,6 @@ export default function NewEvent({users}) {
   // moves user to the next step of the form
   const nextForm = (e) => {
     e.preventDefault();
-
-    console.log(events);
-    console.log("first step", Object.entries(events).slice(0, 7).map(entry => entry[1]));
-    let firstStep = Object.entries(events).slice(0, 7).map(entry => entry[1]);
-    
-    // check if formStep is 0
-    if (formStep === 0) {
-      // check if any required input is empty
-      // const requiredInput = ["events_title", "events_location", "events_address", "events_date_event", "events_start_time", "events_end_time", "events_max_people"];
-      const isAnyInputEmpty = firstStep.some((input) => !input);
-      
-      if (isAnyInputEmpty) {
-         // Display an error message or take any necessary action
-      alert("Please fill in all required fields.");
-      return;
-      }
-    }
-    console.log('events:', events);
-
     setFormStep((currentStep) => currentStep + 1);
   };
 
@@ -56,16 +37,16 @@ export default function NewEvent({users}) {
   // useState to store event information
   const [events, setEvents] = useState({
     title: "",
-    location: "",
-    address: "",
     date_event: "",
-    start_time: "",
-    end_time: "",
-    max_people: "", // this value sets the max attendees allowed
     summary: "",
+    max_people: "", // this value sets the max attendees allowed
     age_restriction: "",
     age_min: 0,
     age_max: 0,
+    location_name: "",
+    address: "",
+    start_time: "",
+    end_time: "",
     location_image: "",
     creator: users?.id,
     categoryIds: [],
@@ -260,23 +241,6 @@ export default function NewEvent({users}) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log("first step", Object.entries(events).slice(-8).map(entry => entry[1]));
-    let secondStep = Object.entries(events).slice(-8).map(entry => entry[1]);
-    
-    // check if formStep is 0
-    if (formStep === 0) {
-      // check if any required input is empty
-      // const requiredInput = ["events_title", "events_location", "events_address", "events_date_event", "events_start_time", "events_end_time", "events_max_people"];
-      const isAnyInputEmpty = secondStep.some((input) => !input);
-      
-      if (isAnyInputEmpty) {
-         // Display an error message or take any necessary action
-      alert("Please fill in all required fields.");
-      return;
-      }
-    }
-    console.log('events:', events);
-
     // resets useState for error messages to re-test if valid
     setAddressError("");
     setAgeError("");
@@ -322,168 +286,191 @@ export default function NewEvent({users}) {
   console.log(events)
 
   return (
-    <div className="lg:flex items-center justify-center p-4 lg:gap-20 md:gap-4">
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-md px-10 pt-6 pb-8 mb-4 md:w-2/3 lg:w-2/5 mx-auto">
-        { formStep === 0 && (
+    <div className="flex items-center justify-center p-4 gap-20">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-md rounded-md px-10 pt-6 pb-8 mb-4 w-3/8"
+      >
+        {formStep === 0 && (
           <section className="">
             <div className="mb-3">
-          <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-1">Title</label>
-          <input 
-            type="text" 
-            id="title" 
-            name="title"
-            value={events.title} 
-            onChange={handleTextChange} 
-            required
-            className="shadow bg-transparent appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-          />
-        </div>
-        
-        <div className="mb-3">
-          <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
-            Location
-          </label>
-          <input 
-            type="text" 
-            id="location" 
-            name="location"
-            value={events.location}
-            onChange={handleTextChange} 
-            required
-            className="shadow bg-transparent appearance-none border w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="address" className="block text-gray-700 text-sm font-bold mb-2">
-            Address
-          </label>
-          <input 
-            type="text" 
-            id="address" 
-            name="address"
-            value={events.address}
-            onChange={handleTextChange} 
-            required
-            className="shadow bg-transparent appearance-none border w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-          />
-          <button
-            type='button'
-            className="underline block mt-2 text-purple-500 text-sm"
-            onClick={verifyAddress}
-          >
-            Verify address
-          </button>
-          {
-            addressError && <p style={{color:"red"}}>{addressError}</p>
-          }
-        </div>
-        <div className="sm:flex justify-between gap-2">
-          <div className="mb-3">
-            <label htmlFor="date_event" className="block text-gray-700 text-sm font-bold mb-2">
-              Date
-            </label>
-            <input 
-              type="date" 
-              id="date_event" 
-              name="date_event"
-              value={events.date_event}
-              onChange={handleTextChange} 
-              required
-              className="shadow bg-transparent appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-            />
-          </div>
-        {
-          dateError && <p style={{color:"red"}}>{dateError}</p>
-        }
-        <div className="flex gap-2">
-          <div className="mb-3">
-            <label htmlFor="start_time" className="block text-gray-700 text-sm font-bold mb-2">
-              Start Time
-            </label>
-            <input
-              type="time" 
-              id="start_time" 
-              name="start_time"
-              value={events.start_time}
-              onChange={handleTextChange} 
-              required
-              className="shadow bg-transparent appearance-none border  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-            />
-         </div>
-          <div className="mb-3">
-            <label htmlFor="end_time" className="block text-gray-700 text-sm font-bold mb-2">
-              End Time
-            </label>
-            <input 
-            type="time" 
-            id="end_time" 
-            name="end_time"
-            value={events.end_time}
-            onChange={handleTextChange}
-            required
-            className="shadow bg-transparent appearance-none border  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-            />
-          </div>
-        </div>
-        </div>
-        <div className="mb-3">
-            <label htmlFor="max" className="block text-gray-700 text-sm font-bold mb-2">
-              Max Participants
-            </label>
-            <input 
-              type="number" 
-              id="max_people" 
-              name="max_people"
-              onChange={handleTextChange} 
-              value={events.max_people}
-              required
-              className="shadow bg-transparent appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-            />
-          </div>
-          {
-            maxError && <p style={{color:"red"}}>{maxError}</p>
-          }
-        <div className="flex justify-evenly pt-4">
-        {formStep < 1 ? <button onClick={nextForm} className="block border border-cyan-400 bg-cyan-400 hover:bg-purple-400
-        hover:border-purple-400 text-slace-900 hover:text-slate-100 uppercase text-sm font-bold py-2 px-4 rounded-md">Next</button> : ""}
-        <Link to={`/events`}>
-            <button className="block border border-gray-500 hover:bg-[#f6854b] hover:border-[#f6854b] text-slace-900 hover:text-slate-100 uppercase text-sm font-bold p-2 rounded-md">
-              Cancel
-            </button>
-          </Link>
-        </div>
-       </section>
+              <label
+                htmlFor="title"
+                className="block text-gray-700 text-sm font-bold mb-1"
+              >
+                Title
+              </label>
+              <input
+                type="text"
+                id="title"
+                value={events.title}
+                onChange={handleTextChange}
+                required
+                className="shadow bg-transparent appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label
+                htmlFor="location"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Location
+              </label>
+              <input
+                type="text"
+                id="location"
+                value={events.location}
+                onChange={handleTextChange}
+                required
+                className="shadow bg-transparent appearance-none border w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+              />
+            </div>
+            <div className="mb-3">
+              <label
+                htmlFor="address"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Address
+              </label>
+              <input
+                type="text"
+                id="address"
+                value={events.address}
+                onChange={handleTextChange}
+                required
+                className="shadow bg-transparent appearance-none border w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+              />
+              <button
+                type="button"
+                className="underline block mt-2 text-purple-500 text-sm"
+                onClick={verifyAddress}
+              >
+                Verify address
+              </button>
+              {addressError && <p style={{ color: "red" }}>{addressError}</p>}
+            </div>
+            <div className="flex justify-between gap-2">
+              <div className="mb-3">
+                <label
+                  htmlFor="date_event"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Date
+                </label>
+                <input
+                  type="date"
+                  id="date_event"
+                  value={events.date_event}
+                  onChange={handleTextChange}
+                  required
+                  className="shadow bg-transparent appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                />
+              </div>
+              {dateError && <p style={{ color: "red" }}>{dateError}</p>}
+              <div className="flex gap-2">
+                <div className="mb-3">
+                  <label
+                    htmlFor="start_time"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Start Time
+                  </label>
+                  <input
+                    type="time"
+                    id="start_time"
+                    value={events.start_time}
+                    onChange={handleTextChange}
+                    required
+                    className="shadow bg-transparent appearance-none border  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label
+                    htmlFor="end_time"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    End Time
+                  </label>
+                  <input
+                    type="time"
+                    id="end_time"
+                    value={events.end_time}
+                    onChange={handleTextChange}
+                    required
+                    className="shadow bg-transparent appearance-none border  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mb-3">
+              <label
+                htmlFor="max"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Max Participants
+              </label>
+              <input
+                type="number"
+                id="max_people"
+                onChange={handleTextChange}
+                value={events.max_people}
+                required
+                className="shadow bg-transparent appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+              />
+            </div>
+            {maxError && <p style={{ color: "red" }}>{maxError}</p>}
+            <div className="flex justify-evenly pt-4">
+              {formStep < 1 ? (
+                <button
+                  onClick={nextForm}
+                  className="block border border-cyan-400 bg-cyan-400 hover:bg-purple-400
+        hover:border-purple-400 text-slace-900 hover:text-slate-100 uppercase text-sm font-bold py-2 px-4 rounded-md"
+                >
+                  Next
+                </button>
+              ) : (
+                ""
+              )}
+              <Link to={`/events`}>
+                <button className="block border border-gray-500 hover:bg-[#f6854b] hover:border-[#f6854b] text-slace-900 hover:text-slate-100 uppercase text-sm font-bold p-2 rounded-md">
+                  Cancel
+                </button>
+              </Link>
+            </div>
+          </section>
         )}
         {formStep === 1 && (
           <section className="w-[450px] py-6">
-        <div className="mb-3 sm:flex">
-          <div className="mr-2">
-            <label htmlFor="categoryIds" className="block text-gray-700 text-sm font-bold mb-1">Categories</label>
-            <select 
-              id="categoryIds" 
-              value={events.categoryIds.length > 0 ? events.categoryIds[0] : ""}
-              onChange={handleTextChange} 
-              required
-              className="shadow bg-transparent appearance-none border md:w-full py-2 pl-3 mr-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-            >
-            <option value="">
-              Select a category
-            </option>
-            {
-              category.map((option) => (
-                <option key={option.id} value={option.name}>
-                  {option.name}
-                </option>
-              ))
-            }
-          </select>
-          </div>
-          {
-          events.categoryIds.length > 0 ? (
-              <div className="category-container">
-                {
-                  events.categoryIds.map((category) => {
-                    return(
+            <div className="mb-3 flex">
+              <div className="mr-2">
+                <label
+                  htmlFor="categoryIds"
+                  className="block text-gray-700 text-sm font-bold mb-1"
+                >
+                  Categories
+                </label>
+                <select
+                  id="categoryIds"
+                  value={
+                    events.categoryIds.length > 0 ? events.categoryIds[0] : ""
+                  }
+                  onChange={handleTextChange}
+                  required
+                  className="shadow bg-transparent appearance-none border w-full py-2 pl-3 mr-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                >
+                  <option value="">Select a category</option>
+                  {category.map((option) => (
+                    <option key={option.id} value={option.name}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {events.categoryIds.length > 0 ? (
+                <div className="category-container">
+                  {events.categoryIds.map((category) => {
+                    return (
                       <div className="category-pills" key={category.name}>
                         {category}
                         <button
@@ -553,84 +540,85 @@ export default function NewEvent({users}) {
                     />
                   </div>
                 </div>
-              ): null
-            }
-          </div>
-        {
-          ageError && <p style={{color:"red"}}>{ageError}</p>
-        }
-        
-        <div className="mb-3">
-          <label htmlFor="location_image" className="block text-gray-700 text-sm font-bold mb-2">
-            Image
-          </label>
-          <input 
-            type="text" 
-            id="location_image" 
-            value={events.location_image}
-            onChange={handleTextChange} 
-            className="shadow bg-transparent appearance-none border md:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="summary" className="block text-gray-700 text-sm font-bold mb-2">
-            Summary
-          </label>
-          <textarea 
-            type="text" 
-            id="summary" 
-            value={events.summary}
-            onChange={handleTextChange}
-            required
-            className="shadow bg-transparent appearance-none border md:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-          />
-        </div>
-        <div className="flex sm:justify-evenly gap-2 font-semibold">
-        {formStep > 0 ? <button onClick={prevForm} className="block border border-gray-500 hover:bg-cyan-400 hover:border-cyan-400 text-slace-900 hover:text-slate-100 uppercase text-sm font-bold p-2 rounded-md">previous</button> : ""}
-          <input type="submit" className="bg-cyan-400 hover:bg-purple-500 text-slate-100 uppercase text-sm font-bold py-2 px-4 rounded-md" />
-          <Link to={`/events`}>
-            <button className="block border border-gray-500 hover:bg-[#f6854b] hover:border-[#f6854b] text-slace-900 hover:text-slate-100 uppercase text-sm font-bold p-2 rounded-md">
-              Cancel
-            </button>
-          </Link>
-        </div>
+              ) : null}
+            </div>
+            {ageError && <p style={{ color: "red" }}>{ageError}</p>}
+
+            <div className="mb-3">
+              <label
+                htmlFor="location_image"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Image
+              </label>
+              <input
+                type="text"
+                id="location_image"
+                value={events.location_image}
+                onChange={handleTextChange}
+                className="shadow bg-transparent appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+              />
+            </div>
+            <div className="mb-3">
+              <label
+                htmlFor="summary"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Summary
+              </label>
+              <textarea
+                type="text"
+                id="summary"
+                value={events.summary}
+                onChange={handleTextChange}
+                required
+                className="shadow bg-transparent appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+              />
+            </div>
+            <div className="flex justify-evenly font-semibold">
+              {formStep > 0 ? (
+                <button
+                  onClick={prevForm}
+                  className="block border border-gray-500 hover:bg-cyan-400 hover:border-cyan-400 text-slace-900 hover:text-slate-100 uppercase text-sm font-bold p-2 rounded-md"
+                >
+                  previous
+                </button>
+              ) : (
+                ""
+              )}
+              <input
+                type="submit"
+                className="bg-cyan-400 hover:bg-purple-500 text-slate-100 uppercase text-sm font-bold py-2 px-4 rounded-md"
+              />
+              <Link to={`/events`}>
+                <button className="block border border-gray-500 hover:bg-[#f6854b] hover:border-[#f6854b] text-slace-900 hover:text-slate-100 uppercase text-sm font-bold p-2 rounded-md">
+                  Cancel
+                </button>
+              </Link>
+            </div>
           </section>
         )}
       </form>
-      { formStep === 0 && (
-        <> {
-        (!addressError && !!events?.address) ? (
-          <GoogleMap 
-            mapWidth="300px"
-            mapHeight="300px"
-            mapLat={coordinates?.latitude}
-            mapLng={coordinates?.longitude}
-          />
-        ) : (
-          <div className="sm:w-[300px] h-[300px] mx-auto flex items-center justify-center">
-            <p className="w-[300px] h-[300px] bg-gray-200 text-center pt-[125px] m-auto">
-              Please verify a valid address
-            </p>
-          </div>
-        )}
-        </>
-      )
-      }
-      { formStep === 1 && (
+      {formStep === 0 && (
         <>
-        {
-        events?.location_image ? (
-          <img 
-            src={events?.location_image} 
-            alt='event photo' 
-            className="max-h-[300px] max-w-[300px]"
-          />
-        ) : (
-          <div className="bg-gray-200 sm:w-[300px] h-[300px] flex justify-center items-center mx-auto">
-            <p className="sm:w-96 text-center">Preview event image</p>
-          </div>
-        )
-      }
+          {" "}
+          {!addressError && !!events?.address ? (
+            <GoogleMap
+              mapWidth="300px"
+              mapHeight="300px"
+              mapLat={coordinates?.latitude}
+              mapLng={coordinates?.longitude}
+            />
+          ) : (
+            <div className="w-[300px] h-[300px]">
+              <p className="w-[300px] h-[300px] bg-gray-200 text-center pt-[125px] m-auto">
+                Please verify a valid address
+              </p>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
+
