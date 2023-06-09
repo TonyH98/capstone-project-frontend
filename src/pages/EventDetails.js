@@ -21,16 +21,9 @@ import "../components/tooltip.css";
 
 const API = process.env.REACT_APP_API_URL;
 
-<<<<<<< HEAD
 export default function EventDetails({users}) {
   // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams();
-=======
-export default function EventDetails({user}) {
-  // useParams and useNavigate to send/retrieve info from url
-  const { id } = useParams();
-  // const { user } = useUser();
->>>>>>> 1baa7d6 (All issues in dev resolved)
   const navigate = useNavigate();
 
   // useState hook to store event info and user interest
