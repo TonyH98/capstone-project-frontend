@@ -118,6 +118,8 @@ export default function Events() {
 
   }, [events, filterEvents])
 
+  console.log(filterEvents)
+
   return (
     <div className='flex flex-col'>
        <section className='flex p-4 justify-evenly'>
