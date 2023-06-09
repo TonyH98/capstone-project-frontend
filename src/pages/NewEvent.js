@@ -19,7 +19,7 @@ export default function NewEvent() {
   const [ category, setCategory ] = useState([])
   const [ coordinates, setCoordinates ] = useState({})
   const [ addressIsVerified, setAddressIsVerified ] = useState(false)
-  const [ isValid, setIsValid ] = useState(false)
+  const [ isValid, setIsValid ] = useState(true)
 
   // this is to make the form a 2 step
   const [formStep, setFormStep] = useState(0);
@@ -27,6 +27,13 @@ export default function NewEvent() {
   // moves user to the next step of the form
   const nextForm = (e) => {
     e.preventDefault();
+    
+    // for date
+    setDateError('')
+    setTimeError('')
+    setMaxError('')
+    setAddressError('')
+
 
     console.log(events);
     console.log("first step", Object.entries(events).slice(0, 7).map(entry => entry[1]));
@@ -38,15 +45,35 @@ export default function NewEvent() {
       // const requiredInput = ["events_title", "events_location", "events_address", "events_date_event", "events_start_time", "events_end_time", "events_max_people"];
       const isAnyInputEmpty = firstStep.some((input) => !input);
       
-      if (isAnyInputEmpty) {
+      // if (isAnyInputEmpty) {
          // Display an error message or take any necessary action
-      alert("Please fill in all required fields.");
-      return;
-      }
+      // alert("Please fill in all required fields.");
+      // return;
+      // }
+    } 
+
+    verifyAddress()
+
+    if(!addressIsVerified){
+      // setAddressError('Invalid address')
+      setIsValid(false);
+    } 
+     if(!checkDate()){
+      setDateError("*The date of the event needs to be later than the current date")
+      setIsValid(false);
+    } 
+     if (!checkTime()) {
+      setTimeError("*End time cannot be earlier than or equal to the start time.");
+      setIsValid(false);
+    } 
+     if(!checkMax()){
+      setMaxError("*Maximum number of participants must be greater than 0")
+      setIsValid(false);
+    } 
+    if (checkDate() && checkTime() && checkMax()) { 
+      setFormStep((currentStep) => currentStep + 1);
     }
     console.log('events:', events);
-
-    setFormStep((currentStep) => currentStep + 1);
   };
 
   // moves user to the previous step of the form
@@ -82,6 +109,7 @@ const [minAge , setMinAge] = useState("")
 const [maxError , setMaxError] = useState("")
 const [dateError, setDateError] = useState("")
 const [addressError, setAddressError] = useState("")
+const [timeError, setTimeError] = useState("")
 
 // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
@@ -194,10 +222,11 @@ function checkMinAge(){
 
 // function validates that a max number of people is input
 function checkMax(){
-  if(events.max_people > 0){
-    return true
-  } else {
+  const maxParticipantsValue = parseInt(events.max_people, 10);
+  if(maxParticipantsValue <= 0){
     return false
+  } else {
+    return true
   }
 }
 
@@ -216,6 +245,28 @@ function checkDate() {
   } else {
     return false;
   }
+}
+
+// function validates that the ending time is not earlier than the starting time
+function checkTime() {
+
+  console.log("event start time:", events.start_time);
+  console.log("event end time:", events.end_time);
+
+   // Extract the time component from the start and end time strings
+   const start = events.start_time.split(":").join("");
+   const end = events.end_time.split(":").join("");
+
+  console.log("start:", start);
+  console.log("end:", end);
+ 
+
+  if (end <= start) {
+    return false;
+  } else {
+    return true;
+  }
+  
 }
 
 // function that uses geocode API to verify and convert address to latitude and longitude for Google Maps rendering
@@ -240,7 +291,7 @@ function checkDate() {
     },
     (error) => {
       console.error(error);
-      setAddressError("Invalid address")
+      setAddressError("*Invalid address")
       setAddressIsVerified(false)
       setCoordinates({})
     }
@@ -279,16 +330,15 @@ function checkDate() {
     setAgeError('')
     setMinAge('')
     setMaxError('')
-    setDateError('')
 
-    let isValid = true
+    // let isValid = true
 
-    verifyAddress()
+    // verifyAddress()
 
-    if(!addressIsVerified){
-      // setAddressError('Invalid address')
-      isValid = false
-    }
+    // if(!addressIsVerified){
+    //   // setAddressError('Invalid address')
+    //   isValid = false
+    // }
     if(!checkAge()){
       setAgeError("The max age needs to be greater than the minimum age")
       isValid = false
@@ -297,14 +347,14 @@ function checkDate() {
       setMinAge("The minimum age needs to be at least 18")
       isValid = false
     }
-    if(!checkMax()){
-      setMaxError("The max people needs to be greater than 0")
-      isValid = false
-    }
-    if(!checkDate()){
-      setDateError("The date of the event needs to be later than the current date")
-      isValid = false
-    }
+    // if(!checkMax()){
+    //   setMaxError("The max people needs to be greater than 0")
+    //   isValid = false
+    // }
+    // if(!checkDate()){
+    //   setDateError("The date of the event needs to be later than the current date")
+    //   isValid = false
+    // }
    
     if(isValid){
       handleAdd(events)
@@ -358,7 +408,7 @@ function checkDate() {
             value={events.address}
             onChange={handleTextChange} 
             required
-            className="shadow bg-transparent appearance-none border w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+            className={`${addressError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none border w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
           />
           <button
             type='button'
@@ -367,9 +417,6 @@ function checkDate() {
           >
             Verify address
           </button>
-          {
-            addressError && <p style={{color:"red"}}>{addressError}</p>
-          }
         </div>
         <div className="sm:flex justify-between gap-2">
           <div className="mb-3">
@@ -383,12 +430,9 @@ function checkDate() {
               value={events.date_event}
               onChange={handleTextChange} 
               required
-              className="shadow bg-transparent appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+              className={`${dateError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
             />
           </div>
-        {
-          dateError && <p style={{color:"red"}}>{dateError}</p>
-        }
         <div className="flex gap-2">
           <div className="mb-3">
             <label htmlFor="start_time" className="block text-gray-700 text-sm font-bold mb-2">
@@ -401,7 +445,7 @@ function checkDate() {
               value={events.start_time}
               onChange={handleTextChange} 
               required
-              className="shadow bg-transparent appearance-none border  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+              className={`${timeError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
             />
          </div>
           <div className="mb-3">
@@ -415,7 +459,7 @@ function checkDate() {
             value={events.end_time}
             onChange={handleTextChange}
             required
-            className="shadow bg-transparent appearance-none border  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+            className={`${timeError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
             />
           </div>
         </div>
@@ -431,12 +475,23 @@ function checkDate() {
               onChange={handleTextChange} 
               value={events.max_people}
               required
-              className="shadow bg-transparent appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
-            />
+              className={`${maxError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
+              />
           </div>
-          {
-            maxError && <p style={{color:"red"}}>{maxError}</p>
-          }
+          <div>
+            {
+              addressError && <p style={{color:"red"}} className="text-xs">{addressError}</p>
+            }
+            {
+              dateError && <p style={{color:"red"}} className="text-xs">{dateError}</p>
+            }
+            {
+              timeError && <p style={{color:"red"}} className="text-xs">{timeError}</p>
+            }
+            {
+              maxError && <p style={{color:"red"}} className="text-xs">{maxError}</p>
+            }
+          </div>
         <div className="flex justify-evenly pt-4">
         {formStep < 1 ? <button onClick={nextForm} className="block border border-cyan-400 bg-cyan-400 hover:bg-purple-400
         hover:border-purple-400 text-slace-900 hover:text-slate-100 uppercase text-sm font-bold py-2 px-4 rounded-md">Next</button> : ""}
