@@ -54,9 +54,6 @@ function MultipleMarkers ({ filterEvents, events }) {
     })
   }, [filterEvents])
 
-  console.log(filterEvents)
-  console.log(markers)
-
   const Markers = () =>
     markers.map((marker) => (
         <>
