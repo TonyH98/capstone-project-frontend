@@ -1,14 +1,14 @@
 import React from "react";
-import Room from "../components/Room";
-import { useUser } from "../contexts/UserProvider";
+import RoomsList from "../components/RoomsList";
 
-export default function ShowRoom({ users, setUsers }) {
+
+export default function ShowRoom({ users }) {
   // Sets and retrieves the user in local storage
-  const { loggedInUser, setLoggedInUser } = useUser();
+  
 
   return (
     <div>
-      <Room />
+      <RoomsList users={users} />
     </div>
   );
 }
