@@ -601,7 +601,6 @@ export default function NewEvent({users}) {
       </form>
       {formStep === 0 && (
         <>
-          {" "}
           {!addressError && !!events?.address ? (
             <GoogleMap
               mapWidth="300px"
@@ -621,4 +620,21 @@ export default function NewEvent({users}) {
     </div>
   );
 }
-
+        {
+        events?.location_image ? (
+          <img 
+            src={events?.location_image} 
+            alt='event photo' 
+            className="max-h-[300px] max-w-[300px]"
+          />
+        ) : (
+          <div className="bg-gray-200 sm:w-[300px] h-[300px] flex justify-center items-center mx-auto">
+            <p className="sm:w-96 text-center">Preview event image</p>
+          </div>
+        )
+      }
+  </>
+  )
+}
+</div>
+)}
