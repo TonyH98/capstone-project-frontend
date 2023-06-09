@@ -316,6 +316,8 @@ function checkTime() {
     setMinAge('')
     setMaxError('')
 
+    setIsValid(true)
+
     // let isValid = true
 
     // verifyAddress()
