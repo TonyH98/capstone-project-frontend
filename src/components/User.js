@@ -11,7 +11,6 @@ export default function User({ users }) {
   const { loggedInUser } = useUser();
   const [request, setRequest] = useState(null);
   const [friends, setFriends] = useState(false);
-
   function sendFriendRequest() {
     axios
       .post(`${API}/friends`, {
@@ -60,12 +59,15 @@ export default function User({ users }) {
           </Link>
         </div>
       </div>
+      {loggedInUser?.id === users?.id ? null :
+
       <button
         onClick={() => navigate("/chats")}
         className="border-2 border-cyan-400 px-2 my-4 rounded-md"
       >
         <Link to="/chats">Message</Link>
-      </button>
+      </button>}
+    
       {loggedInUser?.id === users?.id ? null : friends ? (
         <span>Already Friends</span>
       ) : request ? (

@@ -336,6 +336,12 @@ export default function EventDetails({users}) {
     setUpdatedEventInfo(eventInfo)
   }
   
+const hostId = hosts.map((host) => {
+  return host.user_id
+
+})
+
+
   return (
     <div className="relative">
       <div
@@ -563,48 +569,65 @@ export default function EventDetails({users}) {
           }
         </div>
         <div className="flex flex-col gap-y-12 mt-12">
-          <div className="flex flex-row justify-end h-10 gap-x-3">
-            {users?.id === creator ? (
-              editMode ? (
-                <>
-                  <button
-                    className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                    onClick={handleDelete}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
-                    onClick={() => setEditMode(false)}
-                  >
-                    Done
-                  </button>
-                </>
-              ) : (
-                <button
-                  className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                  onClick={() => setEditMode(true)}
-                >
-                  Edit
-                </button>
-              )
-            ) : (
-              <>
-                <button
-                  className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                  onClick={addToInterest}
-                >
-                  Interested
-                </button>
-                <button
-                  className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                  onClick={addToRsvp}
-                >
-                  RSVP
-                </button>
-              </>
-            )}
-          </div>
+        <div className="flex flex-row justify-end h-10 gap-x-3">
+  {users?.id === creator ? (
+    editMode ? (
+      <>
+        <button
+          className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+          onClick={handleDelete}
+        >
+          Delete
+        </button>
+        <button
+          className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+          onClick={() => setEditMode(false)}
+        >
+          Done
+        </button>
+      </>
+    ) : (
+      <button
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        onClick={() => setEditMode(true)}
+      >
+        Edit
+      </button>
+    )
+  ) : hostId.includes(users?.id) ? (
+    editMode ? (
+      <button
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+        onClick={() => setEditMode(false)}
+      >
+        Done
+      </button>
+    ) : (
+      <button
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        onClick={() => setEditMode(true)}
+      >
+        Edit
+      </button>
+    )
+  ) : (
+    <>
+      <button
+        className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        onClick={addToInterest}
+      >
+        Interested
+      </button>
+      <button
+        className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        onClick={addToRsvp}
+      >
+        RSVP
+      </button>
+    </>
+  )}
+</div>
+
           <div className="">
             <GoogleMap
               mapWidth="300px"
