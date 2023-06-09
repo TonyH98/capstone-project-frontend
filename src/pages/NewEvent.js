@@ -630,6 +630,8 @@ export default function NewEvent({users}) {
           </div>
         )
       }
-    </div>
-  );
+  </>
+  )
 }
+</div>
+)}
