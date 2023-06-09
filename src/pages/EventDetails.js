@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useUser } from "../contexts/UserProvider";
+
 import { BsPencilFill } from "react-icons/bs";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
@@ -21,10 +21,9 @@ import "../components/tooltip.css";
 
 const API = process.env.REACT_APP_API_URL;
 
-export default function EventDetails() {
+export default function EventDetails({users}) {
   // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams();
-  const { user } = useUser();
   const navigate = useNavigate();
 
   // useState hook to store event info and user interest
@@ -71,13 +70,13 @@ export default function EventDetails() {
   }, [eventInfo?.id]);
   
   useEffect(() => {
-    if (user?.id) {	    
-      axios.get(`${API}/friends/${user?.id}/list`)
+    if (users?.id) {	    
+      axios.get(`${API}/friends/${users?.id}/list`)
       .then((res) => {	      
         setFriends(res.data);	        
       });
     }
-  }, [user?.id]);
+  }, [users?.id]);
   
   useEffect(() => {
     axios
@@ -89,13 +88,13 @@ export default function EventDetails() {
   }, [eventInfo]);
   
   useEffect(() => {
-    if (user?.id) {
-      axios.get(`${API}/users/${user?.username}/events/${id}`)
+    if (users?.id) {
+      axios.get(`${API}/users/${users?.username}/events/${id}`)
       .then((res) => {
         setUserEvent(res.data);
       });
     }
-  }, [user?.id]);
+  }, [users?.id]);
   
   useEffect(() => {
     if (eventInfo?.id) {
@@ -170,7 +169,7 @@ export default function EventDetails() {
   function addToInterest() {
     if (eventInfo && eventInfo?.rsvp === true) {
       axios
-        .put(`${API}/users/${user?.id}/events/${id}`, {
+        .put(`${API}/users/${users?.id}/events/${id}`, {
           ...userEvent,
           interested: true,
           rsvp: false,
@@ -184,10 +183,10 @@ export default function EventDetails() {
         });
     } else {
       axios
-        .post(`${API}/users/${user?.id}/events/${id}`, eventInfo)
+        .post(`${API}/users/${users?.id}/events/${id}`, eventInfo)
         .then((res) => {
           axios
-            .put(`${API}/users/${user?.id}/events/${id}`, {
+            .put(`${API}/users/${users?.id}/events/${id}`, {
               ...userEvent,
               interested: true,
               rsvp: false,
@@ -247,7 +246,7 @@ export default function EventDetails() {
   function addToRsvp() {
     if (eventInfo && eventInfo.interested === true) {
       axios
-        .put(`${API}/users/${user?.id}/events/${id}`, {
+        .put(`${API}/users/${users?.id}/events/${id}`, {
           ...userEvent,
           rsvp: true,
           interested: false,
@@ -261,10 +260,10 @@ export default function EventDetails() {
         });
     } else {
       axios
-        .post(`${API}/users/${user?.id}/events/${id}`, eventInfo)
+        .post(`${API}/users/${users?.id}/events/${id}`, eventInfo)
         .then((res) => {
           axios
-            .put(`${API}/users/${user?.id}/events/${id}`, {
+            .put(`${API}/users/${users?.id}/events/${id}`, {
               ...userEvent,
               rsvp: true,
               interested: false,
@@ -490,7 +489,7 @@ export default function EventDetails() {
                 className="hover:text-blue-500 hover:border-blue-500 w-12"
               >
                 <img 
-                  src={user.profile_img}
+                  src={users.profile_img}
                   alt="profile image"
                   className="h-7 w-7 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500"
                 /> 
@@ -508,7 +507,7 @@ export default function EventDetails() {
                 </div>
               ) : (
                 <div>
-                  {user?.id === eventInfo?.creator[0].id ? 
+                  {users?.id === eventInfo?.creator[0].id ? 
                     <button onClick={showSearchBar} className="text-sm">Add Co-Host</button>: null
                   }
                   {showSearch ? (
@@ -566,7 +565,7 @@ export default function EventDetails() {
         </div>
         <div className="flex flex-col gap-y-12 mt-12">
           <div className="flex flex-row justify-end h-10 gap-x-3">
-            {user?.id === creator ? (
+            {users?.id === creator ? (
               editMode ? (
                 <>
                   <button
@@ -668,13 +667,13 @@ export default function EventDetails() {
       <div>
         <CustomComponent
           currentUser={{
-            currentUserId: `${user.id}`,
-            currentUserProfile: `localhost:3000/profile/` + user.username,
+            currentUserId: `${users.id}`,
+            currentUserProfile: `localhost:3000/profile/` + users.username,
             currentUserFullName:
-              `${user.first_name}` + " " + `${user.last_name} `,
+              `${users.first_name}` + " " + `${users.last_name} `,
             currentUserImg:
               `https://ui-avatars.com/api/name=` +
-              user.first_name +
+              users.first_name +
               `&background=random`,
           }}
         />
