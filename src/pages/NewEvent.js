@@ -231,6 +231,7 @@ function checkMax(){
   } else {
     return true
   }
+}
 
   // function validates that the event date is not a date in the past
   function checkDate() {
@@ -650,27 +651,27 @@ function checkTime() {
           </section>
         )}
       </form>
-      {formStep === 0 && (
-        <>
-          {!addressError && !!events?.address ? (
-            <GoogleMap
-              mapWidth="300px"
-              mapHeight="300px"
-              mapLat={coordinates?.latitude}
-              mapLng={coordinates?.longitude}
-            />
-          ) : (
-            <div className="w-[300px] h-[300px]">
-              <p className="w-[300px] h-[300px] bg-gray-200 text-center pt-[125px] m-auto">
-                Please verify a valid address
-              </p>
-            </div>
-          )}
+      { formStep === 0 && (
+        <> {
+        (!addressError && !!events?.address) ? (
+          <GoogleMap 
+            mapWidth="300px"
+            mapHeight="300px"
+            mapLat={coordinates?.latitude}
+            mapLng={coordinates?.longitude}
+          />
+        ) : (
+          <div className="sm:w-[300px] h-[300px] mx-auto flex items-center justify-center">
+            <p className="w-[300px] h-[300px] bg-gray-200 text-center pt-[125px] m-auto">
+              Please verify a valid address
+            </p>
+          </div>
+        )}
         </>
-      )}
-    </div>
-  );
-}
+      )
+      }
+      { formStep === 1 && (
+        <>
         {
         events?.location_image ? (
           <img 
@@ -684,8 +685,8 @@ function checkTime() {
           </div>
         )
       }
-  </>
-  )
-}
+        </>
+      )}
 </div>
-)}
+)
+}
