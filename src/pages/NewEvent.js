@@ -9,8 +9,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
 
-
-const API = process.env.REACT_APP_API_URL;
+const API = process.env.REACT_APP_API_URL
 
 export default function NewEvent({users}) {
   const navigate = useNavigate();
@@ -101,6 +100,7 @@ export default function NewEvent({users}) {
       });
   }, []);
 
+  console.log(users)
   // function that makes a POST request to add the new event to the events table
   const handleAdd = (newEvent) => {
     axios
@@ -318,7 +318,8 @@ export default function NewEvent({users}) {
       console.log("Submit was blocked");
     }
   };
-  console.log(events);
+  
+  console.log(events)
 
   return (
     <div className="lg:flex items-center justify-center p-4 lg:gap-20 md:gap-4">

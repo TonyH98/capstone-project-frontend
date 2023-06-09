@@ -108,7 +108,11 @@ function App() {
               <Route path="/profile/:username" element={<OtherProfile />} />
               <Route path="/devs" element={<Devs />} />
               <Route path="/events" element={<ShowEvents />} />
+<<<<<<< HEAD
               <Route path="/events/new" element={<NewEvent users={loggedInUser}/>} />
+=======
+              <Route path="/events/new" element={<NewEvent  users={loggedInUser}/>} />
+>>>>>>> 1baa7d6 (All issues in dev resolved)
               <Route path="/users" element={<ShowUsers />} />
 
               <Route
@@ -127,7 +131,11 @@ function App() {
                 path="/chats"
                 element={
                   <ShowRoom
+<<<<<<< HEAD
                    users={loggedInUser}
+=======
+                    user={loggedInUser}
+>>>>>>> 1baa7d6 (All issues in dev resolved)
                   />
                 }
               />
@@ -137,7 +145,11 @@ function App() {
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
               */}
+<<<<<<< HEAD
               <Route path="/events/:id" element={<EventDetails users={loggedInUser}/>} />
+=======
+              <Route path="/events/:id" element={<EventDetails user={loggedInUser} />} />
+>>>>>>> 1baa7d6 (All issues in dev resolved)
               <Route path="/map" element={<Map />} />
             </Routes>
           </main>
