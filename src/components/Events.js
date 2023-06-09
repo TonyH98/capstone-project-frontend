@@ -178,15 +178,6 @@ export default function Events() {
         events={events}
         filterEvents={filterEvents}
       />
-      <div className='md:flex flex-wrap sm:mx-16 gap-6'>
-      {currentEvents.length > 0 ?  currentEvents :
-      <div>
-        <h1>No Events Found!</h1>
-      </div>  
-    }
-    <div className='w-[600px] m-auto'>
-      
-    </div>
     <div className='flex flex-wrap gap-6 mx-16 my-4'>
       {currentEvents.length > 0 ?  
         currentEvents : (
@@ -209,7 +200,6 @@ export default function Events() {
         />
         }
       </div>
-    </div>
     </div>
   )
 }
