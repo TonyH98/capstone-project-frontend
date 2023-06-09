@@ -1,10 +1,14 @@
-import React from 'react'
-import Room from '../components/Room'
+import React from "react";
+import RoomsList from "../components/RoomsList";
 
-export default function ShowRoom({user, setUser, users, setUsers}) {
+
+export default function ShowRoom({ users }) {
+  // Sets and retrieves the user in local storage
+  
+
   return (
     <div>
-        <Room/>
+      <RoomsList users={users} />
     </div>
-  )
+  );
 }

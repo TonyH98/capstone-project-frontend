@@ -2,22 +2,24 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 import Room from "./Room";
+import SendMessageForm from "./SendMessageForm";
 const API = process.env.REACT_APP_API_URL;
 
-function RoomsList({user}) {
+function RoomsList({users}) {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
+
   const [roomByIndex , setRoomByIndex] = useState([])
   const [selectedUser,setSelectedUser] = useState(null)
   const [chat , setChat] = useState([])
   
   let otherUser = [roomByIndex["user1_id"],roomByIndex["user2_id"]].filter((users) => {
-    return users !== user.id
+    return users !== users?.id
   })
 
   const [newChat, setNewChat] = useState({
     roomId: selectedRoom,
-    user1_id: user?.id,
+    user1_id: users?.id,
     user2_id: otherUser[0],
     content: ""
   });
@@ -38,14 +40,10 @@ function RoomsList({user}) {
   }, [selectedRoom]);
 
 
-  function handleSelectedUser (recipient) {
-    console.log(`selected one user: ${JSON.stringify(recipient)}`);
-    setSelectedUser(recipient);
-  }
 
   
   useEffect(() => {
-    axios.get(`${API}/rooms/${user.id}`)
+    axios.get(`${API}/rooms/${users.id}`)
     .then((res) => {
       setRooms(res.data)
     })
@@ -100,8 +98,8 @@ function RoomsList({user}) {
 
   const handleCreateRoom = async (user2Id) => {
     try {
-      const response = await axios.post(`${API}/rooms/${user.id}/new/${user2Id}`, {
-        user1_id: user.id,
+      const response = await axios.post(`${API}/rooms/${users.id}/new/${user2Id}`, {
+        user1_id: users.id,
         user2_id: user2Id
       });
 
@@ -161,7 +159,8 @@ console.log(newChat)
 
 
   return (
-    <div className="p-6">
+    <div className="p-6 flex flex-col">
+      <div className="">
       <h2>Create Room</h2>
       <form
         onSubmit={(e) => {
@@ -172,6 +171,7 @@ console.log(newChat)
         <input type="text" name="user2Id" placeholder="User ID" required />
         <button type="submit">Create Room</button>
       </form>
+      </div>
       <h2>Rooms List</h2>
       <ul>
         {rooms.map((room) => (
@@ -181,14 +181,13 @@ console.log(newChat)
             </section>
         ))}
       </ul>
-
       <div>
   {Array.isArray(chat) ? (
     chat.map((chatItem) => (
       <div key={chatItem.id}>
         <p>{chatItem.date_created}</p>
         <p>{chatItem.content}</p>
-        <div>{user?.id === chatItem.userid ? "You" : chatItem.username}</div>
+        <div>{users?.id === chatItem.userid ? "You" : chatItem.username}</div>
 
      
 
@@ -212,7 +211,6 @@ console.log(newChat)
       </form>: null
 
 }
-
 
     </div>
   );
