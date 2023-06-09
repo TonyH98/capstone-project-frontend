@@ -8,11 +8,11 @@ import { useNavigate, Link } from "react-router-dom";
 
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
-import { useUser } from "../contexts/UserProvider";
+
 
 const API = process.env.REACT_APP_API_URL;
 
-export default function NewEvent() {
+export default function NewEvent({users}) {
   const navigate = useNavigate();
 
   // useState to store user ID and categories from axios get request
@@ -35,9 +35,6 @@ export default function NewEvent() {
     setFormStep((currentStep) => currentStep - 1);
   };
 
-  const { user } = useUser();
-  const [users, setUsers] = useState({});
-
   // useState to store event information
   const [events, setEvents] = useState({
     title: "",
@@ -52,7 +49,7 @@ export default function NewEvent() {
     start_time: "",
     end_time: "",
     location_image: "",
-    creator: "",
+    creator: users?.id,
     categoryIds: [],
   });
 
@@ -65,13 +62,13 @@ export default function NewEvent() {
 
   // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
-    if (user?.id) {
+    if (users?.id) {
       setEvents((prevEvents) => ({
         ...prevEvents,
-        creator: user?.id,
+        creator: users?.id,
       }));
     }
-  }, [user?.id]);
+  }, [users?.id]);
 
   // useEffect makes a GET request to store all category options
   useEffect(() => {

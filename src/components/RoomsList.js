@@ -4,7 +4,7 @@ import socketIOClient from "socket.io-client";
 import Room from "./Room";
 const API = process.env.REACT_APP_API_URL;
 
-function RoomsList({user}) {
+function RoomsList({users}) {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [roomByIndex , setRoomByIndex] = useState([])
@@ -12,12 +12,12 @@ function RoomsList({user}) {
   const [chat , setChat] = useState([])
   
   let otherUser = [roomByIndex["user1_id"],roomByIndex["user2_id"]].filter((users) => {
-    return users !== user.id
+    return users !== users?.id
   })
 
   const [newChat, setNewChat] = useState({
     roomId: selectedRoom,
-    user1_id: user?.id,
+    user1_id: users?.id,
     user2_id: otherUser[0],
     content: ""
   });
@@ -45,7 +45,7 @@ function RoomsList({user}) {
 
   
   useEffect(() => {
-    axios.get(`${API}/rooms/${user.id}`)
+    axios.get(`${API}/rooms/${users.id}`)
     .then((res) => {
       setRooms(res.data)
     })
@@ -100,8 +100,8 @@ function RoomsList({user}) {
 
   const handleCreateRoom = async (user2Id) => {
     try {
-      const response = await axios.post(`${API}/rooms/${user.id}/new/${user2Id}`, {
-        user1_id: user.id,
+      const response = await axios.post(`${API}/rooms/${users.id}/new/${user2Id}`, {
+        user1_id: users.id,
         user2_id: user2Id
       });
 
@@ -188,7 +188,7 @@ console.log(newChat)
       <div key={chatItem.id}>
         <p>{chatItem.date_created}</p>
         <p>{chatItem.content}</p>
-        <div>{user?.id === chatItem.userid ? "You" : chatItem.username}</div>
+        <div>{users?.id === chatItem.userid ? "You" : chatItem.username}</div>
 
      
 
