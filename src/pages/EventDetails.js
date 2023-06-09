@@ -47,6 +47,7 @@ export default function EventDetails({users}) {
   const creator = eventInfo?.creator[0].id;
   const [ userMain, setUser ] = useLocalStorage("user", {});
   
+  console.log(eventInfo)
 
   //Filtering users friends list states
   let [search , setSearch] = useState("")
