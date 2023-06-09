@@ -326,11 +326,11 @@ function checkTime() {
     // }
     if(!checkAge()){
       setAgeError("The max age needs to be greater than the minimum age")
-      isValid = false
+      setIsValid(false)
     }
     if (!checkMinAge()) {
       setMinAge("The minimum age needs to be at least 18");
-      isValid = false;
+      setIsValid(false)
     }
     // if(!checkMax()){
     //   setMaxError("The max people needs to be greater than 0")
