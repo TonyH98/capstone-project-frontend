@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from 'axios';
 import EventCard from './EventCard';
 import ReactPaginate from 'react-paginate';
@@ -18,10 +18,16 @@ export default function Events() {
   const [searchFilter, setSearchFilter] = useState('');
   const [categories, setCategories] = useState([]);
   const [filterCategories, setFilterCategories] = useState([]);
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search);
+  const categoryFilter = queryParams.get('category_names.name')
+
 
   useEffect(() => {
     axios
-      .get(`${API}/events`)
+      .get(`${API}/events`, {
+        params: { 'category_names.name': categoryFilter }
+      })
       .then((res) => {
         setEvents(res.data);
         setFilterEvents(res.data);
@@ -29,7 +35,8 @@ export default function Events() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [categoryFilter]);
+  
 
   useEffect(() => {
     axios

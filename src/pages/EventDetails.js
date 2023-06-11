@@ -21,7 +21,7 @@ import "../components/tooltip.css";
 
 const API = process.env.REACT_APP_API_URL;
 
-export default function EventDetails({users}) {
+export default function EventDetails({users, categoryQuery}) {
   // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams();
   const navigate = useNavigate();
@@ -481,15 +481,16 @@ const hostId = hosts.map((host) => {
             {eventInfo?.category_names
               ? eventInfo.category_names.map((category) => {
                   return (
-                    <button
-                      type="button"
-                      key={category.id}
+                    
+                    <Link to={`/events?category_names.name=${encodeURIComponent(category.name)}`}>
+                    <div
+                    key={category.id}
                       // update route for events sorted by category
-                      onClick={() => navigate(`/events/`)}
                       className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full text-sm px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2 mb-1"
                     >
                       {category.name}
-                    </button>
+                    </div>
+                    </Link>
                   );
                 })
               : null}
