@@ -177,6 +177,13 @@ export default function EventDetails({users}) {
         .then((res) => {
           setUserEvent(res.data);
         })
+        .then(() => {
+          axios
+          .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+          .then((res) => {
+            setAttending(res.data);
+          });
+    })
         .catch((error) => {
           // Handle error
         });
@@ -194,6 +201,13 @@ export default function EventDetails({users}) {
             .then((res) => {
               setUserEvent(res.data);
             })
+            .then(() => {
+              axios
+              .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+              .then((res) => {
+                setAttending(res.data);
+              });
+        })
             .catch((error) => {
               // Handle error
             });
@@ -254,6 +268,13 @@ export default function EventDetails({users}) {
         .then((res) => {
           setUserEvent(res.data);
         })
+        .then(() => {
+              axios
+              .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+              .then((res) => {
+                setAttending(res.data);
+              });
+        })
         .catch((error) => {
           // Handle error
         });
@@ -271,6 +292,13 @@ export default function EventDetails({users}) {
             .then((res) => {
               setUserEvent(res.data);
             })
+            .then(() => {
+              axios
+              .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+              .then((res) => {
+                setAttending(res.data);
+              });
+        })
             .catch((error) => {
               // Handle error
             });
