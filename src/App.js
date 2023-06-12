@@ -131,8 +131,7 @@ function App() {
                   />
                 }
               />
-              {/* <Route path="/chat/:conversationId" element={<ConversationsPage user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} /> */}
-
+              <Route path="/room/:id" />
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
