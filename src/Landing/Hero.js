@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import animationData from "../assets/eventHero.json";
 
-export default function Hero() {
+export default function Hero({ loggedin }) {
   return (
     <div>
       <div className="flex blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-100 to-cyan-400 z-50 h-[88vh] ">
@@ -24,15 +24,27 @@ export default function Hero() {
             Create or join events of your choice
           </p>
           <div className="wrap z-50" data-aos="fade-down" data-aos-delay="600">
-            <button className="signup">
-              <Link
-                to="/signup"
-                className="signup"
-                style={{ textAlign: "center" }}
-              >
-                Sign Up
-              </Link>
-            </button>
+            {!loggedin ? (
+              <button className="signup">
+                <Link
+                  to="/signup"
+                  className="signup"
+                  style={{ textAlign: "center" }}
+                >
+                  Sign Up
+                </Link>
+              </button>
+            ) : (
+              <button className="signup">
+                <Link
+                  to="/events"
+                  className="signup"
+                  style={{ textAlign: "center" }}
+                >
+                  Events
+                </Link>
+              </button>
+            )}
           </div>
         </div>
         <div className="w-[75%]" data-aos="fade-up" data-aos-delay="700">

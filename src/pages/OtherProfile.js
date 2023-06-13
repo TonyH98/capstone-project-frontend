@@ -12,6 +12,7 @@ import { BsPencilSquare } from "react-icons/bs";
 import { ImQuotesLeft } from "react-icons/im";
 import { ImQuotesRight } from "react-icons/im";
 import { useUser } from "../contexts/UserProvider";
+import { Link } from "react-router-dom";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -23,6 +24,8 @@ function OtherProfile() {
 
   const [profileInfo, setProfileInfo] = useState({});
 
+  const [request, setRequest] = useState(null);
+
   const [userEvents, setUserEvent] = useState([]);
 
   const [categories, setCategories] = useState([]);
@@ -32,6 +35,7 @@ function OtherProfile() {
   const [friendsRequest, setFriendRequest] = useState([]);
 
   const [friends, setFriends] = useState([]);
+  const [added, setAdded] = useState(false);
 
   let sortCategory = Array.isArray(categories) ? categories.sort() : [];
 
@@ -102,43 +106,24 @@ function OtherProfile() {
     }
   }, [profileInfo?.id]);
 
-  function deleteMultiple() {
-    const deleteEvent = userEvents
-      .filter((events) => events.selected)
-      .map((events) => events.event_id);
-
-    Promise.all(
-      deleteEvent.map((eventId) => {
-        axios.delete(`${API}/users/${profileInfo?.id}/events/${eventId}`);
+  function sendFriendRequest() {
+    axios
+      .post(`${API}/friends`, {
+        users_id: profileInfo?.id,
+        senders_id: loggedInUser?.id,
       })
-    );
+      .then(() => {
+        setRequest(true); // Update request state to indicate that the request was sent
+      });
   }
 
-  const acceptRequest = (senderId) => {
-    axios
-      .post(`${API}/friends/${profileInfo?.id}/accept/${senderId}`, {
-        users_id: profileInfo?.id,
-        friends_id: senderId,
-      })
-      .then(() => {
-        axios.get(`${API}/friends/${profileInfo?.id}/request`).then((res) => {
-          setFriendRequest(res.data);
-        });
-      });
-  };
-
-  const declineRequest = (senderId) => {
-    axios
-      .delete(`${API}/friends/${profileInfo?.id}/denied/${senderId}`)
-      .then(() => {
-        axios.get(`${API}/friends/${profileInfo?.id}/request`).then((res) => {
-          setFriendRequest(res.data);
-        });
-      })
-      .catch((error) => {
-        console.error("Error declining friend request:", error);
-      });
-  };
+  useEffect(() => {
+    for (const friend of friends) {
+      if (friend.id === loggedInUser.id) {
+        setAdded(true);
+      }
+    }
+  }, [friends]);
 
   console.log(friends);
 
@@ -181,26 +166,18 @@ function OtherProfile() {
       </div>
 
       <div>
-        {friendsRequest[0] &&
-          friendsRequest.map((request) => {
-            return (
-              <div key={request.id}>
-                <img
-                  src={request?.profile_img}
-                  alt="profile-pic"
-                  className="w-20 h-30"
-                />{" "}
-                {request.first_name} {request.last_name}{" "}
-                <button onClick={() => acceptRequest(request.id)}>
-                  Accept
-                </button>{" "}
-                {""}{" "}
-                <button onClick={() => declineRequest(request.id)}>
-                  Decline
-                </button>
-              </div>
-            );
-          })}
+        {loggedInUser?.id === username?.id ? null : added ? (
+          <span>Already Friends</span>
+        ) : request ? (
+          <span>Friend Request Sent</span>
+        ) : (
+          <button
+            className="border-2 border-cyan-400 px-2 my-4 rounded-md"
+            onClick={sendFriendRequest}
+          >
+            Friend Request
+          </button>
+        )}
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
@@ -259,7 +236,10 @@ function OtherProfile() {
                     alt="profile-pic"
                     className="w-10 h-15"
                   />
-                  {friend.username} {friend.pronouns}
+                  <Link to={`/profile/${friend?.username}`}>
+                    {friend.username}
+                  </Link>{" "}
+                  {friend.pronouns}
                 </div>
               );
             })}
