@@ -205,6 +205,7 @@ export default function Events() {
       <GoogleMap
         events={events}
         filterEvents={filterEvents}
+        filterCategories={filterCategories}
     />
     </div>
     <div className='flex flex-wrap gap-6 mx-16 my-4'>
