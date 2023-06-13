@@ -559,7 +559,7 @@ const hostId = hosts.map((host) => {
                 </div>
               ) : (
                 <div className="inline ml-4">
-                  {user?.id === eventInfo?.creator[0].id ? 
+                  {users?.id === eventInfo?.creator[0].id ? 
                     <button onClick={showSearchBar} className="text-[12px] border rounded-xl px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
                       Add Co-Host
                     </button>
@@ -743,18 +743,18 @@ const hostId = hosts.map((host) => {
         
         <h2>Comments</h2>
         
-        {/* <CommentSection
+        <CommentSection
         currentUser={{
-          currentUserId: `${user.id}`,
-          currentUserProfile:`localhost:3000/profile/`+user.username,
-          currentUserFullName: `${user.first_name}`+' '+`${user.last_name} `,
-          currentUserImg: `https://ui-avatars.com/api/name=`+user.first_name+`&background=random`
+          currentUserId: `${users.id}`,
+          currentUserProfile:`localhost:3000/profile/`+users.username,
+          currentUserFullName: `${users.first_name}`+' '+`${users.last_name} `,
+          currentUserImg: `https://ui-avatars.com/api/name=`+users.first_name+`&background=random`
         
         }}
         eventId= {eventInfo?.id}
         event={eventInfo?.creator[0]}
         /> 
-        */}
+       
 
       </div>
     </div>
