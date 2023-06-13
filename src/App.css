@@ -15,17 +15,17 @@ body{
 
 .navbar {
   background-color: #fff;
-  padding : .7rem;
+  padding : .6rem;
   box-sizing: border-box;
   position: fixed;
-  width: calc(100% - 2rem);
+  width: calc(100% - 1rem);
   bottom: 0;
   left: 45%;
   transform: translateX(-50%);
-  margin: 1rem;
+  margin: 0.2rem 0;
   border-radius: 3rem;
   justify-content: space-around;
-  max-width: 25rem;
+  max-width: 22rem;
 }
 
 .navbar div {
@@ -35,6 +35,38 @@ body{
   border-radius: 50%;
   cursor: pointer;
 }
+
+
+@media (max-width:480px) {
+  .navbar {
+    position: fixed;
+    width: calc(100% - 1rem);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-around;
+    max-width: 22rem;
+  }
+}
+
+
+/*---------------------Map--------------------------------*/
+.map-responsive{
+  overflow:hidden;
+  position:relative;
+  margin: 0 0.7em;
+}
+
+
+/*---------------------Map--------------------------------*/
+@media (max-width:480px) {
+  .categories-responsive{
+    height: 55px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
 
 
 

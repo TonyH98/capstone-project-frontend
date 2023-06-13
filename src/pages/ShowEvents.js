@@ -10,7 +10,7 @@ import "../components/events.css";
 // Create event button will ink to new event page once routes are setup
 export default function ShowEvents() {
   return (
-    <div>
+    <div className="bg-none">
       <Events />
     </div>
   );
