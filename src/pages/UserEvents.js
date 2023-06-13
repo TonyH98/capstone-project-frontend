@@ -5,11 +5,12 @@ function UserEvents({event}){
 
     return(
         <div>
-            <img
+            {/* <img
           src={event.location_image}
           alt={event.title}
           className="location-image"
-        ></img>
+          style={{height:"60px", width: "50px"}}
+        ></img> */}
         <Link to={`/events/${event.event_id}`}>
 
         <p>{event.title}: {event.rsvp ? `RSVP` : `Interested`}</p>

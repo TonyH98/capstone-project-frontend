@@ -2,8 +2,11 @@
 // Need to set up open/close modal
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserProvider";
+import axios from "axios";
 import app from "../firebase";
+const API = process.env.REACT_APP_API_URL;
 
 function Login() {
   // useState hooks to toggle between show/hide password and store login information
@@ -13,6 +16,10 @@ function Login() {
     password: "",
   });
   const auth = getAuth(app);
+  const navigate = useNavigate();
+
+  // Sets and retrieves the user in local storage
+  const { loggedInUser, setLoggedInUser } = useUser();
 
   // function to send login information to firebase
   const logIn = () => {
@@ -21,7 +28,13 @@ function Login() {
         const returningUser = userCredential.user;
         if (returningUser) {
           alert("You are now logged in!");
-          console.log("logged in");
+
+          axios
+            .get(`${API}/users/firebase/${returningUser.uid}`)
+            .then((res) => {
+              setLoggedInUser(res.data);
+            })
+            .catch((c) => console.warn("Log in failed"));
         }
       })
       .catch((error) => {
@@ -38,27 +51,28 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     logIn(event);
+    navigate(`/personalprofile`);
   };
 
-    return (
-        <div className='flex flex-col justify-center items-center p-6'>
-            <form className="sm:w-96 bg-white shadow-md p-4 rounded-lg flex flex-col items-center justify-center">
-                <button className="relative left-[50%] font-bold text-lg">X</button>
-                <div>
-                <p className='text-lg font-bold py-4'>
-                    Welcome back! Input login info below
-                </p>
-                <label htmlFor="email">
-                    <input 
-                        id='email'
-                        name='email' 
-                        type='text' 
-                        placeholder="Email" 
-                        required 
-                        onChange={handleTextChange}
-                        className="rounded w-[85%] bg-transparent appearance-none focus:outline-none"
-                    />
-                </label>
+  return (
+    <div className="flex flex-col justify-center items-center p-6">
+      <form className="sm:w-96 bg-white shadow-md p-4 rounded-lg flex flex-col items-center justify-center">
+        <button className="relative left-[50%] font-bold text-lg">X</button>
+        <div>
+          <p className="text-lg font-bold py-4">
+            Welcome back! Input login info below
+          </p>
+          <label htmlFor="email">
+            <input
+              id="email"
+              name="email"
+              type="text"
+              placeholder="Email"
+              required
+              onChange={handleTextChange}
+              className="rounded w-[85%] bg-transparent appearance-none focus:outline-none"
+            />
+          </label>
 
           <label htmlFor="password">
             <input
@@ -90,6 +104,7 @@ function Login() {
         <button
           type="submit"
           className="bg-cyan-400 border border-cyan-400 text-white hover:text-cyan-400 rounded-md hover:bg-transparent hover:border px-2 py-1 font-bold"
+          onClick={handleSubmit}
         >
           Login
         </button>

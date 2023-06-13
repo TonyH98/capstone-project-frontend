@@ -8,17 +8,21 @@ import { GrNotification } from "react-icons/gr";
 import { BiUser } from "react-icons/bi";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
-import app from "../firebase";
+import { useNavigate } from "react-router-dom";
+import { getUserInfo } from "../utils/appUtils";
 import axios from "axios";
+import app from "../firebase";
 
 const API = process.env.REACT_APP_API_URL;
-export default function NavBar() {
+
+export default function NavBar({ setUser, setLoggedIn, loggedin }) {
+  const navigate = useNavigate();
+
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 450px)").matches
   );
   const [active, setActive] = useState(0);
-
-  const [friendsRequest, setFriendsRequest] = useState()
+  const [friendsRequest, setFriendsRequest] = useState([]);
 
   const { user } = useUser();
   const auth = getAuth(app);
@@ -29,26 +33,43 @@ export default function NavBar() {
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
 
+  useEffect(() => {
+    if (user && user.username) {
+      console.log(user.username);
+    }
+  }, [user]);
+
+  let dropdownText;
+  if (loggedin) {
+    dropdownText = "Sign Out";
+  } else {
+    dropdownText = "Login";
+  }
+
   // Need to add setting the user to a blank object and loggedIn to false after states are properly being passed
-  const signOut = () => {
-    // signOut(auth).then(() => {
-    //   // Sign-out successful.
-    // }).catch((error) => {
-    //   // An error happened.
-    // });
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        setUser({});
+        setLoggedIn(false);
+        console.log("signed out");
+        navigate(`/`);
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
 
-useEffect(() => {
+  const userInfo = getUserInfo();
 
-if(user?.id){
-  axios.get(`${API}/friends/${user?.id}/request`)
-  .then((res) => {
-    setFriendsRequest(res.data.length)
-  })
-}
-
-}, [user?.id])
-
+  useEffect(() => {
+    if (user?.id) {
+      axios.get(`${API}/friends/${user?.id}/request`).then((res) => {
+        setFriendsRequest(res.data.length);
+      });
+    }
+  }, [user?.id]);
 
   return (
     <nav className="flex items-center justify-between h-20 sticky blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-100 to-cyan-400 z-50">
@@ -57,123 +78,156 @@ if(user?.id){
       </Link>
       {matches && (
         <div className="flex items-center justify-between h-20 sticky z-50">
-          <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
-            <li
-              onClick={() => setActive(0)}
-              className={`${active === 0 ? "active" : ""} hover:text-cyan-400`}
-            >
-              <Link to="/events" className="" aria-current="page">
-                <span className="flex flex-col items-center justify-center">
-                  <RiHomeLine size={25} />
-                </span>
-                <span className="text-gray-600">Events</span>
-              </Link>
-            </li>
-            <li onClick={() => setActive(1)} className="hover:text-cyan-400">
-              <Link to="/users" className="" aria-current="page">
-                <span className="flex flex-col items-center justify-center">
-                  <HiOutlineUsers size={25} />
-                </span>
-                <span className="text-gray-600">Users</span>
-              </Link>
-            </li>
-            <li onClick={() => setActive(2)} className="hover:text-cyan-400">
-              <Link to="/chats" className="" aria-current="page">
-                <span className="flex flex-col items-center justify-center">
-                  <FiMessageCircle size={25} />
-                </span>
-                <span className="text-gray-600">Chats</span>
-              </Link>
-            </li>
-            <li onClick={() => setActive(3)} className="hover:text-cyan-400">
-              <Link
-                to={`/profile/${user.username}`}
-                className=""
-                aria-current="page"
+          {loggedin && (
+            <ul className="flex justify-center items-center gap-8 font-semibold text-[12px]">
+              <li
+                onClick={() => setActive(0)}
+                className={`${
+                  active === 0 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
               >
-                <span className="flex flex-col items-center justify-center">
-                  <BiUser size={25} />
-                </span>
-                <span className="text-gray-600">Profile</span>
-              </Link>
-            </li>
-          </ul>
+                <Link
+                  to="/events"
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <RiHomeLine size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">Events</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(1)}
+                className={`${
+                  active === 1 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
+              >
+                <Link
+                  to="/users"
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <HiOutlineUsers size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">Users</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(2)}
+                className={`${
+                  active === 2 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
+              >
+                <Link to="/chats" className="" aria-current="page">
+                  <span className="flex flex-col items-center justify-center">
+                    <FiMessageCircle size={20} />
+                  </span>
+                  <span className="text-gray-900">Chats</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(3)}
+                className={`${
+                  active === 3 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
+              >
+                <Link
+                  to={`/personalprofile`}
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <BiUser size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">
+                    Profile
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          )}
         </div>
       )}
       {!matches && (
         <div className="navbar blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-200 to-cyan-600 z-50 shadow-lg">
-          <ul className="flex justify-center items-center gap-8 font-semibold text-[12px]">
-            <li
-              onClick={() => setActive(0)}
-              className={`${
-                active === 0 ? "bg-cyan-400" : "bg-cyan-200"
-              } rounded-full p-2 shadow-lg`}
-            >
-              <Link
-                to="/events"
-                className="hover:text-white"
-                aria-current="page"
+          {loggedin && (
+            <ul className="flex justify-center items-center gap-8 font-semibold text-[12px]">
+              <li
+                onClick={() => setActive(0)}
+                className={`${
+                  active === 0 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
               >
-                <span className="flex flex-col items-center justify-center">
-                  <RiHomeLine size={20} />
-                </span>
-                <span className="text-gray-900 hover:text-white">Events</span>
-              </Link>
-            </li>
-            <li
-              onClick={() => setActive(1)}
-              className={`${
-                active === 1 ? "bg-cyan-400" : "bg-cyan-200"
-              } rounded-full p-2 shadow-lg`}
-            >
-              <Link
-                to="/users"
-                className="hover:text-white"
-                aria-current="page"
+                <Link
+                  to="/events"
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <RiHomeLine size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">Events</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(1)}
+                className={`${
+                  active === 1 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
               >
-                <span className="flex flex-col items-center justify-center">
-                  <HiOutlineUsers size={20} />
-                </span>
-                <span className="text-gray-900 hover:text-white">Users</span>
-              </Link>
-            </li>
-            <li
-              onClick={() => setActive(2)}
-              className={`${
-                active === 2 ? "bg-cyan-400" : "bg-cyan-200"
-              } rounded-full p-2 shadow-lg`}
-            >
-              <Link to="/chats" className="" aria-current="page">
-                <span className="flex flex-col items-center justify-center">
-                  <FiMessageCircle size={20} />
-                </span>
-                <span className="text-gray-900">Chats</span>
-              </Link>
-            </li>
-            <li
-              onClick={() => setActive(3)}
-              className={`${
-                active === 3 ? "bg-cyan-400" : "bg-cyan-200"
-              } rounded-full p-2 shadow-lg`}
-            >
-              <Link
-                to={`/profile/${user.username}`}
-                className="hover:text-white"
-                aria-current="page"
+                <Link
+                  to="/users"
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <HiOutlineUsers size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">Users</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(2)}
+                className={`${
+                  active === 2 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
               >
-                <span className="flex flex-col items-center justify-center">
-                  <BiUser size={20} />
-                </span>
-                <span className="text-gray-900 hover:text-white">Profile</span>
-              </Link>
-            </li>
-          </ul>
+                <Link to="/chats" className="" aria-current="page">
+                  <span className="flex flex-col items-center justify-center">
+                    <FiMessageCircle size={20} />
+                  </span>
+                  <span className="text-gray-900">Chats</span>
+                </Link>
+              </li>
+              <li
+                onClick={() => setActive(3)}
+                className={`${
+                  active === 3 ? "bg-cyan-400" : "bg-cyan-200"
+                } rounded-full p-2 shadow-lg`}
+              >
+                <Link
+                  to={`/personalprofile`}
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <BiUser size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">
+                    Profile
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          )}
         </div>
       )}
       <div className="flex" id="navbar-dropdown">
         <button className="p-2">
           <GrNotification />
-        {friendsRequest}
+          {friendsRequest}
         </button>
         <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
           <li className="">
@@ -182,7 +236,7 @@ if(user?.id){
               data-dropdown-toggle="dropdownNavbar"
               className="flex items-center justify-between text-base font-bold "
             >
-              Login
+              {dropdownText}
               <svg
                 className="w-5 h-5 ml-1"
                 aria-hidden="true"
@@ -202,9 +256,15 @@ if(user?.id){
               className="hidden bg-[#3bd4ee] -z-50 divide-y divide-gray-100 rounded-b-lg w-32"
             >
               <ul className="py-4 mt-1" aria-labelledby="dropdownLargeButton">
-                <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                  <Link to="/login">Login</Link>
-                </li>
+                {!loggedin ? (
+                  <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                    <Link to="/login">Login</Link>
+                  </li>
+                ) : (
+                  <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                    <button onClick={handleSignOut}>Sign Out</button>
+                  </li>
+                )}
                 <li className="block px-4 py-2 hover:bg-[#f5fefd]">Settings</li>
                 <li className="block px-4 py-2 hover:bg-[#f5fefd]">
                   <Link to="/devs" className="">
@@ -212,11 +272,6 @@ if(user?.id){
                   </Link>
                 </li>
               </ul>
-              <div className="hover:bg-[#f6854b] rounded-b-lg">
-                <Link to="/" className="block px-4 py-2">
-                  Sign out
-                </Link>
-              </div>
             </div>
           </li>
         </ul>

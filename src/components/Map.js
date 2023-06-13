@@ -1,9 +1,6 @@
-// Map component using React Google Maps API rendered on events page and events details page
-import { useState, useCallback } from 'react'
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { Marker } from '@react-google-maps/api';
-
-// variables to configure map styling and center
+// Map component using React Google Maps API rendered on new event and event details page
+import { useState, useCallback, useEffect } from 'react'
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 function Map({ mapWidth, mapHeight, mapLat, mapLng }) {
     const containerStyle = {
@@ -24,9 +21,6 @@ function Map({ mapWidth, mapHeight, mapLat, mapLng }) {
     })
 
     const onLoad = useCallback(function callback(map) {
-        // const bounds = new window.google.maps.LatLngBounds(center);
-        // map.fitBounds(bounds);
-
         setMap(map)
     }, [])
 

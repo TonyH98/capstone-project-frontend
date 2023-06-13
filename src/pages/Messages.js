@@ -1,10 +1,17 @@
-import React from 'react'
-import Chats from '../components/Chats'
+import React from "react";
+import RoomsList from "../components/RoomsList";
+import { useUser } from "../contexts/UserProvider";
+// I added in the local storage user so you dont need to pass down so many states, a UsersProvider needs to be made for users to be on local storage
 
-export default function Messages({ loggedin, setLoggedin, user, setUser, firebaseId }) {
+const Messages = ({ users, setUsers }) => {
+  // Sets and retrieves the user in local storage
+  const { loggedInUser, setLoggedInUser } = useUser();
+
   return (
     <div>
-        <Chats loggedin={loggedin} setLoggedin={setLoggedin} user={user} setUser={setUser} firebaseId={firebaseId}/>
+      <RoomsList users={users} setUsers={setUsers} />
     </div>
-  )
-}
+  );
+};
+
+export default Messages;
