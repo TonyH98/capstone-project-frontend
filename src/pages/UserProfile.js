@@ -1,12 +1,11 @@
 // User profile page that displays user information, interests, events and hosted events
-// NEED TO set up correct routes for useNavigate on button click for categories and store category object with id
-// NEED TO add post/put requests to update user info on edit
+
 import axios from "axios";
 import InterestsModal from "../components/InterestsModal";
 import UserEvents from "./UserEvents";
 import UserHostedEvent from "./UserHostedEvents";
 import { BsTrash } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import { ImQuotesLeft } from "react-icons/im";
@@ -15,13 +14,13 @@ import EditProfileModal from "../components/EditProfileModal";
 import useLocalStorage from "../hooks/useLocalStorage";
 // import { getUserInfo, setUserInfo } from "../utils/appUtils";
 // import Global from "../utils/Global";
+import { Link } from "react-router-dom";
 import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
 
 function UserProfile() {
   const navigate = useNavigate();
-  // const { profileName } = useParams();
   const [openInterestModal, setOpenInterestModal] = useLocalStorage(
     "openInterestModal",
     false
@@ -59,7 +58,7 @@ function UserProfile() {
         setCategories(res.data);
       })
       .catch((c) => console.warn("catch, c"));
-  }, []);
+  });
 
   useEffect(() => {
     if (loggedInUser?.id) {
@@ -300,21 +299,27 @@ function UserProfile() {
           </button>
         </fieldset>
         <br />
-        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
+        <fieldset className="w-3/4 border relative shadow-sm m-auto">
           <legend className="px-3 text-left ml-8">Friends</legend>
-          {friends[0] &&
-            friends.map((friend) => {
-              return (
-                <div key={friend.id}>
+          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
+            {friends[0] &&
+              friends.map((friend) => (
+                <Link
+                  key={friend.id}
+                  to={`/profile/${friend?.username}`}
+                  className="flex items-center mr-4 mb-2"
+                >
                   <img
                     src={friend?.profile_img}
                     alt="profile-pic"
                     className="w-10 h-15"
                   />
-                  {friend.username} {friend.pronouns}
-                </div>
-              );
-            })}
+                  <span className="ml-2">
+                    {friend.username} {friend.pronouns}
+                  </span>
+                </Link>
+              ))}
+          </div>
         </fieldset>
       </form>
     </>

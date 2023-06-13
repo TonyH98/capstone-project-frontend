@@ -54,7 +54,7 @@ export default function User({ users }) {
           <h3>
             {users?.first_name} {users?.last_name}
           </h3>
-          <Link to={`/profile/${users.username}`}>
+          <Link to={`/profile/${users?.username}`}>
             <h3 className="text-cyan-400 font-bold">@{users?.username}</h3>
           </Link>
         </div>

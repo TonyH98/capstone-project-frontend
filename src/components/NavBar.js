@@ -10,6 +10,7 @@ import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../utils/appUtils";
+import "./NavBar.css";
 import axios from "axios";
 import app from "../firebase";
 
@@ -24,8 +25,14 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
   const [active, setActive] = useState(0);
   const [friendsRequest, setFriendsRequest] = useState([]);
 
-  const { user } = useUser();
+  const { loggedInUser } = useUser();
   const auth = getAuth(app);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     window
@@ -33,15 +40,9 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
 
-  useEffect(() => {
-    if (user && user.username) {
-      console.log(user.username);
-    }
-  }, [user]);
-
   let dropdownText;
   if (loggedin) {
-    dropdownText = "Sign Out";
+    dropdownText = `${loggedInUser.username}`;
   } else {
     dropdownText = "Login";
   }
@@ -64,12 +65,12 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
   const userInfo = getUserInfo();
 
   useEffect(() => {
-    if (user?.id) {
-      axios.get(`${API}/friends/${user?.id}/request`).then((res) => {
+    if (loggedInUser?.id) {
+      axios.get(`${API}/friends/${loggedInUser?.id}/request`).then((res) => {
         setFriendsRequest(res.data.length);
       });
     }
-  }, [user?.id]);
+  }, [loggedInUser?.id]);
 
   return (
     <nav className="flex items-center justify-between h-20 sticky blob bg-opacity-60 bg-gradient-to-r from-purple-300 via-purple-100 to-cyan-400 z-50">
@@ -133,7 +134,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                   active === 3 ? "bg-cyan-400" : "bg-cyan-200"
                 } rounded-full p-2 shadow-lg`}
               >
-                <Link
+                {/* <Link
                   to={`/personalprofile`}
                   className="hover:text-white"
                   aria-current="page"
@@ -144,7 +145,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                   <span className="text-gray-900 hover:text-white">
                     Profile
                   </span>
-                </Link>
+                </Link> */}
               </li>
             </ul>
           )}
@@ -207,7 +208,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                   active === 3 ? "bg-cyan-400" : "bg-cyan-200"
                 } rounded-full p-2 shadow-lg`}
               >
-                <Link
+                {/* <Link 
                   to={`/personalprofile`}
                   className="hover:text-white"
                   aria-current="page"
@@ -218,17 +219,13 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                   <span className="text-gray-900 hover:text-white">
                     Profile
                   </span>
-                </Link>
+                </Link> */}
               </li>
             </ul>
           )}
         </div>
       )}
       <div className="flex" id="navbar-dropdown">
-        <button className="p-2">
-          <GrNotification />
-          {friendsRequest}
-        </button>
         <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
           <li className="">
             <button
@@ -261,11 +258,15 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                     <Link to="/login">Login</Link>
                   </li>
                 ) : (
-                  <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                    <button onClick={handleSignOut}>Sign Out</button>
-                  </li>
+                  <div>
+                    <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                      <Link to="/personalprofile">{loggedInUser.username}</Link>
+                    </li>
+                    <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                      <button onClick={handleSignOut}>Sign Out</button>
+                    </li>
+                  </div>
                 )}
-                <li className="block px-4 py-2 hover:bg-[#f5fefd]">Settings</li>
                 <li className="block px-4 py-2 hover:bg-[#f5fefd]">
                   <Link to="/devs" className="">
                     About Devs
@@ -276,6 +277,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
           </li>
         </ul>
       </div>
+      <div></div>
     </nav>
   );
 }
