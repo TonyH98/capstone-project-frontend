@@ -527,7 +527,7 @@ const hostId = hosts.map((host) => {
                 className="hover:text-blue-500 hover:border-blue-500 w-12"
               >
                 <img 
-                  src={users.profile_img}
+                  src={eventInfo?.creator[0].profile_img}
                   alt="profile image"
                   className="h-7 w-7 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500"
                 /> 
