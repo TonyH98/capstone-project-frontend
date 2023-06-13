@@ -104,7 +104,9 @@ const [minAge , setMinAge] = useState("")
 const [maxError , setMaxError] = useState("")
 const [dateError, setDateError] = useState("")
 const [addressError, setAddressError] = useState("")
+
 const [timeError, setTimeError] = useState("")
+
 
 // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {

@@ -9,7 +9,9 @@ import { BsPencilFill } from "react-icons/bs";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
-import CustomComponent from "../components/commentSection";
+import {useUser} from "../contexts/UserProvider"
+// import EditEventModal from "../components/EditEventModal"
+import CommentSection from "../components/commentSection";
 import useLocalStorage from "../hooks/useLocalStorage";
 import TitleEditModal from "../components/TitleEditModal";
 import LocationEditModal from "../components/LocationEditModal";
@@ -36,6 +38,7 @@ export default function EventDetails({users, categoryQuery}) {
   const [ categoryModal, setCategoryModal ] = useState(false)
   const [ attending, setAttending ] = useState()
 
+
   const [ editMode, setEditMode ] = useState(false)
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
   const [ openLocationEdit, setOpenLocationEdit ] = useState(false)
@@ -43,6 +46,7 @@ export default function EventDetails({users, categoryQuery}) {
   const [ openImageEdit, setOpenImageEdit ] = useState(false)
   const [ openAttendeesEdit, setOpenAttendeesEdit ] = useState(false)
   const [ showSearch, setShowSearch ] = useState(false)
+
 
   const creator = eventInfo?.creator[0].id;
   const [ userMain, setUser ] = useLocalStorage("user", {});
@@ -716,18 +720,23 @@ const hostId = hosts.map((host) => {
         }
       </div>
       <div>
-        <CustomComponent
-          currentUser={{
-            currentUserId: `${users.id}`,
-            currentUserProfile: `localhost:3000/profile/` + users.username,
-            currentUserFullName:
-              `${users.first_name}` + " " + `${users.last_name} `,
-            currentUserImg:
-              `https://ui-avatars.com/api/name=` +
-              users.first_name +
-              `&background=random`,
-          }}
-        />
+
+        
+        <h2>Comments</h2>
+        
+        <CommentSection
+        currentUser={{
+          currentUserId: `${user.id}`,
+          currentUserProfile:`localhost:3000/profile/`+user.username,
+          currentUserFullName: `${user.first_name}`+' '+`${user.last_name} `,
+          currentUserImg: `https://ui-avatars.com/api/name=`+user.first_name+`&background=random`
+        
+        }}
+        eventId= {eventInfo?.id}
+        event={eventInfo?.creator[0]}
+        /> 
+       
+
       </div>
     </div>
   );
