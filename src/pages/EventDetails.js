@@ -724,7 +724,7 @@ const hostId = hosts.map((host) => {
         
         <h2>Comments</h2>
         
-        <CommentSection
+        {/* <CommentSection
         currentUser={{
           currentUserId: `${user.id}`,
           currentUserProfile:`localhost:3000/profile/`+user.username,
@@ -735,7 +735,7 @@ const hostId = hosts.map((host) => {
         eventId= {eventInfo?.id}
         event={eventInfo?.creator[0]}
         /> 
-       
+        */}
 
       </div>
     </div>
