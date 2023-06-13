@@ -14,7 +14,7 @@ import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
 import {useUser} from "../contexts/UserProvider"
 // import EditEventModal from "../components/EditEventModal"
-import CustomComponent from "../components/commentSection";
+import CommentSection from "../components/commentSection";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const API = process.env.REACT_APP_API_URL;
@@ -40,14 +40,14 @@ export default function EventDetails() {
 
   
 // this useEffect calls and retrieves user information on page loading
-  useEffect(() => {
-  axios
-  .get(`${API}/users/jblack12`)
-  .then((res) => {
-    setUser(res.data)
+  // useEffect(() => {
+  // axios
+  // .get(`${API}/users/jblack12`)
+  // .then((res) => {
+  //   setUser(res.data)
     
-  })
-  },[])
+  // })
+  // },[])
 
   // useEffect makes an axios call to get event details of an individual event and stores it in eventInfo state
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function EventDetails() {
 useEffect(() => {
 if(user?.id){
   axios
-  .get(`${API}/users/${user?.username}/events/${id}`)
+  .get(`${API}/users/${user?.id}/events/${id}`)
   .then((res) => {
     setUserEvent(res.data)
   })
@@ -331,7 +331,7 @@ const creator = eventInfo?.creator[0].id
         
         <h2>Comments</h2>
         
-        <CustomComponent
+        <CommentSection
         currentUser={{
           currentUserId: `${user.id}`,
           currentUserProfile:`localhost:3000/profile/`+user.username,
@@ -339,7 +339,8 @@ const creator = eventInfo?.creator[0].id
           currentUserImg: `https://ui-avatars.com/api/name=`+user.first_name+`&background=random`
         
         }}
-        
+        eventId= {eventInfo?.id}
+        event={eventInfo?.creator[0]}
         /> 
         <p>Comment section will go here</p>
       </div>
