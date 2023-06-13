@@ -44,7 +44,7 @@ let eventDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice(0
             <p className="text-cyan-500 text-sm inline ml-2">@{event.location}</p>
           </Link>
           <div className="flex">
-            <p className="font-semibold text-[12px] bg-pink-300 px-2 rounded-full py-0.5 border">{eventDate}&nbsp;</p>
+            <p className="font-semibold text-[12px] bg-pink-300 px-2 rounded-full py-0.5 border border-pink-300">{eventDate}&nbsp;</p>
             <p className="font-semibold text-[12px] py-1">&nbsp;From &nbsp;{event.start_time}{"-"}</p>
             <p className="font-semibold text-[12px] py-1">{event.end_time}</p>
           </div>

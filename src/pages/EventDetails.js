@@ -9,7 +9,9 @@ import { BsPencilFill } from "react-icons/bs";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
 import CategoriesModal from "../components/CategoriesModal";
-import CustomComponent from "../components/commentSection";
+import {useUser} from "../contexts/UserProvider"
+// import EditEventModal from "../components/EditEventModal"
+import CommentSection from "../components/commentSection";
 import useLocalStorage from "../hooks/useLocalStorage";
 import TitleEditModal from "../components/TitleEditModal";
 import LocationEditModal from "../components/LocationEditModal";
@@ -21,7 +23,7 @@ import "../components/tooltip.css";
 
 const API = process.env.REACT_APP_API_URL;
 
-export default function EventDetails({users}) {
+export default function EventDetails({users, categoryQuery}) {
   // useParams and useNavigate to send/retrieve info from url
   const { id } = useParams();
   const navigate = useNavigate();
@@ -36,6 +38,7 @@ export default function EventDetails({users}) {
   const [ categoryModal, setCategoryModal ] = useState(false)
   const [ attending, setAttending ] = useState()
 
+
   const [ editMode, setEditMode ] = useState(false)
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
   const [ openLocationEdit, setOpenLocationEdit ] = useState(false)
@@ -43,6 +46,7 @@ export default function EventDetails({users}) {
   const [ openImageEdit, setOpenImageEdit ] = useState(false)
   const [ openAttendeesEdit, setOpenAttendeesEdit ] = useState(false)
   const [ showSearch, setShowSearch ] = useState(false)
+
 
   const creator = eventInfo?.creator[0].id;
   const [ userMain, setUser ] = useLocalStorage("user", {});
@@ -177,6 +181,13 @@ export default function EventDetails({users}) {
         .then((res) => {
           setUserEvent(res.data);
         })
+        .then(() => {
+          axios
+          .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+          .then((res) => {
+            setAttending(res.data);
+          });
+    })
         .catch((error) => {
           // Handle error
         });
@@ -194,6 +205,13 @@ export default function EventDetails({users}) {
             .then((res) => {
               setUserEvent(res.data);
             })
+            .then(() => {
+              axios
+              .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+              .then((res) => {
+                setAttending(res.data);
+              });
+        })
             .catch((error) => {
               // Handle error
             });
@@ -254,6 +272,13 @@ export default function EventDetails({users}) {
         .then((res) => {
           setUserEvent(res.data);
         })
+        .then(() => {
+              axios
+              .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+              .then((res) => {
+                setAttending(res.data);
+              });
+        })
         .catch((error) => {
           // Handle error
         });
@@ -271,6 +296,13 @@ export default function EventDetails({users}) {
             .then((res) => {
               setUserEvent(res.data);
             })
+            .then(() => {
+              axios
+              .get(`${API}/users/${eventInfo?.id}/attending?rsvp=true`)
+              .then((res) => {
+                setAttending(res.data);
+              });
+        })
             .catch((error) => {
               // Handle error
             });
@@ -336,6 +368,12 @@ export default function EventDetails({users}) {
     setUpdatedEventInfo(eventInfo)
   }
   
+const hostId = hosts.map((host) => {
+  return host.user_id
+
+})
+
+
   return (
     <div className="relative">
       <div
@@ -344,34 +382,34 @@ export default function EventDetails({users}) {
       />
       <div className="flex flex-row justify-center gap-x-16 mx-20">
         <div className="w-96">
-          <div>
+          <div className="relative">
             <img
               src={eventInfo?.location_image}
               alt="event photo"
               className="max-h-96 max-w-96 mt-12"
             />
-          </div>
-          <div className="max-w-96 tooltip">
-          {
-            editMode ? 
-            <button 
-            onClick={() => {setOpenImageEdit(true)}}
-            className="text-blue-800 pl-1 pt-2 text-sm hover:text-blue-600"
-            >
-                Change Event Photo
-              </button>
-                : null
-              }
-              {
-                openImageEdit ? 
-                <ImageEditModal 
-                  updatedEventInfo={updatedEventInfo}
-                  setOpenImageEdit={setOpenImageEdit}
-                  handleTextChange={handleTextChange}
-                  handleEdit={handleEdit}
-                />
-                : null
-              }
+            <div className="w-36 tooltip absolute left-0 bottom-3">
+            {
+              editMode ? 
+              <button 
+              onClick={() => {setOpenImageEdit(true)}}
+              className="text-blue-800 pl-1 mb-7 text-left absolute left-0 top-0 w-56 text-sm hover:text-blue-600"
+              >
+                  Change Event Photo
+                </button>
+                  : null
+                }
+                {
+                  openImageEdit ? 
+                  <ImageEditModal 
+                    updatedEventInfo={updatedEventInfo}
+                    setOpenImageEdit={setOpenImageEdit}
+                    handleTextChange={handleTextChange}
+                    handleEdit={handleEdit}
+                  />
+                  : null
+                }
+            </div>
           </div>
         </div>
         <div className="w-1/2 mt-12">
@@ -447,15 +485,16 @@ export default function EventDetails({users}) {
             {eventInfo?.category_names
               ? eventInfo.category_names.map((category) => {
                   return (
-                    <button
-                      type="button"
-                      key={category.id}
+                    
+                    <Link to={`/events?category_names.name=${encodeURIComponent(category.name)}`}>
+                    <div
+                    key={category.id}
                       // update route for events sorted by category
-                      onClick={() => navigate(`/events/`)}
                       className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full text-sm px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2 mb-1"
                     >
                       {category.name}
-                    </button>
+                    </div>
+                    </Link>
                   );
                 })
               : null}
@@ -480,7 +519,7 @@ export default function EventDetails({users}) {
               setEventInfo={setEventInfo}
             />
           ) : null}
-          <div className="text-gray-600 mt-3">
+          <div className="text-gray-600 my-5 text-sm py-3 align-baseline">
               Hosted by 
             <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
               <Link 
@@ -497,24 +536,42 @@ export default function EventDetails({users}) {
             </div>
             {
               hosts.length ? (
-                <div>
-                  Co-Hosts: {hosts.map((host) => {
-                  return(
-                    <div>{host.username}</div>
-                  )
-                })}
+                <div className="inline">
+                  Co-Hosts: 
+                  {hosts.map((host) => {
+                    return(
+                      <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
+                        <Link 
+                          to={`/profile/${host.username}`}
+                          className="hover:text-blue-500 hover:border-blue-500 w-12"
+                        >
+                          <img 
+                            src={host.profile_img}
+                            alt="profile image"
+                            className="h-7 w-7 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500"
+                          /> 
+                          {host.username}
+                        </Link>
+                      </div>
+                    )
+                  })
+                }
                 </div>
               ) : (
-                <div>
-                  {users?.id === eventInfo?.creator[0].id ? 
-                    <button onClick={showSearchBar} className="text-sm">Add Co-Host</button>: null
+                <div className="inline ml-4">
+                  {user?.id === eventInfo?.creator[0].id ? 
+                    <button onClick={showSearchBar} className="text-[12px] border rounded-xl px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
+                      Add Co-Host
+                    </button>
+                      : null
                   }
                   {showSearch ? (
-                    <div>
+                    <div className="inline">
                       <input
-                      type="text"
-                      value={search}
-                      onChange={handleFilter}
+                        type="text"
+                        value={search}
+                        onChange={handleFilter}
+                        className="inline h-7 rounded align-middle"
                       />
                     {filterFriends?.length !== 0 && (
                       <div className="dataResult">
@@ -537,7 +594,7 @@ export default function EventDetails({users}) {
               )
             }
           </div>
-          <div className="mt-8">
+          <div className="mt-6">
             <h2 className="inline">
               <b>Summary</b>
             </h2>
@@ -549,12 +606,13 @@ export default function EventDetails({users}) {
                 />
                 : null
             }
-            <section>{eventInfo?.summary}</section>
+            <section className="break-words text-ellipsis">{eventInfo?.summary}</section>
           </div>
           {
             openSummaryEdit ? (
               <SummaryEditModal 
                 eventInfo={eventInfo}
+                updatedEventInfo={updatedEventInfo}
                 setOpenSummaryEdit={setOpenSummaryEdit}
                 handleTextChange={handleTextChange}
                 handleEdit={handleEdit}
@@ -563,48 +621,65 @@ export default function EventDetails({users}) {
           }
         </div>
         <div className="flex flex-col gap-y-12 mt-12">
-          <div className="flex flex-row justify-end h-10 gap-x-3">
-            {users?.id === creator ? (
-              editMode ? (
-                <>
-                  <button
-                    className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                    onClick={handleDelete}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
-                    onClick={() => setEditMode(false)}
-                  >
-                    Done
-                  </button>
-                </>
-              ) : (
-                <button
-                  className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                  onClick={() => setEditMode(true)}
-                >
-                  Edit
-                </button>
-              )
-            ) : (
-              <>
-                <button
-                  className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                  onClick={addToInterest}
-                >
-                  Interested
-                </button>
-                <button
-                  className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-                  onClick={addToRsvp}
-                >
-                  RSVP
-                </button>
-              </>
-            )}
-          </div>
+        <div className="flex flex-row justify-end h-10 gap-x-3">
+  {users?.id === creator ? (
+    editMode ? (
+      <>
+        <button
+          className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+          onClick={handleDelete}
+        >
+          Delete
+        </button>
+        <button
+          className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+          onClick={() => setEditMode(false)}
+        >
+          Done
+        </button>
+      </>
+    ) : (
+      <button
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        onClick={() => setEditMode(true)}
+      >
+        Edit
+      </button>
+    )
+  ) : hostId.includes(users?.id) ? (
+    editMode ? (
+      <button
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+        onClick={() => setEditMode(false)}
+      >
+        Done
+      </button>
+    ) : (
+      <button
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        onClick={() => setEditMode(true)}
+      >
+        Edit
+      </button>
+    )
+  ) : (
+    <>
+      <button
+        className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        onClick={addToInterest}
+      >
+        Interested
+      </button>
+      <button
+        className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        onClick={addToRsvp}
+      >
+        RSVP
+      </button>
+    </>
+  )}
+</div>
+
           <div className="">
             <GoogleMap
               mapWidth="300px"
@@ -616,7 +691,7 @@ export default function EventDetails({users}) {
         </div>
       </div>
       <div>
-        <div className="tooltip">
+        <div className="tooltip pt-7">
           <div>
             <h2 className="text-lg ml-20 font-bold inline">
               Attendees: {attending?.length}/{eventInfo?.max_people}
@@ -664,18 +739,23 @@ export default function EventDetails({users}) {
         }
       </div>
       <div>
-        <CustomComponent
-          currentUser={{
-            currentUserId: `${users.id}`,
-            currentUserProfile: `localhost:3000/profile/` + users.username,
-            currentUserFullName:
-              `${users.first_name}` + " " + `${users.last_name} `,
-            currentUserImg:
-              `https://ui-avatars.com/api/name=` +
-              users.first_name +
-              `&background=random`,
-          }}
-        />
+
+        
+        <h2>Comments</h2>
+        
+        {/* <CommentSection
+        currentUser={{
+          currentUserId: `${user.id}`,
+          currentUserProfile:`localhost:3000/profile/`+user.username,
+          currentUserFullName: `${user.first_name}`+' '+`${user.last_name} `,
+          currentUserImg: `https://ui-avatars.com/api/name=`+user.first_name+`&background=random`
+        
+        }}
+        eventId= {eventInfo?.id}
+        event={eventInfo?.creator[0]}
+        /> 
+        */}
+
       </div>
     </div>
   );

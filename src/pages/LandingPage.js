@@ -3,7 +3,7 @@ import "aos/dist/aos.css";
 import Hero from "../Landing/Hero";
 import AboutApp from "../Landing/AboutApp";
 
-export default function LandingPage() {
+export default function LandingPage({ loggedin }) {
   // aos initialization
   Aos.init({
     duration: 1800,
@@ -15,7 +15,7 @@ export default function LandingPage() {
       <div className="blob w-[1000px] h-[1000px] rounded-[999px] absolute bottom-0 left-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-red-200 via-gray-100 to-blue-100"></div>
       <div className="blob w-[600px] h-[600px] rounded-[999px] absolute bottom-0 left-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-slate-100 via-teal-100 to-blue-100"></div>
       <div className="blob w-[300px] h-[300px] rounded-[999px] absolute bottom-[-10px] left-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-green-200 via-cyan-200 to-Fuchsia-300"></div>
-      <Hero />
+      <Hero loggedin={loggedin} />
       <AboutApp />
     </div>
   );

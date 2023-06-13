@@ -104,7 +104,9 @@ const [minAge , setMinAge] = useState("")
 const [maxError , setMaxError] = useState("")
 const [dateError, setDateError] = useState("")
 const [addressError, setAddressError] = useState("")
+
 const [timeError, setTimeError] = useState("")
+
 
 // useEffect populates previous event information and adds the creator's user ID
   useEffect(() => {
@@ -354,10 +356,10 @@ function checkTime() {
   console.log(events)
 
   return (
-    <div className="flex items-center justify-center p-4 gap-20">
+    <div className="lg:flex items-center justify-center p-4 m-auto gap-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-md px-10 pt-6 pb-8 mb-4 w-3/8"
+        className="bg-white shadow-md rounded-md px-10 pt-6 pb-8 mb-4 md:w-2/3 lg:w-5/12 m-auto"
       >
         {formStep === 0 && (
           <section className="">
@@ -496,7 +498,7 @@ function checkTime() {
         )}
         {formStep === 1 && (
           <section className="w-[450px] py-6">
-            <div className="mb-3 flex">
+            <div className="mb-3 sm:flex">
               <div className="mr-2">
                 <label
                   htmlFor="categoryIds"
@@ -511,7 +513,7 @@ function checkTime() {
                   }
                   onChange={handleTextChange}
                   required
-                  className="shadow bg-transparent appearance-none border w-full py-2 pl-3 mr-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                  className="shadow bg-transparent appearance-none border sm:w-full py-2 pl-3 mr-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
                 >
                   <option value="">Select a category</option>
                   {category.map((option) => (
@@ -539,7 +541,7 @@ function checkTime() {
                 </div>
               ) : null}
             </div>
-            <div className="mb-3 flex">
+            <div className="mb-3 sm:flex">
               <div>
                 <label
                   htmlFor="age_restriction"
@@ -560,7 +562,7 @@ function checkTime() {
                 </select>
               </div>
               {events.age_restriction ? (
-                <div className="flex">
+                <div className="sm:flex">
                   <div className="">
                     <label
                       htmlFor="age_min"
@@ -573,7 +575,7 @@ function checkTime() {
                       id="age_min"
                       value={events.age_min}
                       onChange={handleTextChange}
-                      className="shadow bg-transparent appearance-none border py-2 px-3 mx-2 w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                      className="shadow bg-transparent appearance-none border py-2 px-3 sm:mx-2 sm:w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
                     />
                   </div>
                   {ageError && <p style={{ color: "red" }}>{ageError}</p>}
@@ -590,7 +592,7 @@ function checkTime() {
                       id="age_max"
                       value={events.age_max}
                       onChange={handleTextChange}
-                      className="shadow bg-transparent appearance-none border py-2 px-3 mx-2 w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                      className="shadow bg-transparent appearance-none border py-2 px-3 sm:mx-2 sm:w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
                     />
                   </div>
                 </div>
@@ -610,7 +612,7 @@ function checkTime() {
                 id="location_image"
                 value={events.location_image}
                 onChange={handleTextChange}
-                className="shadow bg-transparent appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                className="shadow bg-transparent appearance-none border sm:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
               />
             </div>
             <div className="mb-3">
@@ -626,10 +628,10 @@ function checkTime() {
                 value={events.summary}
                 onChange={handleTextChange}
                 required
-                className="shadow bg-transparent appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                className="shadow bg-transparent appearance-none border sm:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
               />
             </div>
-            <div className="flex justify-evenly font-semibold">
+            <div className="flex sm:justify-evenly gap-2 font-semibold">
               {formStep > 0 ? (
                 <button
                   onClick={prevForm}
@@ -654,7 +656,7 @@ function checkTime() {
         )}
       </form>
       { formStep === 0 && (
-        <> {
+        <div className="flex items-center justify-center m-auto"> {
         (!addressError && !!events?.address) ? (
           <GoogleMap 
             mapWidth="300px"
@@ -663,17 +665,17 @@ function checkTime() {
             mapLng={coordinates?.longitude}
           />
         ) : (
-          <div className="sm:w-[300px] h-[300px] mx-auto flex items-center justify-center">
-            <p className="w-[300px] h-[300px] bg-gray-200 text-center pt-[125px] m-auto">
+          <div className="sm:w-[300px] h-[300px] flex items-center justify-center m-auto">
+            <p className="w-[300px] h-[300px] bg-gray-200 flex items-center justify-center">
               Please verify a valid address
             </p>
           </div>
         )}
-        </>
+        </div>
       )
       }
       { formStep === 1 && (
-        <>
+        <div className="flex items-center justify-center m-auto">
         {
         events?.location_image ? (
           <img 
@@ -683,11 +685,11 @@ function checkTime() {
           />
         ) : (
           <div className="bg-gray-200 sm:w-[300px] h-[300px] flex justify-center items-center mx-auto">
-            <p className="sm:w-96 text-center">Preview event image</p>
+            <p className="w-[300px] h-[300px] bg-gray-200 flex items-center justify-center">Preview event image</p>
           </div>
         )
       }
-        </>
+        </div>
       )}
 </div>
 )

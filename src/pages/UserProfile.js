@@ -1,12 +1,11 @@
 // User profile page that displays user information, interests, events and hosted events
-// NEED TO set up correct routes for useNavigate on button click for categories and store category object with id
-// NEED TO add post/put requests to update user info on edit
+
 import axios from "axios";
 import InterestsModal from "../components/InterestsModal";
 import UserEvents from "./UserEvents";
 import UserHostedEvent from "./UserHostedEvents";
 import { BsTrash } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import { ImQuotesLeft } from "react-icons/im";
@@ -15,13 +14,13 @@ import EditProfileModal from "../components/EditProfileModal";
 import useLocalStorage from "../hooks/useLocalStorage";
 // import { getUserInfo, setUserInfo } from "../utils/appUtils";
 // import Global from "../utils/Global";
+import { Link } from "react-router-dom";
 import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
 
 function UserProfile() {
   const navigate = useNavigate();
-  // const { profileName } = useParams();
   const [openInterestModal, setOpenInterestModal] = useLocalStorage(
     "openInterestModal",
     false
@@ -59,7 +58,7 @@ function UserProfile() {
         setCategories(res.data);
       })
       .catch((c) => console.warn("catch, c"));
-  }, []);
+  });
 
   useEffect(() => {
     if (loggedInUser?.id) {
@@ -155,9 +154,14 @@ function UserProfile() {
               <h1>
                 <b>
                   {loggedInUser?.first_name} {loggedInUser?.last_name}{" "}
-                  {loggedInUser?.pronouns ? loggedInUser?.pronouns : null}
+                  {loggedInUser?.pronouns ? (
+                    <p className="inline">
+                      <span>(</span>
+                        {loggedInUser?.pronouns} 
+                      <span>)</span>
+                    </p>
+                    ) : null}
                 </b>
-                {loggedInUser?.pronoun ? <p>({loggedInUser.pronoun})</p> : null}
               </h1>
               <h2 className="text-emerald-500">@{loggedInUser?.username}</h2>
               <h3>
@@ -253,45 +257,52 @@ function UserProfile() {
             user={loggedInUser}
           />
         ) : null}
-        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
+
+        <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${userEvents.length ? 'h-52' : 'h-20'}`}>
           <legend className="px-3 text-left ml-8">Events</legend>
           <div>
-            {Array.isArray(userEvents) && userEvents.length > 0 ? (
-              userEvents.map((event) => (
-                <div key={event.event_id}>
-                  <UserEvents event={event} />
-                </div>
-              ))
-            ) : (
-              <p>No events found.</p>
-            )}
+            <div className="flex flex-wrap py-2 overflow-x-scroll h-44 4-full gap-y-8">
+              {Array.isArray(userEvents) && userEvents.length > 0 ? (
+                userEvents.map((event) => (
+                  <div key={event.event_id}>
+                    <UserEvents event={event} />
+                  </div>
+                ))
+                ) : (
+                  <p className="ml-5 py-3 text-gray-400">No events found.</p>
+                  )}
 
-            {userEvents.length > 0 && (
-              <button onClick={deleteMultiple}>
-                <BsTrash />
+            </div>
+              <button
+                onClick={() => navigate("/events")}
+                className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+                >
+                Add
               </button>
-            )}
-
-            <button
-              onClick={() => navigate("/events")}
-              className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-            >
-              Add
-            </button>
+              {userEvents.length > 0 && (
+                <button 
+                  onClick={deleteMultiple}
+                  className="absolute right-3 bottom-3"
+                >
+                  <BsTrash />
+                </button>
+              )}
           </div>
         </fieldset>
-        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
-          <legend className="px-3 text-left ml-8">Hosted Events</legend>
-          {hostedEvents.length > 0 ? (
-            hostedEvents.map((hosted) => (
-              <div key={hosted.id}>
-                <UserHostedEvent hosted={hosted} />
-              </div>
-            ))
-          ) : (
-            <p>No hosted events found.</p>
-          )}
 
+        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${hostedEvents.length ? 'h-40' : 'h-20' }`}>
+          <legend className="px-3 text-left ml-8">Hosted Events</legend>
+          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
+            {hostedEvents.length > 0 ? (
+              hostedEvents.map((hosted) => (
+                <div key={hosted.id}>
+                  <UserHostedEvent hosted={hosted} />
+                </div>
+              ))
+              ) : (
+                <p className="ml-5 py-3 text-gray-400">No hosted events found.</p>
+                )}
+            </div>
           <button
             onClick={() => navigate("/events/new")}
             className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
@@ -299,22 +310,34 @@ function UserProfile() {
             Create
           </button>
         </fieldset>
-        <br />
-        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
+
+        <fieldset className="w-3/4 border relative shadow-sm m-auto mt-8 h-20">
           <legend className="px-3 text-left ml-8">Friends</legend>
-          {friends[0] &&
-            friends.map((friend) => {
-              return (
-                <div key={friend.id}>
+          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
+            {friends[0] &&
+              friends.map((friend) => (
+                <Link
+                  key={friend.id}
+                  to={`/profile/${friend?.username}`}
+                  className="flex items-center mr-4 mb-2"
+                >
                   <img
                     src={friend?.profile_img}
                     alt="profile-pic"
                     className="w-10 h-15"
                   />
-                  {friend.username} {friend.pronouns}
-                </div>
-              );
-            })}
+                  <span className="ml-2">
+                    {friend.username}
+                  </span>
+                </Link>
+              ))}
+          </div>
+          <button
+            onClick={() => navigate("/users")}
+            className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+          >
+            Add
+          </button>
         </fieldset>
       </form>
     </>
