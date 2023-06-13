@@ -382,34 +382,34 @@ const hostId = hosts.map((host) => {
       />
       <div className="flex flex-row justify-center gap-x-16 mx-20">
         <div className="w-96">
-          <div>
+          <div className="relative">
             <img
               src={eventInfo?.location_image}
               alt="event photo"
               className="max-h-96 max-w-96 mt-12"
             />
-          </div>
-          <div className="max-w-96 tooltip">
-          {
-            editMode ? 
-            <button 
-            onClick={() => {setOpenImageEdit(true)}}
-            className="text-blue-800 pl-1 pt-2 text-sm hover:text-blue-600"
-            >
-                Change Event Photo
-              </button>
-                : null
-              }
-              {
-                openImageEdit ? 
-                <ImageEditModal 
-                  updatedEventInfo={updatedEventInfo}
-                  setOpenImageEdit={setOpenImageEdit}
-                  handleTextChange={handleTextChange}
-                  handleEdit={handleEdit}
-                />
-                : null
-              }
+            <div className="w-36 tooltip absolute left-0 bottom-3">
+            {
+              editMode ? 
+              <button 
+              onClick={() => {setOpenImageEdit(true)}}
+              className="text-blue-800 pl-1 mb-7 text-left absolute left-0 top-0 w-56 text-sm hover:text-blue-600"
+              >
+                  Change Event Photo
+                </button>
+                  : null
+                }
+                {
+                  openImageEdit ? 
+                  <ImageEditModal 
+                    updatedEventInfo={updatedEventInfo}
+                    setOpenImageEdit={setOpenImageEdit}
+                    handleTextChange={handleTextChange}
+                    handleEdit={handleEdit}
+                  />
+                  : null
+                }
+            </div>
           </div>
         </div>
         <div className="w-1/2 mt-12">
@@ -519,7 +519,7 @@ const hostId = hosts.map((host) => {
               setEventInfo={setEventInfo}
             />
           ) : null}
-          <div className="text-gray-600 mt-3">
+          <div className="text-gray-600 my-5 text-sm py-3 align-baseline">
               Hosted by 
             <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
               <Link 
@@ -536,24 +536,42 @@ const hostId = hosts.map((host) => {
             </div>
             {
               hosts.length ? (
-                <div>
-                  Co-Hosts: {hosts.map((host) => {
-                  return(
-                    <div>{host.username}</div>
-                  )
-                })}
+                <div className="inline">
+                  Co-Hosts: 
+                  {hosts.map((host) => {
+                    return(
+                      <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
+                        <Link 
+                          to={`/profile/${host.username}`}
+                          className="hover:text-blue-500 hover:border-blue-500 w-12"
+                        >
+                          <img 
+                            src={host.profile_img}
+                            alt="profile image"
+                            className="h-7 w-7 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500"
+                          /> 
+                          {host.username}
+                        </Link>
+                      </div>
+                    )
+                  })
+                }
                 </div>
               ) : (
-                <div>
-                  {users?.id === eventInfo?.creator[0].id ? 
-                    <button onClick={showSearchBar} className="text-sm">Add Co-Host</button>: null
+                <div className="inline ml-4">
+                  {user?.id === eventInfo?.creator[0].id ? 
+                    <button onClick={showSearchBar} className="text-[12px] border rounded-xl px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
+                      Add Co-Host
+                    </button>
+                      : null
                   }
                   {showSearch ? (
-                    <div>
+                    <div className="inline">
                       <input
-                      type="text"
-                      value={search}
-                      onChange={handleFilter}
+                        type="text"
+                        value={search}
+                        onChange={handleFilter}
+                        className="inline h-7 rounded align-middle"
                       />
                     {filterFriends?.length !== 0 && (
                       <div className="dataResult">
@@ -576,7 +594,7 @@ const hostId = hosts.map((host) => {
               )
             }
           </div>
-          <div className="mt-8">
+          <div className="mt-6">
             <h2 className="inline">
               <b>Summary</b>
             </h2>
@@ -588,12 +606,13 @@ const hostId = hosts.map((host) => {
                 />
                 : null
             }
-            <section>{eventInfo?.summary}</section>
+            <section className="break-words text-ellipsis">{eventInfo?.summary}</section>
           </div>
           {
             openSummaryEdit ? (
               <SummaryEditModal 
                 eventInfo={eventInfo}
+                updatedEventInfo={updatedEventInfo}
                 setOpenSummaryEdit={setOpenSummaryEdit}
                 handleTextChange={handleTextChange}
                 handleEdit={handleEdit}
@@ -672,7 +691,7 @@ const hostId = hosts.map((host) => {
         </div>
       </div>
       <div>
-        <div className="tooltip">
+        <div className="tooltip pt-7">
           <div>
             <h2 className="text-lg ml-20 font-bold inline">
               Attendees: {attending?.length}/{eventInfo?.max_people}
