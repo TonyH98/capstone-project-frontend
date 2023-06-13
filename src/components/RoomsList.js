@@ -194,7 +194,6 @@ function handleFilter(event){
   return (
     <div className="p-6 flex flex-col gap-2 bg-cyan-50">
       <div className="flex gap-2 justify-center items-center">
-      <h2>Search</h2>
       <form
   onSubmit={(e) => {
     e.preventDefault();
@@ -204,12 +203,13 @@ function handleFilter(event){
   <input
     type="text"
     name="user2Name"
-    placeholder="Username"
+    placeholder="Search Username"
     value={search}
     onChange={handleFilter}
     required
-    className="rounded-l sm:w-96"
+    className="rounded-l sm:w-96 focus:border-transparent focus:ring-0"
   />
+  <button type="submit" className=" bg-cyan-400 px-4 py-2 shadow-md rounded-r border border-cyan-400">Chat</button>
   {filterUsers.length !== 0 && (
     <div className="data=result">
       {filterUsers.slice(0, 5).map((users) => {
@@ -222,14 +222,12 @@ function handleFilter(event){
             }}
             key={users.username}
           >
-            <br></br>
-            {users.username}
+            <section className="bg-white min-h-[100px] shadow-md rounded-lg absolute w-96 p-2">{users.username}</section>
           </div>
         );
       })}
     </div>
   )}
-  <button type="submit" className=" bg-cyan-400 px-4 py-2 shadow-md rounded-r border border-cyan-400">Chat</button>
 </form>
       </div>
       <article className="flex gap-4">
