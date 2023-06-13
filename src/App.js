@@ -13,13 +13,14 @@ import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./pages/LandingPage";
 import UserProfile from "./pages/UserProfile";
+import OtherProfile from "./pages/OtherProfile";
 import ShowUsers from "./pages/ShowUsers";
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
 import NewEvent from "./pages/NewEvent";
 import Map from "./components/Map";
 import useLocalStorage from "./hooks/useLocalStorage";
-import { UserProvider, useUser } from "./contexts/UserProvider";
+import { UserProvider } from "./contexts/UserProvider";
 import Messages from "./pages/Messages";
 import ShowRoom from "./pages/ShowRoom";
 const API = process.env.REACT_APP_API_URL;
@@ -27,8 +28,9 @@ const API = process.env.REACT_APP_API_URL;
 function App() {
   // This state is set to false by default and is set to true by the function on line 31
   const [loggedin, setLoggedin] = useLocalStorage("loggedin", false);
+
   // store current user
-  const [user, setUser] = useLocalStorage("user", {});
+  const [loggedInUser, setLoggedInUser] = useLocalStorage("loggedInUser", {});
   // store all other users
   const [users, setUsers] = useState([]);
   // const { user, setUser } = useUser();
@@ -48,26 +50,19 @@ function App() {
 
   // This useEffect uses the firebaseId to retrieve the users data from the backend
   useEffect(() => {
-
-    console.log(firebaseId);
-
-    console.log('call here for first login', loggedin, firebaseId);
-
     if (loggedin && firebaseId) {
-
-      console.log('call here for first login')
       // Add a condition to check if firebaseId is truthy
       axios
         .get(`${API}/users/firebase/${firebaseId}`)
         .then((response) => {
-          setUser(response.data);
-          console.log(response.data);
+          setLoggedInUser(response.data);
+          console.log("RESPONSE SERVER", response.data);
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
-      setUser({});
+      setLoggedInUser({});
     }
   }, [loggedin, firebaseId]);
 
@@ -77,10 +72,10 @@ function App() {
       .get(`${API}/users`)
       .then((res) => {
         setUsers(res.data);
-        console.log(res.data)
-    })
-    .catch((c) => console.warn("catch, c"));
-}, []);
+        console.log(res.data);
+      })
+      .catch((c) => console.warn("catch, c"));
+  }, []);
 
   return (
     <div className="App bg-[#f5fefd] min-h-[100%]">
@@ -89,29 +84,54 @@ function App() {
       {/* <FriendsProvider> */}
       <UserProvider>
         <Router>
-          <NavBar setLoggedIn={setLoggedin} setUser={setUser} />
+          <NavBar
+            loggedin={loggedin}
+            setLoggedIn={setLoggedin}
+            setUser={setLoggedInUser}
+            setFirebaseId={setFirebaseId}
+          />
           <main className="h-[100%]">
             <Routes>
-              <Route path="/" element={<Landing />} />
+              <Route path="/" element={<Landing loggedin={loggedin} />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               {/* 
               Comment in when useParams is set up and remove UserProfile below
               <Route path='/profile/:id' element={<UserProfile />} /> 
               */}
-              <Route path="/profile/:username" element={<UserProfile />} />
+              <Route path="/personalprofile" element={<UserProfile />} />
+              <Route path="/profile/:username" element={<OtherProfile />} />
               <Route path="/devs" element={<Devs />} />
               <Route path="/events" element={<ShowEvents />} />
-              <Route path="/events/new" element={<NewEvent />} />
+              <Route path="/events/new" element={<NewEvent users={loggedInUser}/>} />
               <Route path="/users" element={<ShowUsers />} />
-              <Route path="/rooms" element={<Messages user={user} setUser={setUser} users={users} setUsers={setUsers} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
-              <Route path="/rooms/:user1_id/:user2_id" element={<ShowRoom user={user} setUser={setUser} users={users} setUsers={setUsers} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} />
-              {/* <Route path="/chat/:conversationId" element={<ConversationsPage user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} /> */}
+
+              <Route
+                path="/rooms"
+                element={
+                  <Messages
+                    users={users}
+                    setUsers={setUsers}
+                    loggedin={loggedin}
+                    setLoggedin={setLoggedin}
+                    firebaseId={firebaseId}
+                  />
+                }
+              />
+              <Route
+                path="/chats"
+                element={
+                  <ShowRoom
+                   users={loggedInUser}
+                  />
+                }
+              />
+              <Route path="/room/:id" />
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
               */}
-              <Route path="/events/:id" element={<EventDetails />} />
+              <Route path="/events/:id" element={<EventDetails users={loggedInUser}/>} />
               <Route path="/map" element={<Map />} />
             </Routes>
           </main>

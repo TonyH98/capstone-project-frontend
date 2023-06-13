@@ -1,27 +1,26 @@
 // User profile page that displays user information, interests, events and hosted events
-// NEED TO set up correct routes for useNavigate on button click for categories and store category object with id
-// NEED TO add post/put requests to update user info on edit
+
 import axios from "axios";
 import InterestsModal from "../components/InterestsModal";
 import UserEvents from "./UserEvents";
 import UserHostedEvent from "./UserHostedEvents";
 import { BsTrash } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import { ImQuotesLeft } from "react-icons/im";
 import { ImQuotesRight } from "react-icons/im";
 import EditProfileModal from "../components/EditProfileModal";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { getUserInfo, setUserInfo } from "../utils/appUtils";
-import Global from "../utils/Global"
+// import { getUserInfo, setUserInfo } from "../utils/appUtils";
+// import Global from "../utils/Global";
+import { Link } from "react-router-dom";
 import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
 
 function UserProfile() {
   const navigate = useNavigate();
-  const { profileName } = useParams();
   const [openInterestModal, setOpenInterestModal] = useLocalStorage(
     "openInterestModal",
     false
@@ -31,7 +30,7 @@ function UserProfile() {
     false
   );
   // const [user, setUser] = useLocalStorage("user", {});
-  const { user, setUser } = useUser();
+  const { loggedInUser, setLoggedInUser } = useUser();
   // Dont have time to test right now but I think we can just use user only and delete updatedUser
   const [updatedUser, setUpdatedUser] = useLocalStorage("updatedUser", {});
 
@@ -43,13 +42,11 @@ function UserProfile() {
 
   const [hostedEvents, setHostedEvents] = useState([]);
 
-  const [friendsRequest , setFriendRequest] = useState([])
+  const [friendsRequest, setFriendRequest] = useState([]);
 
-  const [friends , setFriends] = useState([])
+  const [friends, setFriends] = useState([]);
 
   let sortCategory = Array.isArray(isSelected) ? isSelected.sort() : [];
-
-  console.log(user)
 
   // let sortCategory = [];
 
@@ -61,64 +58,47 @@ function UserProfile() {
         setCategories(res.data);
       })
       .catch((c) => console.warn("catch, c"));
-  }, []);
-
-  const onLoadUserInof =
-    // useEffect makes GET request for user info based on username parameter
-    useEffect(() => {
-      axios
-        .get(`${API}/users/${user?.username}`)
-        .then((res) => {
-          setUser(res.data);
-          setUserInfo(res.data);
-          Global.user = res.data;
-          setUpdatedUser(res.data);
-        })
-        .catch((c) => console.warn("catch, c"));
-    }, [user?.username]);
+  });
 
   useEffect(() => {
-    if (user?.id) {
-      axios.get(`${API}/users/${user?.id}/category`).then((res) => {
+    if (loggedInUser?.id) {
+      axios.get(`${API}/users/${loggedInUser?.id}/category`).then((res) => {
         setIsSelected(res.data);
       });
     }
-  }, [user?.id]);
+  }, [loggedInUser?.id]);
 
   useEffect(() => {
-    if (user?.id) {
-      axios.get(`${API}/friends/${user?.id}/list`).then((res) => {
+    if (loggedInUser?.id) {
+      axios.get(`${API}/friends/${loggedInUser?.id}/list`).then((res) => {
         setFriends(res.data);
       });
     }
-  }, [user?.id]);
-
+  }, [loggedInUser?.id]);
 
   useEffect(() => {
-    if (user?.id) {
-      axios.get(`${API}/users/${user?.id}/events`).then((res) => {
+    if (loggedInUser?.id) {
+      axios.get(`${API}/users/${loggedInUser?.id}/events`).then((res) => {
         setUserEvent(res.data);
       });
     }
-  }, [user?.id]);
+  }, [loggedInUser?.id]);
 
   useEffect(() => {
-    if (user?.id) {
-      axios.get(`${API}/events?creator.id=${user?.id}`).then((res) => {
+    if (loggedInUser?.id) {
+      axios.get(`${API}/events?creator.id=${loggedInUser?.id}`).then((res) => {
         setHostedEvents(res.data);
       });
     }
-  }, [user?.id]);
+  }, [loggedInUser?.id]);
 
-
-useEffect(() => {
-if(user?.id){
-  axios.get(`${API}/friends/${user?.id}/request`)
-  .then((res) => {
-    setFriendRequest(res.data);
-  });
-}
-}, [user?.id])
+  useEffect(() => {
+    if (loggedInUser?.id) {
+      axios.get(`${API}/friends/${loggedInUser?.id}/request`).then((res) => {
+        setFriendRequest(res.data);
+      });
+    }
+  }, [loggedInUser?.id]);
 
   function deleteMultiple() {
     const deleteEvent = userEvents
@@ -127,39 +107,38 @@ if(user?.id){
 
     Promise.all(
       deleteEvent.map((eventId) => {
-        axios.delete(`${API}/users/${user?.id}/events/${eventId}`);
+        axios.delete(`${API}/users/${loggedInUser?.id}/events/${eventId}`);
       })
     );
   }
 
-const acceptRequest = (senderId) => {
+  const acceptRequest = (senderId) => {
+    axios
+      .post(`${API}/friends/${loggedInUser?.id}/accept/${senderId}`, {
+        users_id: loggedInUser?.id,
+        friends_id: senderId,
+      })
+      .then(() => {
+        axios.get(`${API}/friends/${loggedInUser?.id}/request`).then((res) => {
+          setFriendRequest(res.data);
+        });
+      });
+  };
 
-axios.post(`${API}/friends/${user?.id}/accept/${senderId}`, {users_id: user?.id, friends_id: senderId})
-.then(() => {
-  axios.get(`${API}/friends/${user?.id}/request`)
-  .then((res) => {
-    setFriendRequest(res.data)
-  })
-})
+  const declineRequest = (senderId) => {
+    axios
+      .delete(`${API}/friends/${loggedInUser?.id}/denied/${senderId}`)
+      .then(() => {
+        axios.get(`${API}/friends/${loggedInUser?.id}/request`).then((res) => {
+          setFriendRequest(res.data);
+        });
+      })
+      .catch((error) => {
+        console.error("Error declining friend request:", error);
+      });
+  };
 
-}
-
-const declineRequest = (senderId) => {
-  axios
-    .delete(`${API}/friends/${user?.id}/denied/${senderId}`)
-    .then(() => {
-      axios.get(`${API}/friends/${user?.id}/request`)
-      .then((res) => {
-      setFriendRequest(res.data)
-  })
-    })
-    .catch((error) => {
-      console.error("Error declining friend request:", error);
-    });
-};
-
-
-console.log(friends)
+  console.log(friends);
 
   return (
     <>
@@ -167,22 +146,22 @@ console.log(friends)
         <div className="mb-10 mt-12 m-auto">
           <div className="flex justify-center gap-x-10 align-items-start">
             <img
-              src={user?.profile_img}
+              src={loggedInUser?.profile_img}
               alt="profile-pic"
               className="w-36 h-36"
             />
             <div className="text-left w-1/6">
               <h1>
                 <b>
-                  {user?.first_name} {user?.last_name}{" "}
-                  {user?.pronouns ? user?.pronouns : null}
+                  {loggedInUser?.first_name} {loggedInUser?.last_name}{" "}
+                  {loggedInUser?.pronouns ? loggedInUser?.pronouns : null}
                 </b>
-                {user?.pronoun ? <p>({user.pronoun})</p> : null}
+                {loggedInUser?.pronoun ? <p>({loggedInUser.pronoun})</p> : null}
               </h1>
-              <h2 className="text-emerald-500">@{user?.username}</h2>
+              <h2 className="text-emerald-500">@{loggedInUser?.username}</h2>
               <h3>
                 <b>Age: </b>
-                {user?.age?.age} years
+                {loggedInUser?.age?.age} years
               </h3>
             </div>
             <div className="relative w-52">
@@ -195,15 +174,15 @@ console.log(friends)
               </div>
               <section className="w-52 h-12 relative flex flex-row">
                 <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{user?.bio}</p>
+                <p className="px-4">{loggedInUser?.bio}</p>
                 <ImQuotesRight className="text-orange-600 " />
               </section>
             </div>
           </div>
           {openEditModal ? (
             <EditProfileModal
-              setUser={setUser}
-              user={user}
+              setUser={setLoggedInUser}
+              user={loggedInUser}
               setOpenEditModal={setOpenEditModal}
               updatedUser={updatedUser}
               setUpdatedUser={setUpdatedUser}
@@ -213,18 +192,26 @@ console.log(friends)
       </div>
 
       <div>
-        {friendsRequest.map((request) => {
-          return(
-          <div key={request.id}>
-           <img
-           src={request?.profile_img}
-              alt="profile-pic"
-              className="w-20 h-30"
-            /> {request.first_name} {request.last_name} <button onClick={() => acceptRequest(request.id)}>Accept</button> {""} <button onClick={() => declineRequest(request.id)}>Decline</button>
-          </div>
-
-          )
-        })}
+        {friendsRequest[0] &&
+          friendsRequest.map((request) => {
+            return (
+              <div key={request.id}>
+                <img
+                  src={request?.profile_img}
+                  alt="profile-pic"
+                  className="w-20 h-30"
+                />{" "}
+                {request.first_name} {request.last_name}{" "}
+                <button onClick={() => acceptRequest(request.id)}>
+                  Accept
+                </button>{" "}
+                {""}{" "}
+                <button onClick={() => declineRequest(request.id)}>
+                  Decline
+                </button>
+              </div>
+            );
+          })}
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
@@ -262,7 +249,7 @@ console.log(friends)
             setOpenInterestModal={setOpenInterestModal}
             isSelected={isSelected}
             setIsSelected={setIsSelected}
-            user={user}
+            user={loggedInUser}
           />
         ) : null}
         <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
@@ -278,10 +265,11 @@ console.log(friends)
               <p>No events found.</p>
             )}
 
-            <button onClick={deleteMultiple}>
-              {" "}
-              <BsTrash />
-            </button>
+            {userEvents.length > 0 && (
+              <button onClick={deleteMultiple}>
+                <BsTrash />
+              </button>
+            )}
 
             <button
               onClick={() => navigate("/events")}
@@ -293,13 +281,15 @@ console.log(friends)
         </fieldset>
         <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
           <legend className="px-3 text-left ml-8">Hosted Events</legend>
-          {hostedEvents.map((hosted) => {
-            return (
+          {hostedEvents.length > 0 ? (
+            hostedEvents.map((hosted) => (
               <div key={hosted.id}>
                 <UserHostedEvent hosted={hosted} />
               </div>
-            );
-          })}
+            ))
+          ) : (
+            <p>No hosted events found.</p>
+          )}
 
           <button
             onClick={() => navigate("/events/new")}
@@ -308,21 +298,28 @@ console.log(friends)
             Create
           </button>
         </fieldset>
-          <br/>
-        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
+        <br />
+        <fieldset className="w-3/4 border relative shadow-sm m-auto">
           <legend className="px-3 text-left ml-8">Friends</legend>
-          {friends.map((friend) => {
-            return (
-              <div key={friend.id}>
-               <img
-           src={friend?.profile_img}
-              alt="profile-pic"
-              className="w-10 h-15"
-            />
-            {friend.username} {friend.pronouns}
-              </div>
-            );
-          })}
+          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
+            {friends[0] &&
+              friends.map((friend) => (
+                <Link
+                  key={friend.id}
+                  to={`/profile/${friend?.username}`}
+                  className="flex items-center mr-4 mb-2"
+                >
+                  <img
+                    src={friend?.profile_img}
+                    alt="profile-pic"
+                    className="w-10 h-15"
+                  />
+                  <span className="ml-2">
+                    {friend.username} {friend.pronouns}
+                  </span>
+                </Link>
+              ))}
+          </div>
         </fieldset>
       </form>
     </>

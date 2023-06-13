@@ -1,9 +1,10 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from 'axios';
 import EventCard from './EventCard';
 import ReactPaginate from 'react-paginate';
+import GoogleMap from "../components/MapMultipleMarkers"
 import './events.css';
 
 const pageData = 10;
@@ -17,10 +18,16 @@ export default function Events() {
   const [searchFilter, setSearchFilter] = useState('');
   const [categories, setCategories] = useState([]);
   const [filterCategories, setFilterCategories] = useState([]);
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search);
+  const categoryFilter = queryParams.get('category_names.name')
+
 
   useEffect(() => {
     axios
-      .get(`${API}/events`)
+      .get(`${API}/events`, {
+        params: { 'category_names.name': categoryFilter }
+      })
       .then((res) => {
         setEvents(res.data);
         setFilterEvents(res.data);
@@ -28,7 +35,8 @@ export default function Events() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [categoryFilter]);
+  
 
   useEffect(() => {
     axios
@@ -49,8 +57,6 @@ export default function Events() {
 
     setFilterCategories(filter);
   };
-
-
   
   const applyFilters = () => {
     let filteredEvents = events;
@@ -114,6 +120,13 @@ export default function Events() {
 
   const pageCount = Math.ceil(events.length / pageData);
 
+  // useEffect to re-render map when filters change
+  useEffect(() => {
+
+  }, [events, filterEvents])
+
+  console.log(filterEvents)
+
   return (
     <div className='flex flex-col'>
        <section className='flex p-4 justify-evenly'>
@@ -168,12 +181,17 @@ export default function Events() {
         );
       })}
     </div>
-      <div className='flex flex-wrap gap-6 mx-16 my-4'>
-      {currentEvents.length > 0 ?  currentEvents :
-      <div>
-        <h1>No Events Found!</h1>
-      </div>  
-    }
+    <GoogleMap 
+        events={events}
+        filterEvents={filterEvents}
+      />
+    <div className='flex flex-wrap gap-6 mx-16 my-4'>
+      {currentEvents.length > 0 ?  
+        currentEvents : (
+        <div>
+          <h1>No Events Found!</h1>
+        </div> ) 
+      }
       </div>
       <div>
         {events.length < pageData ? null :
