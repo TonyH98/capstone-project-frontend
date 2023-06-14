@@ -143,7 +143,7 @@ export default function Events() {
 
   // useEffect to re-render map when filters change
   useEffect(() => {
-
+  
   }, [events, filterEvents])
 
   console.log(filterEvents)
@@ -220,7 +220,7 @@ export default function Events() {
       }
       </div>
       <div>
-        {events.length < pageData ? null :
+        {filterEvents.length < pageData ? null :
         <ReactPaginate
         previousLabel={"<"}
          nextLabel={">"}
