@@ -4,13 +4,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
-import { BsPencilFill } from "react-icons/bs";
 import Geocode from "react-geocode";
 import GoogleMap from "../components/Map";
-import CategoriesModal from "../components/CategoriesModal";
+import { BsPencilFill } from "react-icons/bs";
+import { AiFillCheckCircle } from 'react-icons/ai'
+import { AiFillStar } from 'react-icons/ai'
 import {useUser} from "../contexts/UserProvider"
 // import EditEventModal from "../components/EditEventModal"
+import CategoriesModal from "../components/CategoriesModal";
 import CommentSection from "../components/commentSection";
 import useLocalStorage from "../hooks/useLocalStorage";
 import TitleEditModal from "../components/TitleEditModal";
@@ -35,10 +36,10 @@ export default function EventDetails({users, categoryQuery}) {
   const [ coordinates, setCoordinates ] = useState({})
   const [ category , setCategory ] = useState()
   const [ userEvent , setUserEvent ] = useState({})
-  const [ categoryModal, setCategoryModal ] = useState(false)
   const [ attending, setAttending ] = useState()
-
-
+  const [ interest, setInterest ] = useState()
+  
+  const [ categoryModal, setCategoryModal ] = useState(false)
   const [ editMode, setEditMode ] = useState(false)
   const [ openTitleEdit, setOpenTitleEdit ] = useState(false)
   const [ openLocationEdit, setOpenLocationEdit ] = useState(false)
@@ -168,6 +169,7 @@ export default function EventDetails({users, categoryQuery}) {
     );
   };
 
+  console.log('rvsp', eventInfo?.rsvp)
   // function that adds event to user profile as interested
   function addToInterest() {
     if (eventInfo && eventInfo?.rsvp === true) {
@@ -180,6 +182,7 @@ export default function EventDetails({users, categoryQuery}) {
         })
         .then((res) => {
           setUserEvent(res.data);
+          setInterest('interested')
         })
         .then(() => {
           axios
@@ -187,7 +190,14 @@ export default function EventDetails({users, categoryQuery}) {
           .then((res) => {
             setAttending(res.data);
           });
-    })
+        })
+        .then (() => {
+          if(interest === 'interest'){
+            setInterest(null)
+          } else {
+            setInterest('interest')
+          }
+        })
         .catch((error) => {
           // Handle error
         });
@@ -204,6 +214,7 @@ export default function EventDetails({users, categoryQuery}) {
             })
             .then((res) => {
               setUserEvent(res.data);
+              setInterest('interested')
             })
             .then(() => {
               axios
@@ -271,6 +282,7 @@ export default function EventDetails({users, categoryQuery}) {
         })
         .then((res) => {
           setUserEvent(res.data);
+          setInterest('rsvp')
         })
         .then(() => {
               axios
@@ -295,6 +307,7 @@ export default function EventDetails({users, categoryQuery}) {
             })
             .then((res) => {
               setUserEvent(res.data);
+              setInterest('rsvp')
             })
             .then(() => {
               axios
@@ -666,15 +679,19 @@ const hostId = hosts.map((host) => {
     <>
       <button
         className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
-        onClick={addToInterest}
+        onClick={addToInterest} 
       >
         Interested
+          <span className="text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <AiFillStar className={`${ interest === 'interested' ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
       </button>
       <button
         className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
         onClick={addToRsvp}
       >
         RSVP
+          <span className="text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <AiFillCheckCircle className={`${interest === 'rsvp' ? 'text-green-400' : 'text-gray-400' } text-xl focus:text-green-400`}/>
       </button>
     </>
   )}

@@ -138,7 +138,7 @@ function UserProfile() {
       });
   };
 
-  console.log(friends);
+  // console.log(friends);
 
   return (
     <>
