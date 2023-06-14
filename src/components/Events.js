@@ -139,7 +139,7 @@ export default function Events() {
       </div>
     ));
 
-  const pageCount = Math.ceil(events.length / pageData);
+  const pageCount = Math.ceil(filterEvents.length / pageData);
 
   // useEffect to re-render map when filters change
   useEffect(() => {
