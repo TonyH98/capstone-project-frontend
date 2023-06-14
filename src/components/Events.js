@@ -208,7 +208,7 @@ export default function Events() {
         filterCategories={filterCategories}
     />
     </div>
-    <div className='flex flex-wrap gap-x-10 gap-y-6 my-6 justify-center'>
+    <div className='grid grid-cols-2 gap-x-16 gap-y-6 my-6 m-auto'>
       {currentEvents.length > 0 ?  
         currentEvents : (
         <div className='flex flex-col justify-center items-center mx-auto'>
@@ -220,7 +220,7 @@ export default function Events() {
         </div> ) 
       }
       </div>
-      <div>
+      <div className="inline mb-10 font-bold w-20 m-auto">
         {events.length < pageData ? null :
         <ReactPaginate
         previousLabel={"<"}

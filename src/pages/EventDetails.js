@@ -182,6 +182,7 @@ export default function EventDetails({users, categoryQuery}) {
         })
         .then((res) => {
           setUserEvent(res.data);
+          setInterest('interested')
         })
         .then(() => {
           axios
@@ -213,6 +214,7 @@ export default function EventDetails({users, categoryQuery}) {
             })
             .then((res) => {
               setUserEvent(res.data);
+              setInterest('interested')
             })
             .then(() => {
               axios
@@ -280,6 +282,7 @@ export default function EventDetails({users, categoryQuery}) {
         })
         .then((res) => {
           setUserEvent(res.data);
+          setInterest('rsvp')
         })
         .then(() => {
               axios
@@ -304,6 +307,7 @@ export default function EventDetails({users, categoryQuery}) {
             })
             .then((res) => {
               setUserEvent(res.data);
+              setInterest('rsvp')
             })
             .then(() => {
               axios
@@ -687,7 +691,7 @@ const hostId = hosts.map((host) => {
       >
         RSVP
           <span className="text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-            <AiFillCheckCircle className={`${interest === 'rsvp' ? 'text-green-400' : 'text-gray-400' } text-xl`}/>
+            <AiFillCheckCircle className={`${interest === 'rsvp' ? 'text-green-400' : 'text-gray-400' } text-xl focus:text-green-400`}/>
       </button>
     </>
   )}
