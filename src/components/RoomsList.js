@@ -2,25 +2,47 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 import Room from "./Room";
+import SendMessageForm from "./SendMessageForm";
+import { AiOutlineSend } from "react-icons/ai"
+import Lottie from "lottie-react";
+import animationData from "../assets/startChat.json";
 const API = process.env.REACT_APP_API_URL;
 
-function RoomsList({user}) {
+function RoomsList({users}) {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
+
   const [roomByIndex , setRoomByIndex] = useState([])
   const [selectedUser,setSelectedUser] = useState(null)
   const [chat , setChat] = useState([])
   
+
+  //Filtering users
+  let [search , setSearch] = useState("")
+  let [otherUsers , setOtherUsers] = useState([])
+  let [filterUsers, setFilterUsers] = useState([])
+
   let otherUser = [roomByIndex["user1_id"],roomByIndex["user2_id"]].filter((users) => {
-    return users !== user.id
+    return users !== users?.id
   })
 
   const [newChat, setNewChat] = useState({
     roomId: selectedRoom,
-    user1_id: user?.id,
+    user1_id: users?.id,
     user2_id: otherUser[0],
     content: ""
   });
+
+useEffect(() => {
+axios.get(`${API}/users`)
+.then((res) => {
+  const filter = res.data.filter((user) => {
+    return user.id !== users.id 
+  })
+
+  setOtherUsers(filter)
+})
+}, [])
 
   useEffect(() => {
     
@@ -38,14 +60,10 @@ function RoomsList({user}) {
   }, [selectedRoom]);
 
 
-  function handleSelectedUser (recipient) {
-    console.log(`selected one user: ${JSON.stringify(recipient)}`);
-    setSelectedUser(recipient);
-  }
 
   
   useEffect(() => {
-    axios.get(`${API}/rooms/${user.id}`)
+    axios.get(`${API}/rooms/${users.id}`)
     .then((res) => {
       setRooms(res.data)
     })
@@ -98,11 +116,11 @@ function RoomsList({user}) {
   };
   
 
-  const handleCreateRoom = async (user2Id) => {
+  const handleCreateRoom = async (user2Name) => {
     try {
-      const response = await axios.post(`${API}/rooms/${user.id}/new/${user2Id}`, {
-        user1_id: user.id,
-        user2_id: user2Id
+      const response = await axios.post(`${API}/rooms/${users.username}/new/${user2Name}`, {
+        username1: users.username,
+        username2: user2Name
       });
 
       // Handle the created room
@@ -133,6 +151,7 @@ function handleNewMessage(newMessage) {
       if (selectedRoom) {
         axios.get(`${API}/rooms/${selectedRoom}/messages`).then((res) => {
           setChat(res.data);
+          console.log(res.data);
         });
       }
     });
@@ -151,69 +170,112 @@ const handleSubmit = (event) => {
 };
 
 
+function handleFilter(event){
+  let searchResult = event.target.value
+    setSearch(searchResult)
+    const filter = otherUsers.filter((friend) => {
+      const {username} = friend
+  
 
-
-
-
-console.log(newChat)
-
-
+      const matchUsername = username.toLowerCase().includes(searchResult.toLowerCase())
+  
+      return  matchUsername
+    })
+  
+    if(searchResult === ""){
+      setFilterUsers([])
+    }
+    else{
+      setFilterUsers(filter)
+    }
+}
 
 
   return (
-    <div className="p-6">
-      <h2>Create Room</h2>
+    <div className="p-6 flex flex-col gap-2 bg-cyan-50">
+      <div className="flex gap-2 justify-center items-center">
+      <h2>Search</h2>
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleCreateRoom(e.target.user2Id.value);
-        }}
-      >
-        <input type="text" name="user2Id" placeholder="User ID" required />
-        <button type="submit">Create Room</button>
-      </form>
-      <h2>Rooms List</h2>
-      <ul>
-        {rooms.map((room) => (
+  onSubmit={(e) => {
+    e.preventDefault();
+    handleCreateRoom(e.target.user2Name.value);
+  }}
+>
+  <input
+    type="text"
+    name="user2Name"
+    placeholder="Username"
+    value={search}
+    onChange={handleFilter}
+    required
+    className="rounded-l sm:w-96"
+  />
+  {filterUsers.length !== 0 && (
+    <div className="data=result">
+      {filterUsers.slice(0, 5).map((users) => {
+        return (
+          <div
+            className="search"
+            onClick={() => {
+              document.getElementsByName("user2Name")[0].value =
+                users.username;
+            }}
+            key={users.username}
+          >
+            <br></br>
+            {users.username}
+          </div>
+        );
+      })}
+    </div>
+  )}
+  <button type="submit" className=" bg-cyan-400 px-4 py-2 shadow-md rounded-r border border-cyan-400">Chat</button>
+</form>
+      </div>
+      <article className="flex gap-4">
+      <div className="border-r">
+        <h2 className="text-2xl text-cyan-400">Conversations</h2>
+        <ul className="">
+          {rooms.map((room) => (
             <section key={room.id}>
               {/* <p>{room.username}</p> */}
               <Room room={room} handleRoomClick={handleRoomClick} selectedRoom={selectedRoom}/>
             </section>
-        ))}
-      </ul>
-
-      <div>
+          ))}
+        </ul>
+      </div>
+      <div className="flex flex-col p-4 ml-[12%] min-w-[45vw] min-h-[70vh]">
   {Array.isArray(chat) ? (
     chat.map((chatItem) => (
-      <div key={chatItem.id}>
-        <p>{chatItem.date_created}</p>
-        <p>{chatItem.content}</p>
-        <div>{user?.id === chatItem.userid ? "You" : chatItem.username}</div>
-
-     
-
+      <div key={chatItem.id} className={`my-1 flex flex-col p-2 rounded-md w-52 ${users?.id === chatItem.userid ? 'self-end items-start bg-cyan-400' : 'items-start bg-[#f6854b]'}`} >
+        <section >
+        <p className="text-xs">{chatItem.date_created}</p>
+        <p className="font-semibold">{chatItem.content}</p>
+        <div className="text-xs">{users?.id === chatItem.userid ? "You" : chatItem.username}</div>
+        </section>
       </div>
     ))
   ) : (
-    <div>
-      <p>No chat available</p>
+    <div className='w-[70%] flex flex-col justify-center items-center'>
+      <h2 className="font-bold text-base">No conversation yet, send a message to get started!</h2>
+      <Lottie animationData={animationData} />
     </div>
   )}
 </div>
+      </article>
 {selectedRoom ? 
-<form onSubmit={handleSubmit}>
+<form onSubmit={handleSubmit} className="flex justify-center items-center">
       <input
       type="text"
       id="content"
       value={newChat.content}
+      placeholder="Message..."
       onChange={handleTextChange}
+      className="rounded-md sm:w-96 border-2 border-black"
       />
-     <input type="submit"/>
+     <button type="submit" className="mx-1 hover:text-cyan-400 font-bold"><AiOutlineSend size={30}/></button>
       </form>: null
-
 }
-
-
     </div>
   );
 }

@@ -121,7 +121,9 @@ function SignUp({ setLoggedIn }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userCredentials = await createUserCredentials();
+
     console.log(userCredentials?.username);
+
 
     let isValid = true;
     handleSignOut();

@@ -106,7 +106,7 @@ function App() {
               <Route path="/profile/:username" element={<OtherProfile />} />
               <Route path="/devs" element={<Devs />} />
               <Route path="/events" element={<ShowEvents />} />
-              <Route path="/events/new" element={<NewEvent />} />
+              <Route path="/events/new" element={<NewEvent users={loggedInUser}/>} />
               <Route path="/users" element={<ShowUsers />} />
 
               <Route
@@ -122,24 +122,19 @@ function App() {
                 }
               />
               <Route
-                path="/rooms/:user1_id/:user2_id"
+                path="/chats"
                 element={
                   <ShowRoom
-                    users={users}
-                    setUsers={setUsers}
-                    loggedin={loggedin}
-                    setLoggedin={setLoggedin}
-                    firebaseId={firebaseId}
+                   users={loggedInUser}
                   />
                 }
               />
-              {/* <Route path="/chat/:conversationId" element={<ConversationsPage user={user} setUser={setUser} loggedin={loggedin} setLoggedin={setLoggedin} firebaseId={firebaseId} />} /> */}
-
+              <Route path="/room/:id" />
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
               */}
-              <Route path="/events/:id" element={<EventDetails />} />
+              <Route path="/events/:id" element={<EventDetails users={loggedInUser}/>} />
               <Route path="/map" element={<Map />} />
             </Routes>
           </main>
