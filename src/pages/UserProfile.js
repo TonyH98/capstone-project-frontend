@@ -138,8 +138,6 @@ function UserProfile() {
       });
   };
 
-  console.log(friends);
-
   return (
     <>
       <div>

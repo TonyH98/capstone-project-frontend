@@ -5,14 +5,12 @@ import { useUser } from "../contexts/UserProvider";
 const API = process.env.REACT_APP_API_URL;
 function CategoryPill({ category, setIsSelected, isSelected }) {
   const { loggedInUser, setLoggedInUser } = useUser();
-  console.log(loggedInUser.id);
 
   const select = () => {
     axios
       .post(`${API}/users/${loggedInUser?.id}/category/${category.id}`)
       .then(() => {
         axios.get(`${API}/users/${loggedInUser?.id}/category`).then((res) => {
-          console.log(`added categories`, res);
           setIsSelected(res.data);
         });
       });
@@ -35,8 +33,6 @@ function CategoryPill({ category, setIsSelected, isSelected }) {
       return ele.name;
     });
   }
-
-  console.log(userCategory);
 
   // returns category pills with different styling based on if the category is selected with toggle function on click
   return (

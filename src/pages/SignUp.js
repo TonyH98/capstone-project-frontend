@@ -9,19 +9,20 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import app from "../firebase";
 import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
 
-function SignUp() {
+function SignUp({ setLoggedIn }) {
   // useNavigate and useParams hooks to navigate to user profile page
   const navigate = useNavigate();
   const { id } = useParams();
 
   // Sets the user in local storage
-  const { setUser } = useUser();
+  const { setLoggedInUser } = useUser();
 
   // useState hook to toggle between show/hide password
   const [showPassword, setShowPassword] = useState(false);
@@ -51,6 +52,21 @@ function SignUp() {
   // function to update newUser object on text change
   const handleTextChange = (e) => {
     setNewUser({ ...newUser, [e.target.id]: e.target.value });
+  };
+
+  // function to sign user out before their new account is created
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        setLoggedInUser({});
+        setLoggedIn(false);
+        console.log("signed out");
+        navigate(`/`);
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
 
   //   // function to create a new account with firebase and update the newUser object with firebase_id
@@ -108,7 +124,7 @@ function SignUp() {
     console.log(userCredentials?.username);
 
     let isValid = true;
-
+    handleSignOut();
     if (!checkAge()) {
       setAgeError("User must be 18 or over");
       isValid = false;
@@ -119,6 +135,13 @@ function SignUp() {
       isValid = false;
     }
 
+    axios
+      .post(`${API}/users`, userCredentials)
+      .then(() => {
+        navigate(`/personalprofile`);
+      })
+      .catch((c) => console.warn("catch, c"));
+
     if (isValid) {
       signInWithEmailAndPassword(auth, newUser.email, newUser.password)
         .then((userCredential) => {
@@ -126,20 +149,13 @@ function SignUp() {
           if (returningUser) {
             alert("You are now logged in!");
             console.log("logged in");
-            setUser(returningUser);
+            setLoggedInUser(returningUser);
           }
         })
         .catch((error) => {
           const errorCode = error.code;
           console.log(errorCode);
         });
-
-      axios
-        .post(`${API}/users`, userCredentials)
-        .then(() => {
-          navigate(`/personalprofile`);
-        })
-        .catch((c) => console.warn("catch, c"));
     }
   };
 

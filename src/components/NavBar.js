@@ -10,7 +10,6 @@ import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../utils/appUtils";
-import "./NavBar.css";
 import axios from "axios";
 import app from "../firebase";
 
@@ -28,11 +27,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
   const { loggedInUser } = useUser();
   const auth = getAuth(app);
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     window
@@ -207,31 +202,22 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                 className={`${
                   active === 3 ? "bg-cyan-400" : "bg-cyan-200"
                 } rounded-full p-2 shadow-lg`}
-              >
-                {/* <Link 
-                  to={`/personalprofile`}
-                  className="hover:text-white"
-                  aria-current="page"
-                >
-                  <span className="flex flex-col items-center justify-center">
-                    <BiUser size={20} />
-                  </span>
-                  <span className="text-gray-900 hover:text-white">
-                    Profile
-                  </span>
-                </Link> */}
-              </li>
+              ></li>
             </ul>
           )}
         </div>
       )}
       <div className="flex" id="navbar-dropdown">
+        <button className="p-2">
+          <GrNotification />
+          {friendsRequest}
+        </button>
         <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
-          <li className="">
+          <li className="relative">
             <button
               id="dropdownNavbarLink"
-              data-dropdown-toggle="dropdownNavbar"
-              className="flex items-center justify-between text-base font-bold "
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="flex items-center justify-between text-base font-bold"
             >
               {dropdownText}
               <svg
@@ -247,37 +233,40 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                 ></path>
               </svg>
             </button>
-            {/* <!-- Dropdown menu --> */}
-            <div
-              id="dropdownNavbar"
-              className="hidden bg-[#3bd4ee] -z-50 divide-y divide-gray-100 rounded-b-lg w-32"
-            >
-              <ul className="py-4 mt-1" aria-labelledby="dropdownLargeButton">
-                {!loggedin ? (
+            {/* Dropdown menu */}
+            {showDropdown && (
+              <div
+                id="dropdownNavbar"
+                className="absolute right-0 mt-2 bg-[#3bd4ee] -z-50 divide-y divide-gray-100 rounded-b-lg w-32"
+              >
+                <ul className="py-4 mt-1" aria-labelledby="dropdownLargeButton">
+                  {!loggedin ? (
+                    <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                      <Link to="/login">Login</Link>
+                    </li>
+                  ) : (
+                    <div>
+                      <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                        <Link to="/personalprofile">
+                          {loggedInUser.username}
+                        </Link>
+                      </li>
+                      <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                        <button onClick={handleSignOut}>Sign Out</button>
+                      </li>
+                    </div>
+                  )}
                   <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                    <Link to="/login">Login</Link>
+                    <Link to="/devs" className="">
+                      About Devs
+                    </Link>
                   </li>
-                ) : (
-                  <div>
-                    <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                      <Link to="/personalprofile">{loggedInUser.username}</Link>
-                    </li>
-                    <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                      <button onClick={handleSignOut}>Sign Out</button>
-                    </li>
-                  </div>
-                )}
-                <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                  <Link to="/devs" className="">
-                    About Devs
-                  </Link>
-                </li>
-              </ul>
-            </div>
+                </ul>
+              </div>
+            )}
           </li>
         </ul>
       </div>
-      <div></div>
     </nav>
   );
 }

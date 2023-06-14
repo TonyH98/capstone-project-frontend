@@ -94,7 +94,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Landing loggedin={loggedin} />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
+              <Route
+                path="/signup"
+                element={<SignUp setLoggedin={setLoggedin} />}
+              />
               {/* 
               Comment in when useParams is set up and remove UserProfile below
               <Route path='/profile/:id' element={<UserProfile />} /> 
