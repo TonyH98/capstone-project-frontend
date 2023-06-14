@@ -150,7 +150,7 @@ export default function Events() {
 
   return (
     <div className='flex flex-col z-50 bg-gradient-to-r from-cyan-50 via-purple-50 to-pink-50'>
-       <section className='w-4/5 flex items-center justify-center m-auto'>
+       <section className='w-4/5 flex items-center justify-center m-auto py-5'>
        <div className='m-2'>
           <input
           type='text'
@@ -163,7 +163,7 @@ export default function Events() {
         </div>
         <div className='m-2'>
           <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'>
-            <option value=''>Sort date</option>
+            <option value=''>Sort by date</option>
             <option value='Latest to Earliest'>Latest to Earliest</option>
             <option value='Earliest to Latest'>Earliest to Latest</option>
           </select>
@@ -174,7 +174,7 @@ export default function Events() {
           </Link>
         </div>
       </section>
-    <div className='categories-responsive p-1 flex sm:flex-wrap justify-center'>
+    <div className='categories-responsive p-1 flex sm:flex-wrap justify-center pb-3'>
       {categories.map((category) => {
         return filterCategories.includes(category.name) ? (
           <button
@@ -208,7 +208,7 @@ export default function Events() {
         filterCategories={filterCategories}
     />
     </div>
-    <div className='flex flex-wrap gap-6 mx-16 my-4'>
+    <div className='flex flex-wrap gap-x-10 gap-y-6 my-6 justify-center'>
       {currentEvents.length > 0 ?  
         currentEvents : (
         <div className='flex flex-col justify-center items-center mx-auto'>
