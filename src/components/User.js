@@ -43,43 +43,44 @@ export default function User({ users }) {
   }, [loggedInUser?.id]);
 
   return (
-    <div className="bg-cyan-100 shadow-lg p-4 rounded-md flex justify-between">
-      <div>
+    <div className="bg-cyan-100 shadow-lg h-[150px] rounded-md flex justify-between">
+      <div className="flex">
         <img
           src={users?.profile_img}
           alt={`${users?.first_name} profile image`}
-          style={{ height: "80px", width: "60px" }}
+          className="h-[150px] w-40 rounded-l object-cover"
         ></img>
-        <div>
-          <h3>
+        <div className="p-2">
+          <h3 className="font-semibold">
             {users?.first_name} {users?.last_name}
           </h3>
           <Link to={`/profile/${users?.username}`}>
-            <h3 className="text-cyan-400 font-bold">@{users?.username}</h3>
+            <h3 className="text-cyan-400 font-bold text-sm">@{users?.username}</h3>
           </Link>
         </div>
       </div>
+      <div className="flex justify-center items-center gap-4 p-2">
       {loggedInUser?.id === users?.id ? null :
-
-      <button
+        <button
         onClick={() => navigate("/chats")}
-        className="border-2 border-cyan-400 px-2 my-4 rounded-md"
+        className=" border-2 border-cyan-400 hover:bg-cyan-400 px-2 py-1.5 rounded-md"
       >
         <Link to="/chats">Message</Link>
       </button>}
     
       {loggedInUser?.id === users?.id ? null : friends ? (
-        <span>Already Friends</span>
+        <span className="border-2 border-cyan-400 hover:bg-cyan-400 px-2 py-1.5 rounded-md">Already Friends</span>
       ) : request ? (
-        <span>Friend Request Sent</span>
+        <span className="border-2 border-cyan-400 bg-cyan-400 px-2 py-1.5 rounded-md">Request Sent</span>
       ) : (
         <button
-          className="border-2 border-cyan-400 px-2 my-4 rounded-md"
+          className="border-2 border-cyan-400 hover:bg-cyan-400 px-2 py-1.5 rounded-md"
           onClick={sendFriendRequest}
         >
           Friend Request
         </button>
       )}
+      </div>
     </div>
   );
 }
