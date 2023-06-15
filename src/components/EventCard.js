@@ -44,15 +44,15 @@ let eventDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice(0
             <p className="text-cyan-500 text-sm inline ml-2">@{event.location}</p>
           </Link>
           <div className="flex">
-            <p className="font-semibold text-[12px] bg-pink-300 px-2 rounded-full py-0.5 border border-pink-300">{eventDate}&nbsp;</p>
-            <p className="font-semibold text-[12px] py-1">&nbsp;From &nbsp;{event.start_time}{"-"}</p>
+            <p className="font-semibold text-[12px] bg-pink-400 text-white px-2 rounded-full py-0.5 border border-pink-300">{eventDate}&nbsp;</p>
+            <p className="font-semibold text-[12px] py-1">&nbsp;&nbsp;{event.start_time}{"-"}</p>
             <p className="font-semibold text-[12px] py-1">{event.end_time}</p>
           </div>
           <p className="text-sm mb-2">Hosted by: {event.creator[0].username}</p>
           <div className="flex flex-wrap gap-2">
             {event.category_names.map((category) => {
               return(
-                <div key={category.id} className="text-xs bg-cyan-400 py-1 px-2 my-2 rounded-full">
+                <div key={category.id} className="text-xs text-white bg-indigo-500 py-1 px-2 my-2 rounded-full">
                   {category.name}
                 </div>
               )

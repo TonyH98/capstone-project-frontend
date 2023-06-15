@@ -277,7 +277,6 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
           </li>
         </ul>
       </div>
-      <div></div>
     </nav>
   );
 }
