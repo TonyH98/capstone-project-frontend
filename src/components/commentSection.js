@@ -49,7 +49,7 @@ const CommentSection = ({ currentUser }) => {
           replies: [],
         },
       ],
-    },
+    }
   ]);
 
   const [newCommentValue, setNewCommentValue] = useState("");
