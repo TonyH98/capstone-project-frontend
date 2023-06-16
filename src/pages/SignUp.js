@@ -104,10 +104,8 @@ function SignUp() {
   // function to make an axios POST request and navigate to the user profile page
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userCredentials = await createUserCredentials();
 
-    console.log(userCredentials?.username);
-
+    // console.log(userCredentials?.username);
 
     let isValid = true;
 
@@ -120,6 +118,8 @@ function SignUp() {
       setUsernameError("Username already taken");
       isValid = false;
     }
+
+    const userCredentials = await createUserCredentials();
 
     if (isValid) {
       signInWithEmailAndPassword(auth, newUser.email, newUser.password)
