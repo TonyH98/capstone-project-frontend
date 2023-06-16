@@ -18,7 +18,7 @@ function UserEvents({event}){
                     type="checkbox"
                     className='mr-1'
                     onChange={(e) => {
-                        let value = e.target.value
+                        let value = e.target.checked
                         event.selected = value
                         return event
                     }}
