@@ -139,11 +139,11 @@ export default function Events() {
       </div>
     ));
 
-  const pageCount = Math.ceil(events.length / pageData);
+  const pageCount = Math.ceil(filterEvents.length / pageData);
 
   // useEffect to re-render map when filters change
   useEffect(() => {
-
+  
   }, [events, filterEvents])
 
   console.log(filterEvents)
@@ -221,7 +221,7 @@ export default function Events() {
       }
       </div>
       <div className="inline mb-10 font-bold w-20 m-auto">
-        {events.length < pageData ? null :
+        {filterEvents.length < pageData ? null :
         <ReactPaginate
         previousLabel={"<"}
          nextLabel={">"}
