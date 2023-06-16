@@ -759,20 +759,7 @@ const hostId = hosts.map((host) => {
 
         
         <h2>Comments</h2>
-        
-        <CommentSection
-        currentUser={{
-          currentUserId: `${users.id}`,
-          currentUserProfile:`localhost:3000/profile/`+users.username,
-          currentUserFullName: `${users.first_name}`+' '+`${users.last_name} `,
-          currentUserImg: `https://ui-avatars.com/api/name=`+users.first_name+`&background=random`
-        
-        }}
-        eventId= {eventInfo?.id}
-        event={eventInfo?.creator[0]}
-        /> 
-       
-
+        <CommentSection users={users} id={id}/> 
       </div>
     </div>
   );
