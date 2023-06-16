@@ -155,10 +155,10 @@ function UserProfile() {
                   {loggedInUser?.pronouns ? (
                     <p className="inline">
                       <span>(</span>
-                        {loggedInUser?.pronouns} 
+                      {loggedInUser?.pronouns}
                       <span>)</span>
                     </p>
-                    ) : null}
+                  ) : null}
                 </b>
               </h1>
               <h2 className="text-emerald-500">@{loggedInUser?.username}</h2>
@@ -256,7 +256,11 @@ function UserProfile() {
           />
         ) : null}
 
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${userEvents.length ? 'h-52' : 'h-20'}`}>
+        <fieldset
+          className={`w-3/4 border relative shadow-sm m-auto mb-8 ${
+            userEvents.length ? "h-52" : "h-20"
+          }`}
+        >
           <legend className="px-3 text-left ml-8">Events</legend>
           <div>
             <div className="flex flex-wrap py-2 overflow-x-scroll h-44 4-full gap-y-8">
@@ -266,29 +270,32 @@ function UserProfile() {
                     <UserEvents event={event} />
                   </div>
                 ))
-                ) : (
-                  <p className="ml-5 py-3 text-gray-400">No events found.</p>
-                  )}
-
-            </div>
-              <button
-                onClick={() => navigate("/events")}
-                className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
-                >
-                Add
-              </button>
-              {userEvents.length > 0 && (
-                <button 
-                  onClick={deleteMultiple}
-                  className="absolute right-3 bottom-3"
-                >
-                  <BsTrash />
-                </button>
+              ) : (
+                <p className="ml-5 py-3 text-gray-400">No events found.</p>
               )}
+            </div>
+            <button
+              onClick={() => navigate("/events")}
+              className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+            >
+              Add
+            </button>
+            {userEvents.length > 0 && (
+              <button
+                onClick={deleteMultiple}
+                className="absolute right-3 bottom-3"
+              >
+                <BsTrash />
+              </button>
+            )}
           </div>
         </fieldset>
 
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${hostedEvents.length ? 'h-40' : 'h-20' }`}>
+        <fieldset
+          className={`w-3/4 border relative shadow-sm m-auto ${
+            hostedEvents.length ? "h-40" : "h-20"
+          }`}
+        >
           <legend className="px-3 text-left ml-8">Hosted Events</legend>
           <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
             {hostedEvents.length > 0 ? (
@@ -297,10 +304,10 @@ function UserProfile() {
                   <UserHostedEvent hosted={hosted} />
                 </div>
               ))
-              ) : (
-                <p className="ml-5 py-3 text-gray-400">No hosted events found.</p>
-                )}
-            </div>
+            ) : (
+              <p className="ml-5 py-3 text-gray-400">No hosted events found.</p>
+            )}
+          </div>
           <button
             onClick={() => navigate("/events/new")}
             className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
@@ -324,9 +331,7 @@ function UserProfile() {
                     alt="profile-pic"
                     className="w-10 h-15"
                   />
-                  <span className="ml-2">
-                    {friend.username}
-                  </span>
+                  <span className="ml-2">{friend.username}</span>
                 </Link>
               ))}
           </div>

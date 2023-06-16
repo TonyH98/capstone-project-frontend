@@ -4,8 +4,8 @@ import logo from "../Kick.it Logo.png";
 import { RiHomeLine } from "react-icons/ri";
 import { HiOutlineUsers } from "react-icons/hi";
 import { FiMessageCircle } from "react-icons/fi";
-import { GrNotification } from "react-icons/gr";
-import { BiUser } from "react-icons/bi";
+import { MdNotificationsNone } from "react-icons/md";
+import { IoMdNotificationsOutline } from "react-icons/io";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -129,18 +129,16 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                   active === 3 ? "bg-cyan-400" : "bg-cyan-200"
                 } rounded-full p-2 shadow-lg`}
               >
-                {/* <Link
+                <Link
                   to={`/personalprofile`}
                   className="hover:text-white"
                   aria-current="page"
                 >
                   <span className="flex flex-col items-center justify-center">
-                    <BiUser size={20} />
+                    <IoMdNotificationsOutline size={20} />
                   </span>
-                  <span className="text-gray-900 hover:text-white">
-                    Profile
-                  </span>
-                </Link> */}
+                  <span className="text-gray-900 hover:text-white">Inbox</span>
+                </Link>
               </li>
             </ul>
           )}
@@ -202,7 +200,18 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                 className={`${
                   active === 3 ? "bg-cyan-400" : "bg-cyan-200"
                 } rounded-full p-2 shadow-lg`}
-              ></li>
+              >
+                <Link
+                  to={`/personalprofile`}
+                  className="hover:text-white"
+                  aria-current="page"
+                >
+                  <span className="flex flex-col items-center justify-center">
+                    <IoMdNotificationsOutline size={20} />
+                  </span>
+                  <span className="text-gray-900 hover:text-white">Inbox</span>
+                </Link>
+              </li>
             </ul>
           )}
         </div>

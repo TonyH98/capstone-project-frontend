@@ -1,6 +1,7 @@
 import axios from "axios";
 import styles from "./modal.module.css";
 import { useUser } from "../contexts/UserProvider";
+import { useEffect , useState } from "react";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -8,23 +9,34 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
   const { loggedInUser, setLoggedInUser } = useUser();
 
   // function to update user info on change
-  const handleTextChange = (e) => {
-    if(e.target.id === "profile_img"){
 
+  const [imageError, setImageError] = useState("");
+
+
+  const maxSizeInBytes = 10 * 1024 * 1024
+
+
+
+
+
+  const handleTextChange = (e) => {
+    if (e.target.id === "profile_img") {
       const file = e.target.files[0];
 
-      const reader = new FileReader()
+      if (file && file.size > maxSizeInBytes) {
+        setImageError("File exceeds 3MB limit.");
+        return;
+      }
+
+      const reader = new FileReader();
 
       reader.onload = () => {
         setUpdatedUser({ ...updatedUser, profile_img: reader.result });
+      };
 
-      }
-
-      reader.readAsDataURL(file)
-    }
-    else{
+      reader.readAsDataURL(file);
+    } else {
       setUpdatedUser({ ...updatedUser, [e.target.id]: e.target.value });
-
     }
   };
 
@@ -33,7 +45,11 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent form submission
   
+  
     if (loggedInUser?.id) {
+      if(imageError){
+        return 
+      }
       const formData = new FormData();
       formData.append("first_name", updatedUser.first_name);
       formData.append("last_name", updatedUser.last_name);
@@ -61,7 +77,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
   };
   
 
-console.log(updatedUser)
+
 
   return (
     <>
@@ -78,6 +94,7 @@ console.log(updatedUser)
         </div>
         <div>
           <p className="pb-4 pt-2 text-center">Edit Profile Information</p>
+          {imageError && <p style={{ color: "red" }}>{imageError}</p>}
           <form className="w-3/4 m-auto flex flex-col gap-y-3">
             <label htmlFor="first_name">
               First Name
@@ -118,6 +135,7 @@ console.log(updatedUser)
                 id="profile_img"
                 name="profile_img"
                 type="file"
+                accept=".png, .jpg, .jpeg"
                 onChange={handleTextChange}
                 className="block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
