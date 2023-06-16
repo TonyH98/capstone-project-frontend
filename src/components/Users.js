@@ -61,16 +61,17 @@ export default function Users() {
     <div className="flex flex-col items-center justify-center p-4">
       <h1 className="text-2xl font-semibold">All Users</h1>
       <div className="search-bar">
-        <label htmlFor="search">Search By:</label>
+        <label htmlFor="search">Search</label>
         <input
           type="text"
           placeholder="Username or Email"
           id="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="sm:w-96 rounded-md mx-1"
         />
       </div>
-      <div className="flex flex-col gap-6 sm:w-full md:w-[65%]">
+      <div className="flex flex-col gap-6 sm:w-full md:w-[65%] p-4">
         {/* {users.map((users) => (
           <User key={users.id} users={users} />
         ))} */}
