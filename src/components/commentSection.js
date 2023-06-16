@@ -1,71 +1,138 @@
-import React, { useState } from 'react';
-import Comment from './Comment';
 
-const CommentSection = ({currentUser}) => {
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
+// commenter: currentUser.currentUserFullName,
+//           profilePic: currentUser.currentUserImg,
+//           profileLink: currentUser.currentUserProfile,
 
-  const handleCommentChange = (event) => {
-    setNewComment(event.target.value);
-  };
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
-  const handleCommentSubmit = (event) => {
-    event.preventDefault();
+import Comments from "./Comments";
 
-    // Add the new comment to the comments array
-    setComments([...comments, { content: newComment, replies: [] }]);
 
-    // Clear the comment input
-    setNewComment('');
-  };
+const API = process.env.REACT_APP_API_URL;
+const CommentSection = ({users, id}) => {
+ 
 
-  const handleCommentEdit = (index, newText) => {
-    // Update the comment text in the comments array
-    const updatedComments = [...comments];
-    updatedComments[index].content = newText;
-    setComments(updatedComments);
-  };
+const [comments , setComments] = useState([])
 
-  const handleCommentDelete = (index) => {
-    // Remove the comment from the comments array
-    const updatedComments = comments.filter((_, i) => i !== index);
-    setComments(updatedComments);
-  };
+const [newComment , setNewComment] = useState({
+  events_id: id,
+  user_id: users?.id,
+  comment: ""
+})
 
-  const handleCommentReply = (index, replyText) => {
-    // Add the reply to the replies array of the corresponding comment
-    const updatedComments = [...comments];
-    updatedComments[index].replies.push(replyText);
-    setComments(updatedComments);
-  };
+useEffect(() => {
+  axios
+  .get(`${API}/events/${id}/comments`)
+  .then((res) => {
+    setComments(res.data)
+  })
+}, [])
+
+
+
+useEffect(() => {
+    
+  if (users?.id) {
+    setNewComment((prevChat) => ({ ...prevChat, user_id: users?.id }));
+  }
+}, [users?.id]);
+
+const handleDelete = (ids) => {
+  axios
+  .delete(`${API}/events/${id}/comments/${ids}`)
+  .then(() => {
+    const copyCommentsArray = [...comments]
+    const indexDeletedComments = copyCommentsArray.findIndex((comment) => {
+      return comment.id === id
+    })
+
+    copyCommentsArray.splice(indexDeletedComments,1)
+    setComments(copyCommentsArray)
+  })
+}
+
+
+const handleEdit = (updatedComments) => {
+  axios
+    .put(`${API}/events/${id}/comments/${updatedComments.id}`, updatedComments)
+    .then((response) => {
+      const copyComments = [...comments];
+      const indexUpdatedComments = copyComments.findIndex((comment) => comment.id === updatedComments.id);
+      copyComments[indexUpdatedComments] = response.data;
+      setComments(copyComments);
+    })
+    .then(() => {
+      axios.get(`${API}/events/${id}/comments`).then((res) => {
+        setComments(res.data);
+      });
+    })
+    .catch((error) => {
+      console.warn("Error:", error);
+    });
+};
+
+
+
+
+function handleNewComments(newComment) {
+  axios
+    .post(`${API}/events/${id}/comments`, newComment)
+    .then(() => {
+      if (id) {
+        axios.get(`${API}/events/${id}/comments`).then((res) => {
+          setComments(res.data);
+          console.log(res.data);
+        });
+      }
+    });
+}
+
+
+const handleTextChange = (event) => {
+  setNewComment({...newComment, comment: event.target.value})
+}
+
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  handleNewComments(newComment);
+  setNewComment((prevChat) => ({ ...prevChat, comment: "" }));
+};
+
+console.log(newComment)
+
 
   return (
-    <div className="comment-section">
-      <h3>Comments ({comments.length})</h3>
-      {comments.map((comment, index) => (
-        <Comment
-          key={index}
-          commenter={currentUser.currentUserFullName}
-          profilePic={currentUser.currentUserImg}
-          profileLink={currentUser.currentUserProfile}
-          content={comment.content}
-          onEdit={(newText) => handleCommentEdit(index, newText)}
-          onDelete={() => handleCommentDelete(index)}
-          onReply={(replyText) => handleCommentReply(index, replyText)}
-          replies={comment.replies}
-        />
-      ))}
-      <form onSubmit={handleCommentSubmit}>
-        <textarea
-          value={newComment}
-          onChange={handleCommentChange}
-          placeholder="Write a comment..."
-          required
-        ></textarea>
-        <button type="submit">Submit</button>
+    <div>
+      <form onSubmit={handleSubmit}>
+      <input
+      type="text"
+      id="comment"
+      value={newComment.comment}
+      onChange={handleTextChange}
+      className="rounded-md sm:w-96 border-2 border-black"
+      />
+       <button type="submit" className="mx-1 hover:text-cyan-400 font-bold">Submit</button>
       </form>
+      <div>
+        {comments.map((comment) => {
+          return(
+
+            <Comments
+            key={comment.id}
+            comment={comment}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            users={users}
+            id={id}
+            />
+          )
+        })}
+      </div>
     </div>
-  );
+   
+  )
 };
 
 export default CommentSection;

@@ -5,7 +5,7 @@ import { useUser } from "../contexts/UserProvider";
 const API = process.env.REACT_APP_API_URL;
 function CategoryPill({ category, setIsSelected, isSelected }) {
   const { loggedInUser, setLoggedInUser } = useUser();
-  console.log(loggedInUser.id);
+  // console.log(loggedInUser.id);
 
   const select = () => {
     axios
@@ -36,7 +36,7 @@ function CategoryPill({ category, setIsSelected, isSelected }) {
     });
   }
 
-  console.log(userCategory);
+  // console.log(userCategory);
 
   // returns category pills with different styling based on if the category is selected with toggle function on click
   return (

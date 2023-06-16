@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import Geocode from "react-geocode";
+import { allEvents, gamingEvents } from '../assets/mapData'
+import GamingEvents from './GamingEvents';
+import AllEvents from './AllEvents';
 
-function MultipleMarkers ({ filterEvents, events }) {
+function MultipleMarkers ({ filterEvents, events, filterCategories }) {
 
   const [ markers, setMarkers ] = useState([])
   const navigate = useNavigate()
@@ -48,10 +51,10 @@ function MultipleMarkers ({ filterEvents, events }) {
     // reset markers each time useEffect is called
     setMarkers([])
     // get coordinates and info from each event displayed
-    filterEvents.map((event) => {
+      filterEvents.map((event) => {
         getCoordinates(event)
-    })
-  }, [filterEvents])
+      })
+  }, [filterEvents, filterCategories])
 
   const Markers = () =>
     markers.map((marker) => (
@@ -62,7 +65,7 @@ function MultipleMarkers ({ filterEvents, events }) {
                 position={marker.position} 
                 title={marker.title} 
                 onClick={() => {navigate(`/events/${marker.id}`)}}
-            />
+            >
             {/* <InfoWindow
                 position={marker.position}
             >
@@ -70,6 +73,7 @@ function MultipleMarkers ({ filterEvents, events }) {
                     <h1 onClick={() => navigate(`/events/${marker.id}`)}>{marker.title}</h1>
                 </div>
             </InfoWindow> */}
+            </Marker>
         </>
 
     ));
@@ -82,7 +86,11 @@ function MultipleMarkers ({ filterEvents, events }) {
           zoom={10}
           center={defaultCenter}
           >
-          <Markers />
+        {
+          filterCategories?.includes("Gaming") ?
+            <GamingEvents />
+              : <AllEvents />
+        }
         </GoogleMap>
       </LoadScript>
     </div>
