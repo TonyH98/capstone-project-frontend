@@ -114,10 +114,10 @@ function SignUp() {
       isValid = false;
     }
 
-    if (await checkUsername()) {
-      setUsernameError("Username already taken");
-      isValid = false;
-    }
+    // if (await checkUsername()) {
+    //   setUsernameError("Username already taken");
+    //   isValid = false;
+    // }
 
     const userCredentials = await createUserCredentials();
 
@@ -128,7 +128,7 @@ function SignUp() {
           if (returningUser) {
             alert("You are now logged in!");
             console.log("logged in");
-            setUser(returningUser);
+            // setUser(returningUser);
           }
         })
         .catch((error) => {
