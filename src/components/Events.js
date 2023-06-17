@@ -146,7 +146,7 @@ export default function Events() {
   
   }, [events, filterEvents])
 
-  console.log(filterEvents)
+  console.log(events)
 
   return (
     <div className='flex flex-col z-50 bg-gradient-to-r from-cyan-50 via-purple-50 to-pink-50'>
@@ -156,7 +156,7 @@ export default function Events() {
           type='text'
           id='search'
           value={searchFilter}
-          placeholder='Search by host or title'
+          placeholder='Search by host or title or location'
           onChange={(e) => setSearchFilter(e.target.value)}
           className=' w-96 border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'
           />
