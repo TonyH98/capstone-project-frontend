@@ -269,7 +269,7 @@ function UserProfile() {
                   </div>
                 ))
                 ) : (
-                  <p className="ml-5 py-3 text-gray-400">No events found.</p>
+                  <p className="ml-7 py-2 text-gray-400">No events found.</p>
                   )}
 
             </div>
@@ -300,7 +300,7 @@ function UserProfile() {
                 </div>
               ))
               ) : (
-                <p className="ml-5 py-3 text-gray-400">No hosted events found.</p>
+                <p className="ml-5 py-2 text-gray-400">No hosted events found.</p>
                 )}
             </div>
           <button
