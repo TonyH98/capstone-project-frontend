@@ -31,7 +31,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
       const reader = new FileReader();
 
       reader.onload = () => {
-        setUpdatedUser({ ...updatedUser, profile_img: reader.result });
+        setLoggedInUser({ ...loggedInUser, profile_img: reader.result });
       };
 
       reader.readAsDataURL(file);
@@ -39,20 +39,20 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
       else if (e.target.id === "bio"){
         const {value} = e.target
 
-        if(value.length <=250){
-          setUpdatedUser((prevEvent) => ({
+        if(value.length <=200){
+          setLoggedInUser((prevEvent) => ({
             ...prevEvent,
             bio: value,
           }));
         }
         else{
-          e.target.value = value.substr(0,250)
+          e.target.value = value.substr(0,200)
         }
       }
       else{
 
       
-      setUpdatedUser({ ...updatedUser, [e.target.id]: e.target.value });
+        setLoggedInUser({ ...loggedInUser, [e.target.id]: e.target.value });
 
     }
   };
@@ -68,11 +68,11 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
         return 
       }
       const formData = new FormData();
-      formData.append("first_name", updatedUser.first_name);
-      formData.append("last_name", updatedUser.last_name);
-      formData.append("pronouns", updatedUser.pronouns);
-      formData.append("bio", updatedUser.bio);
-      formData.append("profile_img", updatedUser.profile_img); // Append the image file to the form data
+      formData.append("first_name", loggedInUser.first_name);
+      formData.append("last_name", loggedInUser.last_name);
+      formData.append("pronouns", loggedInUser.pronouns);
+      formData.append("bio", loggedInUser.bio);
+      formData.append("profile_img", loggedInUser.profile_img); // Append the image file to the form data
   
       axios
         .put(`${API}/users/${loggedInUser?.id}`, formData, {
@@ -119,7 +119,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 id="first_name"
                 name="first_name"
                 type="text"
-                value={updatedUser?.first_name}
+                value={loggedInUser?.first_name}
                 onChange={handleTextChange}
                 className="block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
@@ -130,7 +130,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 id="last_name"
                 name="last_name"
                 type="text"
-                value={updatedUser?.last_name}
+                value={loggedInUser?.last_name}
                 onChange={handleTextChange}
                 className="block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
@@ -142,7 +142,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 name="pronouns"
                 placeholder="optional"
                 type="text"
-                value={updatedUser?.pronouns}
+                value={loggedInUser?.pronouns}
                 onChange={handleTextChange}
                 className="block w-[100%] pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
@@ -163,13 +163,13 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
               <textarea
                 id="bio"
                 name="bio"
-                value={updatedUser?.bio}
+                value={loggedInUser?.bio}
                 onChange={handleTextChange}
                 className="block w-[100%]"
               />
             </label>
-            <p className={`${updatedUser?.bio.length >= 250 ? 'text-red-700' : null}  bottom-5 left-3 text-sm`}>
-                        {updatedUser?.bio.length}/250 characters
+            <p className={`${loggedInUser?.bio.length >= 200 ? 'text-red-700' : null}  bottom-5 left-3 text-sm`}>
+                        {loggedInUser?.bio.length}/200 characters
                     </p>
           </form>
         </div>
