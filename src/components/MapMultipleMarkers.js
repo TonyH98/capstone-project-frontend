@@ -22,13 +22,20 @@ function MultipleMarkers ({ filterEvents, events, filterCategories }) {
     lng: -73.9238
   };
 
-  const markers = markersArr.map((marker) => {
-    <Marker 
+  const markers = markersArr.map((marker) => {return ( <Marker 
       id = {marker.id}
       title = {marker.title}
       position = {marker.position}
     />
-  })
+    )})
+
+  const component = (() => {
+    return (
+      <div>
+      {markers}
+    </div>
+  )
+})
 
   // console.log(markersArr)
 

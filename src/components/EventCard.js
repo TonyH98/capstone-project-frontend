@@ -1,6 +1,7 @@
 import "./events.css";
 import { Link } from "react-router-dom";
 
+const API = process.env.REACT_APP_API_URL;
 
 export default function EventCard({ event }) {
 
@@ -43,21 +44,31 @@ let eventDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice(0
             <p className="text-cyan-500 text-sm inline ml-2">@{event.location}</p>
           </Link>
           <div className="flex">
-            <p className="font-semibold text-[12px] bg-pink-400 text-white px-2 rounded-full py-0.5 border border-pink-300">{eventDate}&nbsp;</p>
-            <p className="font-semibold text-[12px] py-1">&nbsp;&nbsp;{event.start_time}{"-"}</p>
-            <p className="font-semibold text-[12px] py-1">{event.end_time}</p>
+            <p className="font-semibold text-[12px] bg-pink-400 text-white px-2 rounded-full py-0.5 border border-pink-300 text-xs">{eventDate}&nbsp;</p>
+            <p className="font-semibold text-[12px] py-1 text-xs">&nbsp;&nbsp;{event.start_time}{"-"}</p>
+            <p className="font-semibold text-[12px] py-1 text-xs">{event.end_time}</p>
           </div>
-          <p className="text-sm mb-2">Hosted by: {event.creator[0].username}</p>
+          <div>
+
           <div className="flex flex-wrap gap-2">
             {event.category_names.map((category) => {
               return(
-                <div key={category.id} className="text-xs text-white bg-indigo-500 py-1 px-2 my-2 rounded-full">
+                <div key={category.id} className="text-xs text-white bg-indigo-500 py-1 px-2 my-1 rounded-full">
                   {category.name}
                 </div>
               )
             })}
           </div>
-          <p className="text-sm"><b>Summary: </b>{event.summary}</p>
+          <p className="text-xs mb-2 inline">Hosted by</p>
+          <img 
+              src={event?.creator[0].profile_img}
+              alt="profile image"
+              className="h-8 w-8 inline rounded-full bg-gray-100 mx-1 my-2 border border-gray-300 hover:border-blue-500 object-cover"
+              /> 
+          <p className="inline text-xs">{event?.creator[0].username}</p>
+          </div>
+          <p className="text-sm mt-1 h-10 border w-[360px] text-ellipsis overflow-hidden"><b>Summary: </b>{event.summary}</p>
+          {/* <p className="inline">...</p> */}
         </div>
       </div>
     </Link>
