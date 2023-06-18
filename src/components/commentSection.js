@@ -16,7 +16,7 @@ const CommentSection = ({users, id}) => {
 const [comments , setComments] = useState([])
 
 const [newComment , setNewComment] = useState({
-  events_id: id,
+  events_id: Number(id),
   user_id: users?.id,
   comment: ""
 })
@@ -38,19 +38,19 @@ useEffect(() => {
   }
 }, [users?.id]);
 
-const handleDelete = (ids) => {
-  axios
-  .delete(`${API}/events/${id}/comments/${ids}`)
-  .then(() => {
-    const copyCommentsArray = [...comments]
-    const indexDeletedComments = copyCommentsArray.findIndex((comment) => {
-      return comment.id === id
-    })
+// const handleDelete = (ids) => {
+//   axios
+//   .delete(`${API}/events/${id}/comments/${ids}`)
+//   .then(() => {
+//     const copyCommentsArray = [...comments]
+//     const indexDeletedComments = copyCommentsArray.findIndex((comment) => {
+//       return comment.id === id
+//     })
 
-    copyCommentsArray.splice(indexDeletedComments,1)
-    setComments(copyCommentsArray)
-  })
-}
+//     copyCommentsArray.splice(indexDeletedComments,1)
+//     setComments(copyCommentsArray)
+//   })
+// }
 
 
 const handleEdit = (updatedComments) => {
@@ -122,10 +122,11 @@ console.log(newComment)
             <Comments
             key={comment.id}
             comment={comment}
-            handleDelete={handleDelete}
+            // handleDelete={handleDelete}
             handleEdit={handleEdit}
             users={users}
             id={id}
+            setComments={setComments}
             />
           )
         })}

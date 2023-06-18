@@ -328,9 +328,22 @@ export default function EventDetails({users, categoryQuery}) {
 
   // function to update information on text change in edit forms
   const handleTextChange = (e) => {
-    setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
-    console.log(updatedEventInfo.date_event)
+    if (e.target.id === "summary") {
+      const { value } = e.target;
+      if (value.length <= 250) {
+        setUpdatedEventInfo((prevEvent) => ({
+          ...prevEvent,
+          summary: value,
+        }));
+      } else {
+        e.target.value = value.substr(0, 250); // Truncate the new input to 250 characters
+      }
+    } else {
+      setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
+      console.log(updatedEventInfo.date_event);
+    }
   };
+  
  
   useEffect(() => {
     if(!updatedEventInfo?.age_restriction){
