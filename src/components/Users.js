@@ -36,16 +36,18 @@ export default function Users() {
     } else {
       const filterUsers = users.filter((user) => {
         const { username } = user;
-
+        const {first_name} = user;
+        const {last_name} = user;
         const { email } = user;
 
-        const usernameMatch = username
-          .toLowerCase()
-          .includes(search.toLowerCase());
+        const usernameMatch = username.toLowerCase().includes(search.toLowerCase());
 
         const emailMatch = email.toLowerCase().includes(search.toLowerCase());
 
-        return usernameMatch || emailMatch;
+        const fullName = `${first_name.toLowerCase()} ${last_name.toLowerCase()}`
+
+        const fullNameMatch = fullName.includes(search.toLowerCase())
+        return usernameMatch || emailMatch || fullNameMatch
       });
 
       setUsers(filterUsers);
@@ -64,7 +66,7 @@ export default function Users() {
         <label htmlFor="search">Search</label>
         <input
           type="text"
-          placeholder="Username or Email"
+          placeholder="Username or Email or Full Name"
           id="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}

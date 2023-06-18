@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import { ImQuotesLeft } from "react-icons/im";
 import { ImQuotesRight } from "react-icons/im";
+import { MdMail } from 'react-icons/md'
 import { useUser } from "../contexts/UserProvider";
 import { Link } from "react-router-dom";
 
@@ -135,13 +136,19 @@ function OtherProfile() {
             <img
               src={profileInfo?.profile_img}
               alt="profile-pic"
-              className="w-36 h-36"
+              className="w-36 h-36 basis-1/8 object-cover rounded"
             />
-            <div className="text-left w-1/6">
+            <div className="text-left basis-1/8">
               <h1>
                 <b>
                   {profileInfo?.first_name} {profileInfo?.last_name}{" "}
-                  {profileInfo?.pronouns ? profileInfo?.pronouns : null}
+                  {profileInfo?.pronouns ? (
+                    <p className="inline">
+                      <span>(</span>
+                        {profileInfo?.pronouns} 
+                      <span>)</span>
+                    </p>
+                    ) : null}
                 </b>
                 {profileInfo?.pronoun ? <p>({profileInfo.pronoun})</p> : null}
               </h1>
@@ -151,7 +158,7 @@ function OtherProfile() {
                 {profileInfo?.age?.age} years
               </h3>
             </div>
-            <div className="relative w-52">
+            <div className="relative w-52 basis-1/4 ml-5">
               <div className="align-middle inline">
                 <p className="text-left font-bold inline">Bio</p>
               </div>
@@ -161,23 +168,28 @@ function OtherProfile() {
                 <ImQuotesRight className="text-orange-600 " />
               </section>
             </div>
+            <div className="absolute right-20">
+              <button 
+                onClick={() => navigate('/chats')}
+                className="mr-3 text-cyan-500 rounded-md px-2 py-2 text-2xl align-middle"
+              >
+                <MdMail />
+              </button>
+              {loggedInUser?.id === username?.id ? null : added ? (
+                <span>Already Friends</span>
+              ) : request ? (
+                <span>Friend Request Sent</span>
+              ) : (
+                <button
+                  className="border-2 border-cyan-400 px-2 my-4 rounded-md"
+                  onClick={sendFriendRequest}
+                >
+                  <span className="text-cyan-500 font-bold text-lg">+</span> Add Friend
+                </button>
+              )}
+          </div>
           </div>
         </div>
-      </div>
-
-      <div>
-        {loggedInUser?.id === username?.id ? null : added ? (
-          <span>Already Friends</span>
-        ) : request ? (
-          <span>Friend Request Sent</span>
-        ) : (
-          <button
-            className="border-2 border-cyan-400 px-2 my-4 rounded-md"
-            onClick={sendFriendRequest}
-          >
-            Friend Request
-          </button>
-        )}
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
@@ -199,9 +211,9 @@ function OtherProfile() {
             </div>
           </div>
         </fieldset>
-        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto mb-8">
+        <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${userEvents.length ? 'h-52' : 'h-20'}`}>
           <legend className="px-3 text-left ml-8">Events</legend>
-          <div>
+          <div className="flex flex-wrap py-2 overflow-x-scroll h-44 gap-y-8">
             {Array.isArray(userEvents) && userEvents.length > 0 ? (
               userEvents.map((event) => (
                 <div key={event.event_id}>
@@ -209,20 +221,22 @@ function OtherProfile() {
                 </div>
               ))
             ) : (
-              <p>No events found.</p>
+              <p className="ml-7 text-gray-400">No events found.</p>
             )}
           </div>
         </fieldset>
-        <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">
+        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${hostedEvents.length ? 'h-52' : 'h-20' }`}>
           <legend className="px-3 text-left ml-8">Hosted Events</legend>
-          {hostedEvents[0] &&
-            hostedEvents.map((hosted) => {
-              return (
-                <div key={hosted.id}>
-                  <UserHostedEvent hosted={hosted} />
-                </div>
-              );
-            })}
+          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
+            {hostedEvents[0] &&
+              hostedEvents.map((hosted) => {
+                return (
+                  <div key={hosted.id}>
+                    <UserHostedEvent hosted={hosted} />
+                  </div>
+                );
+              })}
+            </div>
         </fieldset>
         <br />
         <fieldset className="w-3/4 h-20 border relative shadow-sm m-auto">

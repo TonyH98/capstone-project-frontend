@@ -46,6 +46,8 @@ function UserProfile() {
 
   const [friends, setFriends] = useState([]);
 
+  const [editEvents, setEditEvents] = useState(false)
+
   let sortCategory = Array.isArray(isSelected) ? isSelected.sort() : [];
 
   // let sortCategory = [];
@@ -104,12 +106,17 @@ function UserProfile() {
     const deleteEvent = userEvents
       .filter((events) => events.selected)
       .map((events) => events.event_id);
+      
+      
+    if (window.confirm("Are you sure you want to remove all selected events?")){
+      Promise.all(
+        deleteEvent.map((eventId) => {
+          axios.delete(`${API}/users/${loggedInUser?.id}/events/${eventId}`);
+        })
+        );
+      }
 
-    Promise.all(
-      deleteEvent.map((eventId) => {
-        axios.delete(`${API}/users/${loggedInUser?.id}/events/${eventId}`);
-      })
-    );
+    setEditEvents(false)
   }
 
   const acceptRequest = (senderId) => {
@@ -146,9 +153,9 @@ function UserProfile() {
             <img
               src={loggedInUser?.profile_img}
               alt="profile-pic"
-              className="w-36 h-36"
+              className="w-36 h-36 basis-1/8 object-cover rounded"
             />
-            <div className="text-left w-1/6">
+            <div className="text-left basis-1/8">
               <h1>
                 <b>
                   {loggedInUser?.first_name} {loggedInUser?.last_name}{" "}
@@ -167,7 +174,7 @@ function UserProfile() {
                 {loggedInUser?.age?.age} years
               </h3>
             </div>
-            <div className="relative w-52">
+            <div className="relative w-52 basis-1/4 ml-5">
               <div className="align-middle inline">
                 <p className="text-left font-bold inline">Bio</p>
                 <BsPencilSquare
@@ -263,16 +270,17 @@ function UserProfile() {
         >
           <legend className="px-3 text-left ml-8">Events</legend>
           <div>
-            <div className="flex flex-wrap py-2 overflow-x-scroll h-44 4-full gap-y-8">
+            <div className="flex flex-wrap py-2 overflow-x-scroll h-44 gap-y-8">
               {Array.isArray(userEvents) && userEvents.length > 0 ? (
                 userEvents.map((event) => (
                   <div key={event.event_id}>
-                    <UserEvents event={event} />
+                    <UserEvents event={event} editEvents={editEvents} />
                   </div>
                 ))
-              ) : (
-                <p className="ml-5 py-3 text-gray-400">No events found.</p>
-              )}
+                ) : (
+                  <p className="ml-7 text-gray-400">No events found.</p>
+                  )}
+
             </div>
             <button
               onClick={() => navigate("/events")}
@@ -287,15 +295,27 @@ function UserProfile() {
               >
                 <BsTrash />
               </button>
-            )}
+              {userEvents.length > 0 && !editEvents ? (
+                <button
+                  onClick={() => setEditEvents(!editEvents)}  
+                  className="absolute right-3 bottom-3"
+                  type="button"
+                >
+                  <BsPencilSquare />
+                </button>
+              ): (
+                <button 
+                  onClick={deleteMultiple}
+                  className="absolute right-3 bottom-3"
+                  type='button'
+                >
+                  <BsTrash />
+                </button>
+              )}
           </div>
         </fieldset>
 
-        <fieldset
-          className={`w-3/4 border relative shadow-sm m-auto ${
-            hostedEvents.length ? "h-40" : "h-20"
-          }`}
-        >
+        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${hostedEvents.length ? 'h-52' : 'h-20' }`}>
           <legend className="px-3 text-left ml-8">Hosted Events</legend>
           <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
             {hostedEvents.length > 0 ? (
@@ -304,10 +324,10 @@ function UserProfile() {
                   <UserHostedEvent hosted={hosted} />
                 </div>
               ))
-            ) : (
-              <p className="ml-5 py-3 text-gray-400">No hosted events found.</p>
-            )}
-          </div>
+              ) : (
+                <p className="ml-5 text-gray-400">No hosted events found.</p>
+                )}
+            </div>
           <button
             onClick={() => navigate("/events/new")}
             className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"

@@ -21,7 +21,7 @@
 }
 
 .tooltip .tooltiptext-bottom {
-  background-color: azure;
+  background-color: white;
   text-align: left;
   border-radius: 6px;
   padding: 5px 0;
@@ -39,11 +39,11 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent azure transparent;
+  border-color: transparent transparent white transparent;
 }
 
 .tooltip .tooltiptext-right {
-  background-color: azure;
+  background-color: white;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
@@ -61,5 +61,5 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent azure transparent transparent;
+  border-color: transparent white transparent transparent;
 }

@@ -35,8 +35,25 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
       };
 
       reader.readAsDataURL(file);
-    } else {
+    } 
+      else if (e.target.id === "bio"){
+        const {value} = e.target
+
+        if(value.length <=250){
+          setUpdatedUser((prevEvent) => ({
+            ...prevEvent,
+            bio: value,
+          }));
+        }
+        else{
+          e.target.value = value.substr(0,250)
+        }
+      }
+      else{
+
+      
       setUpdatedUser({ ...updatedUser, [e.target.id]: e.target.value });
+
     }
   };
 
@@ -123,6 +140,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
               <input
                 id="pronouns"
                 name="pronouns"
+                placeholder="optional"
                 type="text"
                 value={updatedUser?.pronouns}
                 onChange={handleTextChange}
@@ -150,6 +168,9 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 className="block w-[100%]"
               />
             </label>
+            <p className={`${updatedUser?.bio.length >= 250 ? 'text-red-700' : null}  bottom-5 left-3 text-sm`}>
+                        {updatedUser?.bio.length}/250 characters
+                    </p>
           </form>
         </div>
         <button

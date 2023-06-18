@@ -1,7 +1,9 @@
+import axios from "axios";
 import CommentEdit from "./CommentEdit";
 import { useState } from "react";
 
-function Comments({handleDelete, handleEdit, comment, users, id}){
+const API = process.env.REACT_APP_API_URL;
+function Comments({handleEdit, comment, users, id, setComments}){
 
     const [hidden , setHidden] = useState(false)
 
@@ -9,8 +11,18 @@ function Comments({handleDelete, handleEdit, comment, users, id}){
         setHidden(!hidden)
     }
 
+const handleDelete = (deleteId) => {
+  console.log(deleteId)
+  axios.delete(`${API}/events/${id}/comments/${deleteId}`)
+  .then(() => {
+    axios.get(`${API}/events/${id}/comments`)
+    .then((res) => {
+      setComments(res.data)
+    })
+  })
+}
 
-
+console.log(comment.id)
 
 return(
     <div>
@@ -29,7 +41,7 @@ return(
     <div>
       {users?.id === comment?.creator?.user_id ? (
         <>
-        <button  className="delete" onClick={() => handleDelete(comment.id)}>delete</button> <button className="edit" onClick = {toggleView}>edit</button>
+        <button  className="delete" onClick={() => handleDelete(comment.id)} >delete</button> <button className="edit" onClick = {toggleView}>edit</button>
         </>
       ) : null}
     </div>

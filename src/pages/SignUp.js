@@ -120,9 +120,6 @@ function SignUp({ setLoggedIn }) {
   // function to make an axios POST request and navigate to the user profile page
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userCredentials = await createUserCredentials();
-
-    console.log(userCredentials?.username);
 
     let isValid = true;
     handleSignOut();
@@ -131,10 +128,12 @@ function SignUp({ setLoggedIn }) {
       isValid = false;
     }
 
-    if (await checkUsername()) {
-      setUsernameError("Username already taken");
-      isValid = false;
-    }
+    // if (await checkUsername()) {
+    //   setUsernameError("Username already taken");
+    //   isValid = false;
+    // }
+
+    const userCredentials = await createUserCredentials();
 
     axios
       .post(`${API}/users`, userCredentials)
@@ -149,8 +148,8 @@ function SignUp({ setLoggedIn }) {
           const returningUser = userCredential.user;
           if (returningUser) {
             alert("You are now logged in!");
-            console.log("logged in", returningUser);
-            // setLoggedInUser(returningUser);
+            console.log("logged in");
+            // setUser(returningUser);
           }
         })
         .catch((error) => {
