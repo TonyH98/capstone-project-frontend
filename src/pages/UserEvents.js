@@ -2,30 +2,34 @@ import {Link} from 'react-router-dom'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { AiFillStar } from 'react-icons/ai'
 
-function UserEvents({event}){
+function UserEvents({event, editEvents}){
 
     return(
-        <div className='h-28 w-40 ml-5'>
+        <div className='h-36 w-40 ml-4'>
             <Link to={`/events/${event.event_id}`}>
                 <img
                     src={event.location_image}
                     alt={event.title}
-                    className="location-image h-24 w-24 object-cover m-auto"
+                    className="location-image h-32 w-32 object-cover m-auto"
                 />
             </Link>
-            <div className='m-auto w-32 truncate inline'>
-                <input
-                    type="checkbox"
-                    className='mr-1'
-                    onChange={(e) => {
-                        let value = e.target.value
-                        event.selected = value
-                        return event
-                    }}
-                />
+            <div className='w-32 truncate inline ml-4'>
+                {
+                    editEvents ? (
+                        <input
+                            type="checkbox"
+                            className='mr-1'
+                            onChange={(e) => {
+                                let value = e.target.value
+                                event.selected = value
+                                return event
+                            }}
+                        />
+                    ) : null
+                }
                 <p className='inline truncate text-sm'>
                     <Link>
-                        {event.title}
+                        {event.title.length > 16 ? `${event.title.slice(0,16)}...` : `${event.title}` }
                     </Link>
                     </p>
                     {event.rsvp ? 

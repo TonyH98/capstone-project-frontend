@@ -46,6 +46,8 @@ function UserProfile() {
 
   const [friends, setFriends] = useState([]);
 
+  const [editEvents, setEditEvents] = useState(false)
+
   let sortCategory = Array.isArray(isSelected) ? isSelected.sort() : [];
 
   // let sortCategory = [];
@@ -105,11 +107,14 @@ function UserProfile() {
       .filter((events) => events.selected)
       .map((events) => events.event_id);
 
-    Promise.all(
-      deleteEvent.map((eventId) => {
-        axios.delete(`${API}/users/${loggedInUser?.id}/events/${eventId}`);
-      })
-    );
+    if (window.confirm("Are you sure you want to remove all selected events?")){
+      Promise.all(
+        deleteEvent.map((eventId) => {
+          axios.delete(`${API}/users/${loggedInUser?.id}/events/${eventId}`);
+        })
+      );
+      setEditEvents(false)
+    }
   }
 
   const acceptRequest = (senderId) => {
@@ -138,8 +143,7 @@ function UserProfile() {
       });
   };
 
-  // console.log(friends);
-
+console.log()
   return (
     <>
       <div>
@@ -261,15 +265,15 @@ function UserProfile() {
         <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${userEvents.length ? 'h-52' : 'h-20'}`}>
           <legend className="px-3 text-left ml-8">Events</legend>
           <div>
-            <div className="flex flex-wrap py-2 overflow-x-scroll h-44 4-full gap-y-8">
+            <div className="flex flex-wrap py-2 overflow-x-scroll h-44 gap-y-8">
               {Array.isArray(userEvents) && userEvents.length > 0 ? (
                 userEvents.map((event) => (
                   <div key={event.event_id}>
-                    <UserEvents event={event} />
+                    <UserEvents event={event} editEvents={editEvents} />
                   </div>
                 ))
                 ) : (
-                  <p className="ml-7 py-2 text-gray-400">No events found.</p>
+                  <p className="ml-7 text-gray-400">No events found.</p>
                   )}
 
             </div>
@@ -279,10 +283,19 @@ function UserProfile() {
                 >
                 Add
               </button>
-              {userEvents.length > 0 && (
+              {userEvents.length > 0 && !editEvents ? (
+                <button
+                  onClick={() => setEditEvents(!editEvents)}  
+                  className="absolute right-3 bottom-3"
+                  type="button"
+                >
+                  <BsPencilSquare />
+                </button>
+              ): (
                 <button 
                   onClick={deleteMultiple}
                   className="absolute right-3 bottom-3"
+                  type='button'
                 >
                   <BsTrash />
                 </button>
@@ -290,7 +303,7 @@ function UserProfile() {
           </div>
         </fieldset>
 
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${hostedEvents.length ? 'h-40' : 'h-20' }`}>
+        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${hostedEvents.length ? 'h-52' : 'h-20' }`}>
           <legend className="px-3 text-left ml-8">Hosted Events</legend>
           <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
             {hostedEvents.length > 0 ? (
@@ -300,7 +313,7 @@ function UserProfile() {
                 </div>
               ))
               ) : (
-                <p className="ml-5 py-2 text-gray-400">No hosted events found.</p>
+                <p className="ml-5 text-gray-400">No hosted events found.</p>
                 )}
             </div>
           <button
