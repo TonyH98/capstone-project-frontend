@@ -31,7 +31,6 @@ const numDate = event?.date_event;
 const monthName = months.get(numDate?.slice(5, 7));
 let eventDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice(0,4)}`;
 
-  console.log(event)
   return (
     <Link to={`/events/${event?.id}`}>
       <div className="lg:w-[600px] lg:h-[200px] md:w-[680px] sm:w-screen flex shadow-2xl bg-white rounded-md my-4">
