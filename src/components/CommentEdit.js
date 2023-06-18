@@ -38,7 +38,6 @@ function CommentEdit({id , CommentDetails, toggleView, handleEdit}){
         }
       };
 
-console.log(comment)
 return(
     <div className="Edit">
     <form onSubmit={handleSubmit} className="grid grid-rows-2">
