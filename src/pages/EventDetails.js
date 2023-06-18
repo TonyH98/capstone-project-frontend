@@ -771,7 +771,7 @@ const hostId = hosts.map((host) => {
       <div>
 
         
-        <h2>Comments</h2>
+        <h2 className="pl-4 text-lg">Comments</h2>
         <CommentSection users={users} id={id}/> 
       </div>
     </div>

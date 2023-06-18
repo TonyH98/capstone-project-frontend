@@ -41,15 +41,16 @@ function CommentEdit({id , CommentDetails, toggleView, handleEdit}){
 console.log(comment)
 return(
     <div className="Edit">
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="grid grid-rows-2">
       <br></br>
       <input
         id="comment"
         value={comment.comment}
         type="text"
         onChange={handleTextChange}
+        className="ml-20 pl-3 bg-orange-200 rounded-full w-fit pr-"
       />
-      <input type="submit" />
+      <input type="submit" className="ml-36 mt-2 w-16 bg-cyan-200 rounded-full" />
     </form>
   </div>
 )
