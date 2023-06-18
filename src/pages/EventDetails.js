@@ -448,7 +448,7 @@ const hostId = hosts.map((host) => {
             <img
               src={eventInfo?.location_image}
               alt="event photo"
-              className="max-h-96 max-w-96 mt-12"
+              className="max-h-96 w-96 mt-12 object-fit"
             />
             <div className="w-36 tooltip absolute left-0 bottom-3">
             {
@@ -498,6 +498,7 @@ const hostId = hosts.map((host) => {
                     />
                   </div>
                 ) : null}
+              <h2 className="mt-1 text-cyan-600 text-lg">@ {eventInfo?.location}</h2>
               </div>
               {openTitleEdit ? 
                 <TitleEditModal 
@@ -514,10 +515,11 @@ const hostId = hosts.map((host) => {
                 <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
                   {eventDate}
                 </span>
-                <span className="text-sm text-blue-800">
-                  @ {eventInfo?.start_time} - {eventInfo?.end_time}
+                <span className="text-sm text-blue-800 font-bold">
+                  {eventInfo?.start_time.charAt(0) === '0' ? `${eventInfo?.start_time.slice(1)}` : `${eventInfo?.start_time}`} - {eventInfo?.end_time.charAt(0) === '0' ? `${eventInfo?.end_time.slice(1)}` : `${eventInfo?.end_time}`}
                 </span>
               </h2>
+              <h2 className="">Address: {eventInfo?.address}</h2>
               {
                 editMode ? 
                   <BsPencilFill 
@@ -526,8 +528,7 @@ const hostId = hosts.map((host) => {
                   />
                   : null
               }
-              <h2 className="mt-1">Location: {eventInfo?.location}</h2>
-              <h2 className="mt-1">Address: {eventInfo?.address}</h2>
+          
             </div>
           </div>
           {
@@ -542,7 +543,7 @@ const hostId = hosts.map((host) => {
               />
               : null
           }
-          <h2>
+          <h2 className="mt-1">
             Categories:
             {eventInfo?.category_names
               ? eventInfo.category_names.map((category) => {
@@ -591,7 +592,7 @@ const hostId = hosts.map((host) => {
                 <img 
                   src={eventInfo?.creator[0].profile_img}
                   alt="profile image"
-                  className="h-7 w-7 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500"
+                  className="h-12 w-12 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
                 /> 
                 {eventInfo?.creator[0].username}
               </Link>
