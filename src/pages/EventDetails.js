@@ -48,6 +48,7 @@ export default function EventDetails({users, categoryQuery}) {
   const [ openAttendeesEdit, setOpenAttendeesEdit ] = useState(false)
   const [ showSearch, setShowSearch ] = useState(false)
 
+  const [eventState , setEventState] = useState({})
 
   const creator = eventInfo?.creator[0].id;
   const [ userMain, setUser ] = useLocalStorage("user", {});
@@ -73,6 +74,18 @@ export default function EventDetails({users, categoryQuery}) {
     .catch((c) => console.warn("catch, c"));
   }, [eventInfo?.id]);
   
+  useEffect(() => {
+    if(users?.id){
+      axios
+      .get(`${API}/users/${users?.id}/events/${id}`)
+      .then((res) => {
+        setEventState(res.data)
+      })
+    }
+  }, [users?.id])
+
+  console.log(eventState)
+
   useEffect(() => {
     if (users?.id) {	    
       axios.get(`${API}/friends/${users?.id}/list`)
@@ -169,6 +182,17 @@ export default function EventDetails({users, categoryQuery}) {
     );
   };
 
+
+  // useEffect(() => {
+  //   if(users?.id){
+  //     axios
+  //     .get(`${API}/users/${users?.id}/events/${id}`)
+  //     .then((res) => {
+  //       setEventState(res.data)
+  //     })
+  //   }
+  // }, [users?.id])
+
   console.log('rvsp', eventInfo?.rsvp)
   // function that adds event to user profile as interested
   function addToInterest() {
@@ -180,9 +204,12 @@ export default function EventDetails({users, categoryQuery}) {
           rsvp: false,
           selected: false,
         })
-        .then((res) => {
-          setUserEvent(res.data);
-          setInterest('interested')
+        .then(() => {
+          axios
+          .get(`${API}/users/${users?.id}/events/${id}`)
+          .then((res) => {
+            setEventState(res.data)
+          })
         })
         .then(() => {
           axios
@@ -213,8 +240,11 @@ export default function EventDetails({users, categoryQuery}) {
               selected: false,
             })
             .then((res) => {
-              setUserEvent(res.data);
-              setInterest('interested')
+              axios
+              .get(`${API}/users/${users?.id}/events/${id}`)
+              .then((res) => {
+                setEventState(res.data)
+              })
             })
             .then(() => {
               axios
@@ -281,8 +311,11 @@ export default function EventDetails({users, categoryQuery}) {
           selected: false,
         })
         .then((res) => {
-          setUserEvent(res.data);
-          setInterest('rsvp')
+          axios
+          .get(`${API}/users/${users?.id}/events/${id}`)
+          .then((res) => {
+            setEventState(res.data)
+          })
         })
         .then(() => {
               axios
@@ -306,8 +339,11 @@ export default function EventDetails({users, categoryQuery}) {
               selected: false,
             })
             .then((res) => {
-              setUserEvent(res.data);
-              setInterest('rsvp')
+              axios
+          .get(`${API}/users/${users?.id}/events/${id}`)
+          .then((res) => {
+            setEventState(res.data)
+          })
             })
             .then(() => {
               axios
@@ -696,7 +732,7 @@ const hostId = hosts.map((host) => {
       >
         Interested
           <span className="text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-            <AiFillStar className={`${ interest === 'interested' ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
+            <AiFillStar className={`${eventState?.interested ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
       </button>
       <button
         className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
@@ -704,7 +740,7 @@ const hostId = hosts.map((host) => {
       >
         RSVP
           <span className="text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-            <AiFillCheckCircle className={`${interest === 'rsvp' ? 'text-green-400' : 'text-gray-400' } text-xl focus:text-green-400`}/>
+            <AiFillCheckCircle className={`${ eventState?.rsvp ? 'text-green-400' : 'text-gray-400' } text-xl focus:text-green-400`}/>
       </button>
     </>
   )}
