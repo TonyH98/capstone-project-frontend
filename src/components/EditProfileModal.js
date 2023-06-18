@@ -123,6 +123,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
               <input
                 id="pronouns"
                 name="pronouns"
+                placeholder="optional"
                 type="text"
                 value={updatedUser?.pronouns}
                 onChange={handleTextChange}
