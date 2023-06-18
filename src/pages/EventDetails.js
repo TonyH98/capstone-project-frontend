@@ -374,7 +374,27 @@ export default function EventDetails({users, categoryQuery}) {
       } else {
         e.target.value = value.substr(0, 250); // Truncate the new input to 250 characters
       }
-    } else {
+    } 
+     else if (e.target.id === "age_restriction"){
+      const {value} = e.target
+      const ageRestriction = value === "true"
+
+      if(!ageRestriction){
+        setUpdatedEventInfo((prevEvent) => ({
+          ...prevEvent,
+          age_restriction: ageRestriction,
+          age_min: 0,
+        age_max: 0,
+        }))
+      }
+      else{
+        setUpdatedEventInfo((prevEvent) => ({
+          ...prevEvent,
+          age_restriction: ageRestriction,
+        }));
+      }
+    }
+    else {
       setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
       console.log(updatedEventInfo.date_event);
     }
