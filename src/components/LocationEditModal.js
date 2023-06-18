@@ -85,7 +85,7 @@ function LocationEditModal({
             </button>
         </div>
         <button 
-            className="border bg-purple-500 text-white py-1 px-6 rounded shadow position absolute right-10 bottom-4 hover:bg-purple-400"
+            className="border bg-emerald-500 text-white py-1 px-6 rounded shadow position absolute right-10 bottom-4 hoverbg-emerald-300"
             onClick={handleEdit}
         >
             Save
@@ -93,7 +93,7 @@ function LocationEditModal({
         <button 
             type="button"
             onClick={() => {setOpenLocationEdit(false)}}
-            className="absolute right-4 top-2 font-bold"
+            className="absolute right-4 top-2"
         >
             X
         </button>

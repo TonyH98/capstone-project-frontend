@@ -9,7 +9,7 @@ import AllEvents from './AllEvents';
 
 function MultipleMarkers ({ filterEvents, events, filterCategories }) {
 
-  const [ markers, setMarkers ] = useState([])
+  const [ markersArr, setMarkersArr ] = useState([])
   const navigate = useNavigate()
 
   const mapStyles = {
@@ -21,6 +21,23 @@ function MultipleMarkers ({ filterEvents, events, filterCategories }) {
     lat: 40.7032,
     lng: -73.9238
   };
+
+  const markers = markersArr.map((marker) => {return ( <Marker 
+      id = {marker.id}
+      title = {marker.title}
+      position = {marker.position}
+    />
+    )})
+
+  const component = (() => {
+    return (
+      <div>
+      {markers}
+    </div>
+  )
+})
+
+  // console.log(markersArr)
 
   const getCoordinates = (event) => {
     // using Geocode API to convert address to coordinates on map
@@ -39,7 +56,8 @@ function MultipleMarkers ({ filterEvents, events, filterCategories }) {
             }
         }
         // set all markers in state
-        setMarkers([...markers, newMarker])
+        setMarkersArr([...markersArr, newMarker])
+        console.log(markersArr)
       },
       (error) => {
         console.error(error);
@@ -49,34 +67,35 @@ function MultipleMarkers ({ filterEvents, events, filterCategories }) {
 
   useEffect(() => {
     // reset markers each time useEffect is called
-    setMarkers([])
+    setMarkersArr([])
     // get coordinates and info from each event displayed
       filterEvents.map((event) => {
         getCoordinates(event)
+        console.log(event)
       })
   }, [filterEvents, filterCategories])
 
-  const Markers = () =>
-    markers.map((marker) => (
-        <>
-            <Marker 
-                key={marker.id} 
-                id={marker.id} 
-                position={marker.position} 
-                title={marker.title} 
-                onClick={() => {navigate(`/events/${marker.id}`)}}
-            >
-            {/* <InfoWindow
-                position={marker.position}
-            >
-                <div>
-                    <h1 onClick={() => navigate(`/events/${marker.id}`)}>{marker.title}</h1>
-                </div>
-            </InfoWindow> */}
-            </Marker>
-        </>
+  // const Markers = () =>
+  //   markers.map((marker) => (
+  //       <>
+  //           <Marker 
+  //               key={marker.id} 
+  //               id={marker.id} 
+  //               position={marker.position} 
+  //               title={marker.title} 
+  //               onClick={() => {navigate(`/events/${marker.id}`)}}
+  //           >
+  //           {/* <InfoWindow
+  //               position={marker.position}
+  //           >
+  //               <div>
+  //                   <h1 onClick={() => navigate(`/events/${marker.id}`)}>{marker.title}</h1>
+  //               </div>
+  //           </InfoWindow> */}
+  //           </Marker>
+  //       </>
 
-    ));
+  //   ));
 
   return (
     <div className="w-[600px] m-auto">
@@ -86,11 +105,12 @@ function MultipleMarkers ({ filterEvents, events, filterCategories }) {
           zoom={10}
           center={defaultCenter}
           >
-        {
+        {/* {
           filterCategories?.includes("Gaming") ?
             <GamingEvents />
               : <AllEvents />
-        }
+        } */}
+          {markers}
         </GoogleMap>
       </LoadScript>
     </div>

@@ -19,7 +19,7 @@ function SummaryEditModal({ eventInfo, updatedEventInfo, setOpenSummaryEdit, han
                     >
                         {eventInfo?.summary}
                     </textarea>
-                    <p className={`${updatedEventInfo?.summary.length > 250 ? 'text-red-700' : null} absolute bottom-5 left-3 text-sm`}>
+                    <p className={`${updatedEventInfo?.summary.length >= 250 ? 'text-red-700' : null} absolute bottom-5 left-3 text-sm`}>
                         {updatedEventInfo?.summary.length}/250 characters
                     </p>
                 </div>

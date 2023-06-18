@@ -328,9 +328,22 @@ export default function EventDetails({users, categoryQuery}) {
 
   // function to update information on text change in edit forms
   const handleTextChange = (e) => {
-    setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
-    console.log(updatedEventInfo.date_event)
+    if (e.target.id === "summary") {
+      const { value } = e.target;
+      if (value.length <= 250) {
+        setUpdatedEventInfo((prevEvent) => ({
+          ...prevEvent,
+          summary: value,
+        }));
+      } else {
+        e.target.value = value.substr(0, 250); // Truncate the new input to 250 characters
+      }
+    } else {
+      setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
+      console.log(updatedEventInfo.date_event);
+    }
   };
+  
  
   useEffect(() => {
     if(!updatedEventInfo?.age_restriction){
@@ -639,7 +652,7 @@ const hostId = hosts.map((host) => {
     editMode ? (
       <>
         <button
-          className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800 focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+          className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
           onClick={handleDelete}
         >
           Delete

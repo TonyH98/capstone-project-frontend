@@ -22,8 +22,8 @@ const handleDelete = (deleteId) => {
   })
 }
 
-
 const defaultProf = `https://ui-avatars.com/api/name=`+comment?.creator?.first_name+`&background=random`
+
 
 
 return(
@@ -55,6 +55,7 @@ return(
     <div>
       {users?.id === comment?.creator?.user_id ? (
 
+
         < div className='comment-buttons ml-28 mt-10'>
         <button  className="delete bg-cyan-200 rounded-full w-16" 
         onClick={() => handleDelete(comment.id)}>
@@ -65,6 +66,7 @@ return(
           Edit
         </button>
         </div>
+
 
       ) : null}
     </div>
