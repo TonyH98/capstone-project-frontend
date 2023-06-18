@@ -40,7 +40,7 @@ function SignUp() {
     email: "",
     password: "",
     age: "",
-    pronouns: "Default",
+    pronouns: "",
     bio: "About Me",
 
     profile_img:
