@@ -124,7 +124,6 @@ function SignUp({ setLoggedIn }) {
 
     console.log(userCredentials?.username);
 
-
     let isValid = true;
     handleSignOut();
     if (!checkAge()) {
@@ -150,8 +149,8 @@ function SignUp({ setLoggedIn }) {
           const returningUser = userCredential.user;
           if (returningUser) {
             alert("You are now logged in!");
-            console.log("logged in");
-            setLoggedInUser(returningUser);
+            console.log("logged in", returningUser);
+            // setLoggedInUser(returningUser);
           }
         })
         .catch((error) => {

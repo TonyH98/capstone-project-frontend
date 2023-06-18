@@ -217,10 +217,10 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
         </div>
       )}
       <div className="flex" id="navbar-dropdown">
-        <button className="p-2">
+        {/* <button className="p-2">
           <GrNotification />
           {friendsRequest}
-        </button>
+        </button> */}
         <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
           <li className="relative">
             <button
