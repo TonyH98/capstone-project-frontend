@@ -10,23 +10,19 @@ function UserEvents({event, editEvents}){
                 <img
                     src={event.location_image}
                     alt={event.title}
-                    className="location-image h-32 w-32 object-cover m-auto"
+                    className="location-image h-32 w-32 object-cover m-auto mt-2"
                 />
             </Link>
             <div className='w-32 truncate inline ml-4'>
-                {
-                    editEvents ? (
-                        <input
-                            type="checkbox"
-                            className='mr-1'
-                            onChange={(e) => {
-                                let value = e.target.value
-                                event.selected = value
-                                return event
-                            }}
-                        />
-                    ) : null
-                }
+                <input
+                    type="checkbox"
+                    className={`mr-1 alsolute ${editEvents ? 'visible' : 'hidden'}`}
+                    onChange={(e) => {
+                        let value = e.target.value
+                        event.selected = value
+                        return event
+                    }}
+                />
                 <p className='inline truncate text-sm'>
                     <Link>
                         {event.title.length > 16 ? `${event.title.slice(0,16)}...` : `${event.title}` }

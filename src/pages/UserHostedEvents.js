@@ -7,7 +7,7 @@ function UserHostedEvent({hosted}){
                 <img
                     src={hosted.location_image}
                     alt={hosted.title}
-                    className="location-image h-32 w-32 object-cover m-auto"  
+                    className="location-image h-32 w-32 object-cover m-auto mt-2"  
                 />
                 <p className="text-center text-sm truncate py-1">{hosted.title}</p>
             </Link>

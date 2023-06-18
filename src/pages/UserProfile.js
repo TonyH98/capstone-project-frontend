@@ -106,15 +106,17 @@ function UserProfile() {
     const deleteEvent = userEvents
       .filter((events) => events.selected)
       .map((events) => events.event_id);
-
+      
+      
     if (window.confirm("Are you sure you want to remove all selected events?")){
       Promise.all(
         deleteEvent.map((eventId) => {
           axios.delete(`${API}/users/${loggedInUser?.id}/events/${eventId}`);
         })
-      );
-      setEditEvents(false)
-    }
+        );
+      }
+
+    setEditEvents(false)
   }
 
   const acceptRequest = (senderId) => {
@@ -152,9 +154,9 @@ console.log()
             <img
               src={loggedInUser?.profile_img}
               alt="profile-pic"
-              className="w-36 h-36"
+              className="w-36 h-36 basis-1/8 object-cover rounded"
             />
-            <div className="text-left w-1/6">
+            <div className="text-left basis-1/8">
               <h1>
                 <b>
                   {loggedInUser?.first_name} {loggedInUser?.last_name}{" "}
@@ -173,7 +175,7 @@ console.log()
                 {loggedInUser?.age?.age} years
               </h3>
             </div>
-            <div className="relative w-52">
+            <div className="relative w-52 basis-1/4 ml-5">
               <div className="align-middle inline">
                 <p className="text-left font-bold inline">Bio</p>
                 <BsPencilSquare
