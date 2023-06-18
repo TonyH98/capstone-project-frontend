@@ -94,7 +94,6 @@ function MultipleMarkers ({ filterEvents, events, filterCategories }) {
   //           </InfoWindow> */}
   //           </Marker>
   //       </>
-
   //   ));
 
   return (
@@ -105,12 +104,12 @@ function MultipleMarkers ({ filterEvents, events, filterCategories }) {
           zoom={10}
           center={defaultCenter}
           >
-        {/* {
+        {
           filterCategories?.includes("Gaming") ?
             <GamingEvents />
               : <AllEvents />
-        } */}
-          {markers}
+        }
+          {/* {markers} */}
         </GoogleMap>
       </LoadScript>
     </div>
