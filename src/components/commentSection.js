@@ -1,8 +1,3 @@
-
-// commenter: currentUser.currentUserFullName,
-//           profilePic: currentUser.currentUserImg,
-//           profileLink: currentUser.currentUserProfile,
-
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
@@ -16,7 +11,7 @@ const CommentSection = ({users, id}) => {
 const [comments , setComments] = useState([])
 
 const [newComment , setNewComment] = useState({
-  events_id: id,
+  events_id: Number(id),
   user_id: users?.id,
   comment: ""
 })
@@ -27,7 +22,7 @@ useEffect(() => {
   .then((res) => {
     setComments(res.data)
   })
-}, [])
+}, [comments])
 
 
 
@@ -38,19 +33,7 @@ useEffect(() => {
   }
 }, [users?.id]);
 
-const handleDelete = (ids) => {
-  axios
-  .delete(`${API}/events/${id}/comments/${ids}`)
-  .then(() => {
-    const copyCommentsArray = [...comments]
-    const indexDeletedComments = copyCommentsArray.findIndex((comment) => {
-      return comment.id === id
-    })
 
-    copyCommentsArray.splice(indexDeletedComments,1)
-    setComments(copyCommentsArray)
-  })
-}
 
 
 const handleEdit = (updatedComments) => {
@@ -100,32 +83,33 @@ const handleSubmit = (event) => {
   setNewComment((prevChat) => ({ ...prevChat, comment: "" }));
 };
 
-console.log(newComment)
-
+// console.log(newComment)
+// console.log (users)
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="pl-4">
+      <form onSubmit={handleSubmit} className="mt-4 ml-4 grid grid-rows-2">
       <input
       type="text"
       id="comment"
       value={newComment.comment}
       onChange={handleTextChange}
-      className="rounded-md sm:w-96 border-2 border-black"
+      className="rounded-md sm:w-96 border-2 border-black w-1/3"
       />
-       <button type="submit" className="mx-1 hover:text-cyan-400 font-bold">Submit</button>
+       <button type="submit" className="mx-1 hover:text-cyan-400 font-bold place-self-start ml-28 rounded-full bg-purple-300 w-36 mt-2 font-bold text-lg">Submit</button>
       </form>
-      <div>
+      <div className="comment mt-2">
         {comments.map((comment) => {
           return(
 
             <Comments
             key={comment.id}
             comment={comment}
-            handleDelete={handleDelete}
+            // handleDelete={handleDelete}
             handleEdit={handleEdit}
             users={users}
             id={id}
+            setComments={setComments}
             />
           )
         })}

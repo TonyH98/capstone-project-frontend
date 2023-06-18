@@ -179,6 +179,18 @@ const [timeError, setTimeError] = useState("")
         age_restriction: isAgeRestricted,
       }));
     }
+    else if (event.target.id === "summary"){
+      const {value} = event.target
+      if(value.length <=250){
+        setEvents((prevEvent) => ({
+          ...prevEvent,
+          summary: value,
+        }));
+      } 
+      else{
+        event.target.value = value.substr(0,250)
+      }
+    }
     // handles updating all other fields of the event details
     else {
       const { id, value } = event.target;
@@ -630,6 +642,9 @@ function checkTime() {
                 required
                 className="shadow bg-transparent appearance-none border sm:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
               />
+               <p className={`${events?.summary.length >= 250 ? 'text-red-700' : null}  bottom-5 left-3 text-sm`}>
+                        {events?.summary.length}/250 characters
+                    </p>
             </div>
             <div className="flex sm:justify-evenly gap-2 font-semibold">
               {formStep > 0 ? (
