@@ -2,7 +2,7 @@ import "./tooltip.css"
 
 function TitleEditModal({ eventInfo, updatedEventInfo, handleTextChange, handleEdit }) {
     return (
-        <div className="tooltiptext-bottom bg-indigo-200 w-full">
+        <div className="tooltiptext-bottom bg-white w-full">
         <div className="ml-10 mt-4">
           <label htmlFor="title">Title</label>
           <input
