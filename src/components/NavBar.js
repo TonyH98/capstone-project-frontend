@@ -225,15 +225,23 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
           <li className="relative">
             <button
               id="dropdownNavbarLink"
-              onClick={() => setShowDropdown(!showDropdown)}
               className="flex items-center justify-between text-base font-bold"
             >
-              {dropdownText}
+              {loggedin ? (
+                <Link to="/personalprofile" className="ml-1">
+                  {loggedInUser.username}
+                </Link>
+              ) : (
+                <Link to="/login" className="ml-1">
+                  Login
+                </Link>
+              )}
               <svg
-                className="w-5 h-5 ml-1"
+                className="w-5 h-5"
                 aria-hidden="true"
                 fill="currentColor"
                 viewBox="0 0 20 20"
+                onClick={() => setShowDropdown(!showDropdown)}
               >
                 <path
                   fillRule="evenodd"
@@ -255,21 +263,21 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                     </li>
                   ) : (
                     <div>
-                      <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                      {/* <li className="block px-4 py-2 hover:bg-[#f5fefd]">
                         <Link to="/personalprofile">
                           {loggedInUser.username}
                         </Link>
-                      </li>
+                      </li> */}
                       <li className="block px-4 py-2 hover:bg-[#f5fefd]">
                         <button onClick={handleSignOut}>Sign Out</button>
                       </li>
                     </div>
                   )}
-                  <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                  {/* <li className="block px-4 py-2 hover:bg-[#f5fefd]">
                     <Link to="/devs" className="">
                       About Devs
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             )}
