@@ -149,12 +149,12 @@ export default function Events() {
   console.log(events)
 
   return (
-    <div className='flex flex-col z-10 bg-gradient-to-r from-cyan-50 via-purple-50 to-pink-50 mx-3'>
-       <section className='flex items-center justify-between'>
+    <div className='flex flex-col z-10 bg-gradient-to-r from-cyan-50 via-purple-50 to-pink-50 mx-3 '>
+       <section className='flex items-center justify-between py-4'>
         <div className='w-30'></div>
        <div className='flex justify-center items-center ml-[10%]'>
        <div className='m-2'>
-          <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'>
+          <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md px-1 py-2'>
             <option value=''>Sort date</option>
             <option value='Latest to Earliest'>Latest to Earliest</option>
             <option value='Earliest to Latest'>Earliest to Latest</option>
@@ -167,7 +167,7 @@ export default function Events() {
           value={searchFilter}
           placeholder='Search by host or title or location'
           onChange={(e) => setSearchFilter(e.target.value)}
-          className=' w-96 border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'
+          className=' w-96 border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md px-1 py-2'
           />
         </div>
        </div>
@@ -214,7 +214,7 @@ export default function Events() {
     <div className='grid grid-cols-2 gap-x-16 gap-y-6 my-6 m-auto'>
       {currentEvents.length > 0 ?  
         currentEvents : (
-        <div className='flex flex-col justify-center items-center mx-auto'>
+        <div className='w-screen flex flex-col justify-center items-center'>
           <h1 className='text-2xl text-center font-semibold'>No Events Found!</h1>
           <div className='w-[25%]'>
             <Lottie animationData={animationData} />

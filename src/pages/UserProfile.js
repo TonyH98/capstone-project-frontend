@@ -262,7 +262,7 @@ console.log(isSelected)
             </div>
               <button
                 onClick={() => navigate("/events")}
-                className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+                className="w-20 bg-blue-300 absolute right-5 top-3 rounded hover:bg-blue-200 shadow-md"
                 >
                 Add
               </button>

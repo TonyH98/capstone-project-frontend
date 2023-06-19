@@ -70,7 +70,7 @@ function Login() {
               placeholder="Email"
               required
               onChange={handleTextChange}
-              className="rounded w-[85%] bg-transparent appearance-none focus:outline-none"
+              className="rounded w-[85%] bg-transparent border border-slate-800 px-1 py-2 appearance-none focus:outline-none"
             />
           </label>
 
@@ -82,7 +82,7 @@ function Login() {
               placeholder="Password"
               required
               onChange={handleTextChange}
-              className="my-3 rounded w-[85%]"
+              className="my-3 rounded w-[85%] border border-slate-800 px-1 py-2"
             />
             {showPassword ? (
               <button

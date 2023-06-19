@@ -87,8 +87,8 @@ const handleSubmit = (event) => {
 // console.log (users)
 
   return (
-    <div className="pl-4">
-      <form onSubmit={handleSubmit} className="mt-4 ml-4 grid grid-rows-2">
+    <div className="">
+      <form onSubmit={handleSubmit} className=" my-3 grid grid-rows-2">
       <input
       type="text"
       id="comment"
@@ -96,9 +96,9 @@ const handleSubmit = (event) => {
       onChange={handleTextChange}
       className="rounded-md sm:w-96 border-2 border-black w-1/3"
       />
-       <button type="submit" className="mx-1 hover:text-cyan-400 font-bold place-self-start ml-28 rounded-full bg-purple-300 w-36 mt-2 font-bold text-lg">Submit</button>
+       <button type="submit" className=" hover:text-cyan-400 place-self-start mx-28 my-2 rounded-full bg-purple-300 w-36 font-bold text-lg">Submit</button>
       </form>
-      <div className="comment mt-2">
+      <div className="comment mt-2 flex flex-col justify-center items-center">
         {comments.map((comment) => {
           return(
 

@@ -384,7 +384,7 @@ function checkTime() {
             value={events.title} 
             onChange={handleTextChange} 
             required
-            className="shadow bg-transparent appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+            className="shadow bg-transparent appearance-none border border-slate-800 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
           />
         </div>
         
@@ -399,7 +399,7 @@ function checkTime() {
             value={events.location}
             onChange={handleTextChange} 
             required
-            className="shadow bg-transparent appearance-none border w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+            className="shadow bg-transparent appearance-none border border-slate-800 w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
           />
         </div>
         <div className="mb-3">
@@ -450,7 +450,7 @@ function checkTime() {
               value={events.start_time}
               onChange={handleTextChange} 
               required
-              className={`${timeError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
+              className={`${timeError ? "border-red-600" : "border-slate-800"} border shadow bg-transparent appearance-none  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
             />
          </div>
           <div className="mb-3">
@@ -464,7 +464,7 @@ function checkTime() {
             value={events.end_time}
             onChange={handleTextChange}
             required
-            className={`${timeError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
+            className={`${timeError ? "border-red-600" : "border-slate-800"} border shadow bg-transparent appearance-none py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
             />
           </div>
         </div>
@@ -480,7 +480,7 @@ function checkTime() {
               onChange={handleTextChange} 
               value={events.max_people}
               required
-              className={`${maxError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
+              className={`${maxError ? "border-red-600" : "border-slate-800"} border shadow bg-transparent appearance-none py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
               />
           </div>
           <div>
@@ -525,7 +525,7 @@ function checkTime() {
                   }
                   onChange={handleTextChange}
                   required
-                  className="shadow bg-transparent appearance-none border sm:w-full py-2 pl-3 mr-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                  className="shadow bg-transparent appearance-none border border-slate-800 sm:w-full py-2 pl-3 mr-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
                 >
                   <option value="">Select a category</option>
                   {category.map((option) => (
@@ -566,7 +566,7 @@ function checkTime() {
                   value={events.age_restriction}
                   onChange={handleTextChange}
                   required
-                  className="shadow bg-transparent appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                  className="shadow bg-transparent appearance-none border border-slate-800 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
                 >
                   <option value="">Select Option</option>
                   <option value={true}>True</option>
@@ -587,7 +587,7 @@ function checkTime() {
                       id="age_min"
                       value={events.age_min}
                       onChange={handleTextChange}
-                      className="shadow bg-transparent appearance-none border py-2 px-3 sm:mx-2 sm:w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                      className="shadow bg-transparent appearance-none border border-slate-800 py-2 px-3 sm:mx-2 sm:w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
                     />
                   </div>
                   {ageError && <p style={{ color: "red" }}>{ageError}</p>}
@@ -604,7 +604,7 @@ function checkTime() {
                       id="age_max"
                       value={events.age_max}
                       onChange={handleTextChange}
-                      className="shadow bg-transparent appearance-none border py-2 px-3 sm:mx-2 sm:w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                      className="shadow bg-transparent appearance-none border border-slate-800 py-2 px-3 sm:mx-2 sm:w-20 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
                     />
                   </div>
                 </div>
@@ -624,7 +624,7 @@ function checkTime() {
                 id="location_image"
                 value={events.location_image}
                 onChange={handleTextChange}
-                className="shadow bg-transparent appearance-none border sm:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                className="shadow bg-transparent appearance-none border border-slate-800 sm:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
               />
             </div>
             <div className="mb-3">
@@ -640,7 +640,7 @@ function checkTime() {
                 value={events.summary}
                 onChange={handleTextChange}
                 required
-                className="shadow bg-transparent appearance-none border sm:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
+                className="shadow bg-transparent appearance-none border border-slate-800 sm:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
               />
                <p className={`${events?.summary.length >= 250 ? 'text-red-700' : null}  bottom-5 left-3 text-sm`}>
                         {events?.summary.length}/250 characters

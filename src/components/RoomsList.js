@@ -226,7 +226,7 @@ return (
     value={search}
     onChange={handleFilter}
     required
-    className="rounded-l sm:w-96 focus:border-transparent focus:ring-0"
+    className="rounded-l sm:w-96 focus:border-transparent focus:ring-0 border border-slate-800 py-2 pl-1"
   />
   <button type="submit" className=" bg-cyan-400 px-4 py-2 shadow-md rounded-r border border-gray-800  hover:border-cyan-400">Chat</button>
   {filterUsers.length !== 0 && (
@@ -275,8 +275,8 @@ return (
       </div>
     )})
   ) : (
-    <div className='w-[75%] flex flex-col justify-center items-center'>
-      <h2 className="font-bold text-base text-center ml-10">No conversation yet, send a message to get started!</h2>
+    <div className='w-[75%] flex flex-col justify-center items-center ml-14'>
+      <h2 className="font-bold text-base text-center">No conversation yet, send a message to get started!</h2>
       <Lottie animationData={animationData} />
     </div>
   )}
@@ -290,7 +290,7 @@ return (
       value={newChat.content}
       placeholder="Message..."
       onChange={handleTextChange}
-      className="rounded-md sm:w-96 border-2 border-black focus:border-cyan-400 focus:ring-0"
+      className="rounded-md sm:w-96 border-2 border-slate-800 px-1 py-2 focus:border focus:border-cyan-400"
       />
      <button type="submit" className="mx-1 hover:text-cyan-400 font-bold"><AiOutlineSend size={30}/></button>
       </form>) : (

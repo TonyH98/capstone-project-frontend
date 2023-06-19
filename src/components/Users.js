@@ -73,7 +73,7 @@ export default function Users() {
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
-      <h1 className="text-2xl font-semibold">All Users</h1>
+      <h1 className="text-2xl text-gray-700 font-semibold">All Users</h1>
       <div className="search-bar">
         <label htmlFor="search">Search</label>
         <input
@@ -82,7 +82,7 @@ export default function Users() {
           id="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="sm:w-96 rounded-md mx-1"
+          className="sm:w-96 rounded-lg mx-1 my-2 py-2 px-1 shadow-md"
         />
       </div>
       <div className="flex flex-col gap-6 sm:w-full md:w-[65%] p-4">
