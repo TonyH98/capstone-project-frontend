@@ -518,7 +518,7 @@ const hostId = hosts.map((host) => {
                     />
                   </div>
                 ) : null}
-              <h2 className="mt-1 text-cyan-600 text-lg">@ {eventInfo?.location}</h2>
+              <h2 className=" text-cyan-600 text-xl">@ {eventInfo?.location}</h2>
               </div>
               {openTitleEdit ? 
                 <TitleEditModal 
@@ -538,8 +538,6 @@ const hostId = hosts.map((host) => {
                 <span className="text-sm text-blue-800 font-bold">
                   {eventInfo?.start_time.charAt(0) === '0' ? `${eventInfo?.start_time.slice(1)}` : `${eventInfo?.start_time}`} - {eventInfo?.end_time.charAt(0) === '0' ? `${eventInfo?.end_time.slice(1)}` : `${eventInfo?.end_time}`}
                 </span>
-              </h2>
-              <h2 className="">Address: {eventInfo?.address}</h2>
               {
                 editMode ? 
                   <BsPencilFill 
@@ -548,6 +546,8 @@ const hostId = hosts.map((host) => {
                   />
                   : null
               }
+              </h2>
+              <h2 className="">Address: {eventInfo?.address}</h2>
           
             </div>
           </div>
