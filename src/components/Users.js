@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import User from "./User";
@@ -9,50 +9,60 @@ import useLocalStorage from "../hooks/useLocalStorage";
 const API = process.env.REACT_APP_API_URL;
 
 export default function Users() {
-  const [users, setUsers] = useLocalStorage("users", []);
+  const [search, setSearch] = useState("");
+  const [users, setUsers] = useState([]);
   const { loggedInUser, setLoggedInUser } = useUser();
 
-  const [filterEvents, setFilterEvents] = useState([]);
+  const location = useLocation()
 
-  const [search, setSearch] = useState("");
+  const queryParams = new URLSearchParams(location.search);
+  const categoryFilter = queryParams.get('categories.category_id')
 
   // useEffect makes get request for all Users
   useEffect(() => {
-    axios
-      .get(`${API}/users`)
-      .then((res) => {
-        setUsers(res.data);
-        setFilterEvents(res.data);
-      })
-      .catch((c) => console.warn("catch, c"));
-  }, []);
-
-  useEffect(() => {
-    if (search === "") {
-      axios.get(`${API}/users`).then((res) => {
-        setFilterEvents(res.data);
-        setUsers(res.data);
+    let filteredUsers = users;
+  
+    if (search) {
+      const searchQuery = search.toLowerCase();
+      filteredUsers = users.filter((user) => {
+        const { username, first_name, last_name, email } = user;
+        const fullName = `${first_name.toLowerCase()} ${last_name.toLowerCase()}`;
+  
+        return (
+          username.toLowerCase().includes(searchQuery) ||
+          email.toLowerCase().includes(searchQuery) ||
+          fullName.includes(searchQuery)
+        );
       });
-    } else {
-      const filterUsers = users.filter((user) => {
-        const { username } = user;
-        const {first_name} = user;
-        const {last_name} = user;
-        const { email } = user;
-
-        const usernameMatch = username.toLowerCase().includes(search.toLowerCase());
-
-        const emailMatch = email.toLowerCase().includes(search.toLowerCase());
-
-        const fullName = `${first_name.toLowerCase()} ${last_name.toLowerCase()}`
-
-        const fullNameMatch = fullName.includes(search.toLowerCase())
-        return usernameMatch || emailMatch || fullNameMatch
-      });
-
-      setUsers(filterUsers);
     }
-  }, [search]);
+  
+    setUsers(filteredUsers);
+  }, [search, users]);
+  
+  useEffect(() => {
+    if (categoryFilter) {
+      axios
+        .get(`${API}/users`, {
+          params: { 'categories.category_id': categoryFilter },
+        })
+        .then((res) => {
+          setUsers(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      axios
+        .get(`${API}/users`)
+        .then((res) => {
+          setUsers(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [categoryFilter]);
+  
 
   console.log(users);
 
@@ -84,3 +94,4 @@ export default function Users() {
     </div>
   );
 }
+
