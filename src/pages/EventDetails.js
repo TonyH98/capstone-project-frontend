@@ -518,7 +518,7 @@ const hostId = hosts.map((host) => {
                     />
                   </div>
                 ) : null}
-              <h2 className="mt-1 text-cyan-600 text-lg">@ {eventInfo?.location}</h2>
+              <h2 className=" text-cyan-600 text-xl">@ {eventInfo?.location}</h2>
               </div>
               {openTitleEdit ? 
                 <TitleEditModal 
@@ -538,8 +538,6 @@ const hostId = hosts.map((host) => {
                 <span className="text-sm text-blue-800 font-bold">
                   {eventInfo?.start_time.charAt(0) === '0' ? `${eventInfo?.start_time.slice(1)}` : `${eventInfo?.start_time}`} - {eventInfo?.end_time.charAt(0) === '0' ? `${eventInfo?.end_time.slice(1)}` : `${eventInfo?.end_time}`}
                 </span>
-              </h2>
-              <h2 className="">Address: {eventInfo?.address}</h2>
               {
                 editMode ? 
                   <BsPencilFill 
@@ -548,6 +546,8 @@ const hostId = hosts.map((host) => {
                   />
                   : null
               }
+              </h2>
+              <h2 className="">Address: {eventInfo?.address}</h2>
           
             </div>
           </div>
@@ -748,7 +748,7 @@ const hostId = hosts.map((host) => {
   ) : (
     <>
       <button
-        className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        className={`${eventState?.interested ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800`}
         onClick={addToInterest} 
       >
         Interested
@@ -756,7 +756,7 @@ const hostId = hosts.map((host) => {
             <AiFillStar className={`${eventState?.interested ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
       </button>
       <button
-        className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        className={`${eventState?.rsvp ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800`}
         onClick={addToRsvp}
       >
         RSVP

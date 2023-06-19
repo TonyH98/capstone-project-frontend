@@ -184,10 +184,10 @@ console.log(isSelected)
                   className="inline text-cyan-800 cursor-pointer float-right mt-2"
                 />
               </div>
-              <section className="w-52 h-12 relative flex flex-row">
-                <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{loggedInUser?.bio}</p>
-                <ImQuotesRight className="text-orange-600 " />
+              <section className="h-12 relative block">
+                <ImQuotesLeft className="text-orange-600 text-sm inline" />
+                <p className="px-4 inline">{loggedInUser?.bio}</p>
+                <ImQuotesRight className="text-orange-600 inline text-sm" />
               </section>
             </div>
           </div>
@@ -202,7 +202,6 @@ console.log(isSelected)
           ) : null}
         </div>
       </div>
-
       <div>
         {friendsRequest[0] &&
           friendsRequest.map((request) => {
@@ -285,7 +284,7 @@ console.log(isSelected)
                 >
                 Add
               </button>
-              {userEvents.length > 0 && !editEvents ? (
+              {userEvents.length > 0 ? userEvents.length && !editEvents ? (
                 <button
                   onClick={() => setEditEvents(!editEvents)}  
                   className="absolute right-3 bottom-3"
@@ -301,7 +300,7 @@ console.log(isSelected)
                 >
                   <BsTrash />
                 </button>
-              )}
+              ) : null }
           </div>
         </fieldset>
 
