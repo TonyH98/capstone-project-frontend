@@ -206,29 +206,6 @@ console.log(isSelected)
           ) : null}
         </div>
       </div>
-
-      <div>
-        {friendsRequest[0] &&
-          friendsRequest.map((request) => {
-            return (
-              <div key={request.id}>
-                <img
-                  src={request?.profile_img}
-                  alt="profile-pic"
-                  className="w-20 h-30"
-                />{" "}
-                {request.first_name} {request.last_name}{" "}
-                <button onClick={() => acceptRequest(request.id)}>
-                  Accept
-                </button>{" "}
-                {""}{" "}
-                <button onClick={() => declineRequest(request.id)}>
-                  Decline
-                </button>
-              </div>
-            );
-          })}
-      </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
           className={`w-3/4 border relative shadow-sm m-auto mb-8 ${
@@ -357,6 +334,35 @@ console.log(isSelected)
           >
             Add
           </button>
+        </fieldset>
+        <fieldset className={`w-3/4 border relative shadow-sm m-auto mt-8 ${friendsRequest[0]} ? 'h-52' : 'h-20'`}>
+          <legend className="px-3 text-left ml-8">Friends Requests</legend>
+          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
+        {friendsRequest[0] ? (
+          friendsRequest.map((request) => {
+            return (
+              <div key={request.id} className="flex flex-col justify-center items-center">
+                <img
+                  src={request?.profile_img}
+                  alt="profile-pic"
+                  className="w-16 h-15 rounded-full"
+                />
+                <p className="text-sm font-semibold">{request.first_name} {request.last_name}</p>
+                <div>
+                <button onClick={() => acceptRequest(request.id)} className="text-xs text-white bg-indigo-500 hover:bg-blue-800 hover:font-semibold p-1 rounded-md">
+                  Accept
+                </button>{" "}
+                {""}{" "}
+                <button onClick={() => declineRequest(request.id)} className="text-xs text-white bg-red-400 hover:bg-red-500 hover:font-semibold p-1 rounded-md">
+                  Decline
+                </button>
+                </div>
+              </div>
+            );
+          })) : (
+            <p className="ml-5 py-3 text-gray-400">No friend requests.</p>
+          )}
+      </div>
         </fieldset>
       </form>
     </>

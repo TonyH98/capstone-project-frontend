@@ -55,7 +55,7 @@ function TitleEditModal({ eventInfo, updatedEventInfo, handleTextChange, handleE
         </div>
         <button
           type="button"
-          className="border bg-emerald-500 rounded-md text-white rounded shadow px-8 py-1 position absolute right-10 bottom-3"
+          className="border bg-emerald-500 text-white rounded shadow px-8 py-1 position absolute right-10 bottom-3"
           onClick={handleEdit}
         >
           Save
