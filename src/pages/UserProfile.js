@@ -69,6 +69,11 @@ function UserProfile() {
       });
     }
   }, [loggedInUser?.id]);
+  
+  useEffect(()=>{
+    setLoggedInUser(loggedInUser)
+  },[loggedInUser?.id]);
+
 
   useEffect(() => {
     if (loggedInUser?.id) {
