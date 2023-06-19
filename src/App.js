@@ -4,7 +4,6 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import app from "./firebase";
 import axios from "axios";
 
-import "flowbite";
 import "./App.css";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
@@ -94,7 +93,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Landing loggedin={loggedin} />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
+              <Route
+                path="/signup"
+                element={<SignUp setLoggedin={setLoggedin} />}
+              />
               {/* 
               Comment in when useParams is set up and remove UserProfile below
               <Route path='/profile/:id' element={<UserProfile />} /> 
@@ -103,7 +105,10 @@ function App() {
               <Route path="/profile/:username" element={<OtherProfile />} />
               <Route path="/devs" element={<Devs />} />
               <Route path="/events" element={<ShowEvents />} />
-              <Route path="/events/new" element={<NewEvent users={loggedInUser}/>} />
+              <Route
+                path="/events/new"
+                element={<NewEvent users={loggedInUser} />}
+              />
               <Route path="/users" element={<ShowUsers />} />
 
               <Route
@@ -120,18 +125,17 @@ function App() {
               />
               <Route
                 path="/chats"
-                element={
-                  <ShowRoom
-                   users={loggedInUser}
-                  />
-                }
+                element={<ShowRoom users={loggedInUser} />}
               />
               <Route path="/room/:id" />
               {/* 
               Comment in when useParams is set up and remove EventDetails below
               <Route path='/events/:id' element={<EventDetails />} /> 
               */}
-              <Route path="/events/:id" element={<EventDetails users={loggedInUser}/>} />
+              <Route
+                path="/events/:id"
+                element={<EventDetails users={loggedInUser} />}
+              />
               <Route path="/map" element={<Map />} />
             </Routes>
           </main>

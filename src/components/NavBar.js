@@ -5,12 +5,11 @@ import { RiHomeLine } from "react-icons/ri";
 import { HiOutlineUsers } from "react-icons/hi";
 import { FiMessageCircle } from "react-icons/fi";
 import { MdNotificationsNone } from "react-icons/md";
-import { IoMdNotificationsOutline } from "react-icons/io"
+import { IoMdNotificationsOutline } from "react-icons/io";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../utils/appUtils";
-import "./NavBar.css";
 import axios from "axios";
 import app from "../firebase";
 
@@ -28,11 +27,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
   const { loggedInUser } = useUser();
   const auth = getAuth(app);
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     window
@@ -142,9 +137,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                   <span className="flex flex-col items-center justify-center">
                     <IoMdNotificationsOutline size={20} />
                   </span>
-                  <span className="text-gray-900 hover:text-white">
-                    Inbox
-                  </span>
+                  <span className="text-gray-900 hover:text-white">Inbox</span>
                 </Link>
               </li>
             </ul>
@@ -208,7 +201,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                   active === 3 ? "bg-cyan-400" : "bg-cyan-200"
                 } rounded-full p-2 shadow-lg`}
               >
-                <Link 
+                <Link
                   to={`/personalprofile`}
                   className="hover:text-white"
                   aria-current="page"
@@ -216,9 +209,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                   <span className="flex flex-col items-center justify-center">
                     <IoMdNotificationsOutline size={20} />
                   </span>
-                  <span className="text-gray-900 hover:text-white">
-                    Inbox
-                  </span>
+                  <span className="text-gray-900 hover:text-white">Inbox</span>
                 </Link>
               </li>
             </ul>
@@ -226,19 +217,31 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
         </div>
       )}
       <div className="flex" id="navbar-dropdown">
+        {/* <button className="p-2">
+          <GrNotification />
+          {friendsRequest}
+        </button> */}
         <ul className="flex justify-center items-center gap-10 pr-4 text-sm">
-          <li className="">
+          <li className="relative">
             <button
               id="dropdownNavbarLink"
-              data-dropdown-toggle="dropdownNavbar"
-              className="flex items-center justify-between text-base font-bold "
+              className="flex items-center justify-between text-base font-bold"
             >
-              {dropdownText}
+              {loggedin ? (
+                <Link to="/personalprofile" className="ml-1">
+                  {loggedInUser.username}
+                </Link>
+              ) : (
+                <Link to="/login" className="ml-1">
+                  Login
+                </Link>
+              )}
               <svg
-                className="w-5 h-5 ml-1"
+                className="w-5 h-5"
                 aria-hidden="true"
                 fill="currentColor"
                 viewBox="0 0 20 20"
+                onClick={() => setShowDropdown(!showDropdown)}
               >
                 <path
                   fillRule="evenodd"
@@ -247,33 +250,37 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                 ></path>
               </svg>
             </button>
-            {/* <!-- Dropdown menu --> */}
-            <div
-              id="dropdownNavbar"
-              className="hidden bg-[#3bd4ee] -z-50 divide-y divide-gray-100 rounded-b-lg w-32"
-            >
-              <ul className="py-4 mt-1" aria-labelledby="dropdownLargeButton">
-                {!loggedin ? (
-                  <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                    <Link to="/login">Login</Link>
-                  </li>
-                ) : (
-                  <div>
+            {/* Dropdown menu */}
+            {showDropdown && (
+              <div
+                id="dropdownNavbar"
+                className="absolute right-0 mt-2 bg-[#3bd4ee] -z-50 divide-y divide-gray-100 rounded-b-lg w-32"
+              >
+                <ul className="py-4 mt-1" aria-labelledby="dropdownLargeButton">
+                  {!loggedin ? (
                     <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                      <Link to="/personalprofile">{loggedInUser.username}</Link>
+                      <Link to="/login">Login</Link>
                     </li>
-                    <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                      <button onClick={handleSignOut}>Sign Out</button>
-                    </li>
-                  </div>
-                )}
-                <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                  <Link to="/devs" className="">
-                    About Devs
-                  </Link>
-                </li>
-              </ul>
-            </div>
+                  ) : (
+                    <div>
+                      {/* <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                        <Link to="/personalprofile">
+                          {loggedInUser.username}
+                        </Link>
+                      </li> */}
+                      <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                        <button onClick={handleSignOut}>Sign Out</button>
+                      </li>
+                    </div>
+                  )}
+                  {/* <li className="block px-4 py-2 hover:bg-[#f5fefd]">
+                    <Link to="/devs" className="">
+                      About Devs
+                    </Link>
+                  </li> */}
+                </ul>
+              </div>
+            )}
           </li>
         </ul>
       </div>
