@@ -32,26 +32,26 @@ function TitleEditModal({ eventInfo, updatedEventInfo, handleTextChange, handleE
               : <option value={false}> False </option>
             }
           </select>
-            {updatedEventInfo?.age_restriction ? (
-                <div className="inline">
-                <label htmlFor="age_min">Min</label>
-                <input
-                    type="number"
-                    id="age_min"
-                    value={updatedEventInfo?.age_min}
-                    onChange={handleTextChange}
-                    className="w-14 pr-1 mr-2 text-center rounded h-8 bg-gray-100 ml-1"
-                />
-                <label htmlFor="age_max">Max</label>
-                <input
-                    type="number"
-                    id="age_max"
-                    value={updatedEventInfo.age_max}
-                    onChange={handleTextChange}
-                    className="w-14 pr-1 text-center rounded h-8 bg-gray-100 ml-1"
-                />
-                </div>
-            ) : null}
+          {updatedEventInfo.age_restriction ? (
+  <div className="inline">
+    <label htmlFor="age_min">Min</label>
+    <input
+      type="number"
+      id="age_min"
+      value={updatedEventInfo.age_min}
+      onChange={handleTextChange}
+      className="w-14 pr-1 mr-2 text-center rounded h-8 bg-gray-100 ml-1"
+    />
+    <label htmlFor="age_max">Max</label>
+    <input
+      type="number"
+      id="age_max"
+      value={updatedEventInfo.age_max}
+      onChange={handleTextChange}
+      className="w-14 pr-1 text-center rounded h-8 bg-gray-100 ml-1"
+    />
+  </div>
+) : null}
         </div>
         <button
           type="button"

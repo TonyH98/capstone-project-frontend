@@ -41,16 +41,20 @@ let eventDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice(0
         <div className="p-3 pl-6 w-3/4">
           <Link to={`/events/${event?.id}`}>
             <h2 className="text-lg font-semibold inline">{event.title}</h2>
-            <p className="text-cyan-500 text-sm inline ml-2">@{event.location}</p>
+            <p className="text-cyan-500 text-sm inline ml-2 truncate">@{event.location}</p>
           </Link>
           <div className="flex">
             <p className="font-semibold text-[12px] bg-pink-400 text-white px-2 rounded-full py-0.5 border border-pink-300 text-xs">{eventDate}&nbsp;</p>
-            <p className="font-semibold text-[12px] py-1 text-xs">&nbsp;&nbsp;{event.start_time}{"-"}</p>
-            <p className="font-semibold text-[12px] py-1 text-xs">{event.end_time}</p>
+            <p className="font-semibold text-[12px] py-1 text-xs">
+              &nbsp;&nbsp;{event.start_time.charAt(0) === '0' ? `${event.start_time.slice(1)}` : `${event.start_time}`}{"-"}
+            </p>
+            <p className="font-semibold text-[12px] py-1 text-xs">
+              {event.end_time.charAt(0) === '0' ? `${event.end_time.slice(1)}` : `${event.end_time}`}
+            </p>
           </div>
           <div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1">
             {event.category_names.map((category) => {
               return(
                 <div key={category.id} className="text-xs text-white bg-indigo-500 py-1 px-2 my-1 rounded-full">
@@ -67,7 +71,7 @@ let eventDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice(0
               /> 
           <p className="inline text-xs">{event?.creator[0].username}</p>
           </div>
-          <p className="text-sm mt-1 h-10 border w-[360px] text-ellipsis overflow-hidden"><b>Summary: </b>{event.summary}</p>
+          <p className="text-sm mt-1 h-10 w-[360px] text-ellipsis overflow-hidden"><b>Summary: </b>{event.summary.length > 80 ? `${event.summary.substring(0,80)}...` : `${event.summary}`}</p>
           {/* <p className="inline">...</p> */}
         </div>
       </div>

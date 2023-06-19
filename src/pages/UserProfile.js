@@ -58,7 +58,7 @@ function UserProfile() {
         setCategories(res.data);
       })
       .catch((c) => console.warn("catch, c"));
-  });
+  }, []);
 
   useEffect(() => {
     if (loggedInUser?.id) {
@@ -177,10 +177,10 @@ function UserProfile() {
                   className="inline text-cyan-800 cursor-pointer float-right mt-2"
                 />
               </div>
-              <section className="w-52 h-12 relative flex flex-row">
-                <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{loggedInUser?.bio}</p>
-                <ImQuotesRight className="text-orange-600 " />
+              <section className="h-12 relative block">
+                <ImQuotesLeft className="text-orange-600 text-sm inline" />
+                <p className="px-4 inline">{loggedInUser?.bio}</p>
+                <ImQuotesRight className="text-orange-600 inline text-sm" />
               </section>
             </div>
           </div>
@@ -195,7 +195,6 @@ function UserProfile() {
           ) : null}
         </div>
       </div>
-
       <div>
         {friendsRequest[0] &&
           friendsRequest.map((request) => {
@@ -227,16 +226,15 @@ function UserProfile() {
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
             <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3">
-              {sortCategory.map((item, index) => (
-                <button
-                  type="button"
-                  key={index}
-                  // onClick={() => navigate(`\events\:${item}`)}
-                  className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  {item.name}
-                </button>
-              ))}
+              {sortCategory.map((category) => {
+                return(
+                  <Link to={`/users?categories.category_id=${encodeURIComponent(category?.category_id)}`}>
+                  <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full text-sm px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2 mb-1">
+                  {category.name}
+                  </div>
+                  </Link>
+                )
+              })}
             </div>
             <button
               type="button"
@@ -289,7 +287,23 @@ function UserProfile() {
               >
                 <BsTrash />
               </button>
-            )}
+              {userEvents.length > 0 ? userEvents.length && !editEvents ? (
+                <button
+                  onClick={() => setEditEvents(!editEvents)}  
+                  className="absolute right-3 bottom-3"
+                  type="button"
+                >
+                  <BsPencilSquare />
+                </button>
+              ): (
+                <button 
+                  onClick={deleteMultiple}
+                  className="absolute right-3 bottom-3"
+                  type='button'
+                >
+                  <BsTrash />
+                </button>
+              ) : null }
           </div>
         </fieldset>
 

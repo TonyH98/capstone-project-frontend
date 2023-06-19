@@ -41,7 +41,7 @@ function SignUp({ setLoggedIn }) {
     email: "",
     password: "",
     age: "",
-    pronouns: "Default",
+    pronouns: "",
     bio: "About Me",
 
     profile_img:

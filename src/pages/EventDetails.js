@@ -48,6 +48,7 @@ export default function EventDetails({users, categoryQuery}) {
   const [ openAttendeesEdit, setOpenAttendeesEdit ] = useState(false)
   const [ showSearch, setShowSearch ] = useState(false)
 
+  const [eventState , setEventState] = useState({})
 
   const creator = eventInfo?.creator[0].id;
   const [ userMain, setUser ] = useLocalStorage("user", {});
@@ -73,6 +74,18 @@ export default function EventDetails({users, categoryQuery}) {
     .catch((c) => console.warn("catch, c"));
   }, [eventInfo?.id]);
   
+  useEffect(() => {
+    if(users?.id){
+      axios
+      .get(`${API}/users/${users?.id}/events/${id}`)
+      .then((res) => {
+        setEventState(res.data)
+      })
+    }
+  }, [users?.id])
+
+  console.log(eventState)
+
   useEffect(() => {
     if (users?.id) {	    
       axios.get(`${API}/friends/${users?.id}/list`)
@@ -169,6 +182,17 @@ export default function EventDetails({users, categoryQuery}) {
     );
   };
 
+
+  // useEffect(() => {
+  //   if(users?.id){
+  //     axios
+  //     .get(`${API}/users/${users?.id}/events/${id}`)
+  //     .then((res) => {
+  //       setEventState(res.data)
+  //     })
+  //   }
+  // }, [users?.id])
+
   console.log('rvsp', eventInfo?.rsvp)
   // function that adds event to user profile as interested
   function addToInterest() {
@@ -180,9 +204,12 @@ export default function EventDetails({users, categoryQuery}) {
           rsvp: false,
           selected: false,
         })
-        .then((res) => {
-          setUserEvent(res.data);
-          setInterest('interested')
+        .then(() => {
+          axios
+          .get(`${API}/users/${users?.id}/events/${id}`)
+          .then((res) => {
+            setEventState(res.data)
+          })
         })
         .then(() => {
           axios
@@ -213,8 +240,11 @@ export default function EventDetails({users, categoryQuery}) {
               selected: false,
             })
             .then((res) => {
-              setUserEvent(res.data);
-              setInterest('interested')
+              axios
+              .get(`${API}/users/${users?.id}/events/${id}`)
+              .then((res) => {
+                setEventState(res.data)
+              })
             })
             .then(() => {
               axios
@@ -281,8 +311,11 @@ export default function EventDetails({users, categoryQuery}) {
           selected: false,
         })
         .then((res) => {
-          setUserEvent(res.data);
-          setInterest('rsvp')
+          axios
+          .get(`${API}/users/${users?.id}/events/${id}`)
+          .then((res) => {
+            setEventState(res.data)
+          })
         })
         .then(() => {
               axios
@@ -306,8 +339,11 @@ export default function EventDetails({users, categoryQuery}) {
               selected: false,
             })
             .then((res) => {
-              setUserEvent(res.data);
-              setInterest('rsvp')
+              axios
+          .get(`${API}/users/${users?.id}/events/${id}`)
+          .then((res) => {
+            setEventState(res.data)
+          })
             })
             .then(() => {
               axios
@@ -338,7 +374,27 @@ export default function EventDetails({users, categoryQuery}) {
       } else {
         e.target.value = value.substr(0, 250); // Truncate the new input to 250 characters
       }
-    } else {
+    } 
+     else if (e.target.id === "age_restriction"){
+      const {value} = e.target
+      const ageRestriction = value === "true"
+
+      if(!ageRestriction){
+        setUpdatedEventInfo((prevEvent) => ({
+          ...prevEvent,
+          age_restriction: ageRestriction,
+          age_min: 0,
+        age_max: 0,
+        }))
+      }
+      else{
+        setUpdatedEventInfo((prevEvent) => ({
+          ...prevEvent,
+          age_restriction: ageRestriction,
+        }));
+      }
+    }
+    else {
       setUpdatedEventInfo({ ...updatedEventInfo, [e.target.id]: e.target.value });
       console.log(updatedEventInfo.date_event);
     }
@@ -412,7 +468,7 @@ const hostId = hosts.map((host) => {
             <img
               src={eventInfo?.location_image}
               alt="event photo"
-              className="max-h-96 max-w-96 mt-12"
+              className="max-h-96 w-96 mt-12 object-fit"
             />
             <div className="w-36 tooltip absolute left-0 bottom-3">
             {
@@ -462,6 +518,7 @@ const hostId = hosts.map((host) => {
                     />
                   </div>
                 ) : null}
+              <h2 className=" text-cyan-600 text-xl">@ {eventInfo?.location}</h2>
               </div>
               {openTitleEdit ? 
                 <TitleEditModal 
@@ -478,10 +535,9 @@ const hostId = hosts.map((host) => {
                 <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
                   {eventDate}
                 </span>
-                <span className="text-sm text-blue-800">
-                  @ {eventInfo?.start_time} - {eventInfo?.end_time}
+                <span className="text-sm text-blue-800 font-bold">
+                  {eventInfo?.start_time.charAt(0) === '0' ? `${eventInfo?.start_time.slice(1)}` : `${eventInfo?.start_time}`} - {eventInfo?.end_time.charAt(0) === '0' ? `${eventInfo?.end_time.slice(1)}` : `${eventInfo?.end_time}`}
                 </span>
-              </h2>
               {
                 editMode ? 
                   <BsPencilFill 
@@ -490,8 +546,9 @@ const hostId = hosts.map((host) => {
                   />
                   : null
               }
-              <h2 className="mt-1">Location: {eventInfo?.location}</h2>
-              <h2 className="mt-1">Address: {eventInfo?.address}</h2>
+              </h2>
+              <h2 className="">Address: {eventInfo?.address}</h2>
+          
             </div>
           </div>
           {
@@ -506,7 +563,7 @@ const hostId = hosts.map((host) => {
               />
               : null
           }
-          <h2>
+          <h2 className="mt-1">
             Categories:
             {eventInfo?.category_names
               ? eventInfo.category_names.map((category) => {
@@ -555,7 +612,7 @@ const hostId = hosts.map((host) => {
                 <img 
                   src={eventInfo?.creator[0].profile_img}
                   alt="profile image"
-                  className="h-7 w-7 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500"
+                  className="h-12 w-12 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
                 /> 
                 {eventInfo?.creator[0].username}
               </Link>
@@ -691,20 +748,20 @@ const hostId = hosts.map((host) => {
   ) : (
     <>
       <button
-        className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        className={`${eventState?.interested ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800`}
         onClick={addToInterest} 
       >
         Interested
           <span className="text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-            <AiFillStar className={`${ interest === 'interested' ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
+            <AiFillStar className={`${eventState?.interested ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
       </button>
       <button
-        className="text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        className={`${eventState?.rsvp ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800`}
         onClick={addToRsvp}
       >
         RSVP
           <span className="text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-            <AiFillCheckCircle className={`${interest === 'rsvp' ? 'text-green-400' : 'text-gray-400' } text-xl focus:text-green-400`}/>
+            <AiFillCheckCircle className={`${ eventState?.rsvp ? 'text-green-400' : 'text-gray-400' } text-xl focus:text-green-400`}/>
       </button>
     </>
   )}
@@ -771,7 +828,7 @@ const hostId = hosts.map((host) => {
       <div>
 
         
-        <h2>Comments</h2>
+        <h2 className="pl-4 text-lg">Comments</h2>
         <CommentSection users={users} id={id}/> 
       </div>
     </div>

@@ -162,10 +162,10 @@ function OtherProfile() {
               <div className="align-middle inline">
                 <p className="text-left font-bold inline">Bio</p>
               </div>
-              <section className="w-52 h-12 relative flex flex-row">
-                <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{profileInfo?.bio}</p>
-                <ImQuotesRight className="text-orange-600 " />
+              <section className="h-12 relative block">
+                <ImQuotesLeft className="text-orange-600 inline text-sm" />
+                <p className="px-4 inline">{profileInfo?.bio}</p>
+                <ImQuotesRight className="text-orange-600 inline text-sm" />
               </section>
             </div>
             <div className="absolute right-20">
@@ -193,7 +193,7 @@ function OtherProfile() {
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
-          className={`w-3/4 border relative shadow-sm m-auto mb-8 h-20`}
+          className={`w-3/4 border relative shadow-sm m-auto mb-8 h-30`}
         >
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
