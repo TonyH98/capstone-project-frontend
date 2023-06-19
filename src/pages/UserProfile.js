@@ -284,7 +284,7 @@ console.log(isSelected)
                 >
                 Add
               </button>
-              {userEvents.length > 0 && !editEvents ? (
+              {userEvents.length > 0 ? userEvents.length && !editEvents ? (
                 <button
                   onClick={() => setEditEvents(!editEvents)}  
                   className="absolute right-3 bottom-3"
@@ -300,7 +300,7 @@ console.log(isSelected)
                 >
                   <BsTrash />
                 </button>
-              )}
+              ) : null }
           </div>
         </fieldset>
 
