@@ -573,7 +573,7 @@ const hostId = hosts.map((host) => {
                     <div
                     key={category.id}
                       // update route for events sorted by category
-                      className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full text-sm px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2 mb-1"
+                      className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2 mb-1"
                     >
                       {category.name}
                     </div>

@@ -1,5 +1,6 @@
 
 import Events from "../components/Events";
+import Footer from "../components/Footer";
 import "../components/events.css";
 
 // This will be the page on the wireframe that displays all of the events. The search bar, event cards, the map plugin, and the categories
@@ -12,6 +13,7 @@ export default function ShowEvents() {
   return (
     <div className="bg-none">
       <Events />
+      {/* <Footer/> */}
     </div>
   );
 }
