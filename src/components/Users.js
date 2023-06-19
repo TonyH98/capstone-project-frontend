@@ -12,7 +12,7 @@ export default function Users() {
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState([]);
   const { loggedInUser, setLoggedInUser } = useUser();
-
+  const [filterUsers,setFilteredUsers] = useState([])
   const location = useLocation()
 
   const queryParams = new URLSearchParams(location.search);
@@ -36,7 +36,8 @@ export default function Users() {
       });
     }
   
-    setUsers(filteredUsers);
+    setFilteredUsers(filteredUsers); // Store the filtered users separately
+  
   }, [search, users]);
   
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function Users() {
         })
         .then((res) => {
           setUsers(res.data);
+          setFilteredUsers(res.data)
         })
         .catch((error) => {
           console.error(error);
@@ -67,7 +69,7 @@ export default function Users() {
   console.log(users);
 
   // This is used to ensure that the loggedinuser is not shown
-  const filteredUsers = users.filter((user) => user.id !== loggedInUser.id);
+  const filteredUsers = filterUsers.filter((user) => user.id !== loggedInUser.id);
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
