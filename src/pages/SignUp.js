@@ -175,7 +175,7 @@ function SignUp({ setLoggedIn }) {
 
   return (
     <div className="sm:w-full md:w-3/5 lg:w-2/5 md:m-auto mx-3 my-6 p-1">
-      <form className="bg-white text-slate-800 dark:text-slate-100 dark:bg-slate-900 shadow-md rounded px-10 pt-6 pb-8 mb-4 mt-6">
+      <form className="bg-white text-slate-800 shadow-md rounded px-10 pt-6 pb-8 mb-4 mt-6">
         <div className="mb-4">
           <div className="mb-4">
             <label

@@ -30,10 +30,14 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
   const auth = getAuth(app);
 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [overflow, setOverflow] = useState(false);
+  function handleOpen () {setOpen(true)};
+  function handleClose () {setOpen(false)}
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleDropdown = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   useEffect(() => {
     window

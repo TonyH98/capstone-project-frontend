@@ -573,7 +573,7 @@ const hostId = hosts.map((host) => {
                     <div
                     key={category.id}
                       // update route for events sorted by category
-                      className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2 mb-1"
+                      className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full px-3 py-1.5 text-center ml-2 mb-1"
                     >
                       {category.name}
                     </div>
@@ -723,7 +723,7 @@ const hostId = hosts.map((host) => {
       </>
     ) : (
       <button
-        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
         onClick={() => setEditMode(true)}
       >
         Edit
@@ -739,7 +739,7 @@ const hostId = hosts.map((host) => {
       </button>
     ) : (
       <button
-        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
         onClick={() => setEditMode(true)}
       >
         Edit
@@ -748,7 +748,7 @@ const hostId = hosts.map((host) => {
   ) : (
     <>
       <button
-        className={`${eventState?.interested ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800`}
+        className={`${eventState?.interested ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center`}
         onClick={addToInterest} 
       >
         Interested
@@ -756,7 +756,7 @@ const hostId = hosts.map((host) => {
             <AiFillStar className={`${eventState?.interested ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
       </button>
       <button
-        className={`${eventState?.rsvp ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800`}
+        className={`${eventState?.rsvp ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center`}
         onClick={addToRsvp}
       >
         RSVP
