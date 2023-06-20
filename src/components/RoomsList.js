@@ -226,7 +226,7 @@ return (
     value={search}
     onChange={handleFilter}
     required
-    className="rounded-l sm:w-96 focus:border-transparent focus:ring-0"
+    className="rounded-l py-2 px-2 border border-black sm:w-96 focus:border-transparent focus:ring-0"
   />
   <button type="submit" className=" bg-cyan-400 px-4 py-2 shadow-md rounded-r border border-gray-800  hover:border-cyan-400">Chat</button>
   {filterUsers.length !== 0 && (
@@ -290,7 +290,7 @@ return (
       value={newChat.content}
       placeholder="Message..."
       onChange={handleTextChange}
-      className="rounded-md sm:w-96 border-2 border-black focus:border-cyan-400 focus:ring-0"
+      className="rounded-md sm:w-96 border-2 px-2 py-2 border-black focus:border-cyan-400 focus:ring-0"
       />
      <button type="submit" className="mx-1 hover:text-cyan-400 font-bold"><AiOutlineSend size={30}/></button>
       </form>) : (

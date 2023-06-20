@@ -154,10 +154,10 @@ export default function Events() {
         <div className='w-30'></div>
        <div className='flex justify-center items-center ml-[10%]'>
        <div className='m-2'>
-          <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'>
+          <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md py-2 px-1'>
             <option value=''>Sort date</option>
-            <option value='Latest to Earliest'>Latest to Earliest</option>
             <option value='Earliest to Latest'>Earliest to Latest</option>
+            <option value='Latest to Earliest'>Latest to Earliest</option>
           </select>
         </div>
        <div className='m-2'>
@@ -167,7 +167,7 @@ export default function Events() {
           value={searchFilter}
           placeholder='Search by host or title or location'
           onChange={(e) => setSearchFilter(e.target.value)}
-          className=' w-96 border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'
+          className=' w-96 border-transparent py-2 px-1 my-3 focus:border-transparent focus:ring-0 shadow-lg rounded-md'
           />
         </div>
        </div>
@@ -186,7 +186,7 @@ export default function Events() {
             removeCategory(category.name);
             applyFilters();
           }}
-          className='inline shadow text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+          className='inline shadow text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2'
         >
           {category.name}
         </button>
@@ -197,7 +197,7 @@ export default function Events() {
             addCategory(category.name);
             applyFilters();
           }}
-          className='inline shadow shadow-white z-20 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
+          className='inline shadow shadow-white z-20 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200'
         >
           {category.name}
         </button>
