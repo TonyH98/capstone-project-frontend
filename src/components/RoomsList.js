@@ -226,7 +226,7 @@ return (
     value={search}
     onChange={handleFilter}
     required
-    className="rounded-l sm:w-96 focus:border-transparent focus:ring-0 border border-slate-800 py-2 pl-1"
+    className="rounded-l py-2 px-2 border border-black sm:w-96 focus:border-transparent focus:ring-0"
   />
   <button type="submit" className=" bg-cyan-400 px-4 py-2 shadow-md rounded-r border border-gray-800  hover:border-cyan-400">Chat</button>
   {filterUsers.length !== 0 && (

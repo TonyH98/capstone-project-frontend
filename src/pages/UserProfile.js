@@ -214,11 +214,11 @@ console.log(isSelected)
         >
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
-            <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3">
+            <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3 gap-y-5 mb-6">
               {sortCategory.map((category) => {
                 return(
                   <Link to={`/users?categories.category_id=${encodeURIComponent(category?.category_id)}`}>
-                  <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full text-sm px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2 mb-1">
+                  <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-sm rounded-full text-sm px-4 py-2 text-center ml-2 mb-1">
                   {category.name}
                   </div>
                   </Link>
@@ -266,23 +266,26 @@ console.log(isSelected)
                 >
                 Add
               </button>
-              {userEvents.length > 0 && !editEvents ? (
-                <button
-                  onClick={() => setEditEvents(!editEvents)}  
-                  className="absolute right-3 bottom-3"
-                  type="button"
-                >
-                  <BsPencilSquare />
-                </button>
-              ): (
-                <button 
-                  onClick={deleteMultiple}
-                  className="absolute right-3 bottom-3"
-                  type='button'
-                >
-                  <BsTrash />
-                </button>
-              )}
+              {userEvents.length > 0 ? (
+                !editEvents ? (
+                  <button
+                    onClick={() => setEditEvents(!editEvents)}  
+                    className="absolute right-3 bottom-3"
+                    type="button"
+                  >
+                    <BsPencilSquare />
+                  </button>
+                ): (
+                  <button 
+                    onClick={deleteMultiple}
+                    className="absolute right-3 bottom-3"
+                    type='button'
+                  >
+                    <BsTrash />
+                  </button>
+                )
+              )  : null
+              }
           </div>
         </fieldset>
 

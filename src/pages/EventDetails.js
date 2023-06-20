@@ -88,7 +88,7 @@ export default function EventDetails({users, categoryQuery}) {
 
   useEffect(() => {
     if (users?.id) {	    
-      axios.get(`${API}/friends/${users?.id}/list`)
+      axios.get(`${API}/users`)
       .then((res) => {	      
         setFriends(res.data);	        
       });
@@ -287,6 +287,8 @@ export default function EventDetails({users, categoryQuery}) {
       setFilterFriends(filter)
     }
   }
+
+  console.log(hosts)
   
   function createHost(userId){
   if(eventInfo?.id && hosts?.length < 3 && !hosts.some(host => host.user_id === userId)){
@@ -298,6 +300,18 @@ export default function EventDetails({users, categoryQuery}) {
         })
       })
     }
+  }
+
+  function deleteCohost (userId){
+    axios
+      .delete(`${API}/events/${userId}/deletehost/${eventInfo?.id}`)
+      .then(() => {
+        axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+        .then((res) => {
+          setHosts(res.data)
+        })
+      }
+    )
   }
 
   // function that adds event to user profile as rsvp
@@ -573,7 +587,7 @@ const hostId = hosts.map((host) => {
                     <div
                     key={category.id}
                       // update route for events sorted by category
-                      className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ml-2 mb-1"
+                      className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full px-3 py-1.5 text-center ml-2 mb-1"
                     >
                       {category.name}
                     </div>
@@ -612,14 +626,14 @@ const hostId = hosts.map((host) => {
                 <img 
                   src={eventInfo?.creator[0].profile_img}
                   alt="profile image"
-                  className="h-12 w-12 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
+                  className="h-10 w-10 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
                 /> 
                 {eventInfo?.creator[0].username}
               </Link>
             </div>
             {
               hosts.length ? (
-                <div className="inline">
+                <div className="mt-4">
                   Co-Hosts: 
                   {hosts.map((host) => {
                     return(
@@ -631,19 +645,29 @@ const hostId = hosts.map((host) => {
                           <img 
                             src={host.profile_img}
                             alt="profile image"
-                            className="h-7 w-7 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500"
+                            className="h-10 w-10 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
                           /> 
                           {host.username}
                         </Link>
+                        {
+                          editMode && users.id === eventInfo.creator[0].id ? (
+                            <button 
+                              className="pl-1 text-red-800"
+                              onClick={() => deleteCohost(host?.user_id)}
+                            >
+                              X
+                            </button>
+                          ) : null
+                        }
                       </div>
                     )
                   })
                 }
                 </div>
               ) : (
-                <div className="inline ml-4">
+                <div className="block my-2">
                   {users?.id === eventInfo?.creator[0].id ? 
-                    <button onClick={showSearchBar} className="text-[12px] border rounded-xl px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
+                    <button onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
                       Add Co-Host
                     </button>
                       : null
@@ -654,10 +678,10 @@ const hostId = hosts.map((host) => {
                         type="text"
                         value={search}
                         onChange={handleFilter}
-                        className="inline h-7 rounded align-middle"
+                        className="inline h-7 rounded align-middle border border-black"
                       />
                     {filterFriends?.length !== 0 && (
-                      <div className="dataResult">
+                      <div className="dataResult shadow-lg absolute bg-white w-40 text-center ml-32 rounded">
     
                         {filterFriends.slice(0,5).map((friend) => {
                           return(
@@ -723,7 +747,7 @@ const hostId = hosts.map((host) => {
       </>
     ) : (
       <button
-        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
         onClick={() => setEditMode(true)}
       >
         Edit
@@ -739,7 +763,7 @@ const hostId = hosts.map((host) => {
       </button>
     ) : (
       <button
-        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800"
+        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
         onClick={() => setEditMode(true)}
       >
         Edit
@@ -748,7 +772,7 @@ const hostId = hosts.map((host) => {
   ) : (
     <>
       <button
-        className={`${eventState?.interested ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800`}
+        className={`${eventState?.interested ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center`}
         onClick={addToInterest} 
       >
         Interested
@@ -756,7 +780,7 @@ const hostId = hosts.map((host) => {
             <AiFillStar className={`${eventState?.interested ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
       </button>
       <button
-        className={`${eventState?.rsvp ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-yellow-300 dark:focus:ring-blue-800`}
+        className={`${eventState?.rsvp ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center`}
         onClick={addToRsvp}
       >
         RSVP
