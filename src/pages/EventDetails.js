@@ -635,7 +635,7 @@ const hostId = hosts.map((host) => {
             </div>
             {
               hosts.length ? (
-                <div className="mt-4">
+                <div className="mt-1">
                   Co-Hosts: 
                   {hosts.map((host) => {
                     return(
@@ -864,11 +864,11 @@ const hostId = hosts.map((host) => {
         </div>
         {
           attending?.length ? (
-            <div className="mb-10">
+            <div className="mb-10 ml-16 flex flex-row">
               {
                 attending.map((attendee) => {
                   return(
-                    <div className="flex flex-row">
+                    <div className="">
                       <AttendeeIcon 
                         attendee={attendee}
                       />
