@@ -197,7 +197,7 @@ function OtherProfile() {
         >
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
-            <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3 gap-y-4 mb-6">
+            <div className="flex flex-wrap ml-6 mt-3 pr-24 mb-3 gap-y-4 mb-6">
             {sortCategory.map((category) => {
                 return(
                   <Link to={`/users?categories.category_id=${encodeURIComponent(category?.category_id)}`}>
