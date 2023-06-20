@@ -266,23 +266,26 @@ console.log(isSelected)
                 >
                 Add
               </button>
-              {userEvents.length > 0 && !editEvents ? (
-                <button
-                  onClick={() => setEditEvents(!editEvents)}  
-                  className="absolute right-3 bottom-3"
-                  type="button"
-                >
-                  <BsPencilSquare />
-                </button>
-              ): (
-                <button 
-                  onClick={deleteMultiple}
-                  className="absolute right-3 bottom-3"
-                  type='button'
-                >
-                  <BsTrash />
-                </button>
-              )}
+              {userEvents.length > 0 ? (
+                !editEvents ? (
+                  <button
+                    onClick={() => setEditEvents(!editEvents)}  
+                    className="absolute right-3 bottom-3"
+                    type="button"
+                  >
+                    <BsPencilSquare />
+                  </button>
+                ): (
+                  <button 
+                    onClick={deleteMultiple}
+                    className="absolute right-3 bottom-3"
+                    type='button'
+                  >
+                    <BsTrash />
+                  </button>
+                )
+              )  : null
+              }
           </div>
         </fieldset>
 

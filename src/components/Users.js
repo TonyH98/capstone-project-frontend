@@ -82,7 +82,7 @@ export default function Users() {
           id="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="sm:w-96 rounded-md mx-1"
+          className="sm:w-96 rounded-md mx-1 shadow-md py-2 px-1 my-2 ml-2"
         />
       </div>
       <div className="flex flex-col gap-6 sm:w-full md:w-[65%] p-4">

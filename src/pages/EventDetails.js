@@ -88,7 +88,7 @@ export default function EventDetails({users, categoryQuery}) {
 
   useEffect(() => {
     if (users?.id) {	    
-      axios.get(`${API}/friends/${users?.id}/list`)
+      axios.get(`${API}/users`)
       .then((res) => {	      
         setFriends(res.data);	        
       });
@@ -287,6 +287,8 @@ export default function EventDetails({users, categoryQuery}) {
       setFilterFriends(filter)
     }
   }
+
+  console.log(hosts)
   
   function createHost(userId){
   if(eventInfo?.id && hosts?.length < 3 && !hosts.some(host => host.user_id === userId)){
@@ -298,6 +300,18 @@ export default function EventDetails({users, categoryQuery}) {
         })
       })
     }
+  }
+
+  function deleteCohost (userId){
+    axios
+      .delete(`${API}/events/${userId}/deletehost/${eventInfo?.id}`)
+      .then(() => {
+        axios.get(`${API}/events/${eventInfo?.id}/hosts`)
+        .then((res) => {
+          setHosts(res.data)
+        })
+      }
+    )
   }
 
   // function that adds event to user profile as rsvp
@@ -612,14 +626,14 @@ const hostId = hosts.map((host) => {
                 <img 
                   src={eventInfo?.creator[0].profile_img}
                   alt="profile image"
-                  className="h-12 w-12 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
+                  className="h-10 w-10 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
                 /> 
                 {eventInfo?.creator[0].username}
               </Link>
             </div>
             {
               hosts.length ? (
-                <div className="inline">
+                <div className="mt-4">
                   Co-Hosts: 
                   {hosts.map((host) => {
                     return(
@@ -631,10 +645,16 @@ const hostId = hosts.map((host) => {
                           <img 
                             src={host.profile_img}
                             alt="profile image"
-                            className="h-7 w-7 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500"
+                            className="h-10 w-10 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
                           /> 
                           {host.username}
                         </Link>
+                        <button 
+                          className="pl-1 text-red-800"
+                          onClick={() => deleteCohost(host?.user_id)}
+                        >
+                          X
+                        </button>
                       </div>
                     )
                   })
