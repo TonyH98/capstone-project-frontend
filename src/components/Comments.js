@@ -73,27 +73,28 @@ return(
                 {comment?.time}
               </div>
             </div>
+            <div className="flex mb-8">
             <div className=" bg-slate-200 rounded-md px-2 py-3 w-96 ml-16">
             {comment?.comment}
             </div> 
-        </div>
-   <></>
-    <div className="flex justify-center items-center gap-4 p-3">
+            <div className="flex justify-center items-center gap-4 p-3">
       {users?.id === comment?.creator?.user_id ? (
-        < div className='comment-buttons flex gap-4'>
-        <button  className="delete bg-cyan-200 rounded-full w-16" 
-        onClick={() => handleDelete(comment.id)}>
-          Delete
-        </button> 
-        <button className="edit bg-cyan-200 rounded-full w-10" 
+        <div className='comment-buttons flex gap-2'>
+          <button className="edit bg-cyan-400 hover:bg-purple-400 rounded-md px-4 py-0.5" 
         onClick = {toggleView}>
           Edit
         </button>
+        <button  className="delete bg-cyan-400 hover:bg-orange-500 rounded-md px-2 py-0.5" 
+        onClick={() => handleDelete(comment.id)}>
+          Delete
+        </button> 
         </div>
 
 
       ) : null}
     </div>
+            </div>
+        </div>
    </>
    )}
    </div>

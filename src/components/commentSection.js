@@ -88,15 +88,24 @@ const handleSubmit = (event) => {
 
   return (
     <div className="">
-      <form onSubmit={handleSubmit} className=" my-3 grid grid-rows-2">
+      <h2 className="text-lg font-bold mb-3">{comments.length} Comments</h2>
+      <form onSubmit={handleSubmit} className="flex justify-center items-center gap-2">
+      <div className="flex justify-center items-center gap-3">
+      <label
+                htmlFor="comments"
+                className="block font-bold mb-2"
+              >
+                Add your comment
+              </label> 
       <input
       type="text"
       id="comment"
       value={newComment.comment}
       onChange={handleTextChange}
-      className="rounded-md sm:w-96 border-2 border-black w-1/3"
+      className="rounded-md sm:w-96 border-2 border-black px-1 py-2"
       />
-       <button type="submit" className=" hover:text-cyan-400 place-self-start mx-28 my-2 rounded-full bg-purple-300 w-36 font-bold text-lg">Submit</button>
+      </div>
+       <button type="submit" className=" hover:text-cyan-400 place-self-start py-2 px-3 rounded-md bg-purple-300 font-bold text-lg">Submit</button>
       </form>
       <div className="comment mt-2 flex flex-col justify-center items-center">
         {comments.map((comment) => {
