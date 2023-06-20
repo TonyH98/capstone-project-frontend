@@ -641,7 +641,7 @@ const hostId = hosts.map((host) => {
                 }
                 </div>
               ) : (
-                <div className="inline ml-4">
+                <div className="block my-2">
                   {users?.id === eventInfo?.creator[0].id ? 
                     <button onClick={showSearchBar} className="text-[12px] border rounded-xl px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
                       Add Co-Host
@@ -654,7 +654,7 @@ const hostId = hosts.map((host) => {
                         type="text"
                         value={search}
                         onChange={handleFilter}
-                        className="inline h-7 rounded align-middle"
+                        className="inline h-7 rounded align-middle border border-black"
                       />
                     {filterFriends?.length !== 0 && (
                       <div className="dataResult">

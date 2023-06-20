@@ -154,10 +154,10 @@ export default function Events() {
         <div className='w-30'></div>
        <div className='flex justify-center items-center ml-[10%]'>
        <div className='m-2'>
-          <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'>
+          <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md py-2 px-1'>
             <option value=''>Sort date</option>
-            <option value='Latest to Earliest'>Latest to Earliest</option>
             <option value='Earliest to Latest'>Earliest to Latest</option>
+            <option value='Latest to Earliest'>Latest to Earliest</option>
           </select>
         </div>
        <div className='m-2'>
@@ -167,7 +167,7 @@ export default function Events() {
           value={searchFilter}
           placeholder='Search by host or title or location'
           onChange={(e) => setSearchFilter(e.target.value)}
-          className=' w-96 border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md'
+          className=' w-96 border-transparent py-2 px-1 my-3 focus:border-transparent focus:ring-0 shadow-lg rounded-md'
           />
         </div>
        </div>
