@@ -649,12 +649,16 @@ const hostId = hosts.map((host) => {
                           /> 
                           {host.username}
                         </Link>
-                        <button 
-                          className="pl-1 text-red-800"
-                          onClick={() => deleteCohost(host?.user_id)}
-                        >
-                          X
-                        </button>
+                        {
+                          editMode && users.id === eventInfo.creator[0].id ? (
+                            <button 
+                              className="pl-1 text-red-800"
+                              onClick={() => deleteCohost(host?.user_id)}
+                            >
+                              X
+                            </button>
+                          ) : null
+                        }
                       </div>
                     )
                   })
@@ -663,7 +667,7 @@ const hostId = hosts.map((host) => {
               ) : (
                 <div className="block my-2">
                   {users?.id === eventInfo?.creator[0].id ? 
-                    <button onClick={showSearchBar} className="text-[12px] border rounded-xl px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
+                    <button onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
                       Add Co-Host
                     </button>
                       : null
@@ -677,7 +681,7 @@ const hostId = hosts.map((host) => {
                         className="inline h-7 rounded align-middle border border-black"
                       />
                     {filterFriends?.length !== 0 && (
-                      <div className="dataResult">
+                      <div className="dataResult shadow-lg absolute bg-white w-40 text-center ml-32 rounded">
     
                         {filterFriends.slice(0,5).map((friend) => {
                           return(
