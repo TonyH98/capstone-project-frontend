@@ -28,18 +28,13 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
 
   const { loggedInUser } = useUser();
   const auth = getAuth(app);
-
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [open, setOpen] = useState(false)
-  const [overflow, setOverflow] = useState(false);
-  function handleOpen () {setOpen(true)};
-  function handleClose () {setOpen(false)}
-
+  
   // const toggleDropdown = () => {
-  //   setIsOpen(!isOpen);
-  // };
-
-  // inbox modal
+    //   setIsOpen(!isOpen);
+    // };
+    
+    // inbox modal
+    const [showDropdown, setShowDropdown] = useState(false);
   const [open, setOpen] = useState(false)
   const [overflow, setOverflow] = useState(false);
   function handleOpen () {setOpen(true)};
