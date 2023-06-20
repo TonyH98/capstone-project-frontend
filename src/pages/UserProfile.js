@@ -188,10 +188,10 @@ console.log(isSelected)
                   className="inline text-cyan-800 cursor-pointer float-right mt-2"
                 />
               </div>
-              <section className="w-52 h-12 relative flex flex-row">
-                <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{loggedInUser?.bio}</p>
-                <ImQuotesRight className="text-orange-600 " />
+              <section className="h-12 relative block">
+                <ImQuotesLeft className="text-orange-600 inline text-sm" />
+                  <p className="px-4 inline">{loggedInUser?.bio}</p>
+                <ImQuotesRight className="text-orange-600 inline text-sm" />
               </section>
             </div>
           </div>
@@ -214,13 +214,13 @@ console.log(isSelected)
         >
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
-            <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3 gap-y-5 mb-6">
+            <div className="flex flex-wrap ml-6 mt-3 pr-24 mb-3 gap-y-5 mb-6">
               {sortCategory.map((category) => {
                 return(
                   <Link to={`/users?categories.category_id=${encodeURIComponent(category?.category_id)}`}>
-                  <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-sm rounded-full text-sm px-4 py-2 text-center ml-2 mb-1">
-                  {category.name}
-                  </div>
+                    <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-sm rounded-full text-sm px-4 py-2 text-center ml-2 mb-1">
+                      {category.name}
+                    </div>
                   </Link>
                 )
               })}

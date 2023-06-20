@@ -164,7 +164,7 @@ function OtherProfile() {
               </div>
               <section className="h-12 relative block">
                 <ImQuotesLeft className="text-orange-600 inline text-sm" />
-                <p className="px-4 inline">{profileInfo?.bio}</p>
+                  <p className="px-4 inline">{profileInfo?.bio}</p>
                 <ImQuotesRight className="text-orange-600 inline text-sm" />
               </section>
             </div>
