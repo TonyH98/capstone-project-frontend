@@ -73,7 +73,7 @@ export default function Users() {
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
-      <h1 className="text-2xl font-semibold">All Users</h1>
+      <h1 className="text-2xl text-gray-700 font-semibold">All Users</h1>
       <div className="search-bar">
         <label htmlFor="search">Search</label>
         <input

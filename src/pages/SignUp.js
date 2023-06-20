@@ -220,7 +220,7 @@ function SignUp({ setLoggedIn }) {
             id="last_name"
             required
             onChange={handleTextChange}
-            className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border border-slate-800 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
         <div className="mb-4">
@@ -290,10 +290,10 @@ function SignUp({ setLoggedIn }) {
           )}
         </div>
         <div className="flex justify-evenly">
-          <button type="submit" onClick={handleSubmit} className="btn-1">
+          <button type="submit" onClick={handleSubmit} className="bg-cyan-400 hover:bg-purple-500 text-slate-100 uppercase text-sm font-bold py-2 px-4 rounded-md">
             Submit
           </button>
-          <button onClick={() => navigate("/")} className="btn-2">
+          <button onClick={() => navigate("/")} className="block border border-gray-500 hover:bg-[#f6854b] hover:border-[#f6854b] text-slace-900 hover:text-slate-100 uppercase text-sm font-bold p-2 rounded-md">
             Cancel
           </button>
         </div>

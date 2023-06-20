@@ -275,8 +275,8 @@ return (
       </div>
     )})
   ) : (
-    <div className='w-[75%] flex flex-col justify-center items-center'>
-      <h2 className="font-bold text-base text-center ml-10">No conversation yet, send a message to get started!</h2>
+    <div className='w-[75%] flex flex-col justify-center items-center ml-14'>
+      <h2 className="font-bold text-base text-center">No conversation yet, send a message to get started!</h2>
       <Lottie animationData={animationData} />
     </div>
   )}
@@ -290,7 +290,7 @@ return (
       value={newChat.content}
       placeholder="Message..."
       onChange={handleTextChange}
-      className="rounded-md sm:w-96 border-2 px-2 py-2 border-black focus:border-cyan-400 focus:ring-0"
+      className="rounded-md sm:w-96 border-2 border-slate-800 px-1 py-2 focus:border focus:border-cyan-400"
       />
      <button type="submit" className="mx-1 hover:text-cyan-400 font-bold"><AiOutlineSend size={30}/></button>
       </form>) : (

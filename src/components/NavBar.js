@@ -4,7 +4,6 @@ import logo from "../Kick.it Logo.png";
 import { RiHomeLine } from "react-icons/ri";
 import { HiOutlineUsers } from "react-icons/hi";
 import { FiMessageCircle } from "react-icons/fi";
-import { MdNotificationsNone } from "react-icons/md";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { useUser } from "../contexts/UserProvider";
 import { getAuth, signOut } from "firebase/auth";
@@ -13,12 +12,13 @@ import { getUserInfo } from "../utils/appUtils";
 import "./NavBar.css";
 import axios from "axios";
 import app from "../firebase";
-import { Modal, Toggle, Button, ButtonToolbar, Placeholder } from 'rsuite';
 
 const API = process.env.REACT_APP_API_URL;
 
 export default function NavBar({ setUser, setLoggedIn, loggedin }) {
   const navigate = useNavigate();
+
+  const [isArray, setIsOpen] = useState(false);
 
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 450px)").matches
@@ -38,6 +38,12 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
   // const toggleDropdown = () => {
   //   setIsOpen(!isOpen);
   // };
+
+  // inbox modal
+  const [open, setOpen] = useState(false)
+  const [overflow, setOverflow] = useState(false);
+  function handleOpen () {setOpen(true)};
+  function handleClose () {setOpen(false)}
 
   useEffect(() => {
     window
@@ -183,7 +189,7 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                   <span className="flex flex-col items-center justify-center group-hover:text-white">
                     <IoMdNotificationsOutline size={20} />
                   </span>
-                  <span className="text-gray-900 hover:text-white">
+                  <span className="text-gray-900 group-hover:text-white mx-0.5">
                     Inbox
                   </span>
                 </div>

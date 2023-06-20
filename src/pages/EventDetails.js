@@ -829,7 +829,7 @@ const hostId = hosts.map((host) => {
         </div>
         {
           attending?.length ? (
-            <div>
+            <div className="mb-10">
               {
                 attending.map((attendee) => {
                   return(
@@ -843,16 +843,13 @@ const hostId = hosts.map((host) => {
               }
             </div>
           ) : (
-            <h1 className="ml-32 my-5 text-gray-400 text-lg">
+            <h1 className="ml-32 my-5 mb-10 text-gray-400 text-lg">
               Still space in this event. RSVP now to save your spot!
             </h1>
           )
         }
       </div>
-      <div>
-
-        
-        <h2 className="pl-4 text-lg">Comments</h2>
+      <div className="px-10 pt-6 border-t">
         <CommentSection users={users} id={id}/> 
       </div>
     </div>
