@@ -9,19 +9,20 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import app from "../firebase";
 import { useUser } from "../contexts/UserProvider";
 
 const API = process.env.REACT_APP_API_URL;
 
-function SignUp() {
+function SignUp({ setLoggedIn }) {
   // useNavigate and useParams hooks to navigate to user profile page
   const navigate = useNavigate();
   const { id } = useParams();
 
   // Sets the user in local storage
-  const { setUser } = useUser();
+  const { setLoggedInUser } = useUser();
 
   // useState hook to toggle between show/hide password
   const [showPassword, setShowPassword] = useState(false);
@@ -51,6 +52,21 @@ function SignUp() {
   // function to update newUser object on text change
   const handleTextChange = (e) => {
     setNewUser({ ...newUser, [e.target.id]: e.target.value });
+  };
+
+  // function to sign user out before their new account is created
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        setLoggedInUser({});
+        setLoggedIn(false);
+        console.log("signed out");
+        navigate(`/`);
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
 
   //   // function to create a new account with firebase and update the newUser object with firebase_id
@@ -105,10 +121,8 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // console.log(userCredentials?.username);
-
     let isValid = true;
-
+    handleSignOut();
     if (!checkAge()) {
       setAgeError("User must be 18 or over");
       isValid = false;
@@ -120,6 +134,13 @@ function SignUp() {
     // }
 
     const userCredentials = await createUserCredentials();
+
+    axios
+      .post(`${API}/users`, userCredentials)
+      .then(() => {
+        navigate(`/personalprofile`);
+      })
+      .catch((c) => console.warn("catch, c"));
 
     if (isValid) {
       signInWithEmailAndPassword(auth, newUser.email, newUser.password)
@@ -135,13 +156,6 @@ function SignUp() {
           const errorCode = error.code;
           console.log(errorCode);
         });
-
-      axios
-        .post(`${API}/users`, userCredentials)
-        .then(() => {
-          navigate(`/personalprofile`);
-        })
-        .catch((c) => console.warn("catch, c"));
     }
   };
 
@@ -161,7 +175,7 @@ function SignUp() {
 
   return (
     <div className="sm:w-full md:w-3/5 lg:w-2/5 md:m-auto mx-3 my-6 p-1">
-      <form className="bg-white text-slate-800 dark:text-slate-100 dark:bg-slate-900 shadow-md rounded px-10 pt-6 pb-8 mb-4 mt-6">
+      <form className="bg-white text-slate-800 shadow-md rounded px-10 pt-6 pb-8 mb-4 mt-6">
         <div className="mb-4">
           <div className="mb-4">
             <label
@@ -175,7 +189,7 @@ function SignUp() {
                 id="age"
                 required
                 onChange={handleTextChange}
-                className="rounded block my-2"
+                className="rounded block my-2 border border-black px-2 py-2"
               />
             </label>
           </div>
@@ -192,7 +206,7 @@ function SignUp() {
             id="first_name"
             required
             onChange={handleTextChange}
-            className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="mb-5 pl-3 border border-black block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
         <div className="mb-4">
@@ -222,7 +236,7 @@ function SignUp() {
             id="username"
             required
             onChange={handleTextChange}
-            className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="mb-5 pl-3 block border border-black m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
         {usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
@@ -239,7 +253,7 @@ function SignUp() {
             id="email"
             required
             onChange={handleTextChange}
-            className="mb-5 pl-3 block m-auto shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="mb-5 pl-3 block m-auto border border-black shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
         <div className="mb-4">
@@ -255,7 +269,7 @@ function SignUp() {
             id="password"
             required
             onChange={handleTextChange}
-            className="shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow bg-transparent border border-black appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           {showPassword ? (
             <button

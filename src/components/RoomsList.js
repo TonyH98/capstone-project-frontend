@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback  } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 import Room from "./Room";
-import SendMessageForm from "./SendMessageForm";
 import { AiOutlineSend } from "react-icons/ai"
 import Lottie from "lottie-react";
 import animationData from "../assets/startChat.json";
+import NoSelection from "../assets/findSelected.json"
 const API = process.env.REACT_APP_API_URL;
 
 function RoomsList({users}) {
@@ -21,6 +21,15 @@ function RoomsList({users}) {
   let [search , setSearch] = useState("")
   let [otherUsers , setOtherUsers] = useState([])
   let [filterUsers, setFilterUsers] = useState([])
+  const [closeSearch, setCloseSearch] = useState(false)
+
+
+  // handle page scroll
+  const setRef = useCallback(node => {
+    if (node) {
+      node.scrollIntoView({ smooth: true })
+    }
+  }, [])
 
   let otherUser = [roomByIndex["user1_id"],roomByIndex["user2_id"]].filter((users) => {
     return users !== users?.id
@@ -122,6 +131,14 @@ axios.get(`${API}/users`)
         username1: users.username,
         username2: user2Name
       });
+      
+      axios.get(`${API}/rooms/${users.id}`)
+        .then((res) => {
+          setRooms(res.data)
+        })
+
+        setFilterUsers([]);
+        setSearch('');
 
       // Handle the created room
       const newRoom = response.data;
@@ -167,6 +184,7 @@ const handleSubmit = (event) => {
   event.preventDefault();
   handleNewMessage(newChat);
   setNewChat((prevChat) => ({ ...prevChat, content: "" }));
+  console.log("new chat", newChat)
 };
 
 
@@ -183,7 +201,7 @@ function handleFilter(event){
     })
   
     if(searchResult === ""){
-      setFilterUsers([])
+      setFilterUsers([]);
     }
     else{
       setFilterUsers(filter)
@@ -191,8 +209,9 @@ function handleFilter(event){
 }
 
 
-  return (
-    <div className="p-6 flex flex-col gap-2 bg-cyan-50">
+
+return (
+  <div className="p-6 flex flex-col gap-2 bg-cyan-50">
       <div className="flex gap-2 justify-center items-center">
       <form
   onSubmit={(e) => {
@@ -207,9 +226,9 @@ function handleFilter(event){
     value={search}
     onChange={handleFilter}
     required
-    className="rounded-l sm:w-96 focus:border-transparent focus:ring-0"
+    className="rounded-l py-2 px-2 border border-black sm:w-96 focus:border-transparent focus:ring-0"
   />
-  <button type="submit" className=" bg-cyan-400 px-4 py-2 shadow-md rounded-r border border-cyan-400">Chat</button>
+  <button type="submit" className=" bg-cyan-400 px-4 py-2 shadow-md rounded-r border border-gray-800  hover:border-cyan-400">Chat</button>
   {filterUsers.length !== 0 && (
     <div className="data=result">
       {filterUsers.slice(0, 5).map((users) => {
@@ -222,7 +241,7 @@ function handleFilter(event){
             }}
             key={users.username}
           >
-            <section className="bg-white min-h-[100px] shadow-md rounded-lg absolute w-96 p-2">{users.username}</section>
+            <section className="z-20 bg-white min-h-[100px] shadow-md rounded-lg absolute w-96 p-2">{users.username}</section>
           </div>
         );
       })}
@@ -231,7 +250,7 @@ function handleFilter(event){
 </form>
       </div>
       <article className="flex gap-4">
-      <div className="border-r">
+      <div className="border-r px-3">
         <h2 className="text-2xl text-cyan-400">Conversations</h2>
         <ul className="">
           {rooms.map((room) => (
@@ -242,37 +261,44 @@ function handleFilter(event){
           ))}
         </ul>
       </div>
-      <div className="flex flex-col p-4 ml-[12%] min-w-[45vw] min-h-[70vh]">
+      <div className="flex flex-col p-4 ml-[12%] w-[45vw] h-[68vh] overflow-y-auto">
   {Array.isArray(chat) ? (
-    chat.map((chatItem) => (
-      <div key={chatItem.id} className={`my-1 flex flex-col p-2 rounded-md w-52 ${users?.id === chatItem.userid ? 'self-end items-start bg-cyan-400' : 'items-start bg-[#f6854b]'}`} >
+    chat.map((chatItem, index) => {
+      const lastMessage = chat.length - 1 === index;
+      return (
+      <div key={chatItem.id} ref={lastMessage ? setRef : null} className={`my-1 flex flex-col p-2 rounded-md w-72 ${users?.id === chatItem.userid ? 'self-end items-start bg-cyan-300' : 'items-start bg-[#ffbb00]'}`} >
         <section >
         <p className="text-xs">{chatItem.date_created}</p>
         <p className="font-semibold">{chatItem.content}</p>
-        <div className="text-xs">{users?.id === chatItem.userid ? "You" : chatItem.username}</div>
+        <div className="text-xs text-muted">{users?.id === chatItem.userid ? "You" : chatItem.username}</div>
         </section>
       </div>
-    ))
+    )})
   ) : (
-    <div className='w-[70%] flex flex-col justify-center items-center'>
-      <h2 className="font-bold text-base">No conversation yet, send a message to get started!</h2>
+    <div className='w-[75%] flex flex-col justify-center items-center'>
+      <h2 className="font-bold text-base text-center ml-10">No conversation yet, send a message to get started!</h2>
       <Lottie animationData={animationData} />
     </div>
   )}
 </div>
       </article>
 {selectedRoom ? 
-<form onSubmit={handleSubmit} className="flex justify-center items-center">
+(<form onSubmit={handleSubmit} className="flex justify-center items-center">
       <input
       type="text"
       id="content"
       value={newChat.content}
       placeholder="Message..."
       onChange={handleTextChange}
-      className="rounded-md sm:w-96 border-2 border-black"
+      className="rounded-md sm:w-96 border-2 px-2 py-2 border-black focus:border-cyan-400 focus:ring-0"
       />
      <button type="submit" className="mx-1 hover:text-cyan-400 font-bold"><AiOutlineSend size={30}/></button>
-      </form>: null
+      </form>) : (
+        <div className="absolute top-[25%] w-[85%] flex flex-col justify-center items-center">
+          <h2 className="font-bold text-base text-center">No Conversation selected</h2>
+          {/* <Lottie animationData={NoSelection} /> */}
+        </div>
+      )
 }
     </div>
   );

@@ -162,10 +162,10 @@ function OtherProfile() {
               <div className="align-middle inline">
                 <p className="text-left font-bold inline">Bio</p>
               </div>
-              <section className="w-52 h-12 relative flex flex-row">
-                <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{profileInfo?.bio}</p>
-                <ImQuotesRight className="text-orange-600 " />
+              <section className="h-12 relative block">
+                <ImQuotesLeft className="text-orange-600 inline text-sm" />
+                <p className="px-4 inline">{profileInfo?.bio}</p>
+                <ImQuotesRight className="text-orange-600 inline text-sm" />
               </section>
             </div>
             <div className="absolute right-20">
@@ -193,21 +193,20 @@ function OtherProfile() {
       </div>
       <form className="w-3/4 m-auto pb-10">
         <fieldset
-          className={`w-3/4 border relative shadow-sm m-auto mb-8 h-20`}
+          className={`w-3/4 border relative shadow-sm m-auto mb-8 h-30`}
         >
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
             <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3">
-              {sortCategory.map((item, index) => (
-                <button
-                  type="button"
-                  key={index}
-                  // onClick={() => navigate(`\events\:${item}`)}
-                  className="inline text-white bg-blue-500 hover:bg-blue-800 text-xs rounded-full text-sm px-5 py-1.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  {item.name}
-                </button>
-              ))}
+            {sortCategory.map((category) => {
+                return(
+                  <Link to={`/users?categories.category_id=${encodeURIComponent(category?.category_id)}`}>
+                  <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full text-sm px-3 py-1.5 text-center ml-2 mb-1">
+                  {category.name}
+                  </div>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </fieldset>

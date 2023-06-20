@@ -2,6 +2,8 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import Hero from "../Landing/Hero";
 import AboutApp from "../Landing/AboutApp";
+import FutureFeatures from "../Landing/FutureFeatures";
+import Footer from "../components/Footer"
 
 export default function LandingPage({ loggedin }) {
   // aos initialization
@@ -17,6 +19,8 @@ export default function LandingPage({ loggedin }) {
       <div className="blob w-[300px] h-[300px] rounded-[999px] absolute bottom-[-10px] left-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-green-200 via-cyan-200 to-Fuchsia-300"></div>
       <Hero loggedin={loggedin} />
       <AboutApp />
+      <FutureFeatures/>
+      <Footer/>
     </div>
   );
 }

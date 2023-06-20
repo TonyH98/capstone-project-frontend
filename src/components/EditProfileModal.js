@@ -165,7 +165,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 name="bio"
                 value={loggedInUser?.bio}
                 onChange={handleTextChange}
-                className="block w-[100%]"
+                className="block w-[100%] shadow bg-transparent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </label>
             <p className={`${loggedInUser?.bio.length >= 200 ? 'text-red-700' : null}  bottom-5 left-3 text-sm`}>
@@ -176,7 +176,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="bg-emerald-500 text-white px-8 py-1 mt-8 mb-6 rounded-md border w-3/4     m-auto"
+          className="bg-emerald-500 text-white px-8 py-1 mt-8 mb-6 rounded-md border w-3/4 m-auto"
         >
           Done
         </button>
