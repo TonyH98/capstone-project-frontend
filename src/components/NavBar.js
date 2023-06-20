@@ -315,6 +315,11 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
             >
               {loggedin ? (
                 <Link to="/personalprofile" className="ml-1">
+                  <img
+                    src={loggedInUser.profile_img}
+                    alt='profile'
+                    className="w-10 h-10 rounded-full inline mr-2 object-cover"
+                  />
                   {loggedInUser.username}
                 </Link>
               ) : (
