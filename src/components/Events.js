@@ -167,7 +167,7 @@ export default function Events() {
           value={searchFilter}
           placeholder='Search by host or title or location'
           onChange={(e) => setSearchFilter(e.target.value)}
-          className=' w-96 border-transparent py-2 px-1 my-3 focus:border-transparent focus:ring-0 shadow-lg rounded-md'
+          className=' w-96 border-transparent py-2 px-1 focus:border-transparent focus:ring-0 shadow-lg rounded-md'
           />
         </div>
        </div>

@@ -188,10 +188,10 @@ console.log(isSelected)
                   className="inline text-cyan-800 cursor-pointer float-right mt-2"
                 />
               </div>
-              <section className="w-52 h-12 relative flex flex-row">
-                <ImQuotesLeft className="text-orange-600 " />
-                <p className="px-4">{loggedInUser?.bio}</p>
-                <ImQuotesRight className="text-orange-600 " />
+              <section className="h-12 relative block">
+                <ImQuotesLeft className="text-orange-600 inline text-sm" />
+                  <p className="px-4 inline">{loggedInUser?.bio}</p>
+                <ImQuotesRight className="text-orange-600 inline text-sm" />
               </section>
             </div>
           </div>
@@ -214,13 +214,13 @@ console.log(isSelected)
         >
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
-            <div className="flex flex-wrap ml-10 mt-3 pr-24 mb-3 gap-y-5 mb-6">
+            <div className="flex flex-wrap ml-6 mt-3 pr-24 mb-3 gap-y-5 mb-6">
               {sortCategory.map((category) => {
                 return(
                   <Link to={`/users?categories.category_id=${encodeURIComponent(category?.category_id)}`}>
-                  <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-sm rounded-full text-sm px-4 py-2 text-center ml-2 mb-1">
-                  {category.name}
-                  </div>
+                    <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-sm rounded-full text-sm px-4 py-2 text-center ml-2 mb-1">
+                      {category.name}
+                    </div>
                   </Link>
                 )
               })}
@@ -289,7 +289,7 @@ console.log(isSelected)
           </div>
         </fieldset>
 
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${hostedEvents.length ? 'h-52' : 'h-20' }`}>
+        <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${hostedEvents.length ? 'h-52' : 'h-20' }`}>
           <legend className="px-3 text-left ml-8">Hosted Events</legend>
           <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
             {hostedEvents.length > 0 ? (
@@ -310,27 +310,30 @@ console.log(isSelected)
           </button>
         </fieldset>
 
-        <fieldset className="w-3/4 border relative shadow-sm m-auto mt-8 h-20">
+        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${friends.length ? 'h-40' : 'h-20'}`}>
           <legend className="px-3 text-left ml-8">Friends</legend>
-          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
-            {friends[0] &&
-              friends.map((friend) => (
-                <Link
-                  key={friend.id}
-                  to={`/profile/${friend?.username}`}
-                  className="flex items-center mr-4 mb-2"
-                >
-                  <img
-                    src={friend?.profile_img}
-                    alt="profile-pic"
-                    className="w-10 h-15"
-                  />
-                  <span className="ml-2">
-                    {friend.username}
-                  </span>
-                </Link>
-              ))}
-          </div>
+              <div className="max-w-full flex flex-row gap-x-10 px-3 py-2 overflow-x-auto h-32">
+                {friends.length ? (
+                  friends.map((friend) => (
+                    <Link
+                    key={friend.id}
+                    to={`/profile/${friend?.username}`}
+                    className="flex items-center mr-4 mb-2"
+                    >
+                      <img
+                        src={friend?.profile_img}
+                        alt="profile-pic"
+                        className="w-20 h-20 ml-5 object-cover rounded-full justify-center items-center"
+                        />
+                      <span className="text-center">
+                        {friend.username}
+                      </span>
+                    </Link>
+                    )
+                  )) : (
+                    <p className="ml-5 text-gray-400">No friends added yet.</p>
+                  )}
+              </div>
           <button
             onClick={() => navigate("/users")}
             className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
