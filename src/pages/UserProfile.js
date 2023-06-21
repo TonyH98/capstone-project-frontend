@@ -318,7 +318,7 @@ console.log(isSelected)
                     <Link
                     key={friend.id}
                     to={`/profile/${friend?.username}`}
-                    className="flex items-center mr-4 mb-2"
+                    // className="flex items-center mr-4 mb-2"
                     >
                       <img
                         src={friend?.profile_img}
