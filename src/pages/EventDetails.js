@@ -300,6 +300,9 @@ export default function EventDetails({users, categoryQuery}) {
         })
       })
     }
+    setShowSearch(false)
+    setSearch('')
+    setFilterFriends([])
   }
 
   function deleteCohost (userId){
@@ -469,7 +472,6 @@ const hostId = hosts.map((host) => {
 
 })
 
-
   return (
     <div className="relative">
       <div
@@ -561,7 +563,7 @@ const hostId = hosts.map((host) => {
                   : null
               }
               </h2>
-              <h2 className="">Address: {eventInfo?.address}</h2>
+              <h2 className="mt-2">Address: {eventInfo?.address}</h2>
           
             </div>
           </div>
@@ -633,7 +635,7 @@ const hostId = hosts.map((host) => {
             </div>
             {
               hosts.length ? (
-                <div className="mt-4">
+                <div className="mt-1">
                   Co-Hosts: 
                   {hosts.map((host) => {
                     return(
@@ -663,11 +665,44 @@ const hostId = hosts.map((host) => {
                     )
                   })
                 }
+                <div className="mt-2 ">
+                  {users?.id === eventInfo?.creator[0].id ? 
+                    <button type="button" onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
+                      Add Co-Host
+                    </button>
+                      : null
+                  }
+                  {showSearch ? (
+                    <div className="inline">
+                      <input
+                        type="text"
+                        value={search}
+                        onChange={handleFilter}
+                        className="inline h-7 rounded align-middle border border-black"
+                      />
+                    {filterFriends?.length !== 0 && (
+                      <div className="dataResult shadow-lg absolute bg-white w-40 text-center ml-32 rounded">
+    
+                        {filterFriends.slice(0,5).map((friend) => {
+                          return(
+                            <div className="search-link">
+                              <br></br>
+                              <button className="dropdown-link" onClick={() => createHost(friend?.id)}>
+                              {friend.username}
+                              </button>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                ): null}
+                  </div>
                 </div>
               ) : (
                 <div className="block my-2">
                   {users?.id === eventInfo?.creator[0].id ? 
-                    <button onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
+                    <button type="button" onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
                       Add Co-Host
                     </button>
                       : null
@@ -829,11 +864,11 @@ const hostId = hosts.map((host) => {
         </div>
         {
           attending?.length ? (
-            <div>
+            <div className="mb-10 ml-16 flex flex-row">
               {
                 attending.map((attendee) => {
                   return(
-                    <div className="flex flex-row">
+                    <div className="">
                       <AttendeeIcon 
                         attendee={attendee}
                       />
@@ -843,16 +878,13 @@ const hostId = hosts.map((host) => {
               }
             </div>
           ) : (
-            <h1 className="ml-32 my-5 text-gray-400 text-lg">
+            <h1 className="ml-32 my-5 mb-10 text-gray-400 text-lg">
               Still space in this event. RSVP now to save your spot!
             </h1>
           )
         }
       </div>
-      <div>
-
-        
-        <h2 className="pl-4 text-lg">Comments</h2>
+      <div className="px-10 pt-6 border-t">
         <CommentSection users={users} id={id}/> 
       </div>
     </div>
