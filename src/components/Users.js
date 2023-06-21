@@ -13,11 +13,14 @@ export default function Users() {
   const [users, setUsers] = useState([]);
   const { loggedInUser, setLoggedInUser } = useUser();
   const [filterUsers,setFilteredUsers] = useState([])
+  const [category , setCategory] = useState({})
   const location = useLocation()
 
   const queryParams = new URLSearchParams(location.search);
   const categoryFilter = queryParams.get('categories.category_id')
 
+
+  
   // useEffect makes get request for all Users
   useEffect(() => {
     let filteredUsers = users;
@@ -68,12 +71,25 @@ export default function Users() {
 
   console.log(users);
 
+
+  useEffect(() => {
+    if(categoryFilter){
+      axios
+      .get(`${API}/category/${categoryFilter}`)
+      .then((res) => {
+        setCategory(res.data)
+      })
+    }
+  }, [categoryFilter])
+
   // This is used to ensure that the loggedinuser is not shown
   const filteredUsers = filterUsers.filter((user) => user.id !== loggedInUser.id);
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
-      <h1 className="text-2xl text-gray-700 font-semibold">All Users</h1>
+      <h1 className="text-2xl text-gray-700 font-semibold">
+        {categoryFilter ? `Users: ${category.name}` : `All Users`}
+      </h1>
       <div className="search-bar">
         <label htmlFor="search">Search</label>
         <input
