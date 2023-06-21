@@ -22,6 +22,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import { UserProvider } from "./contexts/UserProvider";
 import Messages from "./pages/Messages";
 import ShowRoom from "./pages/ShowRoom";
+import Error from "./pages/Error";
 const API = process.env.REACT_APP_API_URL;
 
 function App() {
@@ -137,6 +138,7 @@ function App() {
                 element={<EventDetails users={loggedInUser} />}
               />
               <Route path="/map" element={<Map />} />
+              <Route path='*' element={<Error />} />
             </Routes>
           </main>
           {/* <Footer/> */}
