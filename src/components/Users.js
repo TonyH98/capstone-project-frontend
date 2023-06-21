@@ -69,9 +69,6 @@ export default function Users() {
   }, [categoryFilter]);
   
 
-  console.log(users);
-
-
   useEffect(() => {
     if(categoryFilter){
       axios
