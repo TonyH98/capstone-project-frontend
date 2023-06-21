@@ -63,8 +63,9 @@ return(
         <div className="">
             <div className="flex justify-between p-4">
               <div className="flex items-center gap-1">
-                {users.profile_img === "https://www.pngitem.com/pimgs/m/24-248366_profile-clipart-generic-user-generic-profile-picture-gender.png" ? (<img src={defaultProf} className="rounded-full"></img>):
-                <img src={users.profile_img} className="rounded-full"></img>}
+              <img src={defaultProf} className="rounded-full"></img>
+                {/* {users.profile_img === "https://www.pngitem.com/pimgs/m/24-248366_profile-clipart-generic-user-generic-profile-picture-gender.png" ? (<img src={defaultProf} className="rounded-full"></img>):
+                <img src={users.profile_img} className="rounded-full w-20"></img>} */}
                 <div className="">
                   {comment?.creator?.first_name} {comment.creator?.last_name}
                 </div>
