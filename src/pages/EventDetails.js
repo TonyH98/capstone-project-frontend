@@ -291,7 +291,7 @@ export default function EventDetails({users, categoryQuery}) {
   console.log(hosts)
   
   function createHost(userId){
-  if(eventInfo?.id && hosts?.length < 3 && !hosts.some(host => host.user_id === userId)){
+  if(eventInfo?.id && !hosts.some(host => host.user_id === userId)){
     axios.post(`${API}/events/${userId}/cohost/${eventInfo?.id}`)
       .then(() => {
         axios.get(`${API}/events/${eventInfo?.id}/hosts`)
@@ -636,20 +636,21 @@ const hostId = hosts.map((host) => {
             {
               hosts.length ? (
                 <div className="mt-1">
-                  Co-Hosts: 
+                  <p className="inline break-keep ">Co-Hosts: </p>
+                  <div className="flex inline items-center mt-3 overflow-x-scroll no-scrollbar space-x-10">
                   {hosts.map((host) => {
                     return(
-                      <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
+                      <div className="hover:text-blue-500 hover:border-blue-500">
                         <Link 
                           to={`/profile/${host.username}`}
-                          className="hover:text-blue-500 hover:border-blue-500 w-12"
+                          className="hover:text-blue-500 hover:border-blue-500 w-full flex items-center"
                         >
                           <img 
                             src={host.profile_img}
                             alt="profile image"
                             className="h-10 w-10 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
                           /> 
-                          {host.username}
+                         <p>{host.username}</p>
                         </Link>
                         {
                           editMode && users.id === eventInfo.creator[0].id ? (
@@ -665,6 +666,8 @@ const hostId = hosts.map((host) => {
                     )
                   })
                 }
+                </div>
+
                 <div className="mt-2 ">
                   {users?.id === eventInfo?.creator[0].id ? 
                     <button type="button" onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">

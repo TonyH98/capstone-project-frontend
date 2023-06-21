@@ -10,7 +10,8 @@ export default function User({ users }) {
 
   const { loggedInUser } = useUser();
   const [request, setRequest] = useState(null);
-  const [friends, setFriends] = useState(false);
+  const [ friends, setFriends ] = useState(false);
+  const [ sendRequest, setSendRequest ] = useState(false)
   function sendFriendRequest() {
     axios
       .post(`${API}/friends`, {
@@ -19,6 +20,7 @@ export default function User({ users }) {
       })
       .then(() => {
         setRequest(true); // Update request state to indicate that the request was sent
+        setSendRequest(true)
       });
   }
 
@@ -70,11 +72,16 @@ export default function User({ users }) {
     
       {loggedInUser?.id === users?.id ? null : friends ? (
         <span className="border-2 border-cyan-400 hover:bg-cyan-400 px-2 py-1.5 rounded-md">Already Friends</span>
-      ) : request ? (
-        <span className="border-2 border-cyan-400 bg-cyan-400 px-2 py-1.5 rounded-md">Request Sent</span>
+      ) : request && sendRequest ? (
+        <span
+          onClick={() => setSendRequest(false)}
+          className="border-2 border-cyan-400 bg-cyan-400 px-2 py-1.5 w-[140px] rounded-md"
+        >
+          Cancel Request
+        </span>
       ) : (
         <button
-          className="border-2 border-cyan-400 hover:bg-cyan-400 px-2 py-1.5 rounded-md"
+          className="border-2 border-cyan-400 hover:bg-cyan-400 px-2 w-[140px] py-1.5 rounded-md"
           onClick={sendFriendRequest}
         >
           Friend Request
