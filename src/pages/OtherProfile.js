@@ -178,13 +178,17 @@ function OtherProfile() {
               {loggedInUser?.id === username?.id ? null : added ? (
                 <span>Already Friends</span>
               ) : request ? (
-                <span>Friend Request Sent</span>
-              ) : (
+                  <button
+                  className="border-2 border-cyan-400 py-0.5 bg-cyan-400 my-4 w-[130px] rounded-md"
+                  onClick={() => setRequest(false)}
+                >
+                  Cancel Request
+                </button>              ) : (
                 <button
-                  className="border-2 border-cyan-400 px-2 my-4 rounded-md"
+                  className="border-2 border-cyan-400 px-2 my-4 pr-2 px-2 w-[130px] rounded-md"
                   onClick={sendFriendRequest}
                 >
-                  <span className="text-cyan-500 font-bold text-lg">+</span> Add Friend
+                  <span className="text-cyan-500 font-bold text-lg px-1">+</span> Add Friend
                 </button>
               )}
           </div>
