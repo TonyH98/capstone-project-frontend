@@ -1,7 +1,7 @@
 
-import Events from "../components/Events";
+import Events from "../components/Event/Events";
 import Footer from "../components/Footer";
-import "../components/events.css";
+
 
 // This will be the page on the wireframe that displays all of the events. The search bar, event cards, the map plugin, and the categories
 //  will be their own components.

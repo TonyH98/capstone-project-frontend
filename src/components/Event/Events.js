@@ -4,10 +4,10 @@ import { Link, useLocation } from "react-router-dom";
 import axios from 'axios';
 import EventCard from './EventCard';
 import ReactPaginate from 'react-paginate';
-import GoogleMap from "../components/MapMultipleMarkers"
+import GoogleMap from "../MapMultipleMarkers"
 import './events.css';
 import Lottie from "lottie-react";
-import animationData from "../assets/noEvents.json";
+import animationData from "../../assets/noEvents.json";
 import { ImSearch } from "react-icons/im"
 import { AiOutlineClose } from "react-icons/ai"
 
@@ -149,12 +149,12 @@ export default function Events() {
   console.log(events)
 
   return (
-    <div className='flex flex-col z-10 bg-gradient-to-r from-cyan-50 via-purple-50 to-pink-50 mx-3 '>
-       <section className='flex items-center justify-between py-4'>
-        <div className='w-30'></div>
-       <div className='flex justify-center items-center ml-[10%]'>
+    <div className='main-container'>
+       <section className='search-container'>
+        <div className='search-center'></div>
+       <div className='search-container2'>
        <div className='m-2'>
-          <select onChange={(e) => sortByDate(e.target.value)} className='border-transparent focus:border-transparent focus:ring-0 shadow-lg rounded-md py-2 px-1'>
+          <select onChange={(e) => sortByDate(e.target.value)} className='sort-date'>
             <option value=''>Sort date</option>
             <option value='Earliest to Latest'>Earliest to Latest</option>
             <option value='Latest to Earliest'>Latest to Earliest</option>
@@ -167,17 +167,17 @@ export default function Events() {
           value={searchFilter}
           placeholder='Search by host or title or location'
           onChange={(e) => setSearchFilter(e.target.value)}
-          className=' w-96 border-transparent py-2 px-1 focus:border-transparent focus:ring-0 shadow-lg rounded-md'
+          className='event-search-bar'
           />
         </div>
        </div>
         <div className="m-2 ">
           <Link to={"/events/new"}>
-            <button className="bg-white text-cyan-400 px-3 py-2 w-30 shadow-md rounded-md">Create Event</button>
+            <button className="create-event">Create Event</button>
           </Link>
         </div>
       </section>
-    <div className='p-1 flex sm:flex-wrap justify-center pb-3'>
+    <div className='filter-categories'>
       {categories.map((category) => {
         return filterCategories.includes(category.name) ? (
           <button
@@ -211,7 +211,7 @@ export default function Events() {
         filterCategories={filterCategories}
     />
     </div>
-    <div className='grid grid-cols-2 gap-x-16 gap-y-6 my-6 m-auto'>
+    <div className='event-container'>
       {currentEvents.length > 0 ?  
         currentEvents : (
         <div className='w-screen flex flex-col justify-center items-center'>
@@ -223,7 +223,7 @@ export default function Events() {
         </div> ) 
       }
       </div>
-      <div className="inline mb-10 font-bold w-20 m-auto">
+      <div className="pagination-container">
         {filterEvents.length < pageData ? null :
         <ReactPaginate
         previousLabel={"<"}
