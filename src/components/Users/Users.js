@@ -3,8 +3,9 @@ import {  useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import User from "./User";
-import { useUser } from "../contexts/UserProvider";
-import useLocalStorage from "../hooks/useLocalStorage";
+import "./Users.css"
+import { useUser } from "../../contexts/UserProvider";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -83,8 +84,8 @@ export default function Users() {
   const filteredUsers = filterUsers.filter((user) => user.id !== loggedInUser.id);
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
-      <h1 className="text-2xl text-gray-700 font-semibold">
+    <div className="users-container">
+      <h1 className="users-page-header">
         {categoryFilter ? `Users: ${category.name}` : `All Users`}
       </h1>
       <div className="search-bar">
@@ -95,10 +96,10 @@ export default function Users() {
           id="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="sm:w-96 rounded-md mx-1 shadow-md py-2 px-1 my-2 ml-2 pl-4"
+          className="users-search-bar"
         />
       </div>
-      <div className="flex flex-col gap-6 sm:w-full md:w-[65%] p-4">
+      <div className="list-of-users">
         {/* {users.map((users) => (
           <User key={users.id} users={users} />
         ))} */}
