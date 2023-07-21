@@ -16,7 +16,7 @@ import OtherProfile from "./pages/OtherProfile";
 import ShowUsers from "./pages/ShowUsers";
 import ShowEvents from "./pages/ShowEvents";
 import EventDetails from "./pages/EventDetails";
-import NewEvent from "./pages/NewEvent";
+import NewEvent from "./pages/NewEvents/NewEvent";
 import Map from "./components/Map";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { UserProvider } from "./contexts/UserProvider";
