@@ -131,19 +131,19 @@ function OtherProfile() {
   return (
     <>
       <div>
-        <div className="mb-10 mt-12 m-auto">
-          <div className="flex justify-center gap-x-10 align-items-start">
+        <div className="lg:mb-10 lg:mt-12 lg:m-auto">
+          <div className="lg:flex lg:justify-center lg:gap-x-10 lg:align-items-start">
             <img
               src={profileInfo?.profile_img}
               alt="profile-pic"
-              className="w-36 h-36 basis-1/8 object-cover rounded"
+              className="lg:w-36 lg:h-36 lg:basis-1/8 lg:object-cover lg:rounded"
             />
-            <div className="text-left basis-1/8">
+            <div className="lg:text-left lg:basis-1/8">
               <h1>
                 <b>
                   {profileInfo?.first_name} {profileInfo?.last_name}{" "}
                   {profileInfo?.pronouns ? (
-                    <p className="inline">
+                    <p className="lg:inline">
                       <span>(</span>
                         {profileInfo?.pronouns} 
                       <span>)</span>
@@ -152,26 +152,26 @@ function OtherProfile() {
                 </b>
                 {profileInfo?.pronoun ? <p>({profileInfo.pronoun})</p> : null}
               </h1>
-              <h2 className="text-emerald-500">@{profileInfo?.username}</h2>
+              <h2 className="lg:text-emerald-500">@{profileInfo?.username}</h2>
               <h3>
                 <b>Age: </b>
                 {profileInfo?.age?.age} years
               </h3>
             </div>
-            <div className="relative w-52 basis-1/4 ml-5">
-              <div className="align-middle inline">
-                <p className="text-left font-bold inline">Bio</p>
+            <div className="lg:relative lg:w-52 lg:basis-1/4 lg:ml-5">
+              <div className="lg:align-middle lg:inline">
+                <p className="lg:text-left lg:font-bold lg:inline">Bio</p>
               </div>
-              <section className="h-12 relative block">
-                <ImQuotesLeft className="text-orange-600 inline text-sm" />
-                  <p className="px-4 inline">{profileInfo?.bio}</p>
-                <ImQuotesRight className="text-orange-600 inline text-sm" />
+              <section className="lg:h-12 lg:relative lg:block">
+                <ImQuotesLeft className="lg:text-orange-600 lg:inline lg:text-sm" />
+                  <p className="lg:px-4 lg:inline">{profileInfo?.bio}</p>
+                <ImQuotesRight className="lg:text-orange-600 lg:inline lg:text-sm" />
               </section>
             </div>
-            <div className="absolute right-20">
+            <div className="lg:absolute lg:right-20">
               <button 
                 onClick={() => navigate('/chats')}
-                className="mr-3 text-cyan-500 rounded-md px-2 py-2 text-2xl align-middle"
+                className="lg:mr-3 lg:text-cyan-500 lg:rounded-md lg:px-2 lg:py-2 lg:text-2xl lg:align-middle"
               >
                 <MdMail />
               </button>
@@ -179,33 +179,32 @@ function OtherProfile() {
                 <span>Already Friends</span>
               ) : request ? (
                   <button
-                  className="border-2 border-cyan-400 py-0.5 bg-cyan-400 my-4 w-[130px] rounded-md"
-                  onClick={() => setRequest(false)}
+                  className="lg:border-2 lg:border-cyan-400 lg:py-0.5 lg:bg-cyan-400 lg:my-4 lg:w-[130px] lg:rounded-md"
                 >
-                  Cancel Request
+                  Request Sent
                 </button>              ) : (
                 <button
-                  className="border-2 border-cyan-400 px-2 my-4 pr-2 px-2 w-[130px] rounded-md"
+                  className="lg:border-2 lg:border-cyan-400 lg:px-2 lg:my-4 lg:pr-2 lg:px-2 lg:w-[130px] lg:rounded-md"
                   onClick={sendFriendRequest}
                 >
-                  <span className="text-cyan-500 font-bold text-lg px-1">+</span> Add Friend
+                  <span className="lg:text-cyan-500 lg:font-bold lg:text-lg lg:px-1">+</span> Add Friend
                 </button>
               )}
           </div>
           </div>
         </div>
       </div>
-      <form className="w-3/4 m-auto pb-10">
+      <form className="lg:w-3/4 lg:m-auto lg:pb-10">
         <fieldset
-          className={`w-3/4 border relative shadow-sm m-auto mb-8`}
+          className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8`}
         >
-          <legend className="px-3 text-left ml-8">Interests</legend>
+          <legend className="lg:px-3 lg:text-left lg:ml-8">Interests</legend>
           <div>
-            <div className="flex flex-wrap ml-6 mt-3 pr-24 mb-3 gap-y-4 mb-6">
+            <div className="lg:flex lg:flex-wrap lg:ml-6 lg:mt-3 lg:pr-24 lg:mb-3 lg:gap-y-4 lg:mb-6">
             {sortCategory.map((category) => {
                 return(
                   <Link to={`/users?categories.category_id=${encodeURIComponent(category?.category_id)}`}>
-                  <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-sm rounded-full text-sm px-4 py-2 text-center ml-2 mb-1">
+                  <div key={category?.category_id} className="lg:inline lg:text-white lg:bg-indigo-500 lg:hover:bg-blue-800 lg:text-sm lg:rounded-full lg:text-sm lg:px-4 lg:py-2 lg:text-center lg:ml-2 lg:mb-1">
                   {category.name}
                   </div>
                   </Link>
@@ -214,9 +213,9 @@ function OtherProfile() {
             </div>
           </div>
         </fieldset>
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${userEvents.length ? 'h-52' : 'h-20'}`}>
-          <legend className="px-3 text-left ml-8">Events</legend>
-          <div className="flex flex-wrap py-2 overflow-x-scroll h-44 gap-y-8">
+        <fieldset className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${userEvents.length ? 'lg:h-52' : 'lg:h-20'}`}>
+          <legend className="lg:px-3 lg:text-left lg:ml-8">Events</legend>
+          <div className="lg:flex lg:flex-wrap lg:py-2 lg:overflow-x-scroll lg:h-44 lg:gap-y-8">
             {Array.isArray(userEvents) && userEvents.length > 0 ? (
               userEvents.map((event) => (
                 <div key={event.event_id}>
@@ -224,14 +223,14 @@ function OtherProfile() {
                 </div>
               ))
             ) : (
-              <p className="ml-7 text-gray-400">No events found.</p>
+              <p className="lg:ml-7 lg:text-gray-400">No events found.</p>
             )}
           </div>
         </fieldset>
         
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${hostedEvents.length ? 'h-52' : 'h-20' }`}>
-          <legend className="px-3 text-left ml-8">Hosted Events</legend>
-          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
+        <fieldset className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${hostedEvents.length ? 'lg:h-52' : 'lg:h-20' }`}>
+          <legend className="lg:px-3 lg:text-left lg:ml-8">Hosted Events</legend>
+          <div className="lg:flex lg:flex-wrap lg:px-3 lg:py-2 lg:overflow-y-auto">
             {hostedEvents[0] &&
               hostedEvents.map((hosted) => {
                 return (
@@ -243,9 +242,9 @@ function OtherProfile() {
             </div>
         </fieldset>
         
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${friends.length ? 'h-40' : 'h-20'}`}>
-          <legend className="px-3 text-left ml-8">Friends</legend>
-          <div className="max-w-full flex flex-row gap-x-10 px-3 py-2 overflow-x-auto h-32">
+        <fieldset className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto ${friends.length ? 'lg:h-40' : 'lg:h-20'}`}>
+          <legend className="lg:px-3 lg:text-left lg:ml-8">Friends</legend>
+          <div className="lg:max-w-full lg:flex lg:flex-row lg:gap-x-10 lg:px-3 lg:py-2 lg:overflow-x-auto lg:h-32">
             {friends.length ? (
               friends.map((friend) => {
                 return (
@@ -254,7 +253,7 @@ function OtherProfile() {
                       <img
                         src={friend?.profile_img}
                         alt="profile-pic"
-                        className="w-20 h-20 ml-5 object-cover rounded-full justify-center items-center"
+                        className="lg:w-20 lg:h-20 lg:ml-5 lg:object-cover lg:rounded-full lg:justify-center lg:items-center"
                       />
                       <p className="text-center">
                         {friend.username}
@@ -264,7 +263,7 @@ function OtherProfile() {
                 );
               }
             )) : (
-              <p className="ml-5 text-gray-400">No friends added yet.</p>
+              <p className="lg:ml-5 lg:text-gray-400">No friends added yet.</p>
             )}
           </div>
         </fieldset>
