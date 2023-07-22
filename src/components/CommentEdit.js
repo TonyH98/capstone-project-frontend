@@ -40,16 +40,16 @@ function CommentEdit({id , CommentDetails, toggleView, handleEdit}){
 
 return(
     <div className="Edit">
-    <form onSubmit={handleSubmit} className="grid grid-rows-2">
+    <form onSubmit={handleSubmit} className="lg:grid lg:grid-rows-2">
       <br></br>
       <input
         id="comment"
         value={comment.comment}
         type="text"
         onChange={handleTextChange}
-        className="ml-20 pl-3 bg-orange-200 rounded-full w-fit pr-"
+        className="lg:ml-20 lg:pl-3 lg:bg-orange-200 lg:rounded-full lg:w-fit lg:pr-"
       />
-      <input type="submit" className="ml-36 mt-2 w-16 bg-cyan-200 rounded-full" />
+      <input type="submit" className="lg:ml-36 lg:mt-2 lg:w-16 lg:bg-cyan-200 lg:rounded-full" />
     </form>
   </div>
 )

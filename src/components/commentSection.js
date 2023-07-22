@@ -88,12 +88,12 @@ const handleSubmit = (event) => {
 
   return (
     <div className="">
-      <h2 className="text-lg font-bold mb-3">{comments.length} Comments</h2>
-      <form onSubmit={handleSubmit} className="flex justify-center items-center gap-2">
-      <div className="flex justify-center items-center gap-3">
+      <h2 className="lg:text-lg lg:font-bold lg:mb-3">{comments.length} Comments</h2>
+      <form onSubmit={handleSubmit} className="lg:flex lg:justify-center lg:items-center lg:gap-2">
+      <div className="lg:flex lg:justify-center lg:items-center lg:gap-3">
       <label
                 htmlFor="comments"
-                className="block font-bold mb-2"
+                className="lg:block lg:font-bold lg:mb-2"
               >
                 Add your comment
               </label> 
@@ -102,12 +102,12 @@ const handleSubmit = (event) => {
       id="comment"
       value={newComment.comment}
       onChange={handleTextChange}
-      className="rounded-md sm:w-96 border-2 border-black px-1 py-2"
+      className="lg:rounded-md lg:sm:w-96 lg:border-2 lg:border-black lg:px-1 lg:py-2"
       />
       </div>
-       <button type="submit" className=" hover:text-cyan-400 place-self-start py-2 px-3 rounded-md bg-purple-300 font-bold text-lg">Submit</button>
+       <button type="submit" className=" lg:hover:text-cyan-400 lg:place-self-start lg:py-2 lg:px-3 lg:rounded-md lg:bg-purple-300 lg:font-bold lg:text-lg">Submit</button>
       </form>
-      <div className="comment mt-2 flex flex-col justify-center items-center">
+      <div className="lg:comment lg:mt-2 lg:flex lg:flex-col lg:justify-center lg:items-center">
         {comments.map((comment) => {
           return(
 

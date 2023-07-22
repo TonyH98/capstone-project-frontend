@@ -53,7 +53,7 @@ let commentDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice
 
 
 return(
-    <div className="rounded-md sm:w-3/5 border-2 border-black mt-4">
+    <div className="lg:rounded-md lg:sm:w-3/5 lg:border-2 lg:border-black lg:mt-4">
     {hidden ? (<CommentEdit 
     id={id} 
     CommentDetails={comment} 
@@ -61,11 +61,9 @@ return(
     handleEdit={handleEdit}/>) : (
       <>
         <div className="">
-            <div className="flex justify-between p-4">
-              <div className="flex items-center gap-1">
-              <img src={defaultProf} className="rounded-full"></img>
-                {/* {users.profile_img === "https://www.pngitem.com/pimgs/m/24-248366_profile-clipart-generic-user-generic-profile-picture-gender.png" ? (<img src={defaultProf} className="rounded-full"></img>):
-                <img src={users.profile_img} className="rounded-full w-20"></img>} */}
+            <div className="lg:flex lg:justify-between lg:p-4">
+              <div className="lg:flex lg:items-center lg:gap-1">
+              <img src={defaultProf} className="lg:rounded-full"></img>
                 <div className="">
                   {comment?.creator?.first_name} {comment.creator?.last_name}
                 </div>
@@ -74,18 +72,18 @@ return(
                 {comment?.time}
               </div>
             </div>
-            <div className="flex mb-8">
-            <div className=" bg-slate-200 rounded-md px-2 py-3 w-96 ml-16">
+            <div className="lg:flex lg:mb-8">
+            <div className="lg:bg-slate-200 lg:rounded-md lg:px-2 lg:py-3 lg:w-96 lg:ml-16">
             {comment?.comment}
             </div> 
-            <div className="flex justify-center items-center gap-4 p-3">
+            <div className="lg:flex lg:justify-center lg:items-center lg:gap-4 lg:p-3">
       {users?.id === comment?.creator?.user_id ? (
-        <div className='comment-buttons flex gap-2'>
-          <button className="edit bg-cyan-400 hover:bg-purple-400 rounded-md px-4 py-0.5" 
+        <div className='comment-buttons lg:flex lg:gap-2'>
+          <button className="edit lg:bg-cyan-400 lg:hover:bg-purple-400 lg:rounded-md lg:px-4 lg:py-0.5" 
         onClick = {toggleView}>
           Edit
         </button>
-        <button  className="delete bg-cyan-400 hover:bg-orange-500 rounded-md px-2 py-0.5" 
+        <button  className="delete lg:bg-cyan-400 lg:hover:bg-orange-500 lg:rounded-md lg:px-2 lg:py-0.5" 
         onClick={() => handleDelete(comment.id)}>
           Delete
         </button> 
