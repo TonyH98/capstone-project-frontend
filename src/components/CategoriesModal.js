@@ -9,17 +9,17 @@ function CategoriesModal ({eventInfo, category, setCategoryModal, setEventInfo})
                     className={styles.cardBg}
                     onClick={() => setCategoryModal(false)} 
                 />
-                <div className={`${styles.card} relative w-[750px]`}>
+                <div className={`${styles.card} lg:relative lg:w-[750px]`}>
                     <div 
                         onClick={() => setCategoryModal(false)}
-                        className="absolute right-4 top-3"
+                        className="lg:absolute lg:right-4 lg:top-3"
                     >
                         X
                     </div>
-                    <p className="pb-6 pt-4 text-center">
-                        Select up to <span className="underline underline-offset-4 text-blue -500">three</span> categories
+                    <p className="lg:pb-6 lg:pt-4 lg:text-center">
+                        Select up to <span className="lg:underline lg:underline-offset-4 lg:text-blue lg:-500">three</span> categories
                     </p>
-                    <div className="flex flex-wrap justify-center">
+                    <div className="lg:flex lg:flex-wrap lg:justify-center">
                         {            
                             category.map((category) => {
                                     return (
@@ -38,7 +38,7 @@ function CategoriesModal ({eventInfo, category, setCategoryModal, setEventInfo})
                     <button
                         type='button'
                         onClick={() => setCategoryModal(false)}    
-                        className="bg-emerald-500 text-white px-8 py-1 mt-3 mb-2 rounded-md border float-right"
+                        className="lg:bg-emerald-500 lg:text-white lg:px-8 lg:py-1 lg:mt-3 lg:mb-2 lg:rounded-md lg:border lg:float-right"
                     >
                         Done
                     </button>

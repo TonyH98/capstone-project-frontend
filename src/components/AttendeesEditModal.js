@@ -3,18 +3,18 @@ import "./tooltip.css"
 function AttendeesEditModal({ updatedEventInfo, setOpenAttendeesEdit, handleTextChange, handleEdit }) {
     return (
         <div>
-            <div className="tooltiptext-right w-56">
-                <label htmlFor="max_people" className="block text-left ml-3">Max Participants</label>
+            <div className="tooltiptext-right lg:w-56">
+                <label htmlFor="max_people" className="lg:block lg:text-left lg:ml-3">Max Participants</label>
                 <input
                     type="number"
                     id="max_people"
                     name="max_people"
                     value={updatedEventInfo?.max_people}
                     onChange={handleTextChange}
-                    className="w-20 text-center pr-2 rounded h-8 inline"
+                    className="lg:w-20 lg:text-center lg:pr-2 lg:rounded lg:h-8 lg:inline"
                 />
                 <button
-                    className="bg-emerald-500 text-white px-5 py-1 mt-3 mb-2 ml-3 rounded-md border inline"
+                    className="lg:bg-emerald-500 lg:text-white lg:px-5 lg:py-1 lg:mt-3 lg:mb-2 lg:ml-3 lg:rounded-md lg:border lg:inline"
                     onClick={handleEdit}
                 >
                     Save

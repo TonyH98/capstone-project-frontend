@@ -2,29 +2,29 @@ import styles from "./modal.module.css";
 
 function SummaryEditModal({ eventInfo, updatedEventInfo, setOpenSummaryEdit, handleTextChange, handleEdit }) {
     return (
-        <div className="relative">
+        <div className="lg:relative">
             <div className={`${styles.card} w-1/3`}>
                 <label
                     htmlFor="summary" 
-                    className="block mb-2"
+                    className="lg:block mb-2"
                 >
                     Summary
                 </label>
-                <div className="relative">
+                <div className="lg:relative">
                     <textarea 
                         id="summary"
                         name="summary"
                         onChange={handleTextChange}
-                        className="w-full rounded pb-10 mb-10"
+                        className="lg:w-full lg:rounded lg:pb-10 lg:mb-10"
                     >
                         {eventInfo?.summary}
                     </textarea>
-                    <p className={`${updatedEventInfo?.summary.length >= 250 ? 'text-red-700' : null} absolute bottom-5 left-3 text-sm`}>
+                    <p className={`${updatedEventInfo?.summary.length >= 250 ? 'lg:text-red-700' : null} lg:absolute lg:bottom-5 lg:left-3 lg:text-sm`}>
                         {updatedEventInfo?.summary.length}/250 characters
                     </p>
                 </div>
                 <button
-                    className="bg-emerald-500 text-white px-8 py-1 mt-3 mb-2 rounded-md border absolute right-3 bottom-3"
+                    className="lg:bg-emerald-500 lg:text-white lg:px-8 lg:py-1 lg:mt-3 lg:mb-2 lg:rounded-md lg:border lg:absolute lg:right-3 lg:bottom-3"
                     onClick={handleEdit}
                 >
                     Save
