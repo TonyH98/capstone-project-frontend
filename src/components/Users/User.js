@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserProvider";
 import axios from "axios";
-import "./User.css"
+
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -46,43 +46,43 @@ export default function User({ users }) {
   }, [loggedInUser?.id]);
 
   return (
-    <div className="users-border-container">
-      <div className="users-container-info">
+    <div className="lg:bg-cyan-100 lg:shadow-lg lg:h-[150px] lg:rounded-md lg:flex lg:justify-between">
+      <div className="lg:flex">
         <img
           src={users?.profile_img}
           alt={`${users?.first_name} profile image`}
-          className="h-[150px] w-40 rounded-l object-cover"
+          className="lg:h-[150px] lg:w-40 lg:rounded-l lg:object-cover"
         ></img>
-        <div className="users-card-name-container">
-          <h3 className="users-card-name">
+        <div className="lg:p-2">
+          <h3 className="lg:font-semibold">
             {users?.first_name} {users?.last_name}
           </h3>
           <Link to={`/profile/${users?.username}`}>
-            <h3 className="users-card-username">@{users?.username}</h3>
+            <h3 className="lg:text-cyan-400 lg:font-bold lg:text-sm">@{users?.username}</h3>
           </Link>
         </div>
       </div>
-      <div className="users-card-friends-button-container">
+      <div className="lg:flex lg:justify-center lg:items-center lg:gap-4 lg:p-2">
       {loggedInUser?.id === users?.id ? null :
         <button
         onClick={() => navigate("/chats")}
-        className="users-card-message-button"
+        className="lg:border-2 lg:border-cyan-400 lg:hover:bg-cyan-400 lg:px-2 lg:py-1.5 lg:rounded-md"
       >
         <Link to="/chats">Message</Link>
       </button>}
     
       {loggedInUser?.id === users?.id ? null : friends ? (
-        <span className="users-card-already-friends">Already Friends</span>
+        <span className="lg:border-2 lg:border-cyan-400 lg:hover:bg-cyan-400 lg:px-2 lg:py-1.5 lg:rounded-md">Already Friends</span>
       ) : request && sendRequest ? (
         <span
-        
-          className="users-card-request-sent"
+          onClick={() => setSendRequest(false)}
+          className="lg:border-2 lg:border-cyan-400 lg:bg-cyan-400 lg:px-2 lg:py-1.5 lg:w-[140px] lg:rounded-md"
         >
-        Request Sent
+          Cancel Request
         </span>
       ) : (
         <button
-          className="users-card-friends-button"
+          className="lg:border-2 lg:border-cyan-400 lg:hover:bg-cyan-400 lg:px-2 lg:w-[140px] lg:py-1.5 lg:rounded-md"
           onClick={sendFriendRequest}
         >
           Friend Request

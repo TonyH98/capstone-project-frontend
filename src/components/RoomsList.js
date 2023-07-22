@@ -211,8 +211,8 @@ function handleFilter(event){
 
 
 return (
-  <div className="p-6 flex flex-col gap-2 bg-cyan-50">
-      <div className="flex gap-2 justify-center items-center">
+  <div className="lg:p-6 lg:flex lg:flex-col lg:gap-2 lg:bg-cyan-50">
+      <div className="lg:flex lg:gap-2 lg:justify-center lg:items-center">
       <form
   onSubmit={(e) => {
     e.preventDefault();
@@ -226,9 +226,9 @@ return (
     value={search}
     onChange={handleFilter}
     required
-    className="rounded-l py-2 px-2 border border-black sm:w-96 focus:border-transparent focus:ring-0"
+    className="lg:rounded-l lg:py-2 lg:px-2 lg:border lg:border-black lg:w-96 lg:focus:border-transparent lg:focus:ring-0"
   />
-  <button type="submit" className=" bg-cyan-400 px-4 py-2 shadow-md rounded-r border border-gray-800  hover:border-cyan-400">Chat</button>
+  <button type="submit" className="lg:bg-cyan-400 lg:px-4 lg:py-2 lg:shadow-md lg:rounded-r lg:border lg:border-gray-800  lg:hover:border-cyan-400">Chat</button>
   {filterUsers.length !== 0 && (
     <div className="data=result">
       {filterUsers.slice(0, 5).map((users) => {
@@ -241,7 +241,7 @@ return (
             }}
             key={users.username}
           >
-            <section className="z-20 bg-white min-h-[100px] shadow-md rounded-lg absolute w-96 p-2">{users.username}</section>
+            <section className="lg:z-20 lg:bg-white lg:min-h-[100px] lg:shadow-md lg:rounded-lg lg:absolute lg:w-96 lg:p-2">{users.username}</section>
           </div>
         );
       })}
@@ -249,9 +249,9 @@ return (
   )}
 </form>
       </div>
-      <article className="flex gap-4">
-      <div className="border-r px-3">
-        <h2 className="text-2xl text-cyan-400">Conversations</h2>
+      <article className="lg:flex lg:gap-4">
+      <div className="lg:border-r lg:px-3">
+        <h2 className="lg:text-2xl lg:text-cyan-400">Conversations</h2>
         <ul className="">
           {rooms.map((room) => (
             <section key={room.id}>
@@ -261,41 +261,41 @@ return (
           ))}
         </ul>
       </div>
-      <div className="flex flex-col p-4 ml-[12%] w-[45vw] h-[68vh] overflow-y-auto">
+      <div className="lg:flex lg:flex-col lg:p-4 lg:ml-[12%] lg:w-[45vw] lg:h-[68vh] lg:overflow-y-auto">
   {Array.isArray(chat) ? (
     chat.map((chatItem, index) => {
       const lastMessage = chat.length - 1 === index;
       return (
-      <div key={chatItem.id} ref={lastMessage ? setRef : null} className={`my-1 flex flex-col p-2 rounded-md w-72 ${users?.id === chatItem.userid ? 'self-end items-start bg-cyan-300' : 'items-start bg-[#ffbb00]'}`} >
+      <div key={chatItem.id} ref={lastMessage ? setRef : null} className={`lg:my-1 lg:flex lg:flex-col lg:p-2 lg:rounded-md lg:w-72 ${users?.id === chatItem.userid ? 'self-end items-start bg-cyan-300' : 'items-start bg-[#ffbb00]'}`} >
         <section >
-        <p className="text-xs">{chatItem.date_created}</p>
-        <p className="font-semibold">{chatItem.content}</p>
-        <div className="text-xs text-muted">{users?.id === chatItem.userid ? "You" : chatItem.username}</div>
+        <p className="lg:text-xs">{chatItem.date_created}</p>
+        <p className="lg:font-semibold">{chatItem.content}</p>
+        <div className="lg:text-xs lg:text-muted">{users?.id === chatItem.userid ? "You" : chatItem.username}</div>
         </section>
       </div>
     )})
   ) : (
-    <div className='w-[75%] flex flex-col justify-center items-center ml-14'>
-      <h2 className="font-bold text-base text-center">No conversation yet, send a message to get started!</h2>
+    <div className='lg:w-[75%] lg:flex lg:flex-col lg:justify-center lg:items-center lg:ml-14'>
+      <h2 className="lg:font-bold lg:text-base lg:text-center">No conversation yet, send a message to get started!</h2>
       <Lottie animationData={animationData} />
     </div>
   )}
 </div>
       </article>
 {selectedRoom ? 
-(<form onSubmit={handleSubmit} className="flex justify-center items-center">
+(<form onSubmit={handleSubmit} className="lg:flex lg:justify-center lg:items-center">
       <input
       type="text"
       id="content"
       value={newChat.content}
       placeholder="Message..."
       onChange={handleTextChange}
-      className="rounded-md sm:w-96 border-2 border-slate-800 px-1 py-2 focus:border focus:border-cyan-400"
+      className="lg:rounded-md lg:sm:w-96 lg:border-2 lg:border-slate-800 lg:px-1 lg:py-2 lg:focus:border lg:focus:border-cyan-400"
       />
-     <button type="submit" className="mx-1 hover:text-cyan-400 font-bold"><AiOutlineSend size={30}/></button>
+     <button type="submit" className="lg:mx-1 lg:hover:text-cyan-400 lg:font-bold"><AiOutlineSend size={30}/></button>
       </form>) : (
-        <div className="absolute top-[25%] w-[85%] flex flex-col justify-center items-center">
-          <h2 className="font-bold text-base text-center">No Conversation selected</h2>
+        <div className="lg:absolute lg:top-[25%] lg:w-[85%] lg:flex lg:flex-col lg:justify-center lg:items-center">
+          <h2 className="lg:font-bold lg:text-base lg:text-center">No Conversation selected</h2>
           {/* <Lottie animationData={NoSelection} /> */}
         </div>
       )

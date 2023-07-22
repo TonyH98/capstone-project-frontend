@@ -5,7 +5,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import "./NewEvent.css"
+
 import Geocode from "react-geocode";
 import GoogleMap from "../../components/Map"
 
@@ -368,15 +368,15 @@ function checkTime() {
   console.log(events)
 
   return (
-    <div className="form-container">
+    <div className="lg:flex items-center justify-center p-4 m-auto gap-4">
       <form
         onSubmit={handleSubmit}
-        className="new-event-form"
+        className="bg-white shadow-md rounded-md px-10 pt-6 pb-8 mb-4 md:w-2/3 lg:w-5/12 m-auto"
       >
         {formStep === 0 && (
           <section className="">
             <div className="mb-3">
-          <label htmlFor="title" className="title-label">Title</label>
+          <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-1">Title</label>
           <input 
             type="text" 
             id="title" 
@@ -384,12 +384,12 @@ function checkTime() {
             value={events.title} 
             onChange={handleTextChange} 
             required
-            className="title-input-box"
+            className="shadow border border-black bg-transparent appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
           />
         </div>
         
         <div className="mb-3">
-          <label htmlFor="location" className="location=label">
+          <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
             Location
           </label>
           <input 
@@ -399,11 +399,11 @@ function checkTime() {
             value={events.location}
             onChange={handleTextChange} 
             required
-            className="location-input-box"
+            className="shadow bg-transparent border border-black appearance-none border w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md"
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="address" className="address-label">
+          <label htmlFor="address" className="block text-gray-700 text-sm font-bold mb-2">
             Address
           </label>
           <input 
@@ -413,11 +413,11 @@ function checkTime() {
             value={events.address}
             onChange={handleTextChange} 
             required
-            className={`${addressError ? "address-error" : "address-valid"} address-input-box`}
+            className={`${addressError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none border w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
           />
           <button
             type='button'
-            className="test-address-button"
+            className="underline block mt-2 text-purple-500 text-sm"
             onClick={verifyAddress}
           >
             Verify address
@@ -425,7 +425,7 @@ function checkTime() {
         </div>
         <div className="sm:flex justify-between gap-2">
           <div className="mb-3">
-            <label htmlFor="date_event" className="new-event-date">
+            <label htmlFor="date_event" className="block text-gray-700 text-sm font-bold mb-2">
               Date
             </label>
             <input 
@@ -435,12 +435,12 @@ function checkTime() {
               value={events.date_event}
               onChange={handleTextChange} 
               required
-              className={`${dateError ? "dateError" : "validDate"} date-input-box`}
+              className={`${dateError ? "border-red-600" : "border-slate-800"} shadow bg-transparent appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
             />
           </div>
         <div className="flex gap-2">
           <div className="mb-3">
-            <label htmlFor="start_time" className="start-time-label">
+            <label htmlFor="start_time" className="block text-gray-700 text-sm font-bold mb-2">
               Start Time
             </label>
             <input
@@ -450,11 +450,11 @@ function checkTime() {
               value={events.start_time}
               onChange={handleTextChange} 
               required
-              className={`${timeError ? "timeError" : "timeValid"} start-time-input-box`}
+              className={`${timeError ? "border-red-600" : "border-slate-800"} border shadow bg-transparent appearance-none  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
             />
          </div>
           <div className="mb-3">
-            <label htmlFor="end_time" className="end-time-label">
+            <label htmlFor="end_time" className="block text-gray-700 text-sm font-bold mb-2">
               End Time
             </label>
             <input 
@@ -464,13 +464,13 @@ function checkTime() {
             value={events.end_time}
             onChange={handleTextChange}
             required
-            className={`${timeError ? "timeError" : "timeValid"} end-time-input-box`}
+            className={`${timeError ? "border-red-600" : "border-slate-800"} border shadow bg-transparent appearance-none py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
             />
           </div>
         </div>
         </div>
         <div className="mb-3">
-            <label htmlFor="max" className="max-label">
+            <label htmlFor="max" className="block text-gray-700 text-sm font-bold mb-2">
               Max Participants
             </label>
             <input 
@@ -480,7 +480,7 @@ function checkTime() {
               onChange={handleTextChange} 
               value={events.max_people}
               required
-              className={`${maxError ? "maxError" : "maxValid"} max-input-box`}
+              className={`${maxError ? "border-red-600" : "border-slate-800"} border shadow bg-transparent appearance-none py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md`}
               />
           </div>
           <div>
@@ -498,9 +498,10 @@ function checkTime() {
             }
           </div>
         <div className="flex justify-evenly pt-4">
-        {formStep < 1 ? <button onClick={nextForm} className="first-page-next">Next</button> : ""}
+        {formStep < 1 ? <button onClick={nextForm} className="block border border-cyan-400 bg-cyan-400 hover:bg-purple-400
+        hover:border-purple-400 text-slace-900 hover:text-slate-100 uppercase text-sm font-bold py-2 px-4 rounded-md">Next</button> : ""}
         <Link to={`/events`}>
-            <button className="first-page-cancel-button">
+            <button className="block border border-gray-500 hover:bg-[#f6854b] hover:border-[#f6854b] text-slace-900 hover:text-slate-100 uppercase text-sm font-bold p-2 rounded-md">
               Cancel
             </button>
           </Link>
