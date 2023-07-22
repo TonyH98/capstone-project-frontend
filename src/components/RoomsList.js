@@ -266,7 +266,7 @@ return (
     chat.map((chatItem, index) => {
       const lastMessage = chat.length - 1 === index;
       return (
-      <div key={chatItem.id} ref={lastMessage ? setRef : null} className={`lg:my-1 lg:flex lg:flex-col lg:p-2 lg:rounded-md lg:w-72 ${users?.id === chatItem.userid ? 'self-end items-start bg-cyan-300' : 'items-start bg-[#ffbb00]'}`} >
+      <div key={chatItem.id} ref={lastMessage ? setRef : null} className={`lg:my-1 lg:flex lg:flex-col lg:p-2 lg:rounded-md lg:w-72 ${users?.id === chatItem.userid ? 'lg:self-end lg:items-start lg:bg-cyan-300' : 'lg:items-start lg:bg-[#ffbb00]'}`} >
         <section >
         <p className="lg:text-xs">{chatItem.date_created}</p>
         <p className="lg:font-semibold">{chatItem.content}</p>

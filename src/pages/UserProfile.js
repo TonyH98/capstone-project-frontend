@@ -154,19 +154,19 @@ console.log(isSelected)
   return (
     <>
       <div>
-        <div className="mb-10 mt-12 m-auto">
-          <div className="flex justify-center gap-x-10 align-items-start">
+        <div className="lg:mb-10 lg:mt-12 lg:m-auto">
+          <div className="lg:flex lg:justify-center lg:gap-x-10 lg:align-items-start">
             <img
               src={loggedInUser?.profile_img}
               alt="profile-pic"
-              className="w-36 h-36 basis-1/8 object-cover rounded"
+              className="lg:w-36 lg:h-36 lg:basis-1/8 lg:object-cover lg:rounded"
             />
-            <div className="text-left basis-1/8">
+            <div className="lg:text-left lg:basis-1/8">
               <h1>
                 <b>
                   {loggedInUser?.first_name} {loggedInUser?.last_name}{" "}
                   {loggedInUser?.pronouns ? (
-                    <p className="inline">
+                    <p className="lg:inline">
                       <span>(</span>
                         {loggedInUser?.pronouns} 
                       <span>)</span>
@@ -174,24 +174,24 @@ console.log(isSelected)
                     ) : null}
                 </b>
               </h1>
-              <h2 className="text-emerald-500">@{loggedInUser?.username}</h2>
+              <h2 className="lg:text-emerald-500">@{loggedInUser?.username}</h2>
               <h3>
                 <b>Age: </b>
                 {loggedInUser?.age?.age} years
               </h3>
             </div>
-            <div className="relative w-52 basis-1/4 ml-5">
-              <div className="align-middle inline">
-                <p className="text-left font-bold inline">Bio</p>
+            <div className="lg:relative lg:w-52 lg:basis-1/4 lg:ml-5">
+              <div className="lg:align-middle lg:inline">
+                <p className="lg:text-left lg:font-bold lg:inline">Bio</p>
                 <BsPencilSquare
                   onClick={() => setOpenEditModal(true)}
-                  className="inline text-cyan-800 cursor-pointer float-right mt-2"
+                  className="lg:inline lg:text-cyan-800 lg:cursor-pointer lg:float-right lg:mt-2"
                 />
               </div>
-              <section className="h-12 relative block">
-                <ImQuotesLeft className="text-orange-600 inline text-sm" />
-                  <p className="px-4 inline">{loggedInUser?.bio}</p>
-                <ImQuotesRight className="text-orange-600 inline text-sm" />
+              <section className="lg:h-12 lg:relative lg:block">
+                <ImQuotesLeft className="lg:text-orange-600 lg:inline lg:text-sm" />
+                  <p className="lg:px-4 lg:inline">{loggedInUser?.bio}</p>
+                <ImQuotesRight className="lg:text-orange-600 lg:inline text-sm" />
               </section>
             </div>
           </div>
