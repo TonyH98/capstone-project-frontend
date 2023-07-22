@@ -473,25 +473,25 @@ const hostId = hosts.map((host) => {
 })
 
   return (
-    <div className="relative">
+    <div className="lg:relative">
       <div
         className={`${openTitleEdit || openImageEdit || openAttendeesEdit ? "background" : null}`}
         onClick={closeModal}
       />
-      <div className="flex flex-row justify-center gap-x-16 mx-20">
-        <div className="w-96">
-          <div className="relative">
+      <div className="lg:flex lg:flex-row lg:justify-center lg:gap-x-16 lg:mx-20">
+        <div className="lg:w-96">
+          <div className="lg:relative">
             <img
               src={eventInfo?.location_image}
               alt="event photo"
-              className="max-h-96 w-96 mt-12 object-fit"
+              className="lg:max-h-96 lg:w-96 lg:mt-12 lg:object-fit"
             />
-            <div className="w-36 tooltip absolute left-0 bottom-3">
+            <div className="lg:w-36 tooltip lg:absolute lg:left-0 lg:bottom-3">
             {
               editMode ? 
               <button 
               onClick={() => {setOpenImageEdit(true)}}
-              className="text-blue-800 pl-1 mb-7 text-left absolute left-0 top-0 w-56 text-sm hover:text-blue-600"
+              className="lg:text-blue-800 lg:pl-1 lg:mb-7 lg:text-left lg:absolute lg:left-0 lg:top-0 lg:w-56 lg:text-sm lg:hover:text-blue-600"
               >
                   Change Event Photo
                 </button>
@@ -510,31 +510,31 @@ const hostId = hosts.map((host) => {
             </div>
           </div>
         </div>
-        <div className="w-1/2 mt-12">
-          <div className="flex flex-col relative">
+        <div className="lg:w-1/2 lg:mt-12">
+          <div className="lg:flex lg:flex-col lg:relative">
             <div className={`tooltip`}>
-              <div className={`text-3xl mb-5 `}>
+              <div className={`lg:text-3xl lg:mb-5 `}>
                 {eventInfo?.title}&nbsp;&nbsp;|&nbsp;&nbsp;
                 {eventInfo?.age_restriction ? (
-                  <h1 className={`inline text-2xl text-gray-500 `}>
+                  <h1 className={`lg:inline lg:text-2xl lg:text-gray-500 `}>
                     {`${eventInfo?.age_min} to ${eventInfo?.age_max} Only`}
                   </h1>
                 ) : (
-                  <h1 className="inline text-2xl text-gray-500">
+                  <h1 className="lg:inline lg:text-2xl lg:text-gray-500">
                     All ages
                   </h1>
                 )}
                 {editMode ? (
-                  <div className="inline">
+                  <div className="lg:inline">
                     <BsPencilFill
                       onClick={() => {
                         setOpenTitleEdit(!openTitleEdit);
                       }}
-                      className="inline text-lg text-gray-800 ml-3 hover:cursor-pointer"
+                      className="lg:inline lg:text-lg lg:text-gray-800 lg:ml-3 lg:hover:cursor-pointer"
                     />
                   </div>
                 ) : null}
-              <h2 className=" text-cyan-600 text-xl">@ {eventInfo?.location}</h2>
+              <h2 className="lg:text-cyan-600 lg:text-xl">@ {eventInfo?.location}</h2>
               </div>
               {openTitleEdit ? 
                 <TitleEditModal 
@@ -545,25 +545,25 @@ const hostId = hosts.map((host) => {
                 />
               : null}
             </div>
-            <div className="relative">
-              <h2 className="inline">
+            <div className="lg:relative">
+              <h2 className="lg:inline">
                 Date:
-                <span className="text-white bg-pink-400 hover: rounded-full text-xs px-2.5 py-1.5 text-center mr-2 ml-3">
+                <span className="lg:text-white lg:bg-pink-400 lg:rounded-full lg:text-xs lg:px-2.5 lg:py-1.5 lg:text-center lg:mr-2 lg:ml-3">
                   {eventDate}
                 </span>
-                <span className="text-sm text-blue-800 font-bold">
+                <span className="lg:text-sm lg:text-blue-800 lg:font-bold">
                   {eventInfo?.start_time.charAt(0) === '0' ? `${eventInfo?.start_time.slice(1)}` : `${eventInfo?.start_time}`} - {eventInfo?.end_time.charAt(0) === '0' ? `${eventInfo?.end_time.slice(1)}` : `${eventInfo?.end_time}`}
                 </span>
               {
                 editMode ? 
                   <BsPencilFill 
                     onClick={() => {setOpenLocationEdit(true)}}
-                    className="right-10 top-0 text-md text-gray-800 inline ml-4 align-baseline hover:cursor-pointer"
+                    className="lg:right-10 lg:top-0 lg:text-md lg:text-gray-800 lg:inline lg:ml-4 lg:align-baseline lg:hover:cursor-pointer"
                   />
                   : null
               }
               </h2>
-              <h2 className="mt-2">Address: {eventInfo?.address}</h2>
+              <h2 className="lg:mt-2">Address: {eventInfo?.address}</h2>
           
             </div>
           </div>
@@ -579,7 +579,7 @@ const hostId = hosts.map((host) => {
               />
               : null
           }
-          <h2 className="mt-1">
+          <h2 className="lg:mt-1">
             Categories:
             {eventInfo?.category_names
               ? eventInfo.category_names.map((category) => {
@@ -589,7 +589,7 @@ const hostId = hosts.map((host) => {
                     <div
                     key={category.id}
                       // update route for events sorted by category
-                      className="inline text-white bg-indigo-500 hover:bg-blue-800 text-xs rounded-full px-3 py-1.5 text-center ml-2 mb-1"
+                      className="lg:inline lg:text-white lg:bg-indigo-500 lg:hover:bg-blue-800 lg:text-xs lg:rounded-full lg:px-3 lg:py-1.5 lg:text-center lg:ml-2 lg:mb-1"
                     >
                       {category.name}
                     </div>
@@ -602,7 +602,7 @@ const hostId = hosts.map((host) => {
               <button
                 type="button"
                 onClick={() => setCategoryModal(!categoryModal)}
-                className="ml-2"
+                className="lg:ml-2"
               >
                 +/-
               </button>
@@ -618,44 +618,44 @@ const hostId = hosts.map((host) => {
               setEventInfo={setEventInfo}
             />
           ) : null}
-          <div className="text-gray-600 my-5 text-sm py-3 align-baseline">
+          <div className="lg:text-gray-600 lg:my-5 lg:text-sm lg:py-3 lg:align-baseline">
               Hosted by 
-            <div className="hover:text-blue-500 hover:border-blue-500 w-20 inline">
+            <div className="lg:hover:text-blue-500 lg:hover:border-blue-500 lg:w-20 lg:inline">
               <Link 
                 to={`/profile/${eventInfo?.creator[0].username}`}
-                className="hover:text-blue-500 hover:border-blue-500 w-12"
+                className="lg:hover:text-blue-500 lg:hover:border-blue-500 lg:w-12"
               >
                 <img 
                   src={eventInfo?.creator[0].profile_img}
                   alt="profile image"
-                  className="h-10 w-10 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
+                  className="lg:h-10 lg:w-10 lg:inline lg:px-1 lg:py-1 lg:mx-2 lg:rounded-full lg:bg-gray-100 lg:border lg:border-gray-300 lg:hover:border-blue-500 lg:object-cover"
                 /> 
                 {eventInfo?.creator[0].username}
               </Link>
             </div>
             {
               hosts.length ? (
-                <div className="mt-1">
-                  <p className="inline break-keep ">Co-Hosts: </p>
-                  <div className="flex inline items-center mt-3 overflow-x-scroll no-scrollbar space-x-10">
+                <div className="lg:mt-1">
+                  <p className="lg:inline lg:break-keep ">Co-Hosts: </p>
+                  <div className="lg:flex lg:inline lg:items-center lg:mt-3 lg:overflow-x-scroll lg:no-scrollbar lg:space-x-10">
                   {hosts.map((host) => {
                     return(
-                      <div className="hover:text-blue-500 hover:border-blue-500">
+                      <div className="lg:hover:text-blue-500 lg:hover:border-blue-500">
                         <Link 
                           to={`/profile/${host.username}`}
-                          className="hover:text-blue-500 hover:border-blue-500 w-full flex items-center"
+                          className="lg:hover:text-blue-500 lg:hover:border-blue-500 lg:w-full lg:flex lg:items-center"
                         >
                           <img 
                             src={host.profile_img}
                             alt="profile image"
-                            className="h-10 w-10 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 hover:border-blue-500 object-cover"
+                            className="lg:h-10 lg:w-10 lg:inline lg:px-1 lg:py-1 lg:mx-2 lg:rounded-full lg:bg-gray-100 lg:border lg:border-gray-300 lg:hover:border-blue-500 lg:object-cover"
                           /> 
                          <p>{host.username}</p>
                         </Link>
                         {
                           editMode && users.id === eventInfo.creator[0].id ? (
                             <button 
-                              className="pl-1 text-red-800"
+                              className="lg:pl-1 lg:text-red-800"
                               onClick={() => deleteCohost(host?.user_id)}
                             >
                               X
@@ -668,23 +668,23 @@ const hostId = hosts.map((host) => {
                 }
                 </div>
 
-                <div className="mt-2 ">
+                <div className="lg:mt-2 ">
                   {users?.id === eventInfo?.creator[0].id ? 
-                    <button type="button" onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
+                    <button type="button" onClick={showSearchBar} className="lg:text-[12px] lg:border lg:rounded-xl lg:bg-white lg:px-5 lg:shadow lg:inline lg:mr-3 lg:text-gray-500 lg:hover:text-blue-400 lg:hover:bg-gray-200 lg:bg-gradient-to-b lg:from-gray-100 lg:to-gray-300 lg:hover:bg-gradient-to-b">
                       Add Co-Host
                     </button>
                       : null
                   }
                   {showSearch ? (
-                    <div className="inline">
+                    <div className="lg:inline">
                       <input
                         type="text"
                         value={search}
                         onChange={handleFilter}
-                        className="inline h-7 rounded align-middle border border-black"
+                        className="lg:inline lg:h-7 lg:rounded lg:align-middle lg:border lg:border-black"
                       />
                     {filterFriends?.length !== 0 && (
-                      <div className="dataResult shadow-lg absolute bg-white w-40 text-center ml-32 rounded">
+                      <div className="dataResult lg:shadow-lg lg:absolute lg:bg-white w-40 lg:text-center lg:ml-32 lg:rounded">
     
                         {filterFriends.slice(0,5).map((friend) => {
                           return(
@@ -703,23 +703,23 @@ const hostId = hosts.map((host) => {
                   </div>
                 </div>
               ) : (
-                <div className="block my-2">
+                <div className="lg:block lg:my-2">
                   {users?.id === eventInfo?.creator[0].id ? 
-                    <button type="button" onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 hover:text-blue-400 hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 hover:bg-gradient-to-b">
+                    <button type="button" onClick={showSearchBar} className="lg:text-[12px] lg:border lg:rounded-xl lg:bg-white lg:px-5 lg:shadow lg:inline lg:mr-3 lg:text-gray-500 lg:hover:text-blue-400 lg:hover:bg-gray-200 lg:bg-gradient-to-b lg:gray-100 lg:to-gray-300 lg:hover:bg-gradient-to-b">
                       Add Co-Host
                     </button>
                       : null
                   }
                   {showSearch ? (
-                    <div className="inline">
+                    <div className="lg:inline">
                       <input
                         type="text"
                         value={search}
                         onChange={handleFilter}
-                        className="inline h-7 rounded align-middle border border-black"
+                        className="lg:inline lg:h-7 lg:rounded lg:align-middle lg:border lg:border-black"
                       />
                     {filterFriends?.length !== 0 && (
-                      <div className="dataResult shadow-lg absolute bg-white w-40 text-center ml-32 rounded">
+                      <div className="dataResult lg:shadow-lg lg:absolute lg:bg-white lg:w-40 lg:text-center lg:ml-32 lg:rounded">
     
                         {filterFriends.slice(0,5).map((friend) => {
                           return(
@@ -739,19 +739,19 @@ const hostId = hosts.map((host) => {
               )
             }
           </div>
-          <div className="mt-6">
-            <h2 className="inline">
+          <div className="lg:mt-6">
+            <h2 className="lg:inline">
               <b>Summary</b>
             </h2>
             {
               editMode ? 
                 <BsPencilFill 
                   onClick={() => {setOpenSummaryEdit(true)}}
-                  className="text-md text-gray-800 inline ml-4 align-baseline hover:cursor-pointer"
+                  className="lg:text-md lg:text-gray-800 lg:inline lg:ml-4 lg:align-baseline lg:hover:cursor-pointer"
                 />
                 : null
             }
-            <section className="break-words text-ellipsis">{eventInfo?.summary}</section>
+            <section className="lg:break-words lg:text-ellipsis">{eventInfo?.summary}</section>
           </div>
           {
             openSummaryEdit ? (
@@ -765,19 +765,19 @@ const hostId = hosts.map((host) => {
             ) : null
           }
         </div>
-        <div className="flex flex-col gap-y-12 mt-12">
-        <div className="flex flex-row justify-end h-10 gap-x-3">
+        <div className="lg:flex lg:flex-col lg:gap-y-12 lg:mt-12">
+        <div className="lg:flex lg:flex-row lg:justify-end lg:h-10 gap-x-3">
   {users?.id === creator ? (
     editMode ? (
       <>
         <button
-          className="text-black bg-red-300 hover:bg-red-400 hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+          className="lg:text-black lg:bg-red-300 lg:hover:bg-red-400 lg:hover:text-white lg:border lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center"
           onClick={handleDelete}
         >
           Delete
         </button>
         <button
-          className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+          className="lg:text-black lg:hover:bg-gray-300 lg:border lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center"
           onClick={() => setEditMode(false)}
         >
           Done
@@ -785,7 +785,7 @@ const hostId = hosts.map((host) => {
       </>
     ) : (
       <button
-        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+        className="lg:text-black lg:hover:bg-gray-300 lg:border lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center"
         onClick={() => setEditMode(true)}
       >
         Edit
@@ -794,14 +794,14 @@ const hostId = hosts.map((host) => {
   ) : hostId.includes(users?.id) ? (
     editMode ? (
       <button
-        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+        className="lg:text-black lg:hover:bg-gray-300 lg:border lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center"
         onClick={() => setEditMode(false)}
       >
         Done
       </button>
     ) : (
       <button
-        className="text-black hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+        className="lg:text-black lg:hover:bg-gray-300 lg:border lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center"
         onClick={() => setEditMode(true)}
       >
         Edit
@@ -810,20 +810,20 @@ const hostId = hosts.map((host) => {
   ) : (
     <>
       <button
-        className={`${eventState?.interested ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center`}
+        className={`${eventState?.interested ? 'lg:bg-gradient-to-b lg:from-cyan-100 lg:via-purple-100 lg:to-purple-200' : null} lg:text-black lg:hover:bg-gray-300 lg:border lg:focus:bg-gradient-to-b lg:from-cyan-100 lg:via-purple-100 lg:to-purple-200 lg:focus:shadow-md lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center`}
         onClick={addToInterest} 
       >
         Interested
-          <span className="text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+          <span className="lg:text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
             <AiFillStar className={`${eventState?.interested ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
       </button>
       <button
-        className={`${eventState?.rsvp ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center`}
+        className={`${eventState?.rsvp ? 'lg:bg-gradient-to-b lg:from-cyan-100 lg:via-purple-100 lg:to-purple-200' : null} lg:text-black lg:hover:bg-gray-300 lg:border lg:focus:bg-gradient-to-b lg:from-cyan-100 lg:via-purple-100 lg:to-purple-200 lg:focus:shadow-md lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center`}
         onClick={addToRsvp}
       >
         RSVP
-          <span className="text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-            <AiFillCheckCircle className={`${ eventState?.rsvp ? 'text-green-400' : 'text-gray-400' } text-xl focus:text-green-400`}/>
+          <span className="lg:text-lg lg:h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <AiFillCheckCircle className={`${ eventState?.rsvp ? 'lg:text-green-400' : 'lg:text-gray-400' } lg:text-xl lg:focus:text-green-400`}/>
       </button>
     </>
   )}
@@ -840,16 +840,16 @@ const hostId = hosts.map((host) => {
         </div>
       </div>
       <div>
-        <div className="tooltip pt-7">
+        <div className="tooltip lg:pt-7">
           <div>
-            <h2 className="text-lg ml-20 font-bold inline">
+            <h2 className="lg:text-lg lg:ml-20 lg:font-bold lg:inline">
               Attendees: {attending?.length}/{eventInfo?.max_people}
             </h2>
             {
               editMode ?
                 <BsPencilFill 
                   onClick={() => {setOpenAttendeesEdit(true)}}
-                  className="text-md text-gray-800 inline ml-4 align-baseline hover:cursor-pointer"
+                  className="lg:text-md lg:text-gray-800 lg:inline lg:ml-4 lg:align-baseline lg:hover:cursor-pointer"
                 />
                   : null
             }
@@ -867,7 +867,7 @@ const hostId = hosts.map((host) => {
         </div>
         {
           attending?.length ? (
-            <div className="mb-10 ml-16 flex flex-row">
+            <div className="lg:mb-10 lg:ml-16 lg:flex lg:flex-row">
               {
                 attending.map((attendee) => {
                   return(
@@ -881,13 +881,13 @@ const hostId = hosts.map((host) => {
               }
             </div>
           ) : (
-            <h1 className="ml-32 my-5 mb-10 text-gray-400 text-lg">
+            <h1 className="lg:ml-32 lg:my-5 lg:mb-10 lg:text-gray-400 lg:text-lg">
               Still space in this event. RSVP now to save your spot!
             </h1>
           )
         }
       </div>
-      <div className="px-10 pt-6 border-t">
+      <div className="lg:px-10 lg:pt-6 lg:border-t">
         <CommentSection users={users} id={id}/> 
       </div>
     </div>
