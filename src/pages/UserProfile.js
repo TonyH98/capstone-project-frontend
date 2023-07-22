@@ -206,19 +206,20 @@ console.log(isSelected)
           ) : null}
         </div>
       </div>
-      <form className="w-3/4 m-auto pb-10">
+      <form className="lg:w-3/4 lg:m-auto lg:pb-10">
         <fieldset
-          className={`w-3/4 border relative shadow-sm m-auto mb-8 ${
-            !isSelected.length ? "h-20" : null
+          className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${
+            !isSelected.length ? "lg:h-20" : null
           }`}
         >
           <legend className="px-3 text-left ml-8">Interests</legend>
           <div>
-            <div className="flex flex-wrap ml-6 mt-3 pr-24 mb-3 gap-y-5 mb-6">
+            <div className="lg:flex lg:flex-wrap lg:ml-6 lg:mt-3 lg:pr-24 lg:mb-3 lg:gap-y-5 lg:mb-6">
               {sortCategory.map((category) => {
                 return(
                   <Link to={`/users?categories.category_id=${encodeURIComponent(category?.category_id)}`}>
-                    <div key={category?.category_id} className="inline text-white bg-indigo-500 hover:bg-blue-800 text-sm rounded-full text-sm px-4 py-2 text-center ml-2 mb-1">
+                    <div key={category?.category_id} 
+                    className="lg:inline lg:text-white lg:bg-indigo-500 lg:hover:bg-blue-800 lg:text-sm lg:rounded-full lg:text-sm lg:px-4 lg:py-2 lg:text-center lg:ml-2 lg:mb-1">
                       {category.name}
                     </div>
                   </Link>
@@ -228,7 +229,7 @@ console.log(isSelected)
             <button
               type="button"
               onClick={() => setOpenInterestModal(!openInterestModal)}
-              className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+              className="lg:w-20 lg:bg-blue-300 lg:absolute lg:right-3 lg:top-3 lg:rounded lg:hover:bg-blue-200 lg:shadow-md"
             >
               Edit
             </button>
@@ -245,10 +246,10 @@ console.log(isSelected)
           />
         ) : null}
 
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${userEvents.length ? 'h-52' : 'h-20'}`}>
+        <fieldset className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${userEvents.length ? 'lg:h-52' : 'lg:h-20'}`}>
           <legend className="px-3 text-left ml-8">Events</legend>
           <div>
-            <div className="flex flex-wrap py-2 overflow-x-scroll h-44 gap-y-8">
+            <div className="lg:flex lg:flex-wrap lg:py-2 lg:overflow-x-scroll lg:h-44 lg:gap-y-8">
               {Array.isArray(userEvents) && userEvents.length > 0 ? (
                 userEvents.map((event) => (
                   <div key={event.event_id}>
@@ -256,13 +257,13 @@ console.log(isSelected)
                   </div>
                 ))
                 ) : (
-                  <p className="ml-7 text-gray-400">No events found.</p>
+                  <p className="lg:ml-7 lg:text-gray-400">No events found.</p>
                   )}
 
             </div>
               <button
                 onClick={() => navigate("/events")}
-                className="w-20 bg-blue-300 absolute right-5 top-3 rounded hover:bg-blue-200 shadow-md"
+                className="lg:w-20 lg:bg-blue-300 lg:absolute lg:right-5 lg:top-3 lg:rounded lg:hover:bg-blue-200 lg:shadow-md"
                 >
                 Add
               </button>
@@ -270,7 +271,7 @@ console.log(isSelected)
                 !editEvents ? (
                   <button
                     onClick={() => setEditEvents(!editEvents)}  
-                    className="absolute right-3 bottom-3"
+                    className="lg:absolute lg:right-3 lg:bottom-3"
                     type="button"
                   >
                     <BsPencilSquare />
@@ -278,7 +279,7 @@ console.log(isSelected)
                 ): (
                   <button 
                     onClick={deleteMultiple}
-                    className="absolute right-3 bottom-3"
+                    className="lg:absolute lg:right-3 lg:bottom-3"
                     type='button'
                   >
                     <BsTrash />
@@ -289,9 +290,9 @@ console.log(isSelected)
           </div>
         </fieldset>
 
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto mb-8 ${hostedEvents.length ? 'h-52' : 'h-20' }`}>
-          <legend className="px-3 text-left ml-8">Hosted Events</legend>
-          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
+        <fieldset className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto mb-8 ${hostedEvents.length ? 'lg:h-52' : 'lg:h-20' }`}>
+          <legend className="lg:px-3 lg:text-left lg:ml-8">Hosted Events</legend>
+          <div className="lg:flex lg:flex-wrap lg:px-3 lg:py-2 lg:overflow-y-auto">
             {hostedEvents.length > 0 ? (
               hostedEvents.map((hosted) => (
                 <div key={hosted.id}>
@@ -299,20 +300,20 @@ console.log(isSelected)
                 </div>
               ))
               ) : (
-                <p className="ml-5 text-gray-400">No hosted events found.</p>
+                <p className="lg:ml-5 lg:text-gray-400">No hosted events found.</p>
                 )}
             </div>
           <button
             onClick={() => navigate("/events/new")}
-            className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+            className="lg:w-20 lg:bg-blue-300 lg:absolute lg:right-3 lg:top-3 lg:rounded lg:hover:bg-blue-200 lg:shadow-md"
           >
             Create
           </button>
         </fieldset>
 
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto ${friends.length ? 'h-40' : 'h-20'}`}>
-          <legend className="px-3 text-left ml-8">Friends</legend>
-              <div className="max-w-full flex flex-row gap-x-10 px-3 py-2 overflow-x-auto h-32">
+        <fieldset className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto ${friends.length ? 'lg:h-40' : 'lg:h-20'}`}>
+          <legend className="lg:px-3 lg:text-left lg:ml-8">Friends</legend>
+              <div className="lg:max-w-full lg:flex lg:flex-row lg:gap-x-10 lg:px-3 lg:py-2 lg:overflow-x-auto lg:h-32">
                 {friends.length ? (
                   friends.map((friend) => (
                     <Link
@@ -323,52 +324,23 @@ console.log(isSelected)
                       <img
                         src={friend?.profile_img}
                         alt="profile-pic"
-                        className="w-20 h-20 ml-5 object-cover rounded-full justify-center items-center"
+                        className="lg:w-20 lg:h-20 lg:ml-5 lg:object-cover lg:rounded-full lg:justify-center lg:items-center"
                         />
-                      <span className="text-center">
+                      <span className="lg:text-center">
                         {friend.username}
                       </span>
                     </Link>
                     )
                   )) : (
-                    <p className="ml-5 text-gray-400">No friends added yet.</p>
+                    <p className="lg:ml-5 lg:text-gray-400">No friends added yet.</p>
                   )}
               </div>
           <button
             onClick={() => navigate("/users")}
-            className="w-20 bg-blue-300 absolute right-3 top-3 rounded hover:bg-blue-200 shadow-md"
+            className="lg:w-20 lg:bg-blue-300 lg:absolute lg:right-3 lg:top-3 lg:rounded lg:hover:bg-blue-200 lg:shadow-md"
           >
             Add
           </button>
-        </fieldset>
-        <fieldset className={`w-3/4 border relative shadow-sm m-auto mt-8 ${friendsRequest[0]} ? 'h-52' : 'h-20'`}>
-          <legend className="px-3 text-left ml-8">Friends Requests</legend>
-          <div className="flex flex-wrap px-3 py-2 overflow-y-auto">
-        {friendsRequest[0] ? (
-          friendsRequest.map((request) => {
-            return (
-              <div key={request.id} className="flex flex-col justify-center items-center">
-                <img
-                  src={request?.profile_img}
-                  alt="profile-pic"
-                  className="w-16 h-15 rounded-full"
-                />
-                <p className="text-sm font-semibold">{request.first_name} {request.last_name}</p>
-                <div>
-                <button onClick={() => acceptRequest(request.id)} className="text-xs text-white bg-indigo-500 hover:bg-blue-800 hover:font-semibold p-1 rounded-md">
-                  Accept
-                </button>{" "}
-                {""}{" "}
-                <button onClick={() => declineRequest(request.id)} className="text-xs text-white bg-red-400 hover:bg-red-500 hover:font-semibold p-1 rounded-md">
-                  Decline
-                </button>
-                </div>
-              </div>
-            );
-          })) : (
-            <p className="ml-5 py-3 text-gray-400">No friend requests.</p>
-          )}
-      </div>
         </fieldset>
       </form>
     </>
