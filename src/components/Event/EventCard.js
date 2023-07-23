@@ -1,5 +1,5 @@
 import "./events.css";
-
+import "./EventCard.css"
 import { Link } from "react-router-dom";
 
 const API = process.env.REACT_APP_API_URL;
@@ -35,42 +35,45 @@ export default function EventCard({ event }) {
   
     return (
       <Link to={`/events/${event?.id}`}>
-        <div className="lg:w-[600px] lg:h-[200px]  lg:flex lg:shadow-2xl lg:bg-white lg:rounded-md lg:my-4">
+        <div className="event-card lg:w-[600px] lg:h-[200px]  lg:flex lg:shadow-2xl lg:bg-white lg:rounded-md lg:my-4">
           <Link to={`/events/${event?.id}`}>
-            <img src={event.location_image} className="lg:w-[200px] lg:h-[200px] lg:rounded-l-md lg:mr-3 lg:object-cover lg:mr-2"></img>
+            <img src={event.location_image} className="event-card-image lg:w-[200px] lg:h-[200px] lg:rounded-l-md lg:mr-3 lg:object-cover lg:mr-2"></img>
           </Link>
-          <div className="lg:p-3 lg:pl-6 lg:w-3/4">
+          <div className="event-card-info-container lg:p-3 lg:pl-6 lg:w-3/4">
             <Link to={`/events/${event?.id}`}>
-              <h2 className="lg:text-lg lg:font-semibold lg:inline">{event.title}</h2>
-              <p className="lg:text-cyan-500 lg:text-sm lg:inline lg:ml-2 lg:truncate">@{event.location}</p>
+              <h2 className="event-card-title lg:text-lg lg:font-semibold lg:inline">{event.title}</h2>
+              <p className=" event-card-location lg:text-cyan-500 lg:text-sm lg:inline lg:ml-2 lg:truncate">@{event.location}</p>
             </Link>
-            <div className="lg:flex">
-              <p className="lg:font-semibold lg:text-[12px] lg:bg-pink-400 lg:text-white lg:px-2 lg:rounded-full lg:py-0.5 lg:border lg:border-pink-300 lg:text-xs">{eventDate}&nbsp;</p>
-              <p className="lg:font-semibold lg:text-[12px] lg:py-1 lg:text-xs">
+            <div className=" event-card-date-time lg:flex">
+              <p className="event-card-date lg:font-semibold lg:text-[12px] lg:bg-pink-400 lg:text-white lg:px-2 lg:rounded-full lg:py-0.5 lg:border lg:border-pink-300 lg:text-xs">{eventDate}&nbsp;</p>
+              <div className=" flex event-card-time-container">
+              <p className="event-card-start-time lg:font-semibold lg:text-[12px] lg:py-1 lg:text-xs">
                 &nbsp;&nbsp;{event.start_time.charAt(0) === '0' ? `${event.start_time.slice(1)}` : `${event.start_time}`}{"-"}
               </p>
-              <p className="lg:font-semibold lg:text-[12px] lg:py-1 lg:text-xs">
+              <p className="event-card-end-time lg:font-semibold lg:text-[12px] lg:py-1 lg:text-xs">
                 {event.end_time.charAt(0) === '0' ? `${event.end_time.slice(1)}` : `${event.end_time}`}
               </p>
+
+              </div>
             </div>
             <div>
   
-            <div className="lg:flex lg:flex-wrap lg:gap-1">
+            <div className="event-category-container lg:flex lg:flex-wrap lg:gap-1">
               {event.category_names.map((category) => {
                 return(
-                  <div key={category.id} className="lg:text-xs lg:text-white lg:bg-indigo-500 lg:py-1 lg:px-2 lg:my-1 lg:rounded-full">
+                  <div key={category.id} className="event-card-category lg:text-xs lg:text-white lg:bg-indigo-500 lg:py-1 lg:px-2 lg:my-1 lg:rounded-full">
                     {category.name}
                   </div>
                 )
               })}
             </div>
-            <p className="lg:text-xs lg:mb-2 lg:inline">Hosted by</p>
+            <p className="event-card-host lg:text-xs lg:mb-2 lg:inline">Hosted by</p>
             <img 
                 src={event?.creator[0].profile_img}
                 alt="profile image"
-                className="lg:h-8 lg:w-8 lg:inline lg:rounded-full lg:bg-gray-100 lg:mx-1 lg:my-2 lg:border lg:border-gray-300 lg:hover:border-blue-500 lg:object-cover"
+                className="event-card-profile-image lg:h-8 lg:w-8 lg:inline lg:rounded-full lg:bg-gray-100 lg:mx-1 lg:my-2 lg:border lg:border-gray-300 lg:hover:border-blue-500 lg:object-cover"
                 /> 
-            <p class="lg:inline lg:text-xs">{event?.creator[0].username}</p>
+            <p class="event-card-host-name lg:inline lg:text-xs">{event?.creator[0].username}</p>
             </div>
             <p class="lg:text-sm lg:mt-1 lg:h-10 lg:w-[360px] text-ellipsis overflow-hidden"><b>Summary: </b>{event.summary.length > 80 ? `${event.summary.substring(0,80)}...` : `${event.summary}`}</p>
     

@@ -64,6 +64,7 @@ padding-bottom: 0.5rem;
 .event-page-category-container{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 30px;
 }
 
 .event-remove-category{
@@ -91,12 +92,14 @@ font-size: 0.875rem;
 }
 
 
-.event-card-container{
-
-display: grid;
-grid-row-gap: 20px;
-
-}
+.event-card-container {
+    margin-top: 30px;
+    display: grid;
+    grid-row-gap: 50px;
+    justify-content: center; /* Center the grid content horizontally */
+    align-content: center; /* Center the grid content vertically */
+    
+  }
 
 
 .pagination{
@@ -163,6 +166,7 @@ grid-row-gap: 20px;
     .event-page-category-container{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        margin-bottom: 30px;
     }
     
     .event-remove-category{
@@ -190,12 +194,14 @@ grid-row-gap: 20px;
     }
     
     
-    .event-card-container{
-    
-    display: grid;
-    grid-row-gap: 20px;
-    
-    }
+    .event-card-container {
+        margin-top: 30px;
+        display: grid;
+        grid-row-gap: 50px;
+        justify-content: center; /* Center the grid content horizontally */
+        align-content: center; /* Center the grid content vertically */
+        
+      }
     
     
     .pagination{
@@ -209,11 +215,7 @@ grid-row-gap: 20px;
     
 
 
-
-
-
 }
-
 
 @media (min-width: 769px) and (max-width: 992px){
 
@@ -232,12 +234,12 @@ grid-row-gap: 20px;
       }
       
     
-    /* .event-page-sorting-section {
+    .event-page-sorting-section {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-      } */
+      }
     
     .event-page-top-section{
         margin-left: 5px;
@@ -267,6 +269,7 @@ grid-row-gap: 20px;
     .event-page-category-container{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        margin-bottom: 30px;
     }
     
     .event-remove-category{
@@ -294,12 +297,15 @@ grid-row-gap: 20px;
     }
     
     
-    .event-card-container{
-    
-    display: grid;
-    grid-row-gap: 20px;
-    
-    }
+    .event-card-container {
+        margin-top: 30px;
+        display: grid;
+        grid-row-gap: 50px;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: center; /* Center the grid content horizontally */
+        align-content: center; /* Center the grid content vertically */
+        
+      }
     
     
     .pagination{
@@ -310,9 +316,5 @@ grid-row-gap: 20px;
         cursor: pointer;
         list-style: none;
      }
-    
-
-
-
 }
 
