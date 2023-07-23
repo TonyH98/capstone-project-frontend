@@ -1,5 +1,5 @@
 import React from "react";
-import RoomsList from "../components/RoomsList";
+import RoomsList from "../components/Chat/RoomsList";
 import { useUser } from "../contexts/UserProvider";
 // I added in the local storage user so you dont need to pass down so many states, a UsersProvider needs to be made for users to be on local storage
 

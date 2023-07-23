@@ -4,8 +4,9 @@ import socketIOClient from "socket.io-client";
 import Room from "./Room";
 import { AiOutlineSend } from "react-icons/ai"
 import Lottie from "lottie-react";
-import animationData from "../assets/startChat.json";
-import NoSelection from "../assets/findSelected.json"
+import "./Roomlist.css"
+import animationData from "../../assets/startChat.json"
+import NoSelection from "../../assets/findSelected.json"
 const API = process.env.REACT_APP_API_URL;
 
 function RoomsList({users}) {
@@ -211,7 +212,7 @@ function handleFilter(event){
 
 
 return (
-  <div className="lg:p-6 lg:flex lg:flex-col lg:gap-2 lg:bg-cyan-50">
+  <div className=" room-page lg:p-6 lg:flex lg:flex-col lg:gap-2 lg:bg-cyan-50">
       <div className="lg:flex lg:gap-2 lg:justify-center lg:items-center">
       <form
   onSubmit={(e) => {
@@ -219,6 +220,9 @@ return (
     handleCreateRoom(e.target.user2Name.value);
   }}
 >
+  <div className="chat-room-search-result-container">
+    <div className="chat-room-searchbar-container">
+      
   <input
     type="text"
     name="user2Name"
@@ -226,15 +230,16 @@ return (
     value={search}
     onChange={handleFilter}
     required
-    className="lg:rounded-l lg:py-2 lg:px-2 lg:border lg:border-black lg:w-96 lg:focus:border-transparent lg:focus:ring-0"
+    className="chat-room-users-search lg:rounded-l lg:py-2 lg:px-2 lg:border lg:border-black lg:w-96 lg:focus:border-transparent lg:focus:ring-0"
   />
-  <button type="submit" className="lg:bg-cyan-400 lg:px-4 lg:py-2 lg:shadow-md lg:rounded-r lg:border lg:border-gray-800  lg:hover:border-cyan-400">Chat</button>
+  <button type="submit" className="create-room-button lg:bg-cyan-400 lg:px-4 lg:py-2 lg:shadow-md lg:rounded-r lg:border lg:border-gray-800  lg:hover:border-cyan-400">Chat</button>
+    </div>
   {filterUsers.length !== 0 && (
-    <div className="data=result">
+    <div className="data-result">
       {filterUsers.slice(0, 5).map((users) => {
         return (
           <div
-            className="search"
+            className="chat-room-search"
             onClick={() => {
               document.getElementsByName("user2Name")[0].value =
                 users.username;
@@ -247,12 +252,14 @@ return (
       })}
     </div>
   )}
+  </div>
+
 </form>
       </div>
       <article className="lg:flex lg:gap-4">
-      <div className="lg:border-r lg:px-3">
-        <h2 className="lg:text-2xl lg:text-cyan-400">Conversations</h2>
-        <ul className="">
+      <div className="chat-room-right-border lg:border-r lg:px-3">
+        <h2 className="chat-room-h2-conv lg:text-2xl lg:text-cyan-400">Conversations</h2>
+        <ul className="chat-room-rooms-container">
           {rooms.map((room) => (
             <section key={room.id}>
               {/* <p>{room.username}</p> */}
@@ -261,41 +268,63 @@ return (
           ))}
         </ul>
       </div>
-      <div className="lg:flex lg:flex-col lg:p-4 lg:ml-[12%] lg:w-[45vw] lg:h-[68vh] lg:overflow-y-auto">
+      <div className="chat-room-message-section-container lg:flex lg:flex-col lg:p-4 lg:ml-[12%] lg:w-[45vw] lg:h-[68vh] lg:overflow-y-auto">
   {Array.isArray(chat) ? (
     chat.map((chatItem, index) => {
       const lastMessage = chat.length - 1 === index;
       return (
-      <div key={chatItem.id} ref={lastMessage ? setRef : null} className={`lg:my-1 lg:flex lg:flex-col lg:p-2 lg:rounded-md lg:w-72 ${users?.id === chatItem.userid ? 'lg:self-end lg:items-start lg:bg-cyan-300' : 'lg:items-start lg:bg-[#ffbb00]'}`} >
-        <section >
-        <p className="lg:text-xs">{chatItem.date_created}</p>
-        <p className="lg:font-semibold">{chatItem.content}</p>
-        <div className="lg:text-xs lg:text-muted">{users?.id === chatItem.userid ? "You" : chatItem.username}</div>
+        <div
+        key={chatItem.id}
+        ref={lastMessage ? setRef : null}
+        className={`chat-room-content-container lg:my-1 lg:flex lg:flex-col lg:p-2 lg:rounded-md lg:w-72 ${
+          users?.id === chatItem.userid
+            ? 'chat-room-current-user-message lg:self-end lg:items-start lg:bg-cyan-300'
+            : 'chat-room-other-user-messages lg:items-start lg:bg-[#ffbb00]'
+        }`}
+      >
+        <section>
+          <p className="chat-room-message-created lg:text-xs">{chatItem.date_created}</p>
+          <div
+            className="chat-room-message-container lg:font-semibold lg:overflow-hidden lg:max-w-[200px] lg:break-words"
+          >
+            <p className="chat-room-messages lg:whitespace-pre-wrap">
+              {chatItem.content}
+            </p>
+          </div>
+          <div className="lg:text-xs lg:text-gray-500">
+            {users?.id === chatItem.userid ? 'You' : chatItem.username}
+          </div>
         </section>
       </div>
+      
     )})
   ) : (
-    <div className='lg:w-[75%] lg:flex lg:flex-col lg:justify-center lg:items-center lg:ml-14'>
-      <h2 className="lg:font-bold lg:text-base lg:text-center">No conversation yet, send a message to get started!</h2>
+    <div className='chat-room-no-mess-container lg:w-[75%] lg:flex lg:flex-col lg:justify-center lg:items-center lg:ml-14'>
+      <h2 className="chat-room-no-conv lg:font-bold lg:text-base lg:text-center">No conversation yet, send a message to get started!</h2>
       <Lottie animationData={animationData} />
     </div>
   )}
 </div>
       </article>
 {selectedRoom ? 
-(<form onSubmit={handleSubmit} className="lg:flex lg:justify-center lg:items-center">
-      <input
-      type="text"
-      id="content"
-      value={newChat.content}
-      placeholder="Message..."
-      onChange={handleTextChange}
-      className="lg:rounded-md lg:sm:w-96 lg:border-2 lg:border-slate-800 lg:px-1 lg:py-2 lg:focus:border lg:focus:border-cyan-400"
-      />
-     <button type="submit" className="lg:mx-1 lg:hover:text-cyan-400 lg:font-bold"><AiOutlineSend size={30}/></button>
-      </form>) : (
-        <div className="lg:absolute lg:top-[25%] lg:w-[85%] lg:flex lg:flex-col lg:justify-center lg:items-center">
-          <h2 className="lg:font-bold lg:text-base lg:text-center">No Conversation selected</h2>
+(
+
+
+<form onSubmit={handleSubmit} className="chat-room-message-form lg:flex lg:justify-center lg:items-center">
+  <input
+  type="text"
+  id="content"
+  value={newChat.content}
+  placeholder="Message..."
+  onChange={handleTextChange}
+  className="chat-room-message-input lg:rounded-md lg:sm:w-96 lg:border-2 lg:border-slate-800 lg:px-1 lg:py-2 lg:focus:border lg:focus:border-cyan-400"
+  />
+ <button type="submit" className="lg:mx-1 lg:hover:text-cyan-400 lg:font-bold"><AiOutlineSend size={30}/></button>
+  </form>
+
+      ) : (
+        <div className="chat-room-no-room-selected-container lg:absolute lg:top-[25%] lg:w-[85%] lg:flex lg:flex-col lg:justify-center lg:items-center">
+          <h2 className="chat-room-no-room-selected lg:font-bold lg:text-base lg:text-center">No Conversation selected</h2>
           {/* <Lottie animationData={NoSelection} /> */}
         </div>
       )

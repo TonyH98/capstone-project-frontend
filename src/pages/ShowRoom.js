@@ -1,5 +1,5 @@
 import React from "react";
-import RoomsList from "../components/RoomsList";
+import RoomsList from "../components/Chat/RoomsList";
 
 
 export default function ShowRoom({ users }) {
