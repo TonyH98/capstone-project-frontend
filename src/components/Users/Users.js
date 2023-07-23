@@ -3,7 +3,7 @@ import {  useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import User from "./User";
-
+import "./Users.css"
 import { useUser } from "../../contexts/UserProvider";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
@@ -84,11 +84,11 @@ export default function Users() {
   const filteredUsers = filterUsers.filter((user) => user.id !== loggedInUser.id);
 
   return (
-    <div className="lg:flex lg:flex-col lg:items-center lg:justify-center lg:p-4">
-      <h1 className="lg:text-2xl lg:text-gray-700 lg:font-semibold">
+    <div className="users-container lg:flex lg:flex-col lg:items-center lg:justify-center lg:p-4">
+      <h1 className=" users-page-header lg:text-2xl lg:text-gray-700 lg:font-semibold">
         {categoryFilter ? `Users: ${category.name}` : `All Users`}
       </h1>
-      <div className="search-bar">
+      <div className="users-search-bar-container">
         <label htmlFor="search">Search</label>
         <input
           type="text"
@@ -96,13 +96,10 @@ export default function Users() {
           id="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="lg:w-96 lg:rounded-md lg:mx-1 lg:shadow-md lg:py-2 lg:px-1 lg:my-2 lg:ml-2 lg:pl-4"
+          className=" users-search-bar lg:w-96 lg:rounded-md lg:mx-1 lg:shadow-md lg:py-2 lg:px-1 lg:my-2 lg:ml-2 lg:pl-4"
         />
       </div>
-      <div className="lg:flex lg:flex-col lg:gap-6 lg:w-[800px] p-4">
-        {/* {users.map((users) => (
-          <User key={users.id} users={users} />
-        ))} */}
+      <div className="users-card-container lg:flex lg:flex-col lg:gap-6 lg:w-[800px] p-4">
         {filteredUsers.map((user) => (
           <User key={user.id} users={user} />
         ))}
