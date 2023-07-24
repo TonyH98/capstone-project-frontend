@@ -1,0 +1,79 @@
+
+
+@media (min-width: 320px) and (max-width: 576px){
+
+.other-info-container{
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+.other-info-container-two{
+display: flex;
+flex-direction: column;
+
+}
+
+
+.other-profile-image{
+height: 180px;
+width: 200px;
+margin-right: 3px;
+
+}
+
+.other-image-small-detail-container{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.other-bio-container{
+    margin-top: 5px;
+}
+
+.other-profile-bio-start{
+    font-weight: bold;
+}
+
+.other-profile-message-icon{
+   color: #06b6d4; 
+   margin-right: 15px;
+}
+
+.other-profile-buttons-container{
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.other-friend-request-btns, .other-request-sent{
+border: 2px solid #22d3ee;
+padding-left: 3px;
+padding-right: 3px;
+padding-top: 2px;
+padding-bottom: 2px;
+border-radius: 3px;
+
+}
+
+.other-request-sent{
+    background-color: #22d3ee;
+}
+
+
+
+
+}
+
+
+
+@media (min-width: 577px) and (max-width: 768px){
+
+
+}
+
+
+
+@media (min-width: 769px) and (max-width: 992px){
+
+}

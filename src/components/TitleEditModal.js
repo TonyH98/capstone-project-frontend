@@ -1,4 +1,4 @@
-import "./tooltip.css"
+import "../pages/EventDetails/tooltip.css"
 
 function TitleEditModal({ eventInfo, updatedEventInfo, handleTextChange, handleEdit }) {
     return (

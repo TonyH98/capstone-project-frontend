@@ -2,9 +2,9 @@
 // NEED TO set up correct routes for useNavigate on button click for categories and store category object with id
 // NEED TO add post/put requests to update user info on edit
 import axios from "axios";
-import InterestsModal from "../components/InterestsModal";
-import UserEvents from "./UserEvents";
-import UserHostedEvent from "./UserHostedEvents";
+import InterestsModal from "../../components/InterestsModal";
+import UserEvents from "../UserEvents";
+import UserHostedEvent from "../UserHostedEvents";
 import { BsTrash } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -12,8 +12,10 @@ import { BsPencilSquare } from "react-icons/bs";
 import { ImQuotesLeft } from "react-icons/im";
 import { ImQuotesRight } from "react-icons/im";
 import { MdMail } from 'react-icons/md'
-import { useUser } from "../contexts/UserProvider";
+import { useUser } from "../../contexts/UserProvider";
 import { Link } from "react-router-dom";
+import "./OtherProfile.css"
+
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -130,15 +132,15 @@ function OtherProfile() {
 
   return (
     <>
-      <div>
-        <div className="lg:mb-10 lg:mt-12 lg:m-auto">
-          <div className="lg:flex lg:justify-center lg:gap-x-10 lg:align-items-start">
+        <div className="other-info-container lg:mb-10 lg:mt-12 lg:m-auto">
+          <div className="other-info-container-two lg:flex lg:justify-center lg:gap-x-10 lg:align-items-start">
+            <div className="other-image-small-detail-container lg:flex">
             <img
               src={profileInfo?.profile_img}
               alt="profile-pic"
-              className="lg:w-36 lg:h-36 lg:basis-1/8 lg:object-cover lg:rounded"
+              className="other-profile-image lg:w-36 lg:h-36 lg:basis-1/8 lg:object-cover lg:rounded"
             />
-            <div className="lg:text-left lg:basis-1/8">
+            <div className="lg:text-left lg:basis-1/8 lg:ml-5">
               <h1>
                 <b>
                   {profileInfo?.first_name} {profileInfo?.last_name}{" "}
@@ -158,20 +160,25 @@ function OtherProfile() {
                 {profileInfo?.age?.age} years
               </h3>
             </div>
-            <div className="lg:relative lg:w-52 lg:basis-1/4 lg:ml-5">
+            </div>
+
+
+
+            <div className=" other-bio-container lg:relative lg:w-52 lg:basis-1/4 lg:ml-5">
               <div className="lg:align-middle lg:inline">
-                <p className="lg:text-left lg:font-bold lg:inline">Bio</p>
+                <p className="other-profile-bio-start lg:text-left lg:font-bold lg:inline">Bio</p>
               </div>
               <section className="lg:h-12 lg:relative lg:block">
-                <ImQuotesLeft className="lg:text-orange-600 lg:inline lg:text-sm" />
-                  <p className="lg:px-4 lg:inline">{profileInfo?.bio}</p>
-                <ImQuotesRight className="lg:text-orange-600 lg:inline lg:text-sm" />
+           
+                  <p className="lg:inline">{profileInfo?.bio}</p>
+                
               </section>
             </div>
-            <div className="lg:absolute lg:right-20">
+            
+            <div className="other-profile-buttons-container lg:absolute lg:right-20">
               <button 
                 onClick={() => navigate('/chats')}
-                className="lg:mr-3 lg:text-cyan-500 lg:rounded-md lg:px-2 lg:py-2 lg:text-2xl lg:align-middle"
+                className="other-profile-message-icon lg:mr-3 lg:text-cyan-500 lg:rounded-md lg:px-2 lg:py-2 lg:text-2xl lg:align-middle"
               >
                 <MdMail />
               </button>
@@ -179,12 +186,12 @@ function OtherProfile() {
                 <span>Already Friends</span>
               ) : request ? (
                   <button
-                  className="lg:border-2 lg:border-cyan-400 lg:py-0.5 lg:bg-cyan-400 lg:my-4 lg:w-[130px] lg:rounded-md"
+                  className="other-request-sent lg:border-2 lg:border-cyan-400 lg:py-0.5 lg:bg-cyan-400 lg:my-4 lg:w-[130px] lg:rounded-md"
                 >
                   Request Sent
                 </button>              ) : (
                 <button
-                  className="lg:border-2 lg:border-cyan-400 lg:px-2 lg:my-4 lg:pr-2 lg:px-2 lg:w-[130px] lg:rounded-md"
+                  className="other-friend-request-btns lg:border-2 lg:border-cyan-400 lg:px-2 lg:my-4 lg:pr-2 lg:px-2 lg:w-[130px] lg:rounded-md"
                   onClick={sendFriendRequest}
                 >
                   <span className="lg:text-cyan-500 lg:font-bold lg:text-lg lg:px-1">+</span> Add Friend
@@ -193,7 +200,10 @@ function OtherProfile() {
           </div>
           </div>
         </div>
-      </div>
+
+{/* 
+--------------------------------------------------------------- */}
+
       <form className="lg:w-3/4 lg:m-auto lg:pb-10">
         <fieldset
           className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8`}

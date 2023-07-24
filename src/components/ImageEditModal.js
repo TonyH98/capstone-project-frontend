@@ -1,4 +1,4 @@
-import "./tooltip.css"
+import "../pages/EventDetails/tooltip.css"
 
 function ImageEditModal({ updatedEventInfo, handleTextChange, handleEdit }) {
     console.log(updatedEventInfo)

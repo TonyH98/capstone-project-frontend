@@ -5,22 +5,23 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Geocode from "react-geocode";
-import GoogleMap from "../components/Map";
+import GoogleMap from "../../components/Map";
 import { BsPencilFill } from "react-icons/bs";
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { AiFillStar } from 'react-icons/ai'
-import {useUser} from "../contexts/UserProvider"
+import {useUser} from "../../contexts/UserProvider"
 // import EditEventModal from "../components/EditEventModal"
-import CategoriesModal from "../components/CategoriesModal";
-import CommentSection from "../components/commentSection";
-import useLocalStorage from "../hooks/useLocalStorage";
-import TitleEditModal from "../components/TitleEditModal";
-import LocationEditModal from "../components/LocationEditModal";
-import SummaryEditModal from "../components/SummaryEditModal";
-import ImageEditModal from "../components/ImageEditModal";
-import AttendeesEditModal from "../components/AttendeesEditModal"
-import AttendeeIcon from "../components/AttendeeIcon";
-import "../components/tooltip.css";
+import CategoriesModal from "../../components/CategoriesModal";
+import CommentSection from "../../components/commentSection";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import TitleEditModal from "../../components/TitleEditModal";
+import LocationEditModal from "../../components/LocationEditModal";
+import SummaryEditModal from "../../components/SummaryEditModal";
+import ImageEditModal from "../../components/ImageEditModal";
+import AttendeesEditModal from "../../components/AttendeesEditModal"
+import AttendeeIcon from "../../components/AttendeeIcon";
+import "./tooltip.css";
+import "./EventDetails.css"
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -473,7 +474,7 @@ const hostId = hosts.map((host) => {
 })
 
   return (
-    <div className="lg:relative">
+    <div className="events-detail-page lg:relative">
       <div
         className={`${openTitleEdit || openImageEdit || openAttendeesEdit ? "background" : null}`}
         onClick={closeModal}

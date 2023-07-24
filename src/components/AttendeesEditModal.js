@@ -1,4 +1,4 @@
-import "./tooltip.css"
+import "../pages/EventDetails/tooltip.css"
 
 function AttendeesEditModal({ updatedEventInfo, setOpenAttendeesEdit, handleTextChange, handleEdit }) {
     return (
