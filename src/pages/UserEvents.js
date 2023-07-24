@@ -10,13 +10,13 @@ function UserEvents({event, editEvents}){
                 <img
                     src={event.location_image}
                     alt={event.title}
-                    className="lg:location-image lg:h-32 lg:w-32 lg:object-cover lg:m-auto lg:mt-2"
+                    className="profile-event-image lg:location-image lg:h-32 lg:w-32 lg:object-cover lg:m-auto lg:mt-2"
                 />
             </Link>
             <div className='lg:w-32 lg:truncate lg:inline lg:ml-4'>
                 <input
                     type="checkbox"
-                    className={`lg:mr-1 lg:alsolute ${editEvents ? 'lg:visible' : 'lg:hidden'}`}
+                    className={`lg:mr-1 lg:alsolute ${editEvents ? 'visible' : 'hidden'}`}
                     onChange={(e) => {
                         let value = e.target.checked
                         event.selected = value

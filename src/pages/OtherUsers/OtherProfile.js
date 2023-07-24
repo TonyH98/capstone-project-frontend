@@ -2,19 +2,15 @@
 // NEED TO set up correct routes for useNavigate on button click for categories and store category object with id
 // NEED TO add post/put requests to update user info on edit
 import axios from "axios";
-import InterestsModal from "../../components/InterestsModal";
 import UserEvents from "../UserEvents";
 import UserHostedEvent from "../UserHostedEvents";
-import { BsTrash } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { BsPencilSquare } from "react-icons/bs";
-import { ImQuotesLeft } from "react-icons/im";
-import { ImQuotesRight } from "react-icons/im";
 import { MdMail } from 'react-icons/md'
 import { useUser } from "../../contexts/UserProvider";
 import { Link } from "react-router-dom";
-import "./OtherProfile.css"
+import "./OtherProfileFirstHalf.css"
+import "./OtherProfileSecondHalf.css"
 
 
 const API = process.env.REACT_APP_API_URL;
@@ -204,27 +200,30 @@ function OtherProfile() {
 {/* 
 --------------------------------------------------------------- */}
 
-      <form className="lg:w-3/4 lg:m-auto lg:pb-10">
+
+      <form className="other-profile-second-half-container lg:w-3/4 lg:m-auto lg:pb-10">
+
         <fieldset
-          className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8`}
+          className={`other-profile-interest-container lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8`}
         >
-          <legend className="lg:px-3 lg:text-left lg:ml-8">Interests</legend>
-          <div>
-            <div className="lg:flex lg:flex-wrap lg:ml-6 lg:mt-3 lg:pr-24 lg:mb-3 lg:gap-y-4 lg:mb-6">
+          <legend className="other-profile-interest-legend lg:px-3 lg:text-left lg:ml-8">Interests</legend>
+       
+            <div className="other-profile-interests-container lg:flex lg:flex-wrap lg:ml-6 lg:mt-3 lg:pr-24 lg:mb-3 lg:gap-y-4 lg:mb-6">
             {sortCategory.map((category) => {
                 return(
                   <Link to={`/users?categories.category_id=${encodeURIComponent(category?.category_id)}`}>
-                  <div key={category?.category_id} className="lg:inline lg:text-white lg:bg-indigo-500 lg:hover:bg-blue-800 lg:text-sm lg:rounded-full lg:text-sm lg:px-4 lg:py-2 lg:text-center lg:ml-2 lg:mb-1">
+                  <div key={category?.category_id} className="other-profile-interest-pills lg:inline lg:text-white lg:bg-indigo-500 lg:hover:bg-blue-800 lg:text-sm lg:rounded-full lg:text-sm lg:px-4 lg:py-2 lg:text-center lg:ml-2 lg:mb-1">
                   {category.name}
                   </div>
                   </Link>
                 )
               })}
             </div>
-          </div>
+
         </fieldset>
-        <fieldset className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${userEvents.length ? 'lg:h-52' : 'lg:h-20'}`}>
-          <legend className="lg:px-3 lg:text-left lg:ml-8">Events</legend>
+
+        <fieldset className={`other-profile-events-container lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${userEvents.length ? 'lg:h-52' : 'lg:h-20'}`}>
+          <legend className="other-profile-events-legend lg:px-3 lg:text-left lg:ml-8">Events</legend>
           <div className="lg:flex lg:flex-wrap lg:py-2 lg:overflow-x-scroll lg:h-44 lg:gap-y-8">
             {Array.isArray(userEvents) && userEvents.length > 0 ? (
               userEvents.map((event) => (
@@ -238,9 +237,10 @@ function OtherProfile() {
           </div>
         </fieldset>
         
-        <fieldset className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${hostedEvents.length ? 'lg:h-52' : 'lg:h-20' }`}>
-          <legend className="lg:px-3 lg:text-left lg:ml-8">Hosted Events</legend>
-          <div className="lg:flex lg:flex-wrap lg:px-3 lg:py-2 lg:overflow-y-auto">
+
+        <fieldset className={`other-profile-hosted-container lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${hostedEvents.length ? 'lg:h-52' : 'lg:h-20' }`}>
+          <legend className="other-profile-host-legend lg:px-3 lg:text-left lg:ml-8">Hosted Events</legend>
+          <div className="other-profile-host-container lg:flex lg:flex-wrap lg:px-3 lg:py-2 lg:overflow-y-auto">
             {hostedEvents[0] &&
               hostedEvents.map((hosted) => {
                 return (
@@ -252,9 +252,10 @@ function OtherProfile() {
             </div>
         </fieldset>
         
-        <fieldset className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto ${friends.length ? 'lg:h-40' : 'lg:h-20'}`}>
-          <legend className="lg:px-3 lg:text-left lg:ml-8">Friends</legend>
-          <div className="lg:max-w-full lg:flex lg:flex-row lg:gap-x-10 lg:px-3 lg:py-2 lg:overflow-x-auto lg:h-32">
+
+        <fieldset className={`other-profile-friends-container lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto ${friends.length ? 'lg:h-40' : 'lg:h-20'}`}>
+          <legend className="other-profile-friends-legend lg:px-3 lg:text-left lg:ml-8">Friends</legend>
+          <div className="other-profile-friends-container lg:max-w-full lg:flex lg:flex-row lg:gap-x-10 lg:px-3 lg:py-2 lg:overflow-x-auto lg:h-32">
             {friends.length ? (
               friends.map((friend) => {
                 return (
@@ -263,7 +264,7 @@ function OtherProfile() {
                       <img
                         src={friend?.profile_img}
                         alt="profile-pic"
-                        className="lg:w-20 lg:h-20 lg:ml-5 lg:object-cover lg:rounded-full lg:justify-center lg:items-center"
+                        className="friends-profile-image lg:w-20 lg:h-20 lg:ml-5 lg:object-cover lg:rounded-full lg:justify-center lg:items-center"
                       />
                       <p className="text-center">
                         {friend.username}
