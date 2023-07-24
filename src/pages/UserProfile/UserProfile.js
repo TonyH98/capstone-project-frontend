@@ -8,7 +8,7 @@ import { BsTrash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
-import EditProfileModal from "../../components/EditProfileModal";
+import EditProfileModal from "../../components/EditProfileModal/EditProfileModal";
 import useLocalStorage from "../../hooks/useLocalStorage"
 import { Link } from "react-router-dom";
 import { useUser } from "../../contexts/UserProvider";

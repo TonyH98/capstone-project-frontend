@@ -1,8 +1,8 @@
 import axios from "axios";
-import styles from "./modal.module.css";
-import { useUser } from "../contexts/UserProvider";
+import styles from "../modal.module.css";
+import { useUser } from "../../contexts/UserProvider";
 import { useEffect , useState } from "react";
-
+import "./EditProfileModal.css"
 const API = process.env.REACT_APP_API_URL;
 
 function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
@@ -102,17 +102,17 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
         className={`${styles.cardBg}`}
         onClick={() => setOpenEditModal(false)}
       />
-      <div className={`${styles.card} lg:w-1/3 lg:flex lg:flex-col`}>
+      <div className={`${styles.card} user-edit-form-container lg:w-1/3 lg:flex lg:flex-col`}>
         <div
           onClick={() => setOpenEditModal(false)}
-          className="lg:absolute lg:right-4 lg:top-3 lg:cursor-pointer"
+          className="user-edit-closing-button lg:absolute lg:right-4 lg:top-3 lg:cursor-pointer"
         >
           X
         </div>
-        <div>
-          <p className="lg:pb-4 lg:pt-2 lg:text-center">Edit Profile Information</p>
+
+          <p className="user-edit-form-header lg:pb-4 lg:pt-2 lg:text-center">Edit Profile Information</p>
           {imageError && <p style={{ color: "red" }}>{imageError}</p>}
-          <form className="lg:w-3/4 lg:m-auto lg:flex lg:flex-col lg:gap-y-3">
+          <form className="user-edit-form lg:w-3/4 lg:m-auto lg:flex lg:flex-col lg:gap-y-3">
             <label htmlFor="first_name">
               First Name
               <input
@@ -121,7 +121,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 type="text"
                 value={loggedInUser?.first_name}
                 onChange={handleTextChange}
-                className="lg:block lg:w-[100%] lg:pl-3 lg:m-auto lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
+                className="user-profile-input lg:block lg:w-[100%] lg:pl-3 lg:m-auto lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
               />
             </label>
             <label htmlFor="last_name">
@@ -132,7 +132,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 type="text"
                 value={loggedInUser?.last_name}
                 onChange={handleTextChange}
-                className="lg:block lg:w-[100%] lg:pl-3 lg:m-auto lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
+                className="user-profile-input lg:block lg:w-[100%] lg:pl-3 lg:m-auto lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
               />
             </label>
             <label htmlFor="pronouns">
@@ -144,7 +144,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 type="text"
                 value={loggedInUser?.pronouns}
                 onChange={handleTextChange}
-                className="lg:block lg:w-[100%] lg:pl-3 lg:m-auto lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
+                className="user-profile-input lg:block lg:w-[100%] lg:pl-3 lg:m-auto lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
               />
             </label>
             <label htmlFor="profile_img">
@@ -155,7 +155,7 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 type="file"
                 accept=".png, .jpg, .jpeg"
                 onChange={handleTextChange}
-                className="lg:block lg:w-[100%] lg:pl-3 lg:m-auto lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
+                className="users-profile-image-edit-input lg:block lg:w-[100%] lg:pl-3 lg:m-auto lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
               />
             </label>
             <label htmlFor="bio">
@@ -165,18 +165,18 @@ function EditProfileModal({ setOpenEditModal, updatedUser, setUpdatedUser }) {
                 name="bio"
                 value={loggedInUser?.bio}
                 onChange={handleTextChange}
-                className="lg:block lg:w-[100%] lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
+                className="user-profile-input lg:block lg:w-[100%] lg:shadow lg:bg-transparent lg:appearance-none lg:border lg:rounded lg:w-full lg:py-2 lg:px-3 lg:text-gray-700 lg:leading-tight lg:focus:outline-none lg:focus:shadow-outline"
               />
             </label>
-            <p className={`${loggedInUser?.bio.length >= 200 ? 'lg:text-red-700' : null}  lg:bottom-5 lg:left-3 lg:text-sm`}>
+            <p className={`${loggedInUser?.bio.length >= 200 ? 'text-red-700' : null}  lg:bottom-5 lg:left-3 lg:text-sm`}>
                         {loggedInUser?.bio.length}/200 characters
                     </p>
           </form>
-        </div>
+   
         <button
           type="submit"
           onClick={handleSubmit}
-          className="lg:bg-emerald-500 lg:text-white lg:px-8 lg:py-1 lg:mt-8 lg:mb-6 lg:rounded-md lg:border lg:w-3/4 lg:m-auto"
+          className="bg-emerald-500 text-white px-8 py-1 mt-3 rounded-md border w-3/4 m-auto"
         >
           Done
         </button>

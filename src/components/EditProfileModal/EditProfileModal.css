@@ -1,0 +1,152 @@
+
+
+@media (min-width: 320px) and (max-width: 576px){
+
+.user-edit-form-container{
+display: flex;
+flex-direction: column;
+}
+
+.user-edit-closing-button{
+    
+    text-align: right;
+    margin-right: 5px;
+    color: red;
+}
+
+.user-edit-form-header{
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.user-edit-form{
+    display: flex;
+    flex-direction: column;
+}
+
+.user-profile-input {
+    display: block;
+    width: 100%;
+    padding-left: 3px;
+    margin: auto;
+    box-shadow: none;
+    background-color: transparent;
+    appearance: none;
+    border: 1px solid;
+    border-radius: 0.25rem;
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    color: #4a5568;
+    line-height: 1.25;
+    outline: none;
+    margin-bottom: 7px;
+  }
+  
+  .users-profile-image-edit-input{
+    display: block;
+    padding-left: 3px;
+    margin: auto;
+    box-shadow: none;
+    background-color: transparent;
+    appearance: none;
+    border: 1px solid;
+    border-radius: 0.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    color: #4a5568;
+    line-height: 1.25;
+    outline: none;
+    margin-bottom: 7px;
+  }
+
+   
+
+  }
+  
+
+
+
+
+
+
+
+@media (min-width: 577px) and (max-width: 768px){
+
+    .user-edit-form-container{
+        display: flex;
+        flex-direction: column;
+        }
+        
+        .user-edit-closing-button{
+            
+            text-align: right;
+            margin-right: 5px;
+            color: red;
+        }
+        
+        .user-edit-form-header{
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .user-edit-form{
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-profile-input {
+            display: block;
+            width: 100%;
+            padding-left: 3px;
+            margin: auto;
+            box-shadow: none;
+            background-color: transparent;
+            appearance: none;
+            border: 1px solid;
+            border-radius: 0.25rem;
+            width: 100%;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            color: #4a5568;
+            line-height: 1.25;
+            outline: none;
+            margin-bottom: 7px;
+          }
+          
+          .users-profile-image-edit-input{
+            display: block;
+            padding-left: 3px;
+            margin: auto;
+            box-shadow: none;
+            background-color: transparent;
+            appearance: none;
+            border: 1px solid;
+            border-radius: 0.25rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 0.75rem;
+            color: #4a5568;
+            line-height: 1.25;
+            outline: none;
+            margin-bottom: 7px;
+          }
+
+
+
+}
+
+
+@media (min-width: 769px) and (max-width: 992px){
+
+
+
+}
+

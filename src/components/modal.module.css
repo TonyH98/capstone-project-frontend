@@ -1,26 +1,98 @@
-.card {
-    padding: 20px 30px;
-    margin: auto;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index:101;
-    max-height: 85%;
-    box-shadow: 0 10px 55px -10px rgb(0 0 0 / 0.55);
-    overflow-y: auto;
-    background-color: white;
-    border-radius: 5px;
+
+@media (min-width: 993px){
+    .card {
+        padding: 20px 30px;
+        margin: auto;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index:101;
+        max-height: 85%;
+        box-shadow: 0 10px 55px -10px rgb(0 0 0 / 0.55);
+        overflow-y: auto;
+        background-color: white;
+        border-radius: 5px;
+    }
+    
+    .cardBg {
+        width: 100vw;
+        height: 100vw; 
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index:100;
+        background-color: black;
+        opacity: 0.5;
+    }
 }
 
-.cardBg {
-    width: 100vw;
-    height: 100vw; 
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index:100;
-    background-color: black;
-    opacity: 0.5;
+@media (min-width: 320px) and (max-width: 576px) {
+    .card {
+        padding: 10px; /* Adjust the padding as needed for smaller screens */
+        max-width: 90%; /* Reduce the maximum width of the card */
+        max-height: 80%; /* Adjust the maximum height of the card */
+        box-shadow: 0 5px 25px -5px rgb(0 0 0 / 0.55); /* Adjust the box shadow */
+        border-radius: 5px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 101;
+        background-color: white;
+        overflow-y: auto;
+    }
+
+    .cardBg {
+        width: 100vw;
+        height: 100vh; /* Use vh (viewport height) instead of vw for height */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+        background-color: black;
+        opacity: 0.5;
+    }
 }
+
+
+
+@media (min-width: 577px) and (max-width: 768px){
+    .card {
+        padding: 10px; /* Adjust the padding as needed for smaller screens */
+        max-width: 90%; /* Reduce the maximum width of the card */
+        max-height: 80%; /* Adjust the maximum height of the card */
+        box-shadow: 0 5px 25px -5px rgb(0 0 0 / 0.55); /* Adjust the box shadow */
+        border-radius: 5px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 101;
+        background-color: white;
+        overflow-y: auto;
+    }
+
+    .cardBg {
+        width: 100vw;
+        height: 100vh; /* Use vh (viewport height) instead of vw for height */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+        background-color: black;
+        opacity: 0.5;
+    }
+
+}
+
+
+@media (min-width: 769px) and (max-width: 992px){
+
+
+
+}
+
