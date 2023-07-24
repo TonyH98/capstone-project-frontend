@@ -1,0 +1,99 @@
+
+
+@media (min-width: 320px) and (max-width: 567px){
+
+.interest-modal-container{
+width: 100%
+
+}
+
+.interset-modal-closing-button{
+    text-align: right;
+    margin-right: 5px;
+    color: red;
+}
+
+.interest-modal-header{
+    text-align: center;
+    font-weight: bold;
+}
+
+.users-interest-button-modal-container{
+display: flex;
+flex-wrap: wrap;
+
+}
+
+
+.interest-done-button-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.interest-modal-done-button{
+
+background: #10b981;
+color: white;
+width: 80px;
+height: 30px;
+border-radius: 5px;
+
+}
+
+
+}
+
+
+@media (min-width: 577px) and (max-width: 768px){
+
+    .interest-modal-container{
+        width: 100%
+        
+        }
+        
+        .interset-modal-closing-button{
+            text-align: right;
+            margin-right: 5px;
+            color: red;
+        }
+        
+        .interest-modal-header{
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .users-interest-button-modal-container{
+        display: flex;
+        flex-wrap: wrap;
+        
+        }
+        
+        
+        .interest-done-button-container{
+            display: flex;
+            justify-content: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .interest-modal-done-button{
+        
+        background: #10b981;
+        color: white;
+        width: 80px;
+        height: 30px;
+        border-radius: 5px;
+        
+        }
+
+
+
+}
+
+
+
+@media (min-width: 769px) and (max-width: 992px){
+
+}

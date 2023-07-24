@@ -1,7 +1,7 @@
 // User profile page that displays user information, interests, events and hosted events
 
 import axios from "axios";
-import InterestsModal from "../../components/InterestsModal";
+import InterestsModal from "../../components/InterestModal/InterestsModal";
 import UserEvents from "../UserEvents";
 import UserHostedEvent from "../UserHostedEvents";
 import { BsTrash } from "react-icons/bs";
