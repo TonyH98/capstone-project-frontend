@@ -93,6 +93,14 @@ overflow-x: auto;
     border-radius: 9999px;
 }
 
+
+.profile-event-container{
+display: flex;
+flex-direction: row;
+gap: 20px;
+flex-wrap: wrap;
+}
+
 }
 
 
@@ -187,6 +195,14 @@ overflow-x: auto;
     
     .friends-profile-image{
         border-radius: 9999px;
+    }
+    
+    
+    .profile-event-container{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
     }
 }
 

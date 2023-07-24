@@ -1,0 +1,110 @@
+
+
+@media (min-width: 320px) and (max-width: 576px){
+
+.user-profile-second-half{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+
+}
+
+
+
+.user-profile-add-interest-button {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    background-color: #bfdbfe;
+    width: 60px;
+    border-radius: 4px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+  }
+
+.users-event-button-container{
+  margin-left: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.user-add-event-user, .users-create-event-button, .users-add-friends-button{
+  margin-right: 20px;
+  margin-bottom: 10px;
+  background-color: #bfdbfe;
+  width: 60px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+.user-profile-edit-event-button{
+  color: #155e75;;
+}
+
+.users-create-event-button, .users-add-friends-button{
+  margin-left: 10px;
+}
+
+}
+
+
+@media (min-width: 577px) and (max-width: 768px){
+
+  .user-profile-second-half{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+
+}
+
+
+
+.user-profile-add-interest-button {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    background-color: #bfdbfe;
+    width: 60px;
+    border-radius: 4px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+  }
+
+.users-event-button-container{
+  margin-left: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.user-add-event-user, .users-create-event-button, .users-add-friends-button{
+  margin-right: 20px;
+  margin-bottom: 10px;
+  background-color: #bfdbfe;
+  width: 60px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+.user-profile-edit-event-button{
+  color: #155e75;;
+}
+
+.users-create-event-button, .users-add-friends-button{
+  margin-left: 10px;
+}
+
+
+
+
+}
+
+
+
+
+@media (min-width: 769px) and (max-width: 992px){
+
+}

@@ -224,7 +224,7 @@ function OtherProfile() {
 
         <fieldset className={`other-profile-events-container lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${userEvents.length ? 'lg:h-52' : 'lg:h-20'}`}>
           <legend className="other-profile-events-legend lg:px-3 lg:text-left lg:ml-8">Events</legend>
-          <div className="lg:flex lg:flex-wrap lg:py-2 lg:overflow-x-scroll lg:h-44 lg:gap-y-8">
+          <div className="profile-event-container lg:flex lg:flex-wrap lg:py-2 lg:overflow-x-scroll lg:h-44 lg:gap-y-8">
             {Array.isArray(userEvents) && userEvents.length > 0 ? (
               userEvents.map((event) => (
                 <div key={event.event_id}>
