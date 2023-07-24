@@ -1,21 +1,22 @@
 // User profile page that displays user information, interests, events and hosted events
 
 import axios from "axios";
-import InterestsModal from "../components/InterestsModal";
-import UserEvents from "./UserEvents";
-import UserHostedEvent from "./UserHostedEvents";
+import InterestsModal from "../../components/InterestsModal";
+import UserEvents from "../UserEvents";
+import UserHostedEvent from "../UserHostedEvents";
 import { BsTrash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import { ImQuotesLeft } from "react-icons/im";
 import { ImQuotesRight } from "react-icons/im";
-import EditProfileModal from "../components/EditProfileModal";
-import useLocalStorage from "../hooks/useLocalStorage";
+import EditProfileModal from "../../components/EditProfileModal";
+import useLocalStorage from "../../hooks/useLocalStorage"
 // import { getUserInfo, setUserInfo } from "../utils/appUtils";
 // import Global from "../utils/Global";
 import { Link } from "react-router-dom";
-import { useUser } from "../contexts/UserProvider";
+import { useUser } from "../../contexts/UserProvider";
+import "./UserProfileFirstHalf.css"
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -153,13 +154,14 @@ console.log(isSelected)
 
   return (
     <>
-      <div>
-        <div className="lg:mb-10 lg:mt-12 lg:m-auto">
-          <div className="lg:flex lg:justify-center lg:gap-x-10 lg:align-items-start">
+
+        <div className="user-profile-container lg:mb-10 lg:mt-12 lg:m-auto">
+          <div className="user-profile-container-two lg:flex lg:justify-center lg:gap-x-10 lg:align-items-start">
+            <div className="other-image-small-detail-container lg:flex">
             <img
               src={loggedInUser?.profile_img}
               alt="profile-pic"
-              className="lg:w-36 lg:h-36 lg:basis-1/8 lg:object-cover lg:rounded"
+              className="user-profile-image lg:w-36 lg:h-36 lg:basis-1/8 lg:object-cover lg:rounded"
             />
             <div className="lg:text-left lg:basis-1/8">
               <h1>
@@ -180,20 +182,28 @@ console.log(isSelected)
                 {loggedInUser?.age?.age} years
               </h3>
             </div>
-            <div className="lg:relative lg:w-52 lg:basis-1/4 lg:ml-5">
-              <div className="lg:align-middle lg:inline">
-                <p className="lg:text-left lg:font-bold lg:inline">Bio</p>
-                <BsPencilSquare
-                  onClick={() => setOpenEditModal(true)}
-                  className="lg:inline lg:text-cyan-800 lg:cursor-pointer lg:float-right lg:mt-2"
-                />
-              </div>
-              <section className="lg:h-12 lg:relative lg:block">
-                <ImQuotesLeft className="lg:text-orange-600 lg:inline lg:text-sm" />
-                  <p className="lg:px-4 lg:inline">{loggedInUser?.bio}</p>
-                <ImQuotesRight className="lg:text-orange-600 lg:inline text-sm" />
-              </section>
+
             </div>
+
+
+            <div className="user-profile-bio-container lg:relative lg:w-52 lg:basis-1/4 ">
+  <div className="user-profile-bio-icon-container lg:flex lg:items-center lg:justify-between">
+    <p className="user-bio-header lg:text-left lg:font-bold">Bio</p>
+    <BsPencilSquare
+      onClick={() => setOpenEditModal(true)}
+      className="profile-edit-icon lg:text-cyan-800 lg:cursor-pointer"
+    />
+  </div>
+
+    <div className="user-profile-bio-content-container lg:w-full lg:mt-2 lg:max-w-md lg:overflow-hidden">
+      <p className="user-profile-bio-content lg:whitespace-normal lg:break-words">{loggedInUser?.bio}</p>
+    </div>
+
+</div>
+
+
+
+
           </div>
           {openEditModal ? (
             <EditProfileModal
@@ -205,8 +215,11 @@ console.log(isSelected)
             />
           ) : null}
         </div>
-      </div>
-      <form className="lg:w-3/4 lg:m-auto lg:pb-10">
+ 
+
+
+
+      <form className="user-profile-second-half lg:w-3/4 lg:m-auto lg:pb-10">
         <fieldset
           className={`lg:w-3/4 lg:border lg:relative lg:shadow-sm lg:m-auto lg:mb-8 ${
             !isSelected.length ? "lg:h-20" : null

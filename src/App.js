@@ -11,7 +11,7 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Devs from "./components/Devs";
 import Landing from "./pages/LandingPage";
-import UserProfile from "./pages/UserProfile";
+import UserProfile from "./pages/UserProfile/UserProfile";
 import OtherProfile from "./pages/OtherUsers/OtherProfile";
 import ShowUsers from "./pages/ShowUsers";
 import ShowEvents from "./pages/ShowEvents";
