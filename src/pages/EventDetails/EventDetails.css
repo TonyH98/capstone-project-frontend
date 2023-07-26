@@ -47,6 +47,22 @@ flex-direction: column;
   }
 
 
+  .event-details-summary-container {
+    /* Set a width or max-width for the container if it doesn't have one already */
+    max-width: 100%;
+  }
+  
+  .event-details-summary {
+    /* Set the maximum width to fit the container */
+    max-width: 100%;
+    /* Align the text to the left */
+    text-align: left;
+    /* Allow words to break and wrap onto the next line */
+    word-wrap: break-word;
+    /* Add padding or margin as needed for spacing within the container */
+  }
+
+
 }
 
 

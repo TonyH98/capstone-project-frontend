@@ -721,7 +721,7 @@ const hostId = hosts.map((host) => {
                         className="lg:inline h-7 rounded lg:align-middle border border-black"
                       />
                     {filterFriends?.length !== 0 && (
-                      <div className="dataResult lg:shadow-lg lg:absolute lg:bg-white w-40 lg:text-center lg:ml-32 lg:rounded">
+                      <div className="dataResult shadow-lg lg:absolute bg-white w-40 text-center ml-32 rounded">
     
                         {filterFriends.slice(0,5).map((friend) => {
                           return(
@@ -742,21 +742,21 @@ const hostId = hosts.map((host) => {
               ) : (
                 <div className="lg:block lg:my-2">
                   {users?.id === eventInfo?.creator[0].id ? 
-                    <button type="button" onClick={showSearchBar} className="lg:text-[12px] lg:border lg:rounded-xl lg:bg-white lg:px-5 lg:shadow lg:inline lg:mr-3 lg:text-gray-500 lg:hover:text-blue-400 lg:hover:bg-gray-200 lg:bg-gradient-to-b lg:gray-100 lg:to-gray-300 lg:hover:bg-gradient-to-b">
+                    <button type="button" onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 lg:hover:text-blue-400 lg:hover:bg-gray-200 bg-gradient-to-b gray-100 to-gray-300 lg:hover:bg-gradient-to-b">
                       Add Co-Host
                     </button>
                       : null
                   }
                   {showSearch ? (
-                    <div className="lg:inline">
+                    <div className="inline">
                       <input
                         type="text"
                         value={search}
                         onChange={handleFilter}
-                        className="lg:inline lg:h-7 lg:rounded lg:align-middle lg:border lg:border-black"
+                        className="inline h-7 rounded align-middle border border-black"
                       />
                     {filterFriends?.length !== 0 && (
-                      <div className="dataResult lg:shadow-lg lg:absolute lg:bg-white lg:w-40 lg:text-center lg:ml-32 lg:rounded">
+                      <div className="dataResult lg:shadow-lg lg:absolute bg-white w-40 text-center ml-32 rounded">
     
                         {filterFriends.slice(0,5).map((friend) => {
                           return(
@@ -794,7 +794,12 @@ const hostId = hosts.map((host) => {
                 />
                 : null
             }
-            <section className="lg:break-words lg:text-ellipsis">{eventInfo?.summary}</section>
+            <div className="event-details-summary-container">
+
+            <section className="event-details-summary lg:break-words lg:text-ellipsis">{eventInfo?.summary}</section>
+
+            </div>
+            
           </div>
           {
             openSummaryEdit ? (
