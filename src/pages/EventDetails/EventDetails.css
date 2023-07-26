@@ -62,6 +62,14 @@ flex-direction: column;
     /* Add padding or margin as needed for spacing within the container */
   }
 
+  .google-map-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 10px;
+  }
+
 
 }
 

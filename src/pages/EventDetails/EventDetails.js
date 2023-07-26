@@ -864,26 +864,28 @@ const hostId = hosts.map((host) => {
   ) : (
     <>
       <button
-        className={`${eventState?.interested ? 'lg:bg-gradient-to-b lg:from-cyan-100 lg:via-purple-100 lg:to-purple-200' : null} lg:text-black lg:hover:bg-gray-300 lg:border lg:focus:bg-gradient-to-b lg:from-cyan-100 lg:via-purple-100 lg:to-purple-200 lg:focus:shadow-md lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center`}
+        className={`${eventState?.interested ? 'bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black lg:hover:bg-gray-300 border lg:focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 lg:focus:shadow-md font-medium rounded-lg text-sm lg:px-4 lg:py-2.5 text-center inline-flex items-center`}
         onClick={addToInterest} 
       >
         Interested
           <span className="lg:text-lg h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
             <AiFillStar className={`${eventState?.interested ? 'text-yellow-400' : 'text-gray-400'} text-xl`}/>
       </button>
+
       <button
-        className={`${eventState?.rsvp ? 'lg:bg-gradient-to-b lg:from-cyan-100 lg:via-purple-100 lg:to-purple-200' : null} lg:text-black lg:hover:bg-gray-300 lg:border lg:focus:bg-gradient-to-b lg:from-cyan-100 lg:via-purple-100 lg:to-purple-200 lg:focus:shadow-md lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center`}
+        className={`${eventState?.rsvp ? 'ml-4 bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200' : null} text-black hover:bg-gray-300 border lg:focus:bg-gradient-to-b from-cyan-100 via-purple-100 to-purple-200 focus:shadow-md font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center`}
         onClick={addToRsvp}
       >
         RSVP
           <span className="lg:text-lg lg:h-8">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-            <AiFillCheckCircle className={`${ eventState?.rsvp ? 'lg:text-green-400' : 'lg:text-gray-400' } lg:text-xl lg:focus:text-green-400`}/>
+            <AiFillCheckCircle className={`${ eventState?.rsvp ? 'text-green-400' : 'text-gray-400' } lg:text-xl lg:focus:text-green-400`}/>
       </button>
+
     </>
   )}
 </div>
 
-          <div className="">
+          <div className="google-map-container">
             <GoogleMap
               mapWidth="300px"
               mapHeight="300px"
@@ -906,9 +908,9 @@ const hostId = hosts.map((host) => {
 
       {/* contains the attendees */}
       <div>
-        <div className="tooltip lg:pt-7">
+        <div className="tooltip pt-7">
           <div>
-            <h2 className="lg:text-lg lg:ml-20 lg:font-bold lg:inline">
+            <h2 className="text-lg lg:ml-20 font-bold inline">
               Attendees: {attending?.length}/{eventInfo?.max_people}
             </h2>
             {
@@ -933,7 +935,7 @@ const hostId = hosts.map((host) => {
         </div>
         {
           attending?.length ? (
-            <div className="lg:mb-10 lg:ml-16 lg:flex lg:flex-row">
+            <div className="mb-10 lg:ml-16 flex flex-row">
               {
                 attending.map((attendee) => {
                   return(
@@ -955,11 +957,13 @@ const hostId = hosts.map((host) => {
       </div>
 
 
+
+
 {/* ---------------------------------------------------------------------------------- */}
 
 
         {/* contains the comment section */}
-      <div className="lg:px-10 lg:pt-6 lg:border-t">
+      <div className="px-10 pt-6 border-t">
         <CommentSection users={users} id={id}/> 
       </div>
     </div>
