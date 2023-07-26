@@ -486,18 +486,18 @@ const hostId = hosts.map((host) => {
 
         {/* image-section */}
        
-          <div className="event-details-image-container lg:relative">
+          <div className="event-details-image-container flex">
             <img
               src={eventInfo?.location_image}
               alt="event photo"
               className="event-details-page-image lg:max-h-96 lg:w-96 lg:mt-12 lg:object-fit"
             />
-            <div className="lg:w-36 tooltip lg:absolute lg:left-0 lg:bottom-3">
+            <div className="lg:w-36 tooltip  lg:left-0 lg:bottom-3">
             {
               editMode ? 
               <button 
               onClick={() => {setOpenImageEdit(true)}}
-              className="lg:text-blue-800 lg:pl-1 lg:mb-7 lg:text-left lg:absolute lg:left-0 lg:top-0 lg:w-56 lg:text-sm lg:hover:text-blue-600"
+              className="text-blue-800 pl-1 mb-7 lg:text-left lg:mt-4 lg:left-0 lg:top-0 lg:w-56 lg:text-sm lg:hover:text-blue-600"
               >
                   Change Event Photo
                 </button>
@@ -538,12 +538,12 @@ const hostId = hosts.map((host) => {
                   </h1>
                 )}
                 {editMode ? (
-                  <div className="lg:inline">
+                  <div className="inline">
                     <BsPencilFill
                       onClick={() => {
                         setOpenTitleEdit(!openTitleEdit);
                       }}
-                      className="lg:inline lg:text-lg lg:text-gray-800 lg:ml-3 lg:hover:cursor-pointer"
+                      className="inline text-lg lg:text-gray-800 ml-3 lg:hover:cursor-pointer"
                     />
                   </div>
                 ) : null}
@@ -573,7 +573,7 @@ const hostId = hosts.map((host) => {
                 editMode ? 
                   <BsPencilFill 
                     onClick={() => {setOpenLocationEdit(true)}}
-                    className="lg:right-10 lg:top-0 lg:text-md lg:text-gray-800 lg:inline lg:ml-4 lg:align-baseline lg:hover:cursor-pointer"
+                    className="lg:right-10 lg:top-0 lg:text-md lg:text-gray-800 inline ml-4 lg:align-baseline lg:hover:cursor-pointer"
                   />
                   : null
               }
@@ -790,7 +790,7 @@ const hostId = hosts.map((host) => {
               editMode ? 
                 <BsPencilFill 
                   onClick={() => {setOpenSummaryEdit(true)}}
-                  className="lg:text-md lg:text-gray-800 lg:inline lg:ml-4 lg:align-baseline lg:hover:cursor-pointer"
+                  className="text-md text-gray-800 inline lg:ml-4 align-baseline lg:hover:cursor-pointer"
                 />
                 : null
             }
@@ -820,18 +820,18 @@ const hostId = hosts.map((host) => {
 
           {/* contains the buttons and google maps */}
         <div className="lg:flex lg:flex-col lg:gap-y-12 lg:mt-12">
-        <div className="lg:flex lg:flex-row lg:justify-end lg:h-10 gap-x-3">
+        <div className="buttons-container lg:flex lg:flex-row lg:justify-end lg:h-10 gap-x-3">
   {users?.id === creator ? (
     editMode ? (
       <>
         <button
-          className="lg:text-black lg:bg-red-300 lg:hover:bg-red-400 lg:hover:text-white lg:border lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center"
+          className="text-black bg-red-300 hover:bg-red-400 lg:hover:text-white border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
           onClick={handleDelete}
         >
           Delete
         </button>
         <button
-          className="lg:text-black lg:hover:bg-gray-300 lg:border lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center"
+          className="text-black lg:hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
           onClick={() => setEditMode(false)}
         >
           Done
@@ -839,7 +839,7 @@ const hostId = hosts.map((host) => {
       </>
     ) : (
       <button
-        className="lg:text-black lg:hover:bg-gray-300 lg:border lg:font-medium lg:rounded-lg lg:text-sm lg:px-4 lg:py-2.5 lg:text-center lg:inline-flex lg:items-center"
+        className="text-black lg:hover:bg-gray-300 border font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
         onClick={() => setEditMode(true)}
       >
         Edit
@@ -917,7 +917,7 @@ const hostId = hosts.map((host) => {
               editMode ?
                 <BsPencilFill 
                   onClick={() => {setOpenAttendeesEdit(true)}}
-                  className="lg:text-md lg:text-gray-800 lg:inline lg:ml-4 lg:align-baseline lg:hover:cursor-pointer"
+                  className="lg:text-md lg:text-gray-800 inline ml-4 lg:align-baseline lg:hover:cursor-pointer"
                 />
                   : null
             }

@@ -53,7 +53,7 @@ let commentDate = `${monthName} ${parseInt(numDate?.slice(8))}, ${numDate?.slice
 
 
 return(
-    <div className="lg:rounded-md lg:sm:w-3/5 lg:border-2 lg:border-black lg:mt-4">
+    <div className="rounded-md sm:w-3/5 border-2 border-black mt-4">
     {hidden ? (<CommentEdit 
     id={id} 
     CommentDetails={comment} 
@@ -61,9 +61,10 @@ return(
     handleEdit={handleEdit}/>) : (
       <>
         <div className="">
-            <div className="lg:flex lg:justify-between lg:p-4">
-              <div className="lg:flex lg:items-center lg:gap-1">
-              <img src={defaultProf} className="lg:rounded-full"></img>
+          
+            <div className="flex justify-between p-4">
+              <div className="flex items-center gap-1">
+              <img src={defaultProf} className="rounded-full"></img>
                 <div className="">
                   {comment?.creator?.first_name} {comment.creator?.last_name}
                 </div>
@@ -72,27 +73,32 @@ return(
                 {comment?.time}
               </div>
             </div>
-            <div className="lg:flex lg:mb-8">
-            <div className="lg:bg-slate-200 lg:rounded-md lg:px-2 lg:py-3 lg:w-96 lg:ml-16">
-            {comment?.comment}
-            </div> 
-            <div className="lg:flex lg:justify-center lg:items-center lg:gap-4 lg:p-3">
-      {users?.id === comment?.creator?.user_id ? (
-        <div className='comment-buttons lg:flex lg:gap-2'>
-          <button className="edit lg:bg-cyan-400 lg:hover:bg-purple-400 lg:rounded-md lg:px-4 lg:py-0.5" 
-        onClick = {toggleView}>
+
+
+            <div className=" comment-buttons-container lg:mb-8">
+  <div className="comment-content-container ">
+    <p className="comment-content">
+      {comment?.comment}
+    </p> 
+  </div>
+
+  <div className="buttons-container lg:flex lg:justify-center lg:items-center gap-4 p-3">
+    {users?.id === comment?.creator?.user_id ? (
+      <div className='comment-buttons flex gap-2'>
+        <button className="edit bg-cyan-400 lg:hover:bg-purple-400 rounded-md px-4 py-0.5" 
+          onClick={toggleView}
+        >
           Edit
         </button>
-        <button  className="delete lg:bg-cyan-400 lg:hover:bg-orange-500 lg:rounded-md lg:px-2 lg:py-0.5" 
-        onClick={() => handleDelete(comment.id)}>
+        <button className="delete bg-cyan-400 hover:bg-orange-500 rounded-md px-2 py-0.5" 
+          onClick={() => handleDelete(comment.id)}
+        >
           Delete
         </button> 
-        </div>
-
-
-      ) : null}
-    </div>
-            </div>
+      </div>
+    ) : null}
+  </div>
+</div>
         </div>
    </>
    )}

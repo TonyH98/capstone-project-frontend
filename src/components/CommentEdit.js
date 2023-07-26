@@ -39,19 +39,26 @@ function CommentEdit({id , CommentDetails, toggleView, handleEdit}){
       };
 
 return(
-    <div className="Edit">
-    <form onSubmit={handleSubmit} className="lg:grid lg:grid-rows-2">
-      <br></br>
-      <input
-        id="comment"
-        value={comment.comment}
-        type="text"
-        onChange={handleTextChange}
-        className="lg:ml-20 lg:pl-3 lg:bg-orange-200 lg:rounded-full lg:w-fit lg:pr-"
-      />
-      <input type="submit" className="lg:ml-36 lg:mt-2 lg:w-16 lg:bg-cyan-200 lg:rounded-full" />
-    </form>
-  </div>
+  <div className="Edit">
+  <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 bg-gray-100 rounded-md">
+    <label htmlFor="comment" className="text-lg font-bold">
+      Edit Comment
+    </label>
+    <input
+      id="comment"
+      value={comment.comment}
+      type="text"
+      onChange={handleTextChange}
+      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-400"
+    />
+    <button
+      type="submit"
+      className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 focus:outline-none focus:ring focus:ring-purple-300"
+    >
+      Save
+    </button>
+  </form>
+</div>
 )
 
 

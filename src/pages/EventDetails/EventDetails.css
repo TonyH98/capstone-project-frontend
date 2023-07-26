@@ -1,3 +1,32 @@
+
+.comment-content{
+
+word-break: break-all;
+margin-left: 10px;
+}
+
+.comment-buttons-container{
+
+  display: flex;
+  flex-direction: column;
+
+}
+
+.buttons-container{
+
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+gap: 4px
+
+}
+
+.event-details-image-container{
+display: flex;
+flex-direction: column;
+
+}
+
 @media (min-width: 320px) and (max-width: 576px){
 
 .event-details-info-container{
@@ -71,11 +100,128 @@ flex-direction: column;
   }
 
 
+  .comment-form-button{
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+
+.event-details-map-container{
+
+display: flex;
+justify-content: end;
+
+margin-right: 3px;
+}
+
+.edit-image-button{
+  text-align: left;
+}
+
+
+
 }
 
 
 
 @media (min-width: 577px) and (max-width: 768px){
+
+
+  .event-details-info-container{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    
+    }
+    
+    .event-details-image-container {
+        width: 100%; 
+        height: 200px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    
+      .event-details-page-image {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+      }
+    
+      .address-container {
+        /* Adjust the container's styles as needed */
+        width: 100%; /* Ensures the container takes the full width of the screen */
+        text-align: left; /* Center the text within the container */
+      }
+    
+      .address-container h2 {
+        /* Adjust the heading styles as needed */
+        margin-top: 10px; /* Add some space between the heading and the container's top */
+      }
+    
+      .event-details-category-pills{
+      margin-right: 5px;
+      margin-bottom: 5px;
+    
+      display: inline-block;
+      white-space: nowrap;
+      color: white;
+      font-size: 12px;
+      border-radius: 20px;
+      padding: 4px 12px;
+      text-align: center;
+    
+      }
+    
+    
+      .event-details-summary-container {
+        /* Set a width or max-width for the container if it doesn't have one already */
+        max-width: 100%;
+      }
+      
+      .event-details-summary {
+        /* Set the maximum width to fit the container */
+        max-width: 100%;
+        /* Align the text to the left */
+        text-align: left;
+        /* Allow words to break and wrap onto the next line */
+        word-wrap: break-word;
+        /* Add padding or margin as needed for spacing within the container */
+      }
+    
+      .google-map-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 8px;
+        margin-bottom: 10px;
+      }
+    
+    
+      .comment-form-button{
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+    
+    
+    .event-details-map-container{
+    
+    display: flex;
+    justify-content: end;
+    
+    margin-right: 3px;
+    }
+    
+    .edit-image-button{
+      text-align: left;
+    }
+    
+
+
 
 
 }
