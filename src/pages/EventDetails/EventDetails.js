@@ -474,18 +474,23 @@ const hostId = hosts.map((host) => {
 })
 
   return (
-    <div className="events-detail-page lg:relative">
+    <div className="events-detail-page ">
       <div
         className={`${openTitleEdit || openImageEdit || openAttendeesEdit ? "background" : null}`}
         onClick={closeModal}
       />
-      <div className="lg:flex lg:flex-row lg:justify-center lg:gap-x-16 lg:mx-20">
-        <div className="lg:w-96">
-          <div className="lg:relative">
+      
+      {/* Holds all the event info */}
+      <div className="event-details-info-container lg:flex lg:flex-row lg:justify-center lg:gap-x-16 lg:mx-20">
+
+
+        {/* image-section */}
+       
+          <div className="event-details-image-container lg:relative">
             <img
               src={eventInfo?.location_image}
               alt="event photo"
-              className="lg:max-h-96 lg:w-96 lg:mt-12 lg:object-fit"
+              className="event-details-page-image lg:max-h-96 lg:w-96 lg:mt-12 lg:object-fit"
             />
             <div className="lg:w-36 tooltip lg:absolute lg:left-0 lg:bottom-3">
             {
@@ -510,18 +515,25 @@ const hostId = hosts.map((host) => {
                 }
             </div>
           </div>
-        </div>
+      
+{/* ---------------------------------------------------------------------------- */}
+
+
+
+        {/* contains title, age, date, location etc */}
         <div className="lg:w-1/2 lg:mt-12">
           <div className="lg:flex lg:flex-col lg:relative">
+            
+            {/* contains the title, age and location */}
             <div className={`tooltip`}>
-              <div className={`lg:text-3xl lg:mb-5 `}>
+              <div className="text-3xl mb-5">
                 {eventInfo?.title}&nbsp;&nbsp;|&nbsp;&nbsp;
                 {eventInfo?.age_restriction ? (
-                  <h1 className={`lg:inline lg:text-2xl lg:text-gray-500 `}>
+                  <h1 className={`inline text-2xl text-gray-500 `}>
                     {`${eventInfo?.age_min} to ${eventInfo?.age_max} Only`}
                   </h1>
                 ) : (
-                  <h1 className="lg:inline lg:text-2xl lg:text-gray-500">
+                  <h1 className="inline text-2xl text-gray-500">
                     All ages
                   </h1>
                 )}
@@ -535,7 +547,7 @@ const hostId = hosts.map((host) => {
                     />
                   </div>
                 ) : null}
-              <h2 className="lg:text-cyan-600 lg:text-xl">@ {eventInfo?.location}</h2>
+              <h2 className="text-cyan-600 text-xl">@ {eventInfo?.location}</h2>
               </div>
               {openTitleEdit ? 
                 <TitleEditModal 
@@ -546,13 +558,15 @@ const hostId = hosts.map((host) => {
                 />
               : null}
             </div>
+
+              {/* Date time and address  */}
             <div className="lg:relative">
               <h2 className="lg:inline">
                 Date:
-                <span className="lg:text-white lg:bg-pink-400 lg:rounded-full lg:text-xs lg:px-2.5 lg:py-1.5 lg:text-center lg:mr-2 lg:ml-3">
+                <span className="text-white bg-pink-400 rounded-full lg:text-xs px-1.5 py-.5 text-center mr-2 ml-3">
                   {eventDate}
                 </span>
-                <span className="lg:text-sm lg:text-blue-800 lg:font-bold">
+                <span className="text-sm text-blue-800 font-bold">
                   {eventInfo?.start_time.charAt(0) === '0' ? `${eventInfo?.start_time.slice(1)}` : `${eventInfo?.start_time}`} - {eventInfo?.end_time.charAt(0) === '0' ? `${eventInfo?.end_time.slice(1)}` : `${eventInfo?.end_time}`}
                 </span>
               {
@@ -564,9 +578,15 @@ const hostId = hosts.map((host) => {
                   : null
               }
               </h2>
-              <h2 className="lg:mt-2">Address: {eventInfo?.address}</h2>
+
+              <div className="address-container">
+
+              <h2 className="lg:mt-2">Address: <span className="text-blue-600">{eventInfo?.address}</span></h2>
+
+              </div>
           
             </div>
+
           </div>
           {
             openLocationEdit ?
@@ -580,17 +600,22 @@ const hostId = hosts.map((host) => {
               />
               : null
           }
-          <h2 className="lg:mt-1">
+
+          {/* category section */}
+          <div className="event-details-category-container">
+
+          <h2 className="mt-2 mb-3">
             Categories:
             {eventInfo?.category_names
-              ? eventInfo.category_names.map((category) => {
+              ? 
+              eventInfo.category_names.map((category) => {
                   return (
                     
                     <Link to={`/events?category_names.name=${encodeURIComponent(category.name)}`}>
                     <div
                     key={category.id}
                       // update route for events sorted by category
-                      className="lg:inline lg:text-white lg:bg-indigo-500 lg:hover:bg-blue-800 lg:text-xs lg:rounded-full lg:px-3 lg:py-1.5 lg:text-center lg:ml-2 lg:mb-1"
+                      className="event-details-category-pills lg:inline text-white bg-indigo-500 lg:hover:bg-blue-800 lg:text-xs rounded-full px-3 py-1.5 text-center ml-2 mb-1"
                     >
                       {category.name}
                     </div>
@@ -619,9 +644,16 @@ const hostId = hosts.map((host) => {
               setEventInfo={setEventInfo}
             />
           ) : null}
+
+          </div>
+
+
+
+
           <div className="lg:text-gray-600 lg:my-5 lg:text-sm lg:py-3 lg:align-baseline">
               Hosted by 
-            <div className="lg:hover:text-blue-500 lg:hover:border-blue-500 lg:w-20 lg:inline">
+
+            <div className="lg:hover:text-blue-500 lg:hover:border-blue-500 lg:w-20 inline">
               <Link 
                 to={`/profile/${eventInfo?.creator[0].username}`}
                 className="lg:hover:text-blue-500 lg:hover:border-blue-500 lg:w-12"
@@ -629,60 +661,64 @@ const hostId = hosts.map((host) => {
                 <img 
                   src={eventInfo?.creator[0].profile_img}
                   alt="profile image"
-                  className="lg:h-10 lg:w-10 lg:inline lg:px-1 lg:py-1 lg:mx-2 lg:rounded-full lg:bg-gray-100 lg:border lg:border-gray-300 lg:hover:border-blue-500 lg:object-cover"
+                  className="lh-10 w-10 inline lg:px-1 lg:py-1 lg:mx-2 rounded-full bg-gray-100 border border-gray-300 lg:hover:border-blue-500 object-cover"
                 /> 
                 {eventInfo?.creator[0].username}
               </Link>
             </div>
+
             {
               hosts.length ? (
                 <div className="lg:mt-1">
-                  <p className="lg:inline lg:break-keep ">Co-Hosts: </p>
-                  <div className="lg:flex lg:inline lg:items-center lg:mt-3 lg:overflow-x-scroll lg:no-scrollbar lg:space-x-10">
+                  <p className="inline break-keep ">Co-Hosts: </p>
+
+                  <div className="flex inline lg:items-center lg:mt-3 lg:overflow-x-scroll lg:no-scrollbar space-x-10">
                   {hosts.map((host) => {
                     return(
-                      <div className="lg:hover:text-blue-500 lg:hover:border-blue-500">
-                        <Link 
-                          to={`/profile/${host.username}`}
-                          className="lg:hover:text-blue-500 lg:hover:border-blue-500 lg:w-full lg:flex lg:items-center"
-                        >
-                          <img 
-                            src={host.profile_img}
-                            alt="profile image"
-                            className="lg:h-10 lg:w-10 lg:inline lg:px-1 lg:py-1 lg:mx-2 lg:rounded-full lg:bg-gray-100 lg:border lg:border-gray-300 lg:hover:border-blue-500 lg:object-cover"
-                          /> 
-                         <p>{host.username}</p>
-                        </Link>
-                        {
-                          editMode && users.id === eventInfo.creator[0].id ? (
-                            <button 
-                              className="lg:pl-1 lg:text-red-800"
-                              onClick={() => deleteCohost(host?.user_id)}
-                            >
-                              X
-                            </button>
-                          ) : null
-                        }
-                      </div>
+                      <div className="lg:hover:text-blue-500 lg:hover:border-blue-500 flex items-center">
+                      <Link 
+                        to={`/profile/${host.username}`}
+                        className="lg:hover:text-blue-500 lg:hover:border-blue-500 flex items-center"
+                      >
+                        <img 
+                          src={host.profile_img}
+                          alt="profile image"
+                          className="h-10 w-10 inline px-1 py-1 mx-2 rounded-full bg-gray-100 border border-gray-300 lg:hover:border-blue-500 object-cover"
+                        /> 
+                        <p>{host.username}</p>
+                      </Link>
+                      {
+                        editMode && users.id === eventInfo.creator[0].id ? (
+                          <button 
+                            className="pl-1 inline text-red-800"
+                            onClick={() => deleteCohost(host?.user_id)}
+                          >
+                            X
+                          </button>
+                        ) : null
+                      }
+                    </div>
                     )
                   })
                 }
                 </div>
 
-                <div className="lg:mt-2 ">
+
+
+                <div className="mt-2">
                   {users?.id === eventInfo?.creator[0].id ? 
-                    <button type="button" onClick={showSearchBar} className="lg:text-[12px] lg:border lg:rounded-xl lg:bg-white lg:px-5 lg:shadow lg:inline lg:mr-3 lg:text-gray-500 lg:hover:text-blue-400 lg:hover:bg-gray-200 lg:bg-gradient-to-b lg:from-gray-100 lg:to-gray-300 lg:hover:bg-gradient-to-b">
+                    <button type="button" onClick={showSearchBar} className="text-[12px] border rounded-xl bg-white px-5 shadow inline mr-3 text-gray-500 lg:hover:text-blue-400 lg:hover:bg-gray-200 bg-gradient-to-b from-gray-100 to-gray-300 lg:hover:bg-gradient-to-b">
                       Add Co-Host
                     </button>
                       : null
                   }
                   {showSearch ? (
-                    <div className="lg:inline">
+                    <div className="inline ">
                       <input
                         type="text"
                         value={search}
                         onChange={handleFilter}
-                        className="lg:inline lg:h-7 lg:rounded lg:align-middle lg:border lg:border-black"
+                        className="lg:inline h-7 rounded lg:align-middle border border-black"
                       />
                     {filterFriends?.length !== 0 && (
                       <div className="dataResult lg:shadow-lg lg:absolute lg:bg-white w-40 lg:text-center lg:ml-32 lg:rounded">
@@ -740,6 +776,12 @@ const hostId = hosts.map((host) => {
               )
             }
           </div>
+
+
+
+
+
+
           <div className="lg:mt-6">
             <h2 className="lg:inline">
               <b>Summary</b>
@@ -766,6 +808,12 @@ const hostId = hosts.map((host) => {
             ) : null
           }
         </div>
+
+
+{/* ----------------------------------------------------------------------------- */}
+
+
+          {/* contains the buttons and google maps */}
         <div className="lg:flex lg:flex-col lg:gap-y-12 lg:mt-12">
         <div className="lg:flex lg:flex-row lg:justify-end lg:h-10 gap-x-3">
   {users?.id === creator ? (
@@ -839,7 +887,19 @@ const hostId = hosts.map((host) => {
             />
           </div>
         </div>
+
+
+
+
+
       </div>
+
+
+{/* ------------------------------------------------------------------------ */}
+
+
+
+      {/* contains the attendees */}
       <div>
         <div className="tooltip lg:pt-7">
           <div>
@@ -888,6 +948,12 @@ const hostId = hosts.map((host) => {
           )
         }
       </div>
+
+
+{/* ---------------------------------------------------------------------------------- */}
+
+
+        {/* contains the comment section */}
       <div className="lg:px-10 lg:pt-6 lg:border-t">
         <CommentSection users={users} id={id}/> 
       </div>

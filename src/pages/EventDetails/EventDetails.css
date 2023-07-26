@@ -1,5 +1,51 @@
 @media (min-width: 320px) and (max-width: 576px){
 
+.event-details-info-container{
+margin-top: 10px;
+display: flex;
+flex-direction: column;
+
+}
+
+.event-details-image-container {
+    width: 100%; 
+    height: 200px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .event-details-page-image {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+  }
+
+  .address-container {
+    /* Adjust the container's styles as needed */
+    width: 100%; /* Ensures the container takes the full width of the screen */
+    text-align: left; /* Center the text within the container */
+  }
+
+  .address-container h2 {
+    /* Adjust the heading styles as needed */
+    margin-top: 10px; /* Add some space between the heading and the container's top */
+  }
+
+  .event-details-category-pills{
+  margin-right: 5px;
+  margin-bottom: 5px;
+
+  display: inline-block;
+  white-space: nowrap;
+  color: white;
+  font-size: 12px;
+  border-radius: 20px;
+  padding: 4px 12px;
+  text-align: center;
+
+  }
+
 
 }
 
