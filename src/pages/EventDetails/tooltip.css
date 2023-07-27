@@ -1,6 +1,7 @@
 
 @media (min-width: 993px){
-
+  
+  
   .background {
     width: 100vw;
     height: 100vw;
@@ -12,7 +13,6 @@
     background-color: black;
     opacity: 0.5;
   }
-  
   .show {
     opacity: 100%;
     z-index: 200;

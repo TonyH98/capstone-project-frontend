@@ -120,7 +120,22 @@ margin-right: 3px;
   text-align: left;
 }
 
+.title-edit-save-button{
+display: flex;
+justify-content: center;
 
+}
+.age-restriction-container{
+  margin-bottom: 10px;
+}
+
+.title-edit-container {
+  border: 1px solid #ccc; 
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); 
+  width: 75%;
+  border-radius: 4px;
+  margin: 0 auto; /* This will horizontally center the container */
+}
 
 }
 

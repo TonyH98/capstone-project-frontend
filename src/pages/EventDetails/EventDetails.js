@@ -15,7 +15,7 @@ import CategoriesModal from "../../components/CategoriesModal";
 import CommentSection from "../../components/commentSection";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import TitleEditModal from "../../components/TitleEditModal";
-import LocationEditModal from "../../components/LocationEditModal";
+import LocationEditModal from "../../components/LocationEditModal/LocationEditModal";
 import SummaryEditModal from "../../components/SummaryEditModal";
 import ImageEditModal from "../../components/ImageEditModal";
 import AttendeesEditModal from "../../components/AttendeesEditModal"

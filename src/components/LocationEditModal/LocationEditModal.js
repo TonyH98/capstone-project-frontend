@@ -1,4 +1,4 @@
-import styles from "./modal.module.css";
+import styles from ".././modal.module.css"
 
 function LocationEditModal({
   updatedEventInfo,
@@ -11,18 +11,19 @@ function LocationEditModal({
   return (
     <>
       <div className={`${styles.card}`}>
-        <div className="lg:block">
+        <div className="">
             <label htmlFor="date_event">
                 Date
-            </label>
             <input
             type="date"
             id="date_event"
             value={updatedEventInfo.date_event}
             onChange={handleTextChange}
             required
-            className="lg:rounded lg:h-8 lg:ml-2"
+            className="rounded h-8 ml-2"
           />
+
+            </label>
         </div>
         {/* {
                     dateError && <p style={{color:"red"}}>{dateError}</p>
