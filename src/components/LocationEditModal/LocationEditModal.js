@@ -40,7 +40,7 @@ function LocationEditModal({
                 value={updatedEventInfo.start_time.slice(0,5)}
                 onChange={handleTextChange}
                 required
-                className="lg:rounded lg:h-8 lg:ml-2 lg:pl-3"
+                className="lg:rounded lg:h-8 ml-2 lg:pl-3"
             />
             <label htmlFor="end_time" className="ml-3">
                 End
@@ -51,7 +51,7 @@ function LocationEditModal({
                 value={updatedEventInfo.end_time.slice(0,5)}
                 onChange={handleTextChange}
                 required
-                className="lg:rounded lg:h-8 lg:ml-2 lg:pl-3"
+                className="lg:rounded lg:h-8 ml-2 lg:pl-3"
             />
         </div>
         <div className="lg:mb-2">
@@ -64,7 +64,7 @@ function LocationEditModal({
             value={updatedEventInfo.location}
             onChange={handleTextChange}
             required
-            className="lg:rounded lg:h-8 lg:ml-2 lg:inline lg:w-3/4"
+            className="rounded lg:h-8 ml-2 inline lg:w-3/4"
           />
         </div>
         <div className="lg:mb-9">
@@ -75,18 +75,18 @@ function LocationEditModal({
                 value={updatedEventInfo.address}
                 onChange={handleTextChange}
                 required
-                className="lg:rounded lg:h-8 lg:ml-2 lg:w-3/4"
+                className="rounded lg:h-8 ml-2 lg:w-3/4"
             />
             <button
                 type="button"
-                className="lg:underline lg:ml-20 lg:text-pink-400 lg:text-md"
+                className="underline ml-20 text-pink-400 text-md"
                 onClick={getCoordinates}
             >
                 Verify address
             </button>
         </div>
         <button 
-            className="lg:border lg:bg-emerald-500 lg:text-white lg:py-1 lg:px-6 lg:rounded lg:shadow lg:position lg:absolute lg:right-10 lg:bottom-4 lg:hoverbg-emerald-300"
+            className="mt-2 lborder bg-emerald-500 text-white py-1 px-6 rounded shadow lg:position lg:absolute right-10 bottom-4 lg:hoverbg-emerald-300"
             onClick={handleEdit}
         >
             Save
@@ -94,7 +94,7 @@ function LocationEditModal({
         <button 
             type="button"
             onClick={() => {setOpenLocationEdit(false)}}
-            className="lg:absolute lg:right-4 lg:top-2"
+            className="absolute right-4 top-2"
         >
             X
         </button>
