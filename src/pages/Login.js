@@ -57,7 +57,7 @@ function Login() {
   return (
     <div className="flex flex-col justify-center items-center p-6">
       <form className="sm:w-96 bg-white shadow-md p-4 rounded-lg flex flex-col items-center justify-center">
-        <button className="relative left-[50%] font-bold text-lg">X</button>
+        
         <div>
           <p className="text-lg font-bold py-4">
             Welcome back! Input login info below
