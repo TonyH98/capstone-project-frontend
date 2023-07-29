@@ -15,7 +15,10 @@ function AttendeesEditModal({ updatedEventInfo, setOpenAttendeesEdit, handleText
                 />
                 <button
                     className="bg-emerald-500 text-white px-5 py-1 mt-3 mb-2 ml-3 rounded-md border inline"
-                    onClick={handleEdit}
+                    onClick={() => {
+                        handleEdit();
+                        setOpenAttendeesEdit(false);
+                      }}
                 >
                     Save
                 </button>
