@@ -189,7 +189,7 @@ export default function Events() {
             removeCategory(category.name);
             applyFilters();
           }}
-        className='event-remove-category lg:inline lg:shadow lg:text-white lg:bg-blue-700 lg:hover:bg-blue-800 lg:focus:outline-none lg:focus:ring-4 lg:focus:ring-blue-300 lg:font-medium lg:rounded-full lg:text-sm lg:px-5 lg:py-2.5 lg:text-center lg:mr-2 lg:mb-2'>
+        className='event-remove-category inline shadow text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2'>
         
           {category.name}
         </button>
@@ -200,7 +200,7 @@ export default function Events() {
             addCategory(category.name);
             applyFilters();
           }}
-          className='lg:inline lg:shadow lg:shadow-white lg:z-20 lg:py-2.5 lg:px-5 lg:mr-2 lg:mb-2 lg:text-sm lg:font-medium lg:text-gray-900 lg:focus:outline-none lg:bg-gray-200 lg:rounded-full lg:border lg:border-gray-200 lg:hover:bg-gray-100 lg:hover:text-blue-700 lg:focus:z-10 lg:focus:ring-4 lg:focus:ring-gray-200'
+          className='lg:inline shadow shadow-white z-20 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-full border border-gray-200 hover:bg-gray-100 lg:hover:text-blue-700 lg:focus:z-10 lg:focus:ring-4 lg:focus:ring-gray-200'
         >
           {category.name}
         </button>

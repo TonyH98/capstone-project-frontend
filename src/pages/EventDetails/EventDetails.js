@@ -124,14 +124,7 @@ export default function EventDetails({users, categoryQuery}) {
     }
   }, [eventInfo?.id]);
 
-  useEffect(() => {
-    if(eventInfo?.id){
-      axios.get(`${API}/events/${eventInfo?.id}/hosts`)
-        .then((res) => {
-          setHosts(res.data)
-        })
-    }
-  }, [eventInfo?.id])
+ 
   
   useEffect(() => {
     getCoordinates()
@@ -306,17 +299,32 @@ export default function EventDetails({users, categoryQuery}) {
     setFilterFriends([])
   }
 
-  function deleteCohost (userId){
-    axios
-      .delete(`${API}/events/${userId}/deletehost/${eventInfo?.id}`)
-      .then(() => {
-        axios.get(`${API}/events/${eventInfo?.id}/hosts`)
-        .then((res) => {
-          setHosts(res.data)
-        })
-      }
-    )
+  async function deleteCohost(userId) {
+    try {
+      await axios.delete(`${API}/events/${userId}/deletehost/${eventInfo.id}`);
+      // Manually update the hosts state after successful deletion
+      const updatedHosts = hosts.filter((host) => host.user_id !== userId);
+      setHosts(updatedHosts);
+      console.log('Co-host deleted successfully');
+    } catch (error) {
+      console.error('Failed to delete co-host:', error);
+    }
   }
+
+  useEffect(() => {
+    if (eventInfo?.id) {
+      axios.get(`${API}/events/${eventInfo.id}/hosts`)
+        .then((res) => {
+          setHosts(res.data);
+        })
+        .catch((error) => {
+          console.error('Failed to fetch co-hosts:', error);
+          // Optionally, you can set hosts to an empty array or handle the error in some other way.
+        });
+    }
+  }, [eventInfo?.id]);
+
+
 
   // function that adds event to user profile as rsvp
   function addToRsvp() {
@@ -472,6 +480,10 @@ const hostId = hosts.map((host) => {
   return host.user_id
 
 })
+
+console.log(hosts)
+
+
 
   return (
     <div className="events-detail-page ">
@@ -688,7 +700,7 @@ const hostId = hosts.map((host) => {
                         <p>{host.username}</p>
                       </Link>
                       {
-                        editMode && users.id === eventInfo.creator[0].id ? (
+                         users.id === eventInfo.creator[0].id ? (
                           <button 
                             className="pl-1 inline text-red-800"
                             onClick={() => deleteCohost(host?.user_id)}

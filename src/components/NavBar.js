@@ -354,21 +354,13 @@ export default function NavBar({ setUser, setLoggedIn, loggedin }) {
                     </li>
                   ) : (
                     <div>
-                      {/* <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                        <Link to="/personalprofile">
-                          {loggedInUser.username}
-                        </Link>
-                      </li> */}
+                    
                       <li className="block px-4 py-2 hover:bg-[#f5fefd]">
                         <button onClick={handleSignOut}>Sign Out</button>
                       </li>
                     </div>
                   )}
-                  {/* <li className="block px-4 py-2 hover:bg-[#f5fefd]">
-                    <Link to="/devs" className="">
-                      About Devs
-                    </Link>
-                  </li> */}
+                  
                 </ul>
               </div>
             )}
