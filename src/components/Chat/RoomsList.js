@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback  } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
+import { io } from "socket.io-client";
 import Room from "./Room";
 import { AiOutlineSend } from "react-icons/ai"
 import Lottie from "lottie-react";
@@ -114,9 +115,7 @@ axios.get(`${API}/users`)
     setSelectedRoom(roomId);
   
     // Listen for new messages in the current room
-    socket.on("receive_message", (newMessage) => {
-      // Update the UI with the new message
-    });
+   
   
     // Listen for new room creation
     socket.on("new_room_created", (newRoom) => {
@@ -173,6 +172,9 @@ function handleNewMessage(newMessage) {
         });
       }
     });
+
+    
+
 }
 
 

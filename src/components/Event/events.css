@@ -1,5 +1,5 @@
 
-@media (min-width: 993px){
+
 
     .pagination{
        text-align: center;
@@ -10,7 +10,7 @@
        list-style: none;
     }
    
-}
+
 
 @media (min-width: 320px) and (max-width: 576px){
 
@@ -299,9 +299,9 @@ font-size: 0.875rem;
     
     .event-card-container {
         margin-top: 30px;
-        display: grid;
-        grid-row-gap: 50px;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
+        flex-wrap: wrap;
+       gap: 20px;
         justify-content: center; /* Center the grid content horizontally */
         align-content: center; /* Center the grid content vertically */
         

@@ -210,4 +210,105 @@ flex-wrap: wrap;
 
 @media (min-width: 769px) and (max-width: 992px){
 
+    .other-profile-interest-container,
+    .other-profile-events-container,
+    .other-profile-hosted-container,
+    .other-profile-friends-container
+    {
+        width: 100%;
+         border: 1px solid #ddd;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+    
+    }
+    
+    .other-profile-second-half-container{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    }
+    
+    .other-profile-interest-legend,
+    .other-profile-events-legend,
+    .other-profile-host-legend,
+    .other-profile-friends-legend{
+    margin-left: 20px;
+    
+    }
+    
+    
+    .other-profile-interests-container{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 4px;
+    margin-bottom: 20px;
+    gap: 6px;
+    margin-top: 5px;
+    
+    }
+    
+    .other-profile-interest-pills{
+    display: inline;
+    background-color:#6366f1 ;
+    color: white;
+    margin-left: 5px ;
+    padding-top:5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 9999px;
+    }
+    
+    
+    .profile-event-image,
+    .hosted-events-image,
+    .friends-profile-image{
+    width: 80px;
+    height: 80px
+    
+    }
+    
+    .other-profile-host-container{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 8px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    gap: 8px;
+    max-width: 500px;
+    overflow-x: auto;
+    
+    }
+    
+    .hosted-event-title{
+    
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    
+    .other-profile-friends-container{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .friends-profile-image{
+        border-radius: 9999px;
+    }
+    
+    
+    .profile-event-container{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+    }
+
+
+
 }

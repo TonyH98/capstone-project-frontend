@@ -39,13 +39,12 @@
         font-weight: bold;
     }
 
-    .users-card-buttons-container{
+    .users-card-buttons-container {
         display: flex;
         flex-direction: column;
         margin-top: 10px;
-        margin-left: 10px;
-        margin-right: 10px;
-
+        align-items: flex-end;
+        margin-right:20px ;
     }
 
     .users-card-message-button{
@@ -54,9 +53,12 @@
      border-color: #22d3ee; 
      padding-left: .2rem;
      padding-right: .2rem;
+     padding-top: .2rem;
+     padding-bottom: .2rem;
      text-align: center;
      border-radius: 3px;
      margin-bottom: 10px;
+     width: 150px;
 
     }
 
@@ -72,19 +74,22 @@
      text-align: center;
      border-radius: 3px;
      margin-bottom: 10px;
+     padding-top: .2rem;
+     padding-bottom: .2rem;
+     width: 150px;
     }
 
     .users-card-request-sent{
         border-width: 2px;  
-        border-color: #22d3ee; 
-        padding-left: .2rem;
-        padding-right: .2rem;
-        text-align: center;
-        border-radius: 3px;
-        margin-bottom: 10px;
-        background-color:  #22d3ee; 
-        padding-top: .3rem;
-        padding-bottom: .3rem;
+     border-color: #22d3ee; 
+     padding-left: .2rem;
+     padding-right: .2rem;
+     text-align: center;
+     border-radius: 3px;
+     margin-bottom: 10px;
+     padding-top: .2rem;
+     padding-bottom: .2rem;
+     width: 150px;
     }
 
 }
@@ -98,6 +103,7 @@
         grid-template-columns: 1fr 1fr;
         border: 1px solid rgba(0, 0, 0, 0.1);
         box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+        
     }
 
     .users-card-profile-image{
@@ -128,13 +134,12 @@
         font-weight: bold;
     }
 
-    .users-card-buttons-container{
-        margin-top: 10px;
-        margin-left: 10px;
+    .users-card-buttons-container {
         display: flex;
         flex-direction: column;
-        margin-right: 10px;
-
+        margin-top: 10px;
+        align-items: flex-end;
+        margin-right:20px ;
     }
 
     .users-card-message-button{
@@ -143,9 +148,12 @@
      border-color: #22d3ee; 
      padding-left: .2rem;
      padding-right: .2rem;
+     padding-top: .2rem;
+     padding-bottom: .2rem;
      text-align: center;
      border-radius: 3px;
      margin-bottom: 10px;
+     width: 150px;
 
     }
 
@@ -161,24 +169,119 @@
      text-align: center;
      border-radius: 3px;
      margin-bottom: 10px;
+     padding-top: .2rem;
+     padding-bottom: .2rem;
+     width: 150px;
     }
 
     .users-card-request-sent{
         border-width: 2px;  
-        border-color: #22d3ee; 
-        padding-left: .2rem;
-        padding-right: .2rem;
-        text-align: center;
-        border-radius: 3px;
-        margin-bottom: 10px;
-        background-color:  #22d3ee; 
-        padding-top: .3rem;
-        padding-bottom: .3rem;
+     border-color: #22d3ee; 
+     padding-left: .2rem;
+     padding-right: .2rem;
+     text-align: center;
+     border-radius: 3px;
+     margin-bottom: 10px;
+     padding-top: .2rem;
+     padding-bottom: .2rem;
+     width: 150px;
     }
 
 }
 
 
 @media (min-width: 769px) and (max-width: 992px){
+
+    .users-card{
+        background-color: #cffafe;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+        
+    }
+
+    .users-card-profile-image{
+        max-width: 150px;
+        height: 150px;
+        margin-bottom: 10px;
+    }
+
+    .users-card-info-container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .users-card-fullname{
+        font-weight: bold;
+
+    }
+
+    .users-card-name-container{
+        margin-bottom: 5px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .users-card-username{
+        font-size: 13px;
+        color: #22d3ee;
+        font-weight: bold;
+    }
+
+    .users-card-buttons-container {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+        align-items: flex-end;
+        margin-right:20px ;
+    }
+
+    .users-card-message-button{
+
+     border-width: 2px;  
+     border-color: #22d3ee; 
+     padding-left: .2rem;
+     padding-right: .2rem;
+     padding-top: .2rem;
+     padding-bottom: .2rem;
+     text-align: center;
+     border-radius: 3px;
+     margin-bottom: 10px;
+     width: 150px;
+
+    }
+
+    .users-card-message-button:hover{
+        background-color:  #22d3ee; 
+    }
+
+    .users-card-friends-request-button{
+        border-width: 2px;  
+     border-color: #22d3ee; 
+     padding-left: .2rem;
+     padding-right: .2rem;
+     text-align: center;
+     border-radius: 3px;
+     margin-bottom: 10px;
+     padding-top: .2rem;
+     padding-bottom: .2rem;
+     width: 150px;
+    }
+
+    .users-card-request-sent{
+        border-width: 2px;  
+     border-color: #22d3ee; 
+     padding-left: .2rem;
+     padding-right: .2rem;
+     text-align: center;
+     border-radius: 3px;
+     margin-bottom: 10px;
+     padding-top: .2rem;
+     padding-bottom: .2rem;
+     width: 150px;
+    }
+
+
 
 }

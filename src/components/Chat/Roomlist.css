@@ -87,8 +87,11 @@ margin-top: 20px;
 
 .chat-room-rooms-container{
 
-display: grid;
-grid-row-gap: 10px;
+
+display: flex; /* Use flex container */
+ overflow-x: auto;
+    white-space: nowrap;
+    gap: 20px;
 
 }
 
@@ -274,8 +277,202 @@ margin-top: 20px;
 
 .chat-room-rooms-container{
 
-display: grid;
-grid-row-gap: 10px;
+
+display: flex; /* Use flex container */
+ overflow-x: auto;
+    white-space: nowrap;
+    gap: 20px;
+
+}
+
+
+
+.chat-room-selected {
+  background-color: #67e8f9;
+  display: inline-block; /* Make it inline-block to fit the content */
+  padding: 2px 8px; /* Adjust the padding as needed for spacing */
+ 
+  border-radius: 5px; /* Add border-radius to soften the corners */
+}
+
+.chat-room-username {
+  /* Add any styles for the .chat-room-username as needed */
+  margin: 0; /* Optional: Remove margin to make it visually fit the container */
+}
+
+
+.chat-room-message-form{
+  position: relative;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px; /* Add padding for spacing */
+
+}
+
+.chat-room-message-input{
+  border: black solid 1px;
+  border-radius: 3px;
+  height: 38px;
+  padding-left: 5px;
+  width: 200px;
+}
+
+
+.chat-room-content-container{
+
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+
+
+}
+
+.chat-room-current-user-message {
+  display: flex; 
+  width: 200px;
+  align-items: flex-start;
+  background-color: #67e8f9;
+  padding: 8px; 
+  margin-right: 10px;
+  margin-left: auto; /* Push the container to the right edge */
+}
+
+.chat-room-other-user-messages {
+  display: flex; 
+  width: 200px;
+  align-items: flex-start;
+  background-color: #ffbb00;
+  padding: 8px; 
+  margin-left: 10px;
+  margin-right: auto; /* Push the container to the right edge */
+}
+
+.chat-room-message-created{
+  font-size: 13px;
+
+}
+
+
+.chat-room-message-section-container {
+  border-top: 1px solid black;
+  margin-top: 10px;
+  max-height: 500px; /* Set a fixed height for the container */
+  overflow-y: auto; /* Add a vertical scrollbar when content overflows */
+}
+
+
+.chat-room-message-container{
+
+overflow: hidden;
+max-width: 200px;
+word-break: break-word;
+
+}
+
+.chat-room-messages{
+white-space: pre-wrap;
+
+}
+
+}
+
+
+
+@media (min-width: 769px) and (max-width: 992px){
+
+  .room-page{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* Center the .chat-room-users-search container */
+.chat-room-users-search {
+    margin-top: 10px;
+    border: 1px black solid;
+    text-align: center;
+    border-radius: 3px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+  
+
+.create-room-button{
+
+border: black 1px solid;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 2px;
+padding-bottom: 2px;
+border-radius: 3px;
+background-color: #22d3ee;
+margin-top: 10px;
+}
+
+
+.chat-room-search-result-container{
+display: flex;
+justify-content: center;
+align-items: center;
+margin-bottom: 10px;
+flex-direction: column;
+
+}
+
+
+.data-result {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 235px;
+  display: grid;
+grid-row-gap: 3px;
+}
+
+.chat-room-search{
+
+margin-left: 5px;
+
+}
+
+
+.chat-room-h2-conv{
+
+  color: #22d3ee;
+  font-size: 20px;
+}
+
+.chat-room-no-conv{
+
+  font-weight: bold;
+  text-align: center;
+}
+
+
+.chat-room-no-mess-container{
+
+margin-top: 20px;
+
+}
+
+.chat-room-no-room-selected{
+  text-align: center;
+  font-weight: bold;
+}
+
+.chat-room-no-room-selected-container{
+  margin-top: 10px;
+}
+
+.chat-room-rooms-container{
+
+
+display: flex; /* Use flex container */
+ overflow-x: auto;
+    white-space: nowrap;
+    gap: 20px;
 
 }
 
@@ -372,10 +569,5 @@ white-space: pre-wrap;
 }
 
 
-}
-
-
-
-@media (min-width: 769px) and (max-width: 992px){
 
 }
